@@ -40,7 +40,6 @@ define( 'BP_ACTIVITY_SHARE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
  * @author   Wbcom Designs
  * @since    1.0.0
  */
-
 function activate_buddypress_share() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-buddypress-share-activator.php';
 	Buddypress_Share_Activator::activate();
@@ -79,7 +78,6 @@ function bp_activity_share_plugin_actions( $links, $file ) {
  *
  * @since    1.0.0
  */
-
 function run_buddypress_share() {
 
 	$plugin = new Buddypress_Share();
@@ -92,11 +90,19 @@ function run_buddypress_share() {
  * this plugin requires buddypress to be installed and active
  */
 add_action( 'bp_loaded', 'bpshare_plugin_init' );
+
+/**
+ * Plugin init
+ */
 function bpshare_plugin_init() {
 	if ( bp_activity_share_check_config() ) {
 		run_buddypress_share();
 	}
 }
+
+/**
+ * Check config
+ */
 function bp_activity_share_check_config() {
 	global $bp;
 
@@ -110,24 +116,24 @@ function bp_activity_share_check_config() {
 	}
 
 	$network_plugins = get_site_option( 'active_sitewide_plugins', array() );
-	// No Network plugins
+	// No Network plugins.
 	if ( empty( $network_plugins ) ) {
-		// Looking for BuddyPress and bp-activity plugin
+		// Looking for BuddyPress and bp-activity plugin.
 		$check[] = $bp->basename;
 	}
 	$check[] = BP_ACTIVITY_SHARE_PLUGIN_BASENAME;
 	// Are they active on the network ?
 	$network_active = array_diff( $check, array_keys( $network_plugins ) );
 
-	// If result is 1, your plugin is network activated
-	// and not BuddyPress or vice & versa. Config is not ok
+	// If result is 1, your plugin is network activated.
+	// and not BuddyPress or vice & versa. Config is not ok.
 	if ( count( $network_active ) == 1 ) {
 		$config['network_status'] = false;
 	}
-	// We need to know if the plugin is network activated to choose the right
+	// We need to know if the plugin is network activated to choose the right.
 	// notice ( admin or network_admin ) to display the warning message.
 	$config['network_active'] = isset( $network_plugins[ BP_ACTIVITY_SHARE_PLUGIN_BASENAME ] );
-	// if BuddyPress config is different than bp-activity plugin
+	// if BuddyPress config is different than bp-activity plugin.
 	if ( ! $config['blog_status'] || ! $config['network_status'] ) {
 		$warnings = array();
 		if ( ! bp_core_do_network_admin() && ! $config['blog_status'] ) {
@@ -145,12 +151,18 @@ function bp_activity_share_check_config() {
 	return true;
 }
 
+/**
+ * Same Blog
+ */
 function bpshare_same_blog() {
 	echo '<div class="error"><p>'
 	. esc_html__( 'BuddyPress Activity Social Share requires to be activated on the blog where BuddyPress is activated.', 'buddypress-share' )
 	. '</p></div>';
 }
 
+/**
+ * Network config
+ */
 function bpshare_same_network_config() {
 	echo '<div class="error"><p>'
 	. esc_html__( 'BuddyPress Activity Social Share and BuddyPress need to share the same network configuration.', 'buddypress-share' )
@@ -191,16 +203,14 @@ function bpshare_required_plugin_admin_notice() {
 	}
 }
 
-
-/**
- * redirect to plugin settings page after activated
- */
-
 add_action( 'activated_plugin', 'bpshare_activation_redirect_settings' );
-function bpshare_activation_redirect_settings( $plugin ){
-	if (  class_exists( 'BuddyPress' ) ) {
-		if( $plugin == plugin_basename( __FILE__ ) ) {
-			wp_redirect( admin_url( 'admin.php?page=buddypress-share' ) ) ;
+/**
+ * Redirect to plugin settings page after activated
+ */
+function bpshare_activation_redirect_settings( $plugin ) {
+	if ( class_exists( 'BuddyPress' ) ) {
+		if ( $plugin === plugin_basename( __FILE__ ) ) {
+			wp_redirect( admin_url( 'admin.php?page=buddypress-share' ) );
 			exit;
 		}
 	}

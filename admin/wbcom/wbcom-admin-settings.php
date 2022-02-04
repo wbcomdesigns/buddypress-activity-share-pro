@@ -5,6 +5,7 @@
  * @author   Wbcom Designs
  * @package  Bp_Add_Group_Types
  */
+
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
