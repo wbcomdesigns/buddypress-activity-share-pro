@@ -1,3 +1,13 @@
+<?php
+/**
+ * Wbcom Plugins Page
+ *
+ * @author   Wbcom Designs
+ * @package  Buddypress_Share
+ */
+
+?>
+
 <div class="wrap">
 	<hr class="wp-header-end">
 	<div class="wbcom-wrap">
