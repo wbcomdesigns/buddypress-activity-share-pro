@@ -188,6 +188,7 @@ class Buddypress_Share {
 		$this->loader->add_filter( 'language_attributes', $plugin_public, 'bp_share_doctype_opengraph' );
 		$this->loader->add_action( 'wp_head', $plugin_public, 'bp_share_opengraph', 999 );
 		$this->loader->add_action( 'bp_init', $plugin_public, 'bp_activity_share_button_dis' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'bp_activity_share_popup_box', 999 );
 	}
 
 	/**
