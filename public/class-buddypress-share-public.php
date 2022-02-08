@@ -108,20 +108,20 @@ class Buddypress_Share_Public {
 	 * @since    1.0.0
 	 */
 	public function bp_activity_share_button_dis() {
-		$all_services = get_site_option( 'bp_share_all_services_disable' );		
+		$all_services = get_site_option( 'bp_share_all_services_disable' );
 		if ( is_user_logged_in() && 'enable' === $all_services ) {
-			add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ),999 );
+			add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 			add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_inner_activity_filter' ) );
 		}
 	}
-	
+
 	public function bp_share_inner_activity_filter() {
 		?>
 		<div class="bp-activity-share-btn generic-button">
-			<a class="button item-button bp-secondary-action bp-activity-share-button dashicons-controls-repeat" data-activity-id="<?php echo esc_attr(bp_get_activity_id());?>" rel="nofollow"><span><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span></a>
+			<a class="button item-button bp-secondary-action bp-activity-share-button dashicons-controls-repeat" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow"><span><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span></a>
 		</div>
 		<?php
-	}		
+	}
 
 	/**
 	 * BP Share activity filter
@@ -322,10 +322,10 @@ class Buddypress_Share_Public {
 			return;
 		}
 	}
-	
+
 	public function bp_activity_share_popup_box() {
-		
-		$groups = groups_get_groups( array('user_id' =>bp_loggedin_user_id()));		
+
+		$groups = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
 		?>
 		<div class="bp-activity-share-popup-container">
 			<div class="bp-activity-share-popup-box share-box-popup animate-slide-down">
@@ -334,23 +334,25 @@ class Buddypress_Share_Public {
 				</div>
 				<div class="bp-activity-share-popup-section">
 					<div class="bp-activity-share-post-header">
-						<div class="bp-activity-share-avatar">
-							<a href="<?php echo bp_loggedin_user_domain(); ?>">
-								<?php bp_loggedin_user_avatar( 'width=' . bp_core_avatar_thumb_width() . '&height=' . bp_core_avatar_thumb_height() ); ?>
-							</a>
-						</div>
-						<div class="bp-activity-share-filter">
-							<div class="form-item">
-								<div class="form-select">
-									<label for="post-in"><?php esc_html_e( 'Post In', 'buddypress-share' );?></label>
-									<select id="post-in" name="postIn">
-										<option value="0"><?php esc_html_e( 'My Profile', 'buddypress-share' );?></option>
-										<?php if ( !empty($groups)):?>
-											<?php foreach( $groups['groups'] as $group ): ?>
-												<option value="<?php echo $group->id; ?>"><?php echo $group->name; ?></option>
-											<?php endforeach;?>
-										<?php endif;?>
-									</select>
+						<div class="quick-post-header-filters-wrap">
+							<div class="bp-activity-share-avatar">
+								<a href="<?php echo bp_loggedin_user_domain(); ?>">
+									<?php bp_loggedin_user_avatar( 'width=' . bp_core_avatar_thumb_width() . '&height=' . bp_core_avatar_thumb_height() ); ?>
+								</a>
+							</div>
+							<div class="bp-activity-share-filter">
+								<div class="form-item">
+									<div class="form-select">
+										<label for="post-in"><?php esc_html_e( 'Post In', 'buddypress-share' ); ?></label>
+										<select id="post-in" name="postIn">
+											<option value="0"><?php esc_html_e( 'My Profile', 'buddypress-share' ); ?></option>
+											<?php if ( ! empty( $groups ) ) : ?>
+												<?php foreach ( $groups['groups'] as $group ) : ?>
+													<option value="<?php echo $group->id; ?>"><?php echo $group->name; ?></option>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</select>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -358,17 +360,17 @@ class Buddypress_Share_Public {
 					<div class="bp-activity-share-post-body">
 						<form class="form">
 							<div class="form-textarea">
-								<textarea name="bp-activity-share-text" class=" " placeholder="<?php esc_html_e( 'Hi admin! Write something here, use @ to mention someone...', 'buddypress-share' );?>" maxlength="1000" spellcheck="false"></textarea>
+								<textarea name="bp-activity-share-text" class=" " placeholder="<?php esc_html_e( 'Hi admin! Write something here, use @ to mention someone...', 'buddypress-share' ); ?>" maxlength="1000" spellcheck="false"></textarea>
 							</div>
 						</form>
 						<div class="bp-activity-share-widget-box-status-header">
-						
+
 						</div>
 					</div>
 					<div class="bp-activity-share-post-footer">
 						<div class="bp-activity-share-post-footer-actions">
-							<p class="button small void"><?php esc_html_e( 'Discard', 'buddypress-share' );?></p>
-							<p class="button small secondary"><?php esc_html_e( 'Post', 'buddypress-share' );?></p></div>
+							<p class="button small void"><?php esc_html_e( 'Discard', 'buddypress-share' ); ?></p>
+							<p class="button small secondary"><?php esc_html_e( 'Post', 'buddypress-share' ); ?></p></div>
 					</div>
 				</div>
 			</div>
@@ -377,6 +379,6 @@ class Buddypress_Share_Public {
 		
 		<?php
 	}
-	
-	
+
+
 }
