@@ -368,9 +368,12 @@ class Buddypress_Share_Public {
 						</div>
 					</div>
 					<div class="bp-activity-share-post-footer">
-						<div class="bp-activity-share-post-footer-actions">
-							<p class="button small void"><?php esc_html_e( 'Discard', 'buddypress-share' ); ?></p>
-							<p class="button small secondary"><?php esc_html_e( 'Post', 'buddypress-share' ); ?></p></div>
+						<div class="bp-activity-share-post-footer-actions-wrap">
+							<div class="bp-activity-share-post-footer-actions">
+								<p class="button small void"><?php esc_html_e( 'Discard', 'buddypress-share' ); ?></p>
+								<p class="button small secondary"><?php esc_html_e( 'Post', 'buddypress-share' ); ?></p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

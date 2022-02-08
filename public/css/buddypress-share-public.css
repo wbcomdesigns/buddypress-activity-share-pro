@@ -2,12 +2,14 @@
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
 # Global
+# Activity Reshare
 # Themes Specific
     # BuddyBoss
     # Kleo
     # OneCommunity
     # Rehub
 --------------------------------------------------------------*/
+
 
 /*--------------------------------------------------------------
 # Global
@@ -155,18 +157,234 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     display: none;
 }
 
+
+/*--------------------------------------------------------------
+# Activity Reshare
+--------------------------------------------------------------*/
+
+@-webkit-keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+        visibility: visible;
+    }
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+        visibility: visible;
+    }
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.animate-slide-down {
+    -webkit-animation-name: slideInDown;
+    animation-name: slideInDown;
+}
+
+.bp-activity-share-popup-container {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(21, 21, 31, 0.96);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100000;
+    overflow: hidden auto;
+    display: none;
+}
+
+.bp-activity-share-popup-container.active {
+    display: block;
+}
+
+.share-box-popup {
+    width: 90%;
+    position: relative;
+    max-width: 584px;
+    margin: auto;
+}
+
+.bp-activity-share-popup_close-button {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #333;
+    cursor: pointer;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    z-index: 2;
+    transition: background-color .2s ease-in-out;
+}
+
+.xm-popup_close-button-icon {
+    fill: #fff;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+}
+
+.bp-activity-share-popup-section {
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: rgba(94, 92, 154, 0.06) 0px 0px 40px 0px;
+}
+
+.bp-activity-share-post-header {
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.quick-post-header-filters-wrap {
+    min-height: 80px;
+    padding: 0 28px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.bp-activity-share-post-body {
+    background-color: rgb(252, 252, 253);
+    padding-bottom: 28px;
+}
+
+.form-textarea textarea {
+    background-color: var(--color-box-background-alt);
+    border-radius: 0;
+    border: none;
+    font-size: 0.875rem;
+    padding: 26px 28px 0;
+    overflow: hidden;
+}
+
+.bp-activity-share-widget-box-status-header {
+    margin: 0 28px;
+    padding: 1rem;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: rgba(94, 92, 154, 0.06) 0px 0px 40px 0px;
+    position: relative;
+}
+
+.bp-activity-share-widget-box-status-header .activity-avatar {
+    margin: 0 15px 15px 0;
+    width: auto;
+    float: left;
+    text-align: left;
+}
+
+.bp-activity-share-widget-box-status-header .activity-avatar img {
+    max-width: 50px;
+}
+
+.bp-activity-share-widget-box-status-header .activity-header {
+    width: auto;
+    margin-left: 65px;
+}
+
+.bp-activity-share-widget-box-status-header .activity-header p {
+    margin: 0;
+}
+
+.bp-activity-share-widget-box-status-header .activity-header .activity-time-since {
+    display: none;
+}
+
+.bp-activity-share-widget-box-status-header .activity-content p.activity-date a {
+    font-size: 14px;
+}
+
+.bp-activity-share-post-footer {
+    padding: 0 28px;
+    border-top: 1px solid #e3e3e3;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.bp-activity-share-post-footer-actions-wrap {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -ms-flex-align: center;
+    align-items: center;
+    min-height: 76px;
+}
+
+.bp-activity-share-post-footer-actions {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    margin-left: auto;
+}
+
+.bp-activity-share-post-footer-actions p.button.small {
+    width: 80px;
+    margin: 0;
+    margin-right: 6px;
+}
+
+.bp-activity-share-post-footer-actions .button:not(.void) {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 48px;
+    border-radius: 10px;
+    background-color: #333;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 48px;
+    cursor: pointer;
+    transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out, box-shadow .2s ease-in-out;
+    box-shadow: 3px 5px 10px 0 rgba(62, 63, 94, 0.02);
+}
+
+
 /*--------------------------------------------------------------
 ## BuddyBoss
 --------------------------------------------------------------*/
+
 .bp-nouveau.buddyboss-theme .activity-list .activity-item .bp-share-button::before {
     content: '\e927';
     font-family: bb-icons;
     font-size: initial;
 }
 
+
 /*--------------------------------------------------------------
 ## Kleo
 --------------------------------------------------------------*/
+
 body.kleo #buddypress .activity-meta a.button.bp-share-button {
     line-height: initial;
 }
@@ -175,9 +393,11 @@ body.kleo #buddypress .activity-meta a.button.bp-share-button {
     display: inline;
 }
 
+
 /*--------------------------------------------------------------
 ## OneCommunity
 --------------------------------------------------------------*/
+
 body.onecommunity.bp-nouveau #buddypress .activity-list .activity-item .activity-meta .bp-share-button {
     display: block;
     padding: 0 8px;
@@ -187,9 +407,11 @@ body.onecommunity.bp-nouveau .activity-list .activity-item .activity-meta .bp-sh
     content: none;
 }
 
+
 /*--------------------------------------------------------------
 ## Rehub
 --------------------------------------------------------------*/
+
 body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     background: none;
 }
