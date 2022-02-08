@@ -96,6 +96,14 @@
 
 
         });
+		
+		$( document ).on( 'click', '.bp-secondary-action.bp-activity-share-button', function() {
+			var activity_id = $(this).data('activity-id');
+			var activity_html = $( '#activity-' + activity_id ).html();
+			$( '.bp-activity-share-widget-box-status-header').html('');
+			$( '.bp-activity-share-widget-box-status-header').html(activity_html);
+			$( '.bp-activity-share-widget-box-status-header .activity-meta').remove();
+		});
     });
 
 })(jQuery);

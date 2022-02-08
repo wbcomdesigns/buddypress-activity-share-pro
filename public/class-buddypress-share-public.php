@@ -118,7 +118,7 @@ class Buddypress_Share_Public {
 	public function bp_share_inner_activity_filter() {
 		?>
 		<div class="bp-activity-share-btn generic-button">
-			<a class="button item-button bp-secondary-action bp-activity-share-button dashicons-controls-repeat" rel="nofollow"><span><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span></a>
+			<a class="button item-button bp-secondary-action bp-activity-share-button dashicons-controls-repeat" data-activity-id="<?php echo esc_attr(bp_get_activity_id());?>" rel="nofollow"><span><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span></a>
 		</div>
 		<?php
 	}		
@@ -361,6 +361,9 @@ class Buddypress_Share_Public {
 								<textarea name="bp-activity-share-text" class=" " placeholder="<?php esc_html_e( 'Hi admin! Write something here, use @ to mention someone...', 'buddypress-share' );?>" maxlength="1000" spellcheck="false"></textarea>
 							</div>
 						</form>
+						<div class="bp-activity-share-widget-box-status-header">
+						
+						</div>
 					</div>
 					<div class="bp-activity-share-post-footer">
 						<div class="bp-activity-share-post-footer-actions">
