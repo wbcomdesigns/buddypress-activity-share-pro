@@ -416,12 +416,12 @@ class Buddypress_Share_Public {
 		if ( is_single() && get_post_type() == 'post' ) {	
 			ob_start();
 			
-			$share_count = bp_activity_get_meta( get_the_ID(), 'share_count', true );
+			$share_count = get_post_meta( get_the_ID(), 'share_count', true );
 			$share_count = ($share_count) ? $share_count : 0;
 			?>
 			<div class="bp-activity-share-btn generic-button">
 				<a class="button item-button bp-secondary-action bp-activity-share-button as-icon-retweet" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
-					<span class="bp-screen-reader-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
+					<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
 					<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() );?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html($share_count)?></span>
 				</a>
 			</div>
