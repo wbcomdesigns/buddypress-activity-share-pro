@@ -696,7 +696,7 @@ class Buddypress_Share_Public {
 	
 	public function bp_activity_post_meta() {
 		// Before post meta action.
-		do_action( 'beehive_before_post_meta' );
+		do_action( 'bp_activity_share_before_post_meta' );
 
 		// Post date.
 		printf( '<span class="link date-links"><i class="uil-calender"></i><a href="%s">%s</a></span>', esc_url( get_month_link( get_the_time( 'Y' ), get_the_time( 'm' ) ) ), get_the_date() );
@@ -716,7 +716,7 @@ class Buddypress_Share_Public {
 		}
 
 		// After post meta action.
-		do_action( 'beehive_after_post_meta' );
+		do_action( 'bp_activity_share_after_post_meta' );
 	}
 	
 
