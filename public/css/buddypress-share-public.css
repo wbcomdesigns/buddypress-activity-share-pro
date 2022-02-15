@@ -8,6 +8,7 @@
     # Kleo
     # OneCommunity
     # Rehub
+    # BuddyX
 --------------------------------------------------------------*/
 
 
@@ -162,65 +163,143 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
 # Activity Reshare
 --------------------------------------------------------------*/
 
-@-webkit-keyframes slideInDown {
-    from {
-        -webkit-transform: translate3d(0, -100%, 0);
-        transform: translate3d(0, -100%, 0);
-        visibility: visible;
-    }
-    to {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
+.bp-activity-share-button::before {
+    font-family: "as-icons" !important;
+    margin-right: 10px !important;
+}
+
+.activity-share-modal.modal .modal-content,
+.activity-share-modal .modal-header,
+.activity-share-modal .modal-body {
+    padding: 0;
+}
+
+.activity-share-modal.modal .modal-content {
+    width: 100%;
+    border-radius: 12px;
+}
+
+.activity-share-modal .modal-body {
+    background-color: #fdfdfd;
+    border-radius: 0;
+    border: none;
+    padding-bottom: 28px;
+}
+
+.activity-share-modal .bp-activity-share-avatar {
+    font-weight: bold;
+    text-transform: capitalize;
+    padding-left: 55px;
+    line-height: 1.4;
+    display: block;
+    position: relative;
+}
+
+.activity-share-modal .bp-activity-share-avatar>a {
+    position: absolute;
+    left: 0;
+    top: -3px;
+}
+
+.activity-share-modal .bp-activity-share-avatar img.avatar {
+    width: 44px;
+    height: 44px;
+    transform: unset;
+    margin-right: 5px;
+    border-radius: 50%;
+}
+
+.activity-share-modal .bp-activity-share-avatar small.user-status-text {
+    display: block;
+    font-weight: normal;
+    color: #767676;
+}
+
+@media (min-width: 576px) {
+    .activity-share-modal .modal-dialog {
+        max-width: 584px;
     }
 }
 
-@keyframes slideInDown {
-    from {
-        -webkit-transform: translate3d(0, -100%, 0);
-        transform: translate3d(0, -100%, 0);
-        visibility: visible;
-    }
-    to {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
+@media (max-width: 576px) {
+    .activity-share-modal .modal-dialog {
+        margin-left: 20px;
+        margin-right: 20px;
     }
 }
 
-.animate-slide-down {
-    -webkit-animation-name: slideInDown;
-    animation-name: slideInDown;
+.activity-share-modal .form {
+    width: 100%;
+    padding-bottom: 28px;
 }
 
-.bp-activity-share-popup-container {
+.activity-share-modal .form-select {
+    position: relative;
+}
+
+.activity-share-modal label[for=post-in],
+.activity-share-modal .bp-activity-share-filter label {
+    padding: 0 5px;
+    background-color: #fff;
+    color: #767676;
+    font-size: 0.75rem;
+    position: absolute;
+    top: -5px;
+    left: 12px;
+    z-index: 999;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.activity-share-modal .form-textarea textarea {
+    background-color: #fdfdfd;
+    border: 0;
+    border-radius: 0;
+    font-size: 0.875rem;
+    padding: 26px 28px 0;
+    overflow: hidden;
+    min-height: 120px;
+    resize: none;
+}
+
+.activity-share-modal .form-textarea textarea:focus {
+    outline: none;
+    border-color: transparent !important;
+}
+
+.activity-share-modal .quick-post-header-filters-wrap {
+    width: 100%;
+    min-height: 80px;
+    padding: 0 28px;
     display: -ms-flexbox;
     display: flex;
-    -ms-flex-pack: center;
-    justify-content: center;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
     -ms-flex-align: center;
     align-items: center;
+}
+
+@media screen and (max-width: 680px) {
+    .activity-share-modal .quick-post-header-filters-wrap {
+        -ms-flex-direction: column;
+        flex-direction: column;
+        padding: 28px 0;
+    }
+    .activity-share-modal .bp-activity-share-filter {
+        margin-top: 28px;
+        padding: 0 16px;
+    }
+}
+
+.quick-post-header-filters-wrap .select2-container--default .select2-selection--single {
     width: 100%;
     height: 100%;
-    background-color: rgba(21, 21, 31, 0.96);
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100000;
-    overflow: hidden auto;
-    display: none;
+    padding: 0 40px 0 20px;
+    font-size: 0.875rem;
+    cursor: pointer;
 }
 
-.bp-activity-share-popup-container.active {
-    display: block;
-}
-
-.share-box-popup {
-    width: 90%;
-    position: relative;
-    max-width: 584px;
-    margin: auto;
-}
-
-.bp-activity-share-popup_close-button {
+#activity-share-modal button.activity-share-modal-close {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-pack: center;
@@ -235,138 +314,132 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     position: absolute;
     top: -20px;
     right: -20px;
+    opacity: 1;
+    border: 0;
+    outline: none;
     z-index: 2;
     transition: background-color .2s ease-in-out;
 }
 
-.xm-popup_close-button-icon {
-    fill: #fff;
-    width: 12px;
-    height: 12px;
-    pointer-events: none;
+#activity-share-modal button.activity-share-modal-close:hover {
+    background-color: #800;
 }
 
-.bp-activity-share-popup-section {
-    border-radius: 12px;
+#activity-share-modal button.activity-share-modal-close .as-icon {
+    font-size: 22px;
+    color: #fff;
+}
+
+.activity-share-modal #bp-activity-share-widget-box-status-header {
+    width: calc(100% - 56px);
     background-color: #fff;
-    box-shadow: rgba(94, 92, 154, 0.06) 0px 0px 40px 0px;
-}
-
-.bp-activity-share-post-header {
-    border-bottom: 1px solid #e3e3e3;
-}
-
-.quick-post-header-filters-wrap {
-    min-height: 80px;
-    padding: 0 28px;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    -ms-flex-align: center;
-    align-items: center;
-}
-
-.bp-activity-share-post-body {
-    background-color: rgb(252, 252, 253);
-    padding-bottom: 28px;
-}
-
-.form-textarea textarea {
-    background-color: var(--color-box-background-alt);
-    border-radius: 0;
-    border: none;
-    font-size: 0.875rem;
-    padding: 26px 28px 0;
-    overflow: hidden;
-}
-
-.bp-activity-share-widget-box-status-header {
     margin: 0 28px;
-    padding: 1rem;
+    padding: 22px;
+    box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
+    border: 0;
     border-radius: 12px;
-    background-color: #fff;
-    box-shadow: rgba(94, 92, 154, 0.06) 0px 0px 40px 0px;
-    position: relative;
 }
 
-.bp-activity-share-widget-box-status-header .activity-avatar {
-    margin: 0 15px 15px 0;
-    width: auto;
-    float: left;
-    text-align: left;
+.activity-share-modal .activity-list .activity-item .activity-header {
+    padding-right: 0;
+    height: auto;
+    min-height: 60px;
 }
 
-.bp-activity-share-widget-box-status-header .activity-avatar img {
-    max-width: 50px;
-}
-
-.bp-activity-share-widget-box-status-header .activity-header {
-    width: auto;
-    margin-left: 65px;
-}
-
-.bp-activity-share-widget-box-status-header .activity-header p {
-    margin: 0;
-}
-
-.bp-activity-share-widget-box-status-header .activity-header .activity-time-since {
-    display: none;
-}
-
-.bp-activity-share-widget-box-status-header .activity-content p.activity-date a {
-    font-size: 14px;
-}
-
-.bp-activity-share-post-footer {
-    padding: 0 28px;
-    border-top: 1px solid #e3e3e3;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
-
-.bp-activity-share-post-footer-actions-wrap {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    -ms-flex-align: center;
-    align-items: center;
-    min-height: 76px;
+.activity-share-modal .activity-list .activity-item>div.item-avatar img {
+    width: 40px !important;
+    height: auto;
 }
 
 .bp-activity-share-post-footer-actions {
+    display: flex;
     display: -ms-flexbox;
     display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
     -ms-flex-align: center;
     align-items: center;
-    margin-left: auto;
+    min-height: 43px;
 }
 
-.bp-activity-share-post-footer-actions p.button.small {
-    width: 80px;
+.bp-activity-share-post-footer-actions .button {
     margin: 0;
+    width: 80px;
     margin-right: 6px;
-}
-
-.bp-activity-share-post-footer-actions .button:not(.void) {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-pack: center;
     justify-content: center;
     -ms-flex-align: center;
     align-items: center;
-    height: 48px;
     border-radius: 10px;
     background-color: #333;
     color: #fff;
-    font-size: 0.875rem;
     font-weight: 700;
     text-align: center;
-    line-height: 48px;
     cursor: pointer;
     transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out, box-shadow .2s ease-in-out;
-    box-shadow: 3px 5px 10px 0 rgba(62, 63, 94, 0.02);
+    box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
+    height: 40px;
+    font-size: 0.75rem;
+    line-height: 40px;
+}
+
+.bp-activity-share-post-footer-actions .button:hover {
+    background-color: #111;
+}
+
+.bp-activity-share-post-footer-actions .button.void {
+    background-color: transparent;
+    color: #767676;
+    box-shadow: none;
+}
+
+.bp-activity-share-post-footer-actions .button.void:hover {
+    color: #fff;
+    background-color: #800;
+}
+
+.bp-nouveau #bp-activity-share-widget-box-status-header.activity-list.bp-list .activity-item,
+#bp-activity-share-widget-box-status-header.activity-list .activity-reshare-item-container .activity-item {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+}
+
+#bp-activity-share-widget-box-status-header .activity-reshare-item-container:not(.post-reshare-item-container) {
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+    background-color: #fff;
+    box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
+    border-radius: 12px;
+    padding: 22px;
+}
+
+#bp-activity-share-widget-box-status-header.activity-list .activity-item .activity-reshare-item-container .activity-header {
+    min-height: 60px;
+    height: auto;
+}
+
+#bp-activity-share-widget-box-status-header.activity-list .activity-item .activity-reshare-item-container .activity-header img {
+    border-radius: 50% !important;
+}
+
+#bp-activity-share-widget-box-status-header.activity-list .activity-reshare-item-container .activity-item .activity-header .time-since {
+    line-height: 2;
+    font-size: 90%;
+    color: #767676;
+    display: block;
+}
+
+body.modal-open.modal-open .select2-dropdown {
+    z-index: 100000;
+}
+
+body.modal-open.modal-open .bp-activity-share-filter .select2-container--default .select2-selection--single {
+    width: 200px;
+    padding: 0;
 }
 
 
@@ -414,4 +487,19 @@ body.onecommunity.bp-nouveau .activity-list .activity-item .activity-meta .bp-sh
 
 body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     background: none;
+}
+
+
+/*--------------------------------------------------------------
+## BuddyX
+--------------------------------------------------------------*/
+
+#bp-activity-share-widget-box-status-header .activity-card-head {
+    margin: -22px;
+    margin-bottom: 22px;
+}
+
+#bp-activity-share-widget-box-status-header .activity-item-head {
+    padding: 0;
+    margin-bottom: 1rem;
 }

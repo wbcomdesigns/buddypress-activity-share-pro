@@ -1,0 +1,67 @@
+@font-face {
+  font-family: 'as-icons';
+  src: url('../icons/as-icons.eot?40402106');
+  src: url('../icons/as-icons.eot?40402106#iefix') format('embedded-opentype'),
+       url('../icons/as-icons.woff2?40402106') format('woff2'),
+       url('../icons/as-icons.woff?40402106') format('woff'),
+       url('../icons/as-icons.ttf?40402106') format('truetype'),
+       url('../icons/as-icons.svg?40402106#as-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'as-icons';
+    src: url('../font/as-icons.svg?40402106#as-icons') format('svg');
+  }
+}
+*/
+[class^="as-icon-"]:before, [class*=" as-icon-"]:before {
+  font-family: "as-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: never;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.as-icon-bookmark:before { content: '\e800'; } /* '' */
+.as-icon-share-all:before { content: '\e801'; } /* '' */
+.as-icon-share-alt-square:before { content: '\e802'; } /* '' */
+.as-icon-share-alt:before { content: '\e803'; } /* '' */
+.as-icon-share-square:before { content: '\e804'; } /* '' */
+.as-icon-share:before { content: '\e805'; } /* '' */
+.as-icon-times-circle:before { content: '\e806'; } /* '' */
+.as-icon-times:before { content: '\e807'; } /* '' */
+.as-icon-repeat:before { content: '\e808'; } /* '' */
+.as-icon-retweet-alt:before { content: '\e809'; } /* '' */
+.as-icon-retweet:before { content: '\e80a'; } /* '' */

@@ -75,6 +75,7 @@ class Buddypress_Share_Public {
 			wp_enqueue_style( 'wb-font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), $this->version, 'all' );
 		}
 		wp_enqueue_style( 'bootstrap-css', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'icons-css', plugin_dir_url( __FILE__ ) . 'css/as-icons.css', array(), $this->version, 'all' );
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/buddypress-share-public.css', array(), $this->version, 'all' );
 	}
 
@@ -129,7 +130,7 @@ class Buddypress_Share_Public {
 	public function bp_share_inner_activity_filter() {
 		?>
 		<div class="bp-activity-share-btn generic-button">
-			<a class="button item-button bp-secondary-action bp-activity-share-button dashicons-controls-repeat" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow"><span><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span></a>
+			<a class="button item-button bp-secondary-action bp-activity-share-button as-icon-retweet" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow"><span><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span></a>
 		</div>
 		<?php
 	}
@@ -404,9 +405,6 @@ class Buddypress_Share_Public {
 
 	}
 
-
-
-
 	public function bp_activity_share_popup_box() {
 
 		/*  Activity Share Popup */
@@ -420,7 +418,7 @@ class Buddypress_Share_Public {
 				<div class="modal-dialog modal-dialog-centered" role="document">
 					<div class="modal-content">
 					<button type="button" class="close activity-share-modal-close" data-bs-dismiss="modal" aria-label="Close">
-						<i class="icon ion-close-round"></i>
+						<i class="as-icon as-icon-times-circle"></i>
 					</button>
 						<!-- Modal header -->
 						<div class="modal-header">
