@@ -410,6 +410,29 @@ class Buddypress_Share_Public {
 		return $action;
 
 	}
+	
+	public function bp_activity_post_share_button_action( $content ) {
+		
+		if ( is_single() && get_post_type() == 'post' ) {	
+			ob_start();
+			
+			$share_count = bp_activity_get_meta( get_the_ID(), 'share_count', true );
+			$share_count = ($share_count) ? $share_count : 0;
+			?>
+			<div class="bp-activity-share-btn generic-button">
+				<a class="button item-button bp-secondary-action bp-activity-share-button as-icon-retweet" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
+					<span class="bp-screen-reader-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
+					<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() );?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html($share_count)?></span>
+				</a>
+			</div>
+			<?php
+			
+			return $content . ob_get_clean();
+		}
+		
+		return $content;
+
+	}
 
 	public function bp_activity_share_popup_box() {
 
@@ -494,18 +517,18 @@ class Buddypress_Share_Public {
 		if ( is_single() && get_post_type() == 'post' ) {
 			?>
 			<div class="post-preview animate-slide-down entry-wrapper ">
-				<?php
-				/*
-				if ( beehive_get_post_slider_images() ) : ?>
+				<?php if ( has_post_thumbnail() ) { ?>
+
 					<div class="entry-thumbnail">
-						<?php beehive_post_slider(); ?>
+						<?php the_post_thumbnail( 'large'); ?>
 					</div>
-				<?php endif; */
-				?>
+
+				<?php } ?>
+				
 				<div class="post-preview-info fixed-height entry-content">
 					<div class="post-preview-info-top entry-header">
 						<p class="post-preview-timestamp">
-							<?php // beehive_post_meta(); ?>
+							<?php $this->bp_activity_post_meta(); ?>
 						</p>
 						<p class="post-preview-title entry-title">
 							<?php the_title( '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a>' ); ?>
@@ -637,18 +660,18 @@ class Buddypress_Share_Public {
 					?>
 					<div class="post-reshare-item-container activity-reshare-item-container"> 
 						<div class="post-preview animate-slide-down entry-wrapper ">
-							<?php
-							/*
-							if ( beehive_get_post_slider_images() ) : ?>
+							<?php if ( has_post_thumbnail() ) { ?>
+
 								<div class="entry-thumbnail">
-									<?php beehive_post_slider(); ?>
+									<?php the_post_thumbnail( 'large'); ?>
 								</div>
-							<?php endif; */
-							?>
+
+							<?php } ?>
+							
 							<div class="post-preview-info fixed-height entry-content">
 								<div class="post-preview-info-top entry-header">
 									<p class="post-preview-timestamp">
-										<?php // beehive_post_meta(); ?>
+										<?php $this->bp_activity_post_meta(); ?>
 									</p>
 									<p class="post-preview-title entry-title">
 										<?php the_title( '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a>' ); ?>
@@ -661,14 +684,6 @@ class Buddypress_Share_Public {
 									<a href="<?php echo esc_url( get_permalink() ); ?>" class="post-preview-link color-primary read-more"><?php echo esc_html__( 'Read More' ) . '...'; ?></a>							
 								</div>
 							</div>
-							<div class="content-action">
-								<div class="meta-line">
-									<p class="meta-line-text"><?php echo wbcom_get_post_comment_count( get_the_ID() ) . ' ' . esc_html( 'Comments' ); ?></p>
-								</div>
-								<div class="meta-line">
-									<p class="meta-line-text"><?php echo wbcom_get_post_share_count( get_the_ID() ) . ' ' . esc_html( 'Share' ); ?></p>
-								</div>
-							</div>
 						</div>
 					</div>
 					<?php
@@ -678,6 +693,32 @@ class Buddypress_Share_Public {
 			wp_reset_postdata();
 		}
 	}
+	
+	public function bp_activity_post_meta() {
+		// Before post meta action.
+		do_action( 'beehive_before_post_meta' );
+
+		// Post date.
+		printf( '<span class="link date-links"><i class="uil-calender"></i><a href="%s">%s</a></span>', esc_url( get_month_link( get_the_time( 'Y' ), get_the_time( 'm' ) ) ), get_the_date() );
+
+		// translators: used between list items, there is a space after the comma.
+		$categories_list = get_the_category_list( esc_html__( ', ', 'buddypress-share' ) );
+		if ( $categories_list ) {
+			printf( '<span class="link cat-links"><i class="uil-folder"></i>%1$s</span>', $categories_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		}
+
+		// translators: used between list items, there is a space after the comma.
+		if ( is_single() ) {
+			$tags_list = get_the_tag_list( '', esc_html_x( ', ', 'list item separator', 'buddypress-share' ) );
+			if ( $tags_list ) {
+				printf( '<span class="link tags-links"><i class="uil-tag-alt"></i>%1$s</span>', $tags_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			}
+		}
+
+		// After post meta action.
+		do_action( 'beehive_after_post_meta' );
+	}
+	
 
 
 }

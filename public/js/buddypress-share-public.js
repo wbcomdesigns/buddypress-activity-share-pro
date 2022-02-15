@@ -99,8 +99,17 @@
         });
 
         $(document).on('click', '.bp-secondary-action.bp-activity-share-button', function() {
-            var activity_id = $(this).data('activity-id');
-            var activity_html = $('#activity-' + activity_id).html();
+			
+			e.preventDefault();
+			var activity_id = '';
+			var activity_html = '';
+			
+			 if ( typeof $(this).data( 'post-id' ) !== 'undefined' && $(this).data( 'post-id' ) != '' ) {
+				activity_id = $(this).data( 'post-id' );
+			} else {
+				activity_id = $(this).data('activity-id');
+				activity_html = $('#activity-' + activity_id).html();
+			}
 
             $('#activity-share-modal').on('shown.bs.modal', function() {
                 $('#activity-share-modal').modal('show');
