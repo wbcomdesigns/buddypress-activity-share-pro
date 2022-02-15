@@ -100,14 +100,14 @@ class Buddypress_Share_Public {
 		wp_enqueue_script( 'jquery-ui-tooltip' );
 		wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/buddypress-share-public.js', array( 'jquery' ), $this->version, false );
-		
+
 		wp_localize_script(
 			$this->plugin_name,
 			'bp_activity_sjare_vars',
 			array(
 				'ajax_url'        => admin_url( 'admin-ajax.php' ),
 				'current_user_id' => get_current_user_id(),
-				'ajax_nonce'      => wp_create_nonce( 'bp-activity-share-nonce' ),				
+				'ajax_nonce'      => wp_create_nonce( 'bp-activity-share-nonce' ),
 			)
 		);
 	}
@@ -129,7 +129,7 @@ class Buddypress_Share_Public {
 	public function bp_share_inner_activity_filter() {
 		?>
 		<div class="bp-activity-share-btn generic-button">
-			<a class="button item-button bp-secondary-action bp-activity-share-button dashicons-controls-repeat" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow"><span><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span></a>
+			<a class="button item-button bp-secondary-action bp-activity-share-button dashicons-controls-repeat" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow"><span><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span></a>
 		</div>
 		<?php
 	}
@@ -333,7 +333,7 @@ class Buddypress_Share_Public {
 			return;
 		}
 	}
-	
+
 	public function bp_share_register_activity_actions() {
 		$bp = buddypress();
 		bp_activity_set_action(
@@ -372,7 +372,7 @@ class Buddypress_Share_Public {
 			array( 'activity', 'group', 'member', 'member_groups' )
 		);
 	}
-	
+
 	public function bp_share_activity_format_action_activity_reshare( $action, $activity ) {
 		$user_link = bp_core_get_userlink( $activity->user_id );
 		// Set the Activity update posted in a Group action.
@@ -385,7 +385,7 @@ class Buddypress_Share_Public {
 		return $action;
 
 	}
-	
+
 	public function bp_share_activity_format_action_group_reshare( $action, $activity ) {
 		$user_link = bp_core_get_userlink( $activity->user_id );
 		$group     = bp_groups_get_activity_group( $activity->item_id );
@@ -405,7 +405,7 @@ class Buddypress_Share_Public {
 	}
 
 
-	
+
 
 	public function bp_activity_share_popup_box() {
 
@@ -419,7 +419,7 @@ class Buddypress_Share_Public {
 			<div class="modal fade activity-share-modal" id="activity-share-modal" tabindex="-1" role="dialog" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered" role="document">
 					<div class="modal-content">
-					<button type="button" class="close activity-share-modal-close" data-dismiss="modal" aria-label="Close">
+					<button type="button" class="close activity-share-modal-close" data-bs-dismiss="modal" aria-label="Close">
 						<i class="icon ion-close-round"></i>
 					</button>
 						<!-- Modal header -->
@@ -485,20 +485,23 @@ class Buddypress_Share_Public {
 			<?php
 		}
 	}
-	
+
 	public function bp_activity_share_single_post_formate() {
 		if ( is_single() && get_post_type() == 'post' ) {
 			?>
 			<div class="post-preview animate-slide-down entry-wrapper ">
-				<?php /*if ( beehive_get_post_slider_images() ) : ?>
+				<?php
+				/*
+				if ( beehive_get_post_slider_images() ) : ?>
 					<div class="entry-thumbnail">
 						<?php beehive_post_slider(); ?>
 					</div>
-				<?php endif; */?>
+				<?php endif; */
+				?>
 				<div class="post-preview-info fixed-height entry-content">
 					<div class="post-preview-info-top entry-header">
 						<p class="post-preview-timestamp">
-							<?php //beehive_post_meta(); ?>
+							<?php // beehive_post_meta(); ?>
 						</p>
 						<p class="post-preview-title entry-title">
 							<?php the_title( '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a>' ); ?>
@@ -515,7 +518,7 @@ class Buddypress_Share_Public {
 			<?php
 		}
 	}
-	
+
 	public function bp_activity_create_reshare_ajax() {
 		check_ajax_referer( 'bp-activity-share-nonce', '_ajax_nonce' );
 
@@ -559,13 +562,13 @@ class Buddypress_Share_Public {
 		}
 		die();
 	}
-	
-	
+
+
 	public function bp_activity_share_get_where_conditions( $where_conditions ) {
 		unset( $where_conditions['filter_sql'] );
 		return $where_conditions;
 	}
-	
+
 	public function bp_activity_share_entry_content() {
 		global $activities_template;
 
@@ -578,7 +581,7 @@ class Buddypress_Share_Public {
 			$args                     = array( 'in' => $secondary_item_id );
 
 			add_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
-			
+
 			if ( bp_has_activities( $args ) ) {
 				while ( bp_activities() ) :
 					bp_the_activity();
@@ -596,16 +599,16 @@ class Buddypress_Share_Public {
 								</div>
 								<?php if ( bp_nouveau_activity_has_content() ) : ?>
 									<div class="activity-inner">
-										<?php bp_get_template_part( 'activity/type-parts/content',  bp_activity_type_part() ); ?>
+										<?php bp_get_template_part( 'activity/type-parts/content', bp_activity_type_part() ); ?>
 									</div>
 								<?php endif; ?>
 							</div>
 							<div class="content-action">
 								<div class="meta-line">
-									<p class="meta-line-text"><?php //echo wbcom_get_comment_count( bp_get_activity_id() ) . ' ' . esc_html( 'Comments' ); ?></p>
+									<p class="meta-line-text"><?php // echo wbcom_get_comment_count( bp_get_activity_id() ) . ' ' . esc_html( 'Comments' ); ?></p>
 								</div>
 								<div class="meta-line">
-									<p class="meta-line-text"><?php //echo wbcom_get_share_count( bp_get_activity_id() ) . ' ' . esc_html( 'Share' ); ?></p>
+									<p class="meta-line-text"><?php // echo wbcom_get_share_count( bp_get_activity_id() ) . ' ' . esc_html( 'Share' ); ?></p>
 								</div>
 							</div>
 						</div>
@@ -630,15 +633,18 @@ class Buddypress_Share_Public {
 					?>
 					<div class="post-reshare-item-container activity-reshare-item-container"> 
 						<div class="post-preview animate-slide-down entry-wrapper ">
-							<?php /*if ( beehive_get_post_slider_images() ) : ?>
+							<?php
+							/*
+							if ( beehive_get_post_slider_images() ) : ?>
 								<div class="entry-thumbnail">
 									<?php beehive_post_slider(); ?>
 								</div>
-							<?php endif; */?>
+							<?php endif; */
+							?>
 							<div class="post-preview-info fixed-height entry-content">
 								<div class="post-preview-info-top entry-header">
 									<p class="post-preview-timestamp">
-										<?php //beehive_post_meta(); ?>
+										<?php // beehive_post_meta(); ?>
 									</p>
 									<p class="post-preview-title entry-title">
 										<?php the_title( '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a>' ); ?>
