@@ -308,6 +308,8 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     align-items: center;
     width: 40px;
     height: 40px;
+    margin: 0;
+    padding: 0;
     border-radius: 10px;
     background-color: #333;
     cursor: pointer;
@@ -343,7 +345,8 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
 .activity-share-modal .activity-list .activity-item .activity-header {
     padding-right: 0;
     height: auto;
-    min-height: 60px;
+    min-height: 50px;
+    margin-bottom: 1rem;
 }
 
 .activity-share-modal .activity-list .activity-item>div.item-avatar img {
@@ -408,6 +411,13 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     box-shadow: none;
 }
 
+#bp-activity-share-widget-box-status-header.activity-list .activity-item .activity-content .activity-inner {
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+}
+
 #bp-activity-share-widget-box-status-header .activity-reshare-item-container:not(.post-reshare-item-container) {
     margin-top: 1.5rem;
     margin-bottom: 0;
@@ -418,7 +428,7 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
 }
 
 #bp-activity-share-widget-box-status-header.activity-list .activity-item .activity-reshare-item-container .activity-header {
-    min-height: 60px;
+    min-height: 50px;
     height: auto;
 }
 
@@ -426,6 +436,7 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     border-radius: 50% !important;
 }
 
+.bp-nouveau #bp-activity-share-widget-box-status-header.activity-list .activity-reshare-item-container .activity-item .activity-content p .activity-time-since,
 #bp-activity-share-widget-box-status-header.activity-list .activity-reshare-item-container .activity-item .activity-header .time-since {
     line-height: 2;
     font-size: 90%;
