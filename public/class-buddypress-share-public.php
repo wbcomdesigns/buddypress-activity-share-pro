@@ -608,7 +608,7 @@ class Buddypress_Share_Public {
 			$args                     = array( 'in' => $secondary_item_id );
 
 			add_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
-
+			$_REQUEST['search_terms'] = $secondary_item_id;
 			if ( bp_has_activities( $args ) ) {
 				while ( bp_activities() ) :
 					bp_the_activity();
