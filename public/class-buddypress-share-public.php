@@ -74,6 +74,7 @@ class Buddypress_Share_Public {
 		if ( ! wp_style_is( 'wb-font-awesome', 'enqueued' ) ) {
 			wp_enqueue_style( 'wb-font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), $this->version, 'all' );
 		}
+		wp_enqueue_style( 'bootstrap-css', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), $this->version, 'all' );
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/buddypress-share-public.css', array(), $this->version, 'all' );
 	}
 
@@ -97,8 +98,18 @@ class Buddypress_Share_Public {
 		 * class.
 		 */
 		wp_enqueue_script( 'jquery-ui-tooltip' );
+		wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/buddypress-share-public.js', array( 'jquery' ), $this->version, false );
-
+		
+		wp_localize_script(
+			$this->plugin_name,
+			'bp_activity_sjare_vars',
+			array(
+				'ajax_url'        => admin_url( 'admin-ajax.php' ),
+				'current_user_id' => get_current_user_id(),
+				'ajax_nonce'      => wp_create_nonce( 'bp-activity-share-nonce' ),				
+			)
+		);
 	}
 
 	/**
@@ -325,62 +336,264 @@ class Buddypress_Share_Public {
 
 	public function bp_activity_share_popup_box() {
 
-		$groups = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
-		?>
-		<div class="bp-activity-share-popup-container">
-			<div class="bp-activity-share-popup-box share-box-popup animate-slide-down">
-				<div class="bp-activity-share-popup_close-button">
-					<svg viewBox="0 0 12 12" preserveAspectRatio="xMinYMin meet" class="xm-popup_close-button-icon"><path d="M12,9.6L9.6,12L6,8.399L2.4,12L0,9.6L3.6,6L0,2.4L2.4,0L6,3.6L9.6,0L12,2.4L8.399,6L12,9.6z"></path></svg>
-				</div>
-				<div class="bp-activity-share-popup-section">
-					<div class="bp-activity-share-post-header">
-						<div class="quick-post-header-filters-wrap">
-							<div class="bp-activity-share-avatar">
-								<a href="<?php echo bp_loggedin_user_domain(); ?>">
-									<?php bp_loggedin_user_avatar( 'width=' . bp_core_avatar_thumb_width() . '&height=' . bp_core_avatar_thumb_height() ); ?>
-								</a>
-							</div>
-							<div class="bp-activity-share-filter">
-								<div class="form-item">
-									<div class="form-select">
-										<label for="post-in"><?php esc_html_e( 'Post In', 'buddypress-share' ); ?></label>
-										<select id="post-in" name="postIn">
-											<option value="0"><?php esc_html_e( 'My Profile', 'buddypress-share' ); ?></option>
-											<?php if ( ! empty( $groups ) ) : ?>
-												<?php foreach ( $groups['groups'] as $group ) : ?>
-													<option value="<?php echo $group->id; ?>"><?php echo $group->name; ?></option>
-												<?php endforeach; ?>
-											<?php endif; ?>
-										</select>
+		/*  Activity Share Popup */
+		$reshare_post_type = array( 'post', 'tribe_events' );
+		if ( is_user_logged_in() && ( is_buddypress() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) ) ) {
+
+			$groups = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
+			?>
+			
+			<div class="modal fade activity-share-modal" id="activity-share-modal" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+					<button type="button" class="close activity-share-modal-close" data-dismiss="modal" aria-label="Close">
+						<i class="icon ion-close-round"></i>
+					</button>
+						<!-- Modal header -->
+						<div class="modal-header">
+							<div class="quick-post-header-filters-wrap">
+								<div class="bp-activity-share-avatar">
+									<a href="<?php echo bp_loggedin_user_domain(); ?>">
+										<?php bp_loggedin_user_avatar( 'width=' . bp_core_avatar_thumb_width() . '&height=' . bp_core_avatar_thumb_height() ); ?>
+									</a>
+									<?php echo bp_core_get_username( bp_loggedin_user_id() ); ?>
+									<small class="user-status-text"><?php esc_html_e( 'Status Update' ); ?></small>
+								</div>
+								<div class="bp-activity-share-filter">
+									<div class="form-item">
+										<div class="form-select">
+											<label for="post-in"><?php esc_html_e( 'Post In', 'buddypress-share' ); ?></label>
+											<select id="post-in" name="postIn">
+												<option value="0"><?php esc_html_e( 'My Profile', 'buddypress-share' ); ?></option>
+												<?php if ( ! empty( $groups ) ) : ?>
+													<?php foreach ( $groups['groups'] as $group ) : ?>
+														<option value="<?php echo $group->id; ?>"><?php echo $group->name; ?></option>
+													<?php endforeach; ?>
+												<?php endif; ?>
+											</select>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="bp-activity-share-post-body">
-						<form class="form">
-							<div class="form-textarea">
-								<textarea name="bp-activity-share-text" class=" " placeholder="<?php esc_html_e( 'Hi admin! Write something here, use @ to mention someone...', 'buddypress-share' ); ?>" maxlength="1000" spellcheck="false"></textarea>
+						<!-- Modal Body -->
+						<div class="modal-body">
+							<form class="form">
+								<div class="form-textarea">
+									<textarea id="bp-activity-share-text" name="bp-activity-share-text" class=" " placeholder="<?php esc_html_e( 'Hi admin! Write something here, use @ to mention someone...', 'buddypress-share' ); ?>" maxlength="1000" spellcheck="false"></textarea>
+								</div>
+								<input type="hidden" id="bp-reshare-activity-id" name="activity-id" value="" />
+								<input type="hidden" id="bp-reshare-activity-user-id" name="user-id" value="<?php echo bp_loggedin_user_id(); ?>" />
+								
+								
+								<?php if ( is_buddypress() ) : ?>
+									<input type="hidden" id="bp-reshare-activity-current-component" name="current_component" value="<?php echo bp_current_component(); ?>" />
+									<input type="hidden" id="bp-reshare-type" name="bp-reshare-type" value="activity_share" />
+								<?php else : ?>
+									<input type="hidden" id="bp-reshare-activity-current-component" name="current_component" value="activity" />
+									<input type="hidden" id="bp-reshare-type" name="bp-reshare-type" value="post_share" />
+								<?php endif; ?>
+							</form>
+							<div id="bp-activity-share-widget-box-status-header">
+								<?php $this->bp_activity_share_single_post_formate(); ?>
 							</div>
-						</form>
-						<div class="bp-activity-share-widget-box-status-header">
-
 						</div>
-					</div>
-					<div class="bp-activity-share-post-footer">
-						<div class="bp-activity-share-post-footer-actions-wrap">
+						<!-- Modal Footer -->
+						<div class="modal-footer">
 							<div class="bp-activity-share-post-footer-actions">
-								<p class="button small void"><?php esc_html_e( 'Discard', 'buddypress-share' ); ?></p>
-								<p class="button small secondary"><?php esc_html_e( 'Post', 'buddypress-share' ); ?></p>
+								<p class="button small void bp-activity-share-close"><?php esc_html_e( 'Discard', 'buddypress-share' ); ?></p>
+								<p class="button small secondary bp-activity-share-activity"><?php esc_html_e( 'Post', 'buddypress-share' ); ?></p>
 							</div>
 						</div>
 					</div>
 				</div>
+				
 			</div>
-		</div>
-		
-		
-		<?php
+			<?php
+		}
+	}
+	
+	public function bp_activity_share_single_post_formate() {
+		if ( is_single() && get_post_type() == 'post' ) {
+			?>
+			<div class="post-preview animate-slide-down entry-wrapper ">
+				<?php /*if ( beehive_get_post_slider_images() ) : ?>
+					<div class="entry-thumbnail">
+						<?php beehive_post_slider(); ?>
+					</div>
+				<?php endif; */?>
+				<div class="post-preview-info fixed-height entry-content">
+					<div class="post-preview-info-top entry-header">
+						<p class="post-preview-timestamp">
+							<?php //beehive_post_meta(); ?>
+						</p>
+						<p class="post-preview-title entry-title">
+							<?php the_title( '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a>' ); ?>
+						</p>
+					</div>
+					<div class="post-preview-info-bottom post-open-body">
+						<p class="post-preview-text entry-excerpt">
+							<?php the_excerpt(); ?>
+						</p>
+						<a href="<?php echo esc_url( get_permalink() ); ?>" class="post-preview-link color-primary read-more"><?php echo esc_html__( 'Read More' ) . '...'; ?></a>							
+					</div>
+				</div>
+			</div>
+			<?php
+		}
+	}
+	
+	public function bp_activity_create_reshare_ajax() {
+		check_ajax_referer( 'bp-activity-share-nonce', '_ajax_nonce' );
+
+		$user_id = get_current_user_id();
+
+		// Add the activity.
+
+		$activity_id = bp_activity_add(
+			array(
+				'user_id'           => $user_id,
+				'component'         => ( isset( $_POST['activity_in'] ) && $_POST['activity_in'] != 0 ) ? 'groups' : 'activity',
+				'type'              => $_POST['type'],
+				'content'           => $_POST['activity_content'],
+				'secondary_item_id' => $_POST['activity_id'],
+				'item_id'           => $_POST['activity_in'],
+
+			)
+		);
+
+		if ( $activity_id && $_POST['type'] == 'activity_share' ) {
+
+			/* Count reshare activity */
+			$share_count = bp_activity_get_meta( $_POST['activity_id'], 'share_count', true );
+			if ( ! $share_count ) {
+				bp_activity_update_meta( $_POST['activity_id'], 'share_count', 1 );
+			} else {
+				bp_activity_update_meta( $_POST['activity_id'], 'share_count', $share_count + 1 );
+			}
+		}
+
+		/* Share Post as activity */
+		if ( $activity_id && $_POST['type'] == 'post_share' ) {
+
+			/* Count reshare activity */
+			$share_count = get_post_meta( $_POST['activity_id'], 'share_count', true );
+			if ( ! $share_count ) {
+				update_post_meta( $_POST['activity_id'], 'share_count', 1 );
+			} else {
+				update_post_meta( $_POST['activity_id'], 'share_count', $share_count + 1 );
+			}
+		}
+		die();
+	}
+	
+	
+	public function bp_activity_share_get_where_conditions( $where_conditions ) {
+		unset( $where_conditions['filter_sql'] );
+		return $where_conditions;
+	}
+	
+	public function bp_activity_share_entry_content() {
+		global $activities_template;
+
+		$activity_id   = $activities_template->activity->id;
+		$activity_type = $activities_template->activity->type;
+
+		if ( $activity_type == 'activity_share' ) {
+			$secondary_item_id        = $activities_template->activity->secondary_item_id;
+			$temp_activities_template = $activities_template;
+			$args                     = array( 'in' => $secondary_item_id );
+
+			add_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
+			
+			if ( bp_has_activities( $args ) ) {
+				while ( bp_activities() ) :
+					bp_the_activity();
+					?>
+					<div class="activity-reshare-item-container"> 
+						<div class="activity-item"> 
+							<div class="activity-avatar item-avatar">
+								<a href="<?php bp_activity_user_link(); ?>">
+									<?php bp_activity_avatar( array( 'type' => 'full' ) ); ?>
+								</a>
+							</div>
+							<div class="activity-content">
+								<div class="activity-header">
+									<?php bp_activity_action(); ?>
+								</div>
+								<?php if ( bp_nouveau_activity_has_content() ) : ?>
+									<div class="activity-inner">
+										<<?php bp_get_template_part( 'activity/type-parts/content',  bp_activity_type_part() ); ?>
+									</div>
+								<?php endif; ?>
+							</div>
+							<div class="content-action">
+								<div class="meta-line">
+									<p class="meta-line-text"><?php //echo wbcom_get_comment_count( bp_get_activity_id() ) . ' ' . esc_html( 'Comments' ); ?></p>
+								</div>
+								<div class="meta-line">
+									<p class="meta-line-text"><?php //echo wbcom_get_share_count( bp_get_activity_id() ) . ' ' . esc_html( 'Share' ); ?></p>
+								</div>
+							</div>
+						</div>
+					</div>					
+					<?php
+				endwhile;
+			}
+			remove_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
+
+			$activities_template = $temp_activities_template;
+		}
+
+		/* Post share activity type */
+		if ( $activity_type == 'post_share' ) {
+			$post_id = $activities_template->activity->secondary_item_id;
+			$query   = new WP_Query( array( 'p' => $post_id ) );
+			// The Loop
+			if ( $query->have_posts() ) {
+
+				while ( $query->have_posts() ) {
+					$query->the_post();
+					?>
+					<div class="post-reshare-item-container activity-reshare-item-container"> 
+						<div class="post-preview animate-slide-down entry-wrapper ">
+							<?php /*if ( beehive_get_post_slider_images() ) : ?>
+								<div class="entry-thumbnail">
+									<?php beehive_post_slider(); ?>
+								</div>
+							<?php endif; */?>
+							<div class="post-preview-info fixed-height entry-content">
+								<div class="post-preview-info-top entry-header">
+									<p class="post-preview-timestamp">
+										<?php //beehive_post_meta(); ?>
+									</p>
+									<p class="post-preview-title entry-title">
+										<?php the_title( '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a>' ); ?>
+									</p>
+								</div>
+								<div class="post-preview-info-bottom post-open-body">
+									<p class="post-preview-text entry-excerpt">
+										<?php the_excerpt(); ?>
+									</p>
+									<a href="<?php echo esc_url( get_permalink() ); ?>" class="post-preview-link color-primary read-more"><?php echo esc_html__( 'Read More' ) . '...'; ?></a>							
+								</div>
+							</div>
+							<div class="content-action">
+								<div class="meta-line">
+									<p class="meta-line-text"><?php echo wbcom_get_post_comment_count( get_the_ID() ) . ' ' . esc_html( 'Comments' ); ?></p>
+								</div>
+								<div class="meta-line">
+									<p class="meta-line-text"><?php echo wbcom_get_post_share_count( get_the_ID() ) . ' ' . esc_html( 'Share' ); ?></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php
+				}
+			}
+			/* Restore original Post Data */
+			wp_reset_postdata();
+		}
 	}
 
 
