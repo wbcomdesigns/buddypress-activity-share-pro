@@ -190,7 +190,7 @@ class Buddypress_Share {
 		$this->loader->add_action( 'bp_init', $plugin_public, 'bp_activity_share_button_dis' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'bp_activity_share_popup_box', 999 );
 		
-		
+		$this->loader->add_action( 'bp_register_activity_actions', $plugin_public, 'bp_share_register_activity_actions' );
 		$this->loader->add_action( 'wp_ajax_bp_activity_create_reshare_ajax', $plugin_public, 'bp_activity_create_reshare_ajax' );
 		$this->loader->add_action( 'bp_activity_entry_content', $plugin_public, 'bp_activity_share_entry_content' );
 	}

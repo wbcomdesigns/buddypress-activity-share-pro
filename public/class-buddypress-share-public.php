@@ -333,6 +333,79 @@ class Buddypress_Share_Public {
 			return;
 		}
 	}
+	
+	public function bp_share_register_activity_actions() {
+		$bp = buddypress();
+		bp_activity_set_action(
+			$bp->activity->id,
+			'activity_share',
+			esc_html__( 'Shared an activity', 'buddypress-share' ),
+			array( $this, 'bp_share_activity_format_action_activity_reshare' ),
+			esc_html__( 'Activity Share' ),
+			array( 'activity', 'group', 'member', 'member_groups' )
+		);
+
+		bp_activity_set_action(
+			$bp->groups->id,
+			'activity_share',
+			esc_html__( 'Shared an activity', 'buddypress-share' ),
+			array( $this, 'bp_share_activity_format_action_group_reshare' ),
+			esc_html__( 'Activity Share' ),
+			array( 'activity', 'group', 'member', 'member_groups' )
+		);
+
+		bp_activity_set_action(
+			$bp->activity->id,
+			'post_share',
+			esc_html__( 'Shared an activity', 'buddypress-share' ),
+			array( $this, 'bp_share_activity_format_action_activity_reshare' ),
+			esc_html__( 'Activity Share' ),
+			array( 'activity', 'group', 'member', 'member_groups' )
+		);
+
+		bp_activity_set_action(
+			$bp->groups->id,
+			'post_share',
+			esc_html__( 'Shared an activity', 'buddypress-share' ),
+			array( $this, 'bp_share_activity_format_action_group_reshare' ),
+			esc_html__( 'Activity Share' ),
+			array( 'activity', 'group', 'member', 'member_groups' )
+		);
+	}
+	
+	public function bp_share_activity_format_action_activity_reshare( $action, $activity ) {
+		$user_link = bp_core_get_userlink( $activity->user_id );
+		// Set the Activity update posted in a Group action.
+		$action = sprintf(
+			/* translators: 1: the user link. 2: the group link. */
+			esc_html__( '%1$s Shared an activity', 'buddypress-share' ),
+			$user_link,
+		);
+
+		return $action;
+
+	}
+	
+	public function bp_share_activity_format_action_group_reshare( $action, $activity ) {
+		$user_link = bp_core_get_userlink( $activity->user_id );
+		$group     = bp_groups_get_activity_group( $activity->item_id );
+
+		$group_link = '<a href="' . esc_url( bp_get_group_permalink( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
+
+		// Set the Activity update posted in a Group action.
+		$action = sprintf(
+			/* translators: 1: the user link. 2: the group link. */
+			esc_html__( '%1$s shared an activity in the group %2$s', 'buddypress-share' ),
+			$user_link,
+			$group_link
+		);
+
+		return $action;
+
+	}
+
+
+	
 
 	public function bp_activity_share_popup_box() {
 
@@ -357,7 +430,7 @@ class Buddypress_Share_Public {
 										<?php bp_loggedin_user_avatar( 'width=' . bp_core_avatar_thumb_width() . '&height=' . bp_core_avatar_thumb_height() ); ?>
 									</a>
 									<?php echo bp_core_get_username( bp_loggedin_user_id() ); ?>
-									<small class="user-status-text"><?php esc_html_e( 'Status Update' ); ?></small>
+									<small class="user-status-text"><?php esc_html_e( 'Status Update', 'buddypress-share' ); ?></small>
 								</div>
 								<div class="bp-activity-share-filter">
 									<div class="form-item">
@@ -523,7 +596,7 @@ class Buddypress_Share_Public {
 								</div>
 								<?php if ( bp_nouveau_activity_has_content() ) : ?>
 									<div class="activity-inner">
-										<<?php bp_get_template_part( 'activity/type-parts/content',  bp_activity_type_part() ); ?>
+										<?php bp_get_template_part( 'activity/type-parts/content',  bp_activity_type_part() ); ?>
 									</div>
 								<?php endif; ?>
 							</div>
