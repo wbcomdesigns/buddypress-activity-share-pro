@@ -98,7 +98,7 @@
 
         });
 
-        $(document).on('click', '.bp-secondary-action.bp-activity-share-button', function() {
+        $(document).on('click', '.bp-secondary-action.bp-activity-share-button', function(e) {
 			
 			e.preventDefault();
 			var activity_id = '';
@@ -129,8 +129,8 @@
         });
 
 
-        $(document).on('click', '.bp-activity-share-activity', function() {
-
+        $(document).on('click', '.bp-activity-share-activity', function(e) {
+			e.preventDefault();
             var activity_content = $('#activity-share-modal #bp-activity-share-text').val();
             var activity_id = $('#activity-share-modal #bp-reshare-activity-id').val();
             var activity_user_id = $('#activity-share-modal #bp-reshare-activity-user-id').val();
