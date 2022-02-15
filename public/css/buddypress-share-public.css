@@ -444,7 +444,8 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
 .bp-nouveau #bp-activity-share-widget-box-status-header.activity-list .activity-reshare-item-container .activity-item .activity-content p .activity-time-since,
 .bp-nouveau .activity-list .activity-reshare-item-container .activity-item .activity-content p .activity-time-since,
 #bp-activity-share-widget-box-status-header.activity-list .activity-reshare-item-container .activity-item .activity-header .time-since,
-.activity-list .activity-reshare-item-container .activity-item .activity-header .time-since {
+.activity-list .activity-reshare-item-container .activity-item .activity-header .time-since,
+body.activity-permalink.bp-nouveau .activity-list .activity-reshare-item-container .activity-content .activity-header .time-since {
     line-height: 2;
     font-size: 90%;
     color: #767676;
@@ -689,6 +690,25 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     font-weight: 500;
     display: inline;
     margin-left: 5px;
+    line-height: normal;
+}
+
+.animate-slide-down {
+    opacity: 0;
+    transform: translate(0, -20px);
+    animation: slideDown .4s ease-in-out forwards;
+    transition: transform .4s ease-in-out, opacity .4s ease-in-out;
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translate(0, -20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
 }
 
 
