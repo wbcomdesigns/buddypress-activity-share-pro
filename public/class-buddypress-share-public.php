@@ -602,7 +602,7 @@ class Buddypress_Share_Public {
 		$activity_id   = $activities_template->activity->id;
 		$activity_type = $activities_template->activity->type;
 
-		if ( $activity_type == 'activity_share' ) {
+		if ( $activity_type == 'activity_share' && $activities_template->activity->secondary_item_id != 0 ) {
 			$secondary_item_id        = $activities_template->activity->secondary_item_id;
 			$temp_activities_template = $activities_template;
 			$args                     = array( 'in' => $secondary_item_id );
@@ -649,7 +649,7 @@ class Buddypress_Share_Public {
 		}
 
 		/* Post share activity type */
-		if ( $activity_type == 'post_share' ) {
+		if ( $activity_type == 'post_share' && $activities_template->activity->secondary_item_id != 0 ) {
 			$post_id = $activities_template->activity->secondary_item_id;
 			$query   = new WP_Query( array( 'p' => $post_id ) );
 			// The Loop
