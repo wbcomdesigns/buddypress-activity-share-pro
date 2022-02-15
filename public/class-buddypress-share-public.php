@@ -128,14 +128,14 @@ class Buddypress_Share_Public {
 	}
 
 	public function bp_share_inner_activity_filter() {
-		
+
 		$share_count = bp_activity_get_meta( bp_get_activity_id(), 'share_count', true );
-		$share_count = ($share_count) ? $share_count : 0;
+		$share_count = ( $share_count ) ? $share_count : 0;
 		?>
 		<div class="bp-activity-share-btn generic-button">
 			<a class="button item-button bp-secondary-action bp-activity-share-button as-icon-retweet" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
 				<span class="bp-screen-reader-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
-				<span id="bp-activity-reshare-count-<?php echo esc_attr( bp_get_activity_id() );?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html($share_count)?></span>
+				<span id="bp-activity-reshare-count-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html( $share_count ); ?></span>
 			</a>
 		</div>
 		<?php
@@ -348,7 +348,7 @@ class Buddypress_Share_Public {
 			'activity_share',
 			esc_html__( 'Shared an activity', 'buddypress-share' ),
 			array( $this, 'bp_share_activity_format_action_activity_reshare' ),
-			esc_html__( 'Activity Share' ),
+			esc_html__( 'Activity Share', 'buddypress-share' ),
 			array( 'activity', 'group', 'member', 'member_groups' )
 		);
 
@@ -357,7 +357,7 @@ class Buddypress_Share_Public {
 			'activity_share',
 			esc_html__( 'Shared an activity', 'buddypress-share' ),
 			array( $this, 'bp_share_activity_format_action_group_reshare' ),
-			esc_html__( 'Activity Share' ),
+			esc_html__( 'Activity Share', 'buddypress-share' ),
 			array( 'activity', 'group', 'member', 'member_groups' )
 		);
 
@@ -366,7 +366,7 @@ class Buddypress_Share_Public {
 			'post_share',
 			esc_html__( 'Shared an activity', 'buddypress-share' ),
 			array( $this, 'bp_share_activity_format_action_activity_reshare' ),
-			esc_html__( 'Activity Share' ),
+			esc_html__( 'Activity Share', 'buddypress-share' ),
 			array( 'activity', 'group', 'member', 'member_groups' )
 		);
 
@@ -375,7 +375,7 @@ class Buddypress_Share_Public {
 			'post_share',
 			esc_html__( 'Shared an activity', 'buddypress-share' ),
 			array( $this, 'bp_share_activity_format_action_group_reshare' ),
-			esc_html__( 'Activity Share' ),
+			esc_html__( 'Activity Share', 'buddypress-share' ),
 			array( 'activity', 'group', 'member', 'member_groups' )
 		);
 	}
@@ -410,26 +410,26 @@ class Buddypress_Share_Public {
 		return $action;
 
 	}
-	
+
 	public function bp_activity_post_share_button_action( $content ) {
-		
-		if ( is_single() && get_post_type() == 'post' ) {	
+
+		if ( is_single() && get_post_type() == 'post' ) {
 			ob_start();
-			
+
 			$share_count = get_post_meta( get_the_ID(), 'share_count', true );
-			$share_count = ($share_count) ? $share_count : 0;
+			$share_count = ( $share_count ) ? $share_count : 0;
 			?>
-			<div class="bp-activity-share-btn generic-button">
+			<div class="bp-activity-post-share-btn bp-activity-share-btn generic-button">
 				<a class="button item-button bp-secondary-action bp-activity-share-button as-icon-retweet" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
 					<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
-					<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() );?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html($share_count)?></span>
+					<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() ); ?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html( $share_count ); ?></span>
 				</a>
 			</div>
 			<?php
-			
+
 			return $content . ob_get_clean();
 		}
-		
+
 		return $content;
 
 	}
@@ -447,7 +447,7 @@ class Buddypress_Share_Public {
 				<div class="modal-dialog modal-dialog-centered" role="document">
 					<div class="modal-content">
 					<button type="button" class="close activity-share-modal-close" data-bs-dismiss="modal" aria-label="Close">
-						<i class="as-icon as-icon-times-circle"></i>
+						<i class="as-icon as-icon-times"></i>
 					</button>
 						<!-- Modal header -->
 						<div class="modal-header">
@@ -520,7 +520,7 @@ class Buddypress_Share_Public {
 				<?php if ( has_post_thumbnail() ) { ?>
 
 					<div class="entry-thumbnail">
-						<?php the_post_thumbnail( 'large'); ?>
+						<?php the_post_thumbnail( 'large' ); ?>
 					</div>
 
 				<?php } ?>
@@ -538,7 +538,7 @@ class Buddypress_Share_Public {
 						<p class="post-preview-text entry-excerpt">
 							<?php the_excerpt(); ?>
 						</p>
-						<a href="<?php echo esc_url( get_permalink() ); ?>" class="post-preview-link color-primary read-more"><?php echo esc_html__( 'Read More' ) . '...'; ?></a>							
+						<a href="<?php echo esc_url( get_permalink() ); ?>" class="post-preview-link color-primary read-more"><?php echo esc_html__( 'Read More', 'buddypress-share' ) . '...'; ?></a>							
 					</div>
 				</div>
 			</div>
@@ -663,7 +663,7 @@ class Buddypress_Share_Public {
 							<?php if ( has_post_thumbnail() ) { ?>
 
 								<div class="entry-thumbnail">
-									<?php the_post_thumbnail( 'large'); ?>
+									<?php the_post_thumbnail( 'large' ); ?>
 								</div>
 
 							<?php } ?>
@@ -681,7 +681,7 @@ class Buddypress_Share_Public {
 									<p class="post-preview-text entry-excerpt">
 										<?php the_excerpt(); ?>
 									</p>
-									<a href="<?php echo esc_url( get_permalink() ); ?>" class="post-preview-link color-primary read-more"><?php echo esc_html__( 'Read More' ) . '...'; ?></a>							
+									<a href="<?php echo esc_url( get_permalink() ); ?>" class="post-preview-link color-primary read-more"><?php echo esc_html__( 'Read More', 'buddypress-share' ) . '...'; ?></a>							
 								</div>
 							</div>
 						</div>
@@ -693,18 +693,18 @@ class Buddypress_Share_Public {
 			wp_reset_postdata();
 		}
 	}
-	
+
 	public function bp_activity_post_meta() {
 		// Before post meta action.
 		do_action( 'bp_activity_share_before_post_meta' );
 
 		// Post date.
-		printf( '<span class="link date-links"><i class="uil-calender"></i><a href="%s">%s</a></span>', esc_url( get_month_link( get_the_time( 'Y' ), get_the_time( 'm' ) ) ), get_the_date() );
+		printf( '<span class="link date-links"><i class="as-icon-calendar"></i><a href="%s">%s</a></span>', esc_url( get_month_link( get_the_time( 'Y' ), get_the_time( 'm' ) ) ), get_the_date() );
 
 		// translators: used between list items, there is a space after the comma.
 		$categories_list = get_the_category_list( esc_html__( ', ', 'buddypress-share' ) );
 		if ( $categories_list ) {
-			printf( '<span class="link cat-links"><i class="uil-folder"></i>%1$s</span>', $categories_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			printf( '<span class="link cat-links"><i class="as-icon-folder"></i>%1$s</span>', $categories_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 		// translators: used between list items, there is a space after the comma.
@@ -718,7 +718,7 @@ class Buddypress_Share_Public {
 		// After post meta action.
 		do_action( 'bp_activity_share_after_post_meta' );
 	}
-	
+
 
 
 }
