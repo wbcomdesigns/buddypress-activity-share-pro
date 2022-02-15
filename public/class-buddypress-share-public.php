@@ -128,9 +128,15 @@ class Buddypress_Share_Public {
 	}
 
 	public function bp_share_inner_activity_filter() {
+		
+		$share_count = bp_activity_get_meta( bp_get_activity_id(), 'share_count', true );
+		$share_count = ($share_count) ? $share_count : 0;
 		?>
 		<div class="bp-activity-share-btn generic-button">
-			<a class="button item-button bp-secondary-action bp-activity-share-button as-icon-retweet" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow"><span><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span></a>
+			<a class="button item-button bp-secondary-action bp-activity-share-button as-icon-retweet" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
+				<span class="bp-screen-reader-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
+				<span id="bp-activity-reshare-count-<?php echo esc_attr( bp_get_activity_id() );?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html($share_count)?></span>
+			</a>
 		</div>
 		<?php
 	}

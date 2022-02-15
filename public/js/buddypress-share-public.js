@@ -145,7 +145,11 @@
                 dataType: 'text',
                 success: function(data) {
                     $('#activity-share-modal').modal('hide');
-                    $('#activity-share-modal #bp-activity-share-text').val('')
+                    $('#activity-share-modal #bp-activity-share-text').val('');
+					var share_count = $( '#bp-activity-reshare-count-' + activity_id ).html();
+					
+					$( '#bp-activity-reshare-count-' + activity_id ).html( parseInt(share_count) + parseInt('1') );
+					
                 }
             });
 
