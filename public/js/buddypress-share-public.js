@@ -150,6 +150,10 @@
             });
 
         });
+		
+		$( document ).on('click','.bp-activity-share-close', function(){
+			$('#activity-share-modal').modal('hide');
+		});
 
 
     });
