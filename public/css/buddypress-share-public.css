@@ -9,6 +9,8 @@
     # OneCommunity
     # Rehub
     # BuddyX
+# BB Platform
+# RTL Fixes
 --------------------------------------------------------------*/
 
 
@@ -176,6 +178,7 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
 
 .activity-share-modal.modal .modal-content {
     width: 100%;
+    border: 0;
     border-radius: 12px;
 }
 
@@ -495,7 +498,7 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     background-color: #fff;
     box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
     overflow: hidden;
-    padding-bottom: 48px;
+    padding-bottom: 28px;
 }
 
 .activity-share-modal .post-preview .post-preview-info,
@@ -665,23 +668,22 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     -moz-justify-content: center;
     justify-content: center;
     cursor: pointer;
-    border-radius: 10px;
+    border-radius: 100px;
     height: 45px;
-    background: #fff !important;
-    color: #333 !important;
+    background: #333 !important;
+    color: #fff !important;
     box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
     transition: all .5s;
 }
 
 .bp-activity-post-share-btn .bp-activity-share-button:hover {
-    background: #fff !important;
-    color: #111 !important;
+    background: #111 !important;
+    color: #fff !important;
     box-shadow: 0 0 20px 0 rgba(117, 117, 117, .18);
 }
 
 .bp-activity-post-share-btn .reshare-count {
     position: relative;
-    top: -1px;
     padding: 2px 8px;
     border-radius: 30px;
     background: #646970;
@@ -771,4 +773,38 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 #bp-activity-share-widget-box-status-header .activity-item-head {
     padding: 0;
     margin-bottom: 1rem;
+}
+
+
+/*--------------------------------------------------------------
+# BB Platform
+--------------------------------------------------------------*/
+
+.activity-share-modal .modal-body {
+    margin-top: 0;
+}
+
+
+/*--------------------------------------------------------------
+# RTL Fixes
+--------------------------------------------------------------*/
+
+[dir='rtl'] .bp-activity-share-button::before {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+[dir='rtl'] .activity-share-modal .bp-activity-share-avatar {
+    padding-left: 0;
+    padding-right: 55px;
+}
+
+[dir='rtl'] .activity-share-modal .bp-activity-share-avatar>a {
+    left: auto;
+    right: 0;
+}
+
+[dir='rtl'] .bp-activity-post-share-btn .reshare-count {
+    margin-left: 0;
+    margin-right: 5px;
 }

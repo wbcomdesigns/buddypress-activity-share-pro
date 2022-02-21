@@ -133,8 +133,8 @@ class Buddypress_Share_Public {
 		$share_count = ( $share_count ) ? $share_count : 0;
 		?>
 		<div class="bp-activity-share-btn generic-button">
-			<a class="button item-button bp-secondary-action bp-activity-share-button as-icon-retweet" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
-				<span class="bp-screen-reader-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
+			<a class="button item-button bp-secondary-action bp-activity-share-button as-icon-share-square bp-tooltip" data-bp-tooltip="<?php esc_attr_e( 'Reshare', 'buddypress-share' ); ?>" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
+				<span class="bp-screen-reader-text"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
 				<span id="bp-activity-reshare-count-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html( $share_count ); ?></span>
 			</a>
 		</div>
@@ -420,9 +420,9 @@ class Buddypress_Share_Public {
 			$share_count = ( $share_count ) ? $share_count : 0;
 			?>
 			<div class="bp-activity-post-share-btn bp-activity-share-btn generic-button">
-				<a class="item-button bp-secondary-action bp-activity-share-button as-icon-retweet" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
-					<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
-					<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() ); ?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html( $share_count ); ?></span>
+				<a class="item-button bp-secondary-action bp-activity-share-button as-icon-share-square bp-tooltip" data-bp-tooltip="<?php esc_attr_e( 'Reshare', 'buddypress-share' ); ?>" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
+					<span class="bp-share-text"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
+					<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() ); ?>" class="reshare-count bp-post-reshare-count"><?php echo esc_html( $share_count ); ?></span>
 				</a>
 			</div>
 			<?php
