@@ -125,6 +125,9 @@ class Buddypress_Share_Public {
 		$all_services = get_site_option( 'bp_share_all_services_disable' );
 		if ( is_user_logged_in() && 'enable' === $all_services ) {
 			add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
+			
+		}
+		if ( is_user_logged_in() ) {
 			add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_inner_activity_filter' ) );
 		}
 	}
@@ -441,7 +444,8 @@ class Buddypress_Share_Public {
 		/*  Activity Share Popup */
 		$reshare_post_type = array( 'post', 'tribe_events' );
 		if ( is_user_logged_in() && ( is_buddypress() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) ) ) {
-
+			$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );		
+			
 			$groups = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
 			$friends = friends_get_friend_user_ids(  bp_loggedin_user_id() );			
 			?>
@@ -522,7 +526,20 @@ class Buddypress_Share_Public {
 				</div>
 				
 			</div>
+			<?php if( !empty($bp_reshare_settings)):?>
+			<style>
+			#activity-share-modal button.activity-share-modal-close,
+			.bp-activity-share-post-footer-actions .button{
+				background-color:<?php echo $bp_reshare_settings['btn_bg_color']?>;
+				color: <?php echo $bp_reshare_settings['btn_text_color']?>
+			}
+			#activity-share-modal button.activity-share-modal-close .as-icon{
+				color: <?php echo $bp_reshare_settings['btn_text_color']?>
+			}
+			</style>
+			
 			<?php
+			endif;
 		}
 	}
 

@@ -104,5 +104,7 @@ jQuery(function () {
 		});
 		return false;
 	});
+	
+	jQuery('.bp-reshare-color-picker').wpColorPicker();
 
 });

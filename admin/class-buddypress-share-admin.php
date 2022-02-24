@@ -65,6 +65,7 @@ class Buddypress_Share_Admin {
 		if ( ! wp_style_is( 'font-awesome', 'enqueued' ) ) {
 			wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), $this->version, 'all' );
 		}
+		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/buddypress-share-admin.css', array(), $this->version, 'all' );
 	}
 
@@ -78,6 +79,7 @@ class Buddypress_Share_Admin {
 		if ( 'wb-plugins_page_buddypress-share' !== $hook ) {
 			return;
 		}
+		wp_enqueue_script( 'wp-color-picker' );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/buddypress-share-admin.js', array( 'jquery' ), $this->version, true );
 		wp_localize_script(
 			$this->plugin_name,
@@ -103,25 +105,25 @@ class Buddypress_Share_Admin {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'buddypress-share' ) );
 		}
 		?>
-			<div class="wrap">
-							<hr class="wp-header-end">
-							<div class="wbcom-wrap">
+		<div class="wrap">
+			<hr class="wp-header-end">
+			<div class="wbcom-wrap">
 				<div class="bpss-header">
-				<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
+					<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 					<h1 class="wbcom-plugin-heading">
 					<?php esc_html_e( 'BuddyPress Activity Social Share Settings', 'buddypress-share' ); ?>
 					</h1>
 				</div>
 				<div class="wbcom-admin-settings-page">
-				<?php
-				settings_errors();
-				$this->bpas_plugin_settings_tabs( $tab );
-				settings_fields( $tab );
-				do_settings_sections( $tab );
-				?>
+					<?php
+					settings_errors();
+					$this->bpas_plugin_settings_tabs( $tab );
+					settings_fields( $tab );
+					do_settings_sections( $tab );
+					?>
 				</div>
-							</div>
 			</div>
+		</div>
 			<?php
 	}
 
@@ -135,6 +137,7 @@ class Buddypress_Share_Admin {
 		$bpas_tabs = array(
 			'bpas_welcome'          => esc_html__( 'Welcome', 'buddypress-share' ),
 			'bpas_general_settings' => esc_html__( 'General Settings', 'buddypress-share' ),
+			'bpas_reshare_settings' => esc_html__( 'Reshare Settings', 'buddypress-share' ),
 		);
 		$tab_html  = '<div class="wbcom-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
 		foreach ( $bpas_tabs as $bpas_tab => $bpas_name ) {
@@ -452,6 +455,13 @@ class Buddypress_Share_Admin {
 			'bp_share_services_extra',
 			'bp_share_extra_options'
 		);
+		
+		
+		if ( isset( $_POST['bp_reshare_settings'] ) && ! defined( 'DOING_AJAX' )  ) {
+			update_site_option( 'bp_reshare_settings', $_POST['bp_reshare_settings'] );
+			wp_redirect( $_POST['_wp_http_referer'] );
+			exit();
+		}
 	}
 
 	/**
@@ -516,6 +526,9 @@ class Buddypress_Share_Admin {
 				break;
 			case 'bpas_general_settings':
 				$this->bpas_general_setting_section();
+				break;
+			case 'bpas_reshare_settings':
+				$this->bpas_reshare_setting_section();
 				break;
 			default:
 				$this->bpas_welcome_section();
@@ -688,6 +701,47 @@ class Buddypress_Share_Admin {
 				</p>
 			</form>
 				<?php do_action( 'bp_share_add_services_options', $arg1 = '', $arg2 = '' ); ?>
+		</div>
+		<?php
+	}
+	
+	/**
+	 * reshare settig template
+	 *
+	 * @since    1.0.0
+	 */
+	
+	public function bpas_reshare_setting_section() {
+		$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );		
+		?>
+		<div class="wbcom-tab-content">
+			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
+				<?php wp_nonce_field( 'update-options' ); ?>
+				<h3><?php esc_html_e( 'Reshare Settings', 'buddypress-share' ); ?></h3>
+				<table cellspacing="0" class="add_share_services widefat plugins">
+					<tbody>
+						<tr>
+							<th scope="row">
+								<label><?php esc_html_e( 'Button Background Color', 'buddypress-share' ); ?></label>
+							</th>
+							<td>
+								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_bg_color]" value="<?php echo $bp_reshare_settings['btn_bg_color']; ?>" />
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label><?php esc_html_e( 'Button Text Color', 'buddypress-share' ); ?></label>
+							</th>
+							<td>
+								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_text_color]" value="<?php echo $bp_reshare_settings['btn_text_color']; ?>" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="submit">
+					<input type="submit" class="button-primary"  value="<?php esc_html_e( 'Save Changes', 'buddypress-share' ); ?>" />
+				</p>
+			</form>			
 		</div>
 		<?php
 	}
