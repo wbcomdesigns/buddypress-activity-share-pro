@@ -97,7 +97,9 @@
 
 
         });
-		$("#activity-share-modal #post-in").select2();
+		$("#activity-share-modal #post-in").select2({
+			dropdownParent: $('#activity-share-modal')
+		});
         $(document).on('click', '.bp-secondary-action.bp-activity-share-button', function(e) {
 			
 			e.preventDefault();
