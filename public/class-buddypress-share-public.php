@@ -75,6 +75,7 @@ class Buddypress_Share_Public {
 			wp_enqueue_style( 'wb-font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), $this->version, 'all' );
 		}
 		wp_enqueue_style( 'bootstrap-css', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'select2-css', plugin_dir_url( __FILE__ ) . 'css/select2.min.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'icons-css', plugin_dir_url( __FILE__ ) . 'css/as-icons.css', array(), $this->version, 'all' );
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/buddypress-share-public.css', array(), $this->version, 'all' );
 	}
@@ -100,6 +101,7 @@ class Buddypress_Share_Public {
 		 */
 		wp_enqueue_script( 'jquery-ui-tooltip' );
 		wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( 'select2-js', plugin_dir_url( __FILE__ ) . 'js/select2.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/buddypress-share-public.js', array( 'jquery' ), $this->version, false );
 
 		wp_localize_script(
@@ -441,6 +443,7 @@ class Buddypress_Share_Public {
 		if ( is_user_logged_in() && ( is_buddypress() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) ) ) {
 
 			$groups = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
+			$friends = friends_get_friend_user_ids(  bp_loggedin_user_id() );			
 			?>
 			
 			<div class="modal fade activity-share-modal" id="activity-share-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -466,9 +469,19 @@ class Buddypress_Share_Public {
 											<select id="post-in" name="postIn">
 												<option value="0"><?php esc_html_e( 'My Profile', 'buddypress-share' ); ?></option>
 												<?php if ( ! empty( $groups ) ) : ?>
+													 <optgroup label="<?php esc_html_e( 'Group lists', 'buddypress-share' )?>">
 													<?php foreach ( $groups['groups'] as $group ) : ?>
-														<option value="<?php echo $group->id; ?>"><?php echo $group->name; ?></option>
+														<option value="<?php echo $group->id; ?>" data-type="group"><?php echo $group->name; ?></option>
 													<?php endforeach; ?>
+													 </optgroup>
+												<?php endif; ?>
+												
+												<?php if ( ! empty( $friends ) ) : ?>
+													 <optgroup label="<?php esc_html_e( 'Friend lists', 'buddypress-share' )?>">
+													<?php foreach ( $friends as $friend ) : ?>
+														<option value="<?php echo $friend; ?>" data-type="user"><?php echo get_user_by( 'ID', $friend )->display_name; ?></option>
+													<?php endforeach; ?>
+													 </optgroup>
 												<?php endif; ?>
 											</select>
 										</div>
@@ -552,6 +565,12 @@ class Buddypress_Share_Public {
 		$user_id = get_current_user_id();
 
 		// Add the activity.
+		if ( isset($_POST['activity_in_type']) && $_POST['activity_in_type'] == 'user') {
+			$username   = bp_core_get_username( $_POST['activity_in'] );
+			$_POST['activity_content'] = "@$username \r\n" . $_POST['activity_content'];
+			$_POST['activity_in'] = '0';			
+			
+		}
 
 		$activity_id = bp_activity_add(
 			array(
@@ -593,23 +612,23 @@ class Buddypress_Share_Public {
 
 	public function bp_activity_share_get_where_conditions( $where_conditions ) {
 		unset( $where_conditions['filter_sql'] );
+		unset( $where_conditions['scope_query_sql'] );
 		return $where_conditions;
 	}
 
 	public function bp_activity_share_entry_content() {
 		global $activities_template;
-
+		
 		$activity_id   = $activities_template->activity->id;
 		$activity_type = $activities_template->activity->type;
-
+		
 		if ( $activity_type == 'activity_share' && $activities_template->activity->secondary_item_id != 0 ) {
 			$secondary_item_id        = $activities_template->activity->secondary_item_id;
 			$temp_activities_template = $activities_template;
-			$args                     = array( 'in' => $secondary_item_id );
-
+			$args                     = array( 'in' => $secondary_item_id );			
 			add_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
 			$_REQUEST['search_terms'] = $secondary_item_id;
-			if ( bp_has_activities( $args ) ) {
+			if ( bp_has_activities( $args ) ) {				
 				while ( bp_activities() ) :
 					bp_the_activity();
 					?>

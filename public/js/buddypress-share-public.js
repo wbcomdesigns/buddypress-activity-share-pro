@@ -97,7 +97,7 @@
 
 
         });
-
+		$("#activity-share-modal #post-in").select2();
         $(document).on('click', '.bp-secondary-action.bp-activity-share-button', function(e) {
 			
 			e.preventDefault();
@@ -137,6 +137,8 @@
             var component = $('#activity-share-modal #bp-reshare-activity-current-component').val();
             var activity_in = $('#activity-share-modal #post-in').val();
             var type = $('#activity-share-modal #bp-reshare-type').val();
+            var activity_in_type = $('#activity-share-modal #post-in option:selected').data( 'type' );
+			
 
             jQuery.ajax({
                 url: bp_activity_sjare_vars.ajax_url,
@@ -148,6 +150,7 @@
                     activity_user_id: activity_user_id,
                     component: component,
                     activity_in: activity_in,
+                    activity_in_type: activity_in_type,
                     type: type,
                     _ajax_nonce: bp_activity_sjare_vars.ajax_nonce
                 },
