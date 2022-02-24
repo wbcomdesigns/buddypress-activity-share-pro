@@ -725,7 +725,7 @@ class Buddypress_Share_Admin {
 								<label><?php esc_html_e( 'Button Background Color', 'buddypress-share' ); ?></label>
 							</th>
 							<td>
-								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_bg_color]" value="<?php echo $bp_reshare_settings['btn_bg_color']; ?>" />
+								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_bg_color]" value="<?php echo (isset($bp_reshare_settings['btn_bg_color'])) ? $bp_reshare_settings['btn_bg_color'] :''; ?>" />
 							</td>
 						</tr>
 						<tr>
@@ -733,7 +733,24 @@ class Buddypress_Share_Admin {
 								<label><?php esc_html_e( 'Button Text Color', 'buddypress-share' ); ?></label>
 							</th>
 							<td>
-								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_text_color]" value="<?php echo $bp_reshare_settings['btn_text_color']; ?>" />
+								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_text_color]" value="<?php echo (isset($bp_reshare_settings['btn_text_color'])) ? $bp_reshare_settings['btn_text_color']:''; ?>" />
+							</td>
+						</tr>
+						
+						<tr>
+							<th scope="row">
+								<label><?php esc_html_e( 'Button Hover Background Color', 'buddypress-share' ); ?></label>
+							</th>
+							<td>
+								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_bg_color]" value="<?php echo (isset($bp_reshare_settings['btn_hover_bg_color'])) ? $bp_reshare_settings['btn_hover_bg_color'] : ''; ?>" />
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<label><?php esc_html_e( 'Button Hover Text Color', 'buddypress-share' ); ?></label>
+							</th>
+							<td>
+								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_text_color]" value="<?php echo (isset($bp_reshare_settings['btn_hover_text_color'])) ? $bp_reshare_settings['btn_hover_text_color'] : ''; ?>" />
 							</td>
 						</tr>
 					</tbody>
