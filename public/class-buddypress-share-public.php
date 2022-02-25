@@ -417,8 +417,9 @@ class Buddypress_Share_Public {
 	}
 
 	public function bp_activity_post_share_button_action( $content ) {
+		$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
 
-		if ( is_single() && get_post_type() == 'post' ) {
+		if ( is_single() && get_post_type() == 'post' && !isset($bp_reshare_settings['disable_post_reshare_activity'])  ) {
 			ob_start();
 
 			$share_count = get_post_meta( get_the_ID(), 'share_count', true );

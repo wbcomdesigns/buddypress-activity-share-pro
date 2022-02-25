@@ -753,6 +753,32 @@ class Buddypress_Share_Admin {
 								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_text_color]" value="<?php echo (isset($bp_reshare_settings['btn_hover_text_color'])) ? $bp_reshare_settings['btn_hover_text_color'] : ''; ?>" />
 							</td>
 						</tr>
+						
+						<tr>
+							<th scope="row">
+								<label><?php esc_html_e( 'Disable Post reShare Activity', 'buddypress-share' ); ?></label>
+							</th>
+							<td>
+								<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_post_reshare_activity]" value="1" <?php if(isset($bp_reshare_settings['disable_post_reshare_activity']) && $bp_reshare_settings['disable_post_reshare_activity'] == 1):?> checked <?php endif;?> />
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="2">
+								<code>
+								<?php 
+								esc_html_e( '[bp_activity_post_reshare] Use this shortcode in which post type you want to reshare in Activity.', 'buddypress-share');
+								echo "\r\n\r\n";
+								?>
+								
+								add_filter('bp_activity_reshare_post_type', 'functioname' );
+								function functioname( $post_type ) {
+									$post_type[] = 'custom post type slug';
+									return $post_type;
+								}
+								</code>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 				<p class="submit">

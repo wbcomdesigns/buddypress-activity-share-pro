@@ -215,3 +215,16 @@ function bpshare_activation_redirect_settings( $plugin ) {
 		}
 	}
 }
+
+
+add_filter('bp_activity_reshare_post_type', 'bp_activity_reshare_post_disable' );
+function bp_activity_reshare_post_disable( $post_type ) {
+	$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
+	if(isset($bp_reshare_settings['disable_post_reshare_activity']) && $bp_reshare_settings['disable_post_reshare_activity'] == 1){
+		
+		if (($key = array_search('post', $post_type)) !== false) {
+			unset($post_type[$key]);
+		}
+	}	
+	return $post_type;
+}
