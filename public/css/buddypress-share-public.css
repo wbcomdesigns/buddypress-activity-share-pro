@@ -784,6 +784,39 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     margin-top: 0;
 }
 
+.activity-list .activity-item .activity-content .bp-generic-meta.action .bp-activity-share-button {
+    line-height: 1.6 !important;
+}
+
+.activity-list .activity-item .activity-content .bp-generic-meta.action .bp-activity-share-button::before {
+    background: none;
+    width: auto;
+    height: auto;
+    opacity: 1;
+    position: static;
+    font-size: 14px;
+    margin-right: 3px !important;
+}
+
+.activity-list .activity-item .activity-content .bp-generic-meta.action .bp-activity-share-button::after {
+    display: none;
+}
+
+.activity-list .activity-item .activity-content .bp-generic-meta.action .bp-activity-share-button .bp-screen-reader-text {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+}
+
+.activity-list .activity-item .activity-content .bp-generic-meta.action .bp-activity-share-button .reshare-count {
+    margin-left: 5px;
+}
+
+.activity-share-modal .activity-list .bb-activity-more-options-wrap {
+    display: none;
+}
+
 
 /*--------------------------------------------------------------
 # RTL Fixes
