@@ -442,8 +442,9 @@ class Buddypress_Share_Public {
 	public function bp_activity_share_popup_box() {
 
 		/*  Activity Share Popup */
-		$reshare_post_type = array( 'post', 'tribe_events' );
-		if ( is_user_logged_in() && ( is_buddypress() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) ) ) {
+		$reshare_post_type = apply_filters( 'bp_activity_reshare_post_type', array( 'post' ) );
+		
+		if ( is_user_logged_in() && ( is_buddypress() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) )  || apply_filters('bp_activity_reshare_action', false) ) ) {
 			$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );		
 			
 			$groups = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
@@ -556,7 +557,9 @@ class Buddypress_Share_Public {
 	}
 
 	public function bp_activity_share_single_post_formate() {
-		if ( is_single() && get_post_type() == 'post' ) {
+		$reshare_post_type = apply_filters( 'bp_activity_reshare_post_type', array( 'post' ) );
+		
+		if ( (is_single() && in_array( get_post_type(), $reshare_post_type )) || apply_filters('bp_activity_reshare_action', false) ) {
 			?>
 			<div class="post-preview animate-slide-down entry-wrapper ">
 				<?php if ( has_post_thumbnail() ) { ?>
@@ -707,8 +710,8 @@ class Buddypress_Share_Public {
 		/* Post share activity type */
 		if ( $activity_type == 'post_share' && $activities_template->activity->secondary_item_id != 0 ) {
 			$post_id = $activities_template->activity->secondary_item_id;
-			$query   = new WP_Query( array( 'p' => $post_id ) );
-			// The Loop
+			$query   = new WP_Query( array( 'p' => $post_id, 'post_type' => get_post_type( $post_id ) ) );			
+			// The Loop			
 			if ( $query->have_posts() ) {
 
 				while ( $query->have_posts() ) {
@@ -774,7 +777,23 @@ class Buddypress_Share_Public {
 		// After post meta action.
 		do_action( 'bp_activity_share_after_post_meta' );
 	}
+	
+	public function bp_activity_post_reshare( $atts, $content = null ){
+		ob_start();
 
+		$share_count = get_post_meta( get_the_ID(), 'share_count', true );
+		$share_count = ( $share_count ) ? $share_count : 0;
+		?>
+		<div class="bp-activity-post-share-btn bp-activity-share-btn generic-button">
+			<a class="item-button bp-secondary-action bp-activity-share-button as-icon-share-square bp-tooltip" data-bp-tooltip="<?php esc_attr_e( 'Reshare', 'buddypress-share' ); ?>" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
+				<span class="bp-share-text"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
+				<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() ); ?>" class="reshare-count bp-post-reshare-count"><?php echo esc_html( $share_count ); ?></span>
+			</a>
+		</div>
+		<?php
+
+		return ob_get_clean();
+	}
 
 
 }
