@@ -718,7 +718,7 @@ class Buddypress_Share_Admin {
 			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
 				<?php wp_nonce_field( 'update-options' ); ?>
 				<h3><?php esc_html_e( 'Reshare Settings', 'buddypress-share' ); ?></h3>
-				<table cellspacing="0" class="add_share_services widefat plugins">
+				<table cellspacing="0" class="form-table">
 					<tbody>
 						<tr>
 							<th scope="row">
