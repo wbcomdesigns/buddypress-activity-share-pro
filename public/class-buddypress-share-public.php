@@ -525,32 +525,32 @@ class Buddypress_Share_Public {
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 			<?php if( !empty($bp_reshare_settings)):?>
 			<style>
 			.single  .bp-activity-post-share-btn .bp-activity-share-button,
 			#activity-share-modal button.activity-share-modal-close,
-			.bp-activity-share-post-footer-actions .button{
+			.bp-activity-share-post-footer-actions .button:not(.void) {
 				background-color:<?php echo $bp_reshare_settings['btn_bg_color']?> !important;
 				color: <?php echo $bp_reshare_settings['btn_text_color']?>!important;
 			}
-			
-			#activity-share-modal button.activity-share-modal-close .as-icon{
+
+			#activity-share-modal button.activity-share-modal-close .as-icon {
 				color: <?php echo $bp_reshare_settings['btn_text_color']?>!important;
 			}
-			
+
 			.single  .bp-activity-post-share-btn .bp-activity-share-button:hover,
 			#activity-share-modal button.activity-share-modal-close:hover,
-			.bp-activity-share-post-footer-actions .button:hover{
+			.bp-activity-share-post-footer-actions .button:hover {
 				background-color:<?php echo $bp_reshare_settings['btn_hover_bg_color']?>!important;
 				color: <?php echo $bp_reshare_settings['btn_hover_text_color']?>!important;
 			}
-			#activity-share-modal button.activity-share-modal-close:hover .as-icon{
+
+			#activity-share-modal button.activity-share-modal-close:hover .as-icon {
 				color: <?php echo $bp_reshare_settings['btn_hover_text_color']?>!important;
 			}
 			</style>
-			
 			<?php
 			endif;
 		}
