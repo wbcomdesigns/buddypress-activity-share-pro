@@ -672,11 +672,19 @@ class Buddypress_Share_Public {
 								<div class="activity-header">
 									<?php bp_activity_action(); ?>
 								</div>
-								<?php if ( bp_nouveau_activity_has_content() ) : ?>
+								<?php if ( bp_nouveau_activity_has_content()  ) : ?>
 									<div class="activity-inner">
-										<?php bp_get_template_part( 'activity/type-parts/content', bp_activity_type_part() ); ?>
+										<?php 
+										if ( buddypress()->buddyboss) {
+											bp_nouveau_activity_content();
+										} else {
+											bp_get_template_part( 'activity/type-parts/content', bp_activity_type_part() ); 
+										}
+										?>
 									</div>
 								<?php endif; ?>
+								
+
 							</div>
 							<div class="content-action">
 								<div class="meta-line">
