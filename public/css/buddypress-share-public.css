@@ -648,9 +648,7 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 
 .bp-activity-post-share-btn {
     margin: 1rem 0;
-    border-top: 1px solid #e3e3e3;
-    border-bottom: 1px solid #e3e3e3;
-    padding: 1rem 0;
+    padding: 0;
     text-align: center;
 }
 
@@ -669,7 +667,7 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     justify-content: center;
     cursor: pointer;
     border-radius: 100px;
-    height: 45px;
+    height: 40px;
     background: #333 !important;
     color: #fff !important;
     box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
@@ -684,14 +682,13 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 
 .bp-activity-post-share-btn .reshare-count {
     position: relative;
-    padding: 2px 8px;
-    border-radius: 30px;
-    background: #646970;
+    background: transparent;
     color: #fff;
-    font-size: 11px;
-    font-weight: 500;
+    font-size: 90%;
+    font-weight: normal;
     display: inline;
-    margin-left: 5px;
+    margin-left: 10px;
+    padding: 0;
     line-height: normal;
 }
 
@@ -839,5 +836,5 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 
 [dir='rtl'] .bp-activity-post-share-btn .reshare-count {
     margin-left: 0;
-    margin-right: 5px;
+    margin-right: 10px;
 }

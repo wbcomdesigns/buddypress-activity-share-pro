@@ -176,7 +176,7 @@ class Buddypress_Share_Admin {
 					);
 					update_site_option( $option_name, $new_service );
 				} else {
-					$new_value = array(
+					$new_value        = array(
 						"chb_$service_value"  => 1,
 						'service_name'        => "$service_name",
 						'service_icon'        => "$service_faw",
@@ -455,9 +455,8 @@ class Buddypress_Share_Admin {
 			'bp_share_services_extra',
 			'bp_share_extra_options'
 		);
-		
-		
-		if ( isset( $_POST['bp_reshare_settings'] ) && ! defined( 'DOING_AJAX' )  ) {
+
+		if ( isset( $_POST['bp_reshare_settings'] ) && ! defined( 'DOING_AJAX' ) ) {
 			update_site_option( 'bp_reshare_settings', $_POST['bp_reshare_settings'] );
 			wp_redirect( $_POST['_wp_http_referer'] );
 			exit();
@@ -704,15 +703,15 @@ class Buddypress_Share_Admin {
 		</div>
 		<?php
 	}
-	
+
 	/**
 	 * reshare settig template
 	 *
 	 * @since    1.0.0
 	 */
-	
+
 	public function bpas_reshare_setting_section() {
-		$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );		
+		$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
 		?>
 		<div class="wbcom-tab-content">
 			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
@@ -725,7 +724,7 @@ class Buddypress_Share_Admin {
 								<label><?php esc_html_e( 'Button Background Color', 'buddypress-share' ); ?></label>
 							</th>
 							<td>
-								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_bg_color]" value="<?php echo (isset($bp_reshare_settings['btn_bg_color'])) ? $bp_reshare_settings['btn_bg_color'] :''; ?>" />
+								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_bg_color'] ) ) ? $bp_reshare_settings['btn_bg_color'] : ''; ?>" />
 							</td>
 						</tr>
 						<tr>
@@ -733,7 +732,7 @@ class Buddypress_Share_Admin {
 								<label><?php esc_html_e( 'Button Text Color', 'buddypress-share' ); ?></label>
 							</th>
 							<td>
-								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_text_color]" value="<?php echo (isset($bp_reshare_settings['btn_text_color'])) ? $bp_reshare_settings['btn_text_color']:''; ?>" />
+								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_text_color'] ) ) ? $bp_reshare_settings['btn_text_color'] : ''; ?>" />
 							</td>
 						</tr>
 						
@@ -742,7 +741,7 @@ class Buddypress_Share_Admin {
 								<label><?php esc_html_e( 'Button Hover Background Color', 'buddypress-share' ); ?></label>
 							</th>
 							<td>
-								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_bg_color]" value="<?php echo (isset($bp_reshare_settings['btn_hover_bg_color'])) ? $bp_reshare_settings['btn_hover_bg_color'] : ''; ?>" />
+								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_bg_color'] ) ) ? $bp_reshare_settings['btn_hover_bg_color'] : ''; ?>" />
 							</td>
 						</tr>
 						<tr>
@@ -750,7 +749,7 @@ class Buddypress_Share_Admin {
 								<label><?php esc_html_e( 'Button Hover Text Color', 'buddypress-share' ); ?></label>
 							</th>
 							<td>
-								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_text_color]" value="<?php echo (isset($bp_reshare_settings['btn_hover_text_color'])) ? $bp_reshare_settings['btn_hover_text_color'] : ''; ?>" />
+								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_text_color'] ) ) ? $bp_reshare_settings['btn_hover_text_color'] : ''; ?>" />
 							</td>
 						</tr>
 						
@@ -759,20 +758,22 @@ class Buddypress_Share_Admin {
 								<label><?php esc_html_e( 'Disable Post reShare Activity', 'buddypress-share' ); ?></label>
 							</th>
 							<td>
-								<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_post_reshare_activity]" value="1" <?php if(isset($bp_reshare_settings['disable_post_reshare_activity']) && $bp_reshare_settings['disable_post_reshare_activity'] == 1):?> checked <?php endif;?> />
+								<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_post_reshare_activity]" value="1" 
+								<?php
+								if ( isset( $bp_reshare_settings['disable_post_reshare_activity'] ) && $bp_reshare_settings['disable_post_reshare_activity'] == 1 ) :
+									?>
+									checked <?php endif; ?> />
 							</td>
 						</tr>
-						
+
 						<tr>
 							<td colspan="2">
+								<code>[bp_activity_post_reshare]</code>
+								<?php esc_html_e( 'Use this shortcode in which post type you want to reshare in Activity.', 'buddypress-share' ); ?>
+								<br/><br/>
 								<code>
-								<?php 
-								esc_html_e( '[bp_activity_post_reshare] Use this shortcode in which post type you want to reshare in Activity.', 'buddypress-share');
-								echo "\r\n\r\n";
-								?>
-								
-								add_filter('bp_activity_reshare_post_type', 'functioname' );
-								function functioname( $post_type ) {
+								add_filter('bp_activity_reshare_post_type', 'function_name' );
+								function function_name( $post_type ) {
 									$post_type[] = 'custom post type slug';
 									return $post_type;
 								}
