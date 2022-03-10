@@ -125,7 +125,7 @@ class Buddypress_Share_Public {
 		$all_services = get_site_option( 'bp_share_all_services_disable' );
 		if ( is_user_logged_in() && 'enable' === $all_services ) {
 			add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
-			
+
 		}
 		if ( is_user_logged_in() ) {
 			add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_inner_activity_filter' ) );
@@ -138,8 +138,11 @@ class Buddypress_Share_Public {
 		$share_count = ( $share_count ) ? $share_count : 0;
 		?>
 		<div class="bp-activity-share-btn generic-button">
-			<a class="button item-button bp-secondary-action bp-activity-share-button as-icon-share-square bp-tooltip" data-bp-tooltip="<?php esc_attr_e( 'Reshare', 'buddypress-share' ); ?>" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
-				<span class="bp-screen-reader-text"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
+			<a class="button item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
+				<span class="bp-activity-reshare-icon">	
+					<i class="as-icon as-icon-share-square"></i>
+				</span>
+				<span class="bp-screen-reader-text-"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
 				<span id="bp-activity-reshare-count-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html( $share_count ); ?></span>
 			</a>
 		</div>
@@ -419,14 +422,17 @@ class Buddypress_Share_Public {
 	public function bp_activity_post_share_button_action( $content ) {
 		$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
 
-		if ( is_single() && get_post_type() == 'post' && !isset($bp_reshare_settings['disable_post_reshare_activity'])  ) {
+		if ( is_single() && get_post_type() == 'post' && ! isset( $bp_reshare_settings['disable_post_reshare_activity'] ) ) {
 			ob_start();
 
 			$share_count = get_post_meta( get_the_ID(), 'share_count', true );
 			$share_count = ( $share_count ) ? $share_count : 0;
 			?>
 			<div class="bp-activity-post-share-btn bp-activity-share-btn generic-button">
-				<a class="item-button bp-secondary-action bp-activity-share-button as-icon-share-square" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
+				<a class="item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
+					<span class="bp-activity-reshare-icon">	
+						<i class="as-icon as-icon-share-square"></i>
+					</span>
 					<span class="bp-share-text"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
 					<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() ); ?>" class="reshare-count bp-post-reshare-count"><?php echo esc_html( $share_count ); ?></span>
 				</a>
@@ -444,12 +450,12 @@ class Buddypress_Share_Public {
 
 		/*  Activity Share Popup */
 		$reshare_post_type = apply_filters( 'bp_activity_reshare_post_type', array( 'post' ) );
-		
-		if ( is_user_logged_in() && ( is_buddypress() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) )  || apply_filters('bp_activity_reshare_action', false) ) ) {
-			$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );		
-			
-			$groups = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
-			$friends = friends_get_friend_user_ids(  bp_loggedin_user_id() );			
+
+		if ( is_user_logged_in() && ( is_buddypress() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) || apply_filters( 'bp_activity_reshare_action', false ) ) ) {
+			$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
+
+			$groups  = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
+			$friends = friends_get_friend_user_ids( bp_loggedin_user_id() );
 			?>
 			
 			<div class="modal fade activity-share-modal" id="activity-share-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -475,7 +481,7 @@ class Buddypress_Share_Public {
 											<select id="post-in" name="postIn">
 												<option value="0"><?php esc_html_e( 'My Profile', 'buddypress-share' ); ?></option>
 												<?php if ( ! empty( $groups ) ) : ?>
-													 <optgroup label="<?php esc_html_e( 'Group lists', 'buddypress-share' )?>">
+													 <optgroup label="<?php esc_html_e( 'Group lists', 'buddypress-share' ); ?>">
 													<?php foreach ( $groups['groups'] as $group ) : ?>
 														<option value="<?php echo $group->id; ?>" data-type="group"><?php echo $group->name; ?></option>
 													<?php endforeach; ?>
@@ -483,7 +489,7 @@ class Buddypress_Share_Public {
 												<?php endif; ?>
 												
 												<?php if ( ! empty( $friends ) ) : ?>
-													 <optgroup label="<?php esc_html_e( 'Friend lists', 'buddypress-share' )?>">
+													 <optgroup label="<?php esc_html_e( 'Friend lists', 'buddypress-share' ); ?>">
 													<?php foreach ( $friends as $friend ) : ?>
 														<option value="<?php echo $friend; ?>" data-type="user"><?php echo get_user_by( 'ID', $friend )->display_name; ?></option>
 													<?php endforeach; ?>
@@ -528,39 +534,39 @@ class Buddypress_Share_Public {
 				</div>
 
 			</div>
-			<?php if( !empty($bp_reshare_settings)):?>
+			<?php if ( ! empty( $bp_reshare_settings ) ) : ?>
 			<style>
 			.single  .bp-activity-post-share-btn .bp-activity-share-button,
 			#activity-share-modal button.activity-share-modal-close,
 			.bp-activity-share-post-footer-actions .button:not(.void) {
-				background-color:<?php echo $bp_reshare_settings['btn_bg_color']?> !important;
-				color: <?php echo $bp_reshare_settings['btn_text_color']?>!important;
+				background-color:<?php echo $bp_reshare_settings['btn_bg_color']; ?> !important;
+				color: <?php echo $bp_reshare_settings['btn_text_color']; ?>!important;
 			}
 
 			#activity-share-modal button.activity-share-modal-close .as-icon {
-				color: <?php echo $bp_reshare_settings['btn_text_color']?>!important;
+				color: <?php echo $bp_reshare_settings['btn_text_color']; ?>!important;
 			}
 
 			.single  .bp-activity-post-share-btn .bp-activity-share-button:hover,
 			#activity-share-modal button.activity-share-modal-close:hover,
 			.bp-activity-share-post-footer-actions .button:hover {
-				background-color:<?php echo $bp_reshare_settings['btn_hover_bg_color']?>!important;
-				color: <?php echo $bp_reshare_settings['btn_hover_text_color']?>!important;
+				background-color:<?php echo $bp_reshare_settings['btn_hover_bg_color']; ?>!important;
+				color: <?php echo $bp_reshare_settings['btn_hover_text_color']; ?>!important;
 			}
 
 			#activity-share-modal button.activity-share-modal-close:hover .as-icon {
-				color: <?php echo $bp_reshare_settings['btn_hover_text_color']?>!important;
+				color: <?php echo $bp_reshare_settings['btn_hover_text_color']; ?>!important;
 			}
 			</style>
-			<?php
+				<?php
 			endif;
 		}
 	}
 
 	public function bp_activity_share_single_post_formate() {
 		$reshare_post_type = apply_filters( 'bp_activity_reshare_post_type', array( 'post' ) );
-		
-		if ( (is_single() && in_array( get_post_type(), $reshare_post_type )) || apply_filters('bp_activity_reshare_action', false) ) {
+
+		if ( ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) || apply_filters( 'bp_activity_reshare_action', false ) ) {
 			?>
 			<div class="post-preview animate-slide-down entry-wrapper ">
 				<?php if ( has_post_thumbnail() ) { ?>
@@ -598,11 +604,11 @@ class Buddypress_Share_Public {
 		$user_id = get_current_user_id();
 
 		// Add the activity.
-		if ( isset($_POST['activity_in_type']) && $_POST['activity_in_type'] == 'user') {
-			$username   = bp_core_get_username( $_POST['activity_in'] );
+		if ( isset( $_POST['activity_in_type'] ) && $_POST['activity_in_type'] == 'user' ) {
+			$username                  = bp_core_get_username( $_POST['activity_in'] );
 			$_POST['activity_content'] = "@$username \r\n" . $_POST['activity_content'];
-			$_POST['activity_in'] = '0';			
-			
+			$_POST['activity_in']      = '0';
+
 		}
 
 		$activity_id = bp_activity_add(
@@ -651,17 +657,17 @@ class Buddypress_Share_Public {
 
 	public function bp_activity_share_entry_content() {
 		global $activities_template;
-		
+
 		$activity_id   = $activities_template->activity->id;
 		$activity_type = $activities_template->activity->type;
-		
+
 		if ( $activity_type == 'activity_share' && $activities_template->activity->secondary_item_id != 0 ) {
 			$secondary_item_id        = $activities_template->activity->secondary_item_id;
 			$temp_activities_template = $activities_template;
-			$args                     = array( 'in' => $secondary_item_id );			
+			$args                     = array( 'in' => $secondary_item_id );
 			add_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
 			$_REQUEST['search_terms'] = $secondary_item_id;
-			if ( bp_has_activities( $args ) ) {				
+			if ( bp_has_activities( $args ) ) {
 				while ( bp_activities() ) :
 					bp_the_activity();
 					?>
@@ -676,18 +682,17 @@ class Buddypress_Share_Public {
 								<div class="activity-header">
 									<?php bp_activity_action(); ?>
 								</div>
-								<?php if ( bp_nouveau_activity_has_content()  ) : ?>
+								<?php if ( function_exists( 'bp_nouveau_activity_has_content' ) && bp_nouveau_activity_has_content() ) : ?>
 									<div class="activity-inner">
-										<?php 
-										if ( buddypress()->buddyboss) {
+										<?php
+										if ( function_exists( 'buddypress' ) && isset( buddypress()->buddyboss ) ) {
 											bp_nouveau_activity_content();
 										} else {
-											bp_get_template_part( 'activity/type-parts/content', bp_activity_type_part() ); 
+											bp_get_template_part( 'activity/type-parts/content', bp_activity_type_part() );
 										}
 										?>
 									</div>
 								<?php endif; ?>
-								
 
 							</div>
 							<div class="content-action">
@@ -711,8 +716,13 @@ class Buddypress_Share_Public {
 		/* Post share activity type */
 		if ( $activity_type == 'post_share' && $activities_template->activity->secondary_item_id != 0 ) {
 			$post_id = $activities_template->activity->secondary_item_id;
-			$query   = new WP_Query( array( 'p' => $post_id, 'post_type' => get_post_type( $post_id ) ) );			
-			// The Loop			
+			$query   = new WP_Query(
+				array(
+					'p'         => $post_id,
+					'post_type' => get_post_type( $post_id ),
+				)
+			);
+			// The Loop
 			if ( $query->have_posts() ) {
 
 				while ( $query->have_posts() ) {
@@ -778,15 +788,18 @@ class Buddypress_Share_Public {
 		// After post meta action.
 		do_action( 'bp_activity_share_after_post_meta' );
 	}
-	
-	public function bp_activity_post_reshare( $atts, $content = null ){
+
+	public function bp_activity_post_reshare( $atts, $content = null ) {
 		ob_start();
 
 		$share_count = get_post_meta( get_the_ID(), 'share_count', true );
 		$share_count = ( $share_count ) ? $share_count : 0;
 		?>
 		<div class="bp-activity-post-share-btn bp-activity-share-btn generic-button">
-			<a class="item-button bp-secondary-action bp-activity-share-button as-icon-share-square bp-tooltip" data-bp-tooltip="<?php esc_attr_e( 'Reshare', 'buddypress-share' ); ?>" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
+			<a class="item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
+				<span class="bp-activity-reshare-icon">	
+					<i class="as-icon as-icon-share-square"></i>
+				</span>
 				<span class="bp-share-text"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
 				<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() ); ?>" class="reshare-count bp-post-reshare-count"><?php echo esc_html( $share_count ); ?></span>
 			</a>

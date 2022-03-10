@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-25 11:32:25+00:00\n"
+"POT-Creation-Date: 2022-03-10 11:32:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -114,7 +114,7 @@ msgid "General Settings"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:140
-#: admin/class-buddypress-share-admin.php:720
+#: admin/class-buddypress-share-admin.php:719
 msgid "Reshare Settings"
 msgstr ""
 
@@ -135,49 +135,49 @@ msgstr ""
 msgid "Open as popup window"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:476
+#: admin/class-buddypress-share-admin.php:475
 #: includes/class-buddypress-share-settings.php:63
 msgid "WB Plugins"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:477
+#: admin/class-buddypress-share-admin.php:476
 #: includes/class-buddypress-share-settings.php:64
 msgid "General"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:479
+#: admin/class-buddypress-share-admin.php:478
 #: includes/class-buddypress-share-settings.php:66
 msgid "BuddyPress Share"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:561
+#: admin/class-buddypress-share-admin.php:560
 #: includes/class-buddypress-share-settings.php:230
 msgid "Add Social Services"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:566
+#: admin/class-buddypress-share-admin.php:565
 #: includes/class-buddypress-share-settings.php:235
 msgid "Component"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:567
+#: admin/class-buddypress-share-admin.php:566
 #: includes/class-buddypress-share-settings.php:236
 msgid "Select Service"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:574
-#: admin/class-buddypress-share-admin.php:632
+#: admin/class-buddypress-share-admin.php:573
+#: admin/class-buddypress-share-admin.php:631
 #: includes/class-buddypress-share-settings.php:243
 #: includes/class-buddypress-share-settings.php:303
 msgid "Social Sites"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:578
+#: admin/class-buddypress-share-admin.php:577
 #: includes/class-buddypress-share-settings.php:247
 msgid "select"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:579
+#: admin/class-buddypress-share-admin.php:578
 #: includes/class-buddypress-share-activator.php:35
 #: includes/class-buddypress-share-activator.php:81
 #: includes/class-buddypress-share-activator.php:136
@@ -185,7 +185,7 @@ msgstr ""
 msgid "Facebook"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:580
+#: admin/class-buddypress-share-admin.php:579
 #: includes/class-buddypress-share-activator.php:42
 #: includes/class-buddypress-share-activator.php:88
 #: includes/class-buddypress-share-activator.php:143
@@ -193,12 +193,12 @@ msgstr ""
 msgid "Twitter"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:581
+#: admin/class-buddypress-share-admin.php:580
 #: includes/class-buddypress-share-settings.php:250
 msgid "Pinterest"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:582
+#: admin/class-buddypress-share-admin.php:581
 #: includes/class-buddypress-share-activator.php:49
 #: includes/class-buddypress-share-activator.php:95
 #: includes/class-buddypress-share-activator.php:150
@@ -206,27 +206,27 @@ msgstr ""
 msgid "Linkedin"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:583
+#: admin/class-buddypress-share-admin.php:582
 #: includes/class-buddypress-share-settings.php:252
 msgid "Reddit"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:584
+#: admin/class-buddypress-share-admin.php:583
 #: includes/class-buddypress-share-settings.php:253
 msgid "WordPress"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:585
+#: admin/class-buddypress-share-admin.php:584
 #: includes/class-buddypress-share-settings.php:254
 msgid "Pocket"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:586
+#: admin/class-buddypress-share-admin.php:585
 #: includes/class-buddypress-share-settings.php:255
 msgid "Email"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:587
+#: admin/class-buddypress-share-admin.php:586
 #: includes/class-buddypress-share-activator.php:56
 #: includes/class-buddypress-share-activator.php:102
 #: includes/class-buddypress-share-activator.php:157
@@ -234,62 +234,70 @@ msgstr ""
 msgid "Whatsapp"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:588
+#: admin/class-buddypress-share-admin.php:587
 #: includes/class-buddypress-share-settings.php:257
 msgid "Copy"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:591
-#: admin/class-buddypress-share-admin.php:601
-#: admin/class-buddypress-share-admin.php:612
+#: admin/class-buddypress-share-admin.php:590
+#: admin/class-buddypress-share-admin.php:600
+#: admin/class-buddypress-share-admin.php:611
 #: includes/class-buddypress-share-settings.php:260
 #: includes/class-buddypress-share-settings.php:270
 #: includes/class-buddypress-share-settings.php:281
 msgid "This field is required!"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:597
+#: admin/class-buddypress-share-admin.php:596
 #: includes/class-buddypress-share-settings.php:266
 msgid "Font Awesome Icon Class"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:608
-#: admin/class-buddypress-share-admin.php:633
+#: admin/class-buddypress-share-admin.php:607
+#: admin/class-buddypress-share-admin.php:632
 #: includes/class-buddypress-share-settings.php:277
 #: includes/class-buddypress-share-settings.php:305
 msgid "Description"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:621
+#: admin/class-buddypress-share-admin.php:620
 #: includes/class-buddypress-share-settings.php:290
 msgid "Add Services"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:634
+#: admin/class-buddypress-share-admin.php:633
 #: includes/class-buddypress-share-settings.php:306
 msgid "Action"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:700
-#: admin/class-buddypress-share-admin.php:759
+#: admin/class-buddypress-share-admin.php:699
+#: admin/class-buddypress-share-admin.php:786
 #: includes/class-buddypress-share-settings.php:370
 msgid "Save Changes"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:725
+#: admin/class-buddypress-share-admin.php:724
 msgid "Button Background Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:733
+#: admin/class-buddypress-share-admin.php:732
 msgid "Button Text Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:742
+#: admin/class-buddypress-share-admin.php:741
 msgid "Button Hover Background Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:750
+#: admin/class-buddypress-share-admin.php:749
 msgid "Button Hover Text Color"
+msgstr ""
+
+#: admin/class-buddypress-share-admin.php:758
+msgid "Disable Post reShare Activity"
+msgstr ""
+
+#: admin/class-buddypress-share-admin.php:772
+msgid "Use this shortcode in which post type you want to reshare in Activity."
 msgstr ""
 
 #: admin/class-buddypress-share-feedback.php:88
@@ -826,93 +834,91 @@ msgstr ""
 msgid "Enable this option to copy activity."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:141
-#: public/class-buddypress-share-public.php:142
-#: public/class-buddypress-share-public.php:429
-#: public/class-buddypress-share-public.php:788
-#: public/class-buddypress-share-public.php:789
+#: public/class-buddypress-share-public.php:145
+#: public/class-buddypress-share-public.php:436
+#: public/class-buddypress-share-public.php:803
 msgid "Reshare"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:172
+#: public/class-buddypress-share-public.php:175
 msgid "Share"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:214
+#: public/class-buddypress-share-public.php:217
 msgid "Link Copied!"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:219
+#: public/class-buddypress-share-public.php:222
 msgid "Please enable share services!"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:354
-#: public/class-buddypress-share-public.php:363
-#: public/class-buddypress-share-public.php:372
-#: public/class-buddypress-share-public.php:381
+#: public/class-buddypress-share-public.php:357
+#: public/class-buddypress-share-public.php:366
+#: public/class-buddypress-share-public.php:375
+#: public/class-buddypress-share-public.php:384
 msgid "Shared an activity"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:356
-#: public/class-buddypress-share-public.php:365
-#: public/class-buddypress-share-public.php:374
-#: public/class-buddypress-share-public.php:383
+#: public/class-buddypress-share-public.php:359
+#: public/class-buddypress-share-public.php:368
+#: public/class-buddypress-share-public.php:377
+#: public/class-buddypress-share-public.php:386
 msgid "Activity Share"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:393
+#: public/class-buddypress-share-public.php:396
 #. translators: 1: the user link. 2: the group link.
 msgid "%1$s Shared an activity"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:410
+#: public/class-buddypress-share-public.php:413
 #. translators: 1: the user link. 2: the group link.
 msgid "%1$s shared an activity in the group %2$s"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:468
+#: public/class-buddypress-share-public.php:475
 msgid "Status Update"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:473
+#: public/class-buddypress-share-public.php:480
 msgid "Post In"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:475
+#: public/class-buddypress-share-public.php:482
 msgid "My Profile"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:477
+#: public/class-buddypress-share-public.php:484
 msgid "Group lists"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:485
+#: public/class-buddypress-share-public.php:492
 msgid "Friend lists"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:501
+#: public/class-buddypress-share-public.php:508
 msgid "Hi admin! Write something here, use @ to mention someone..."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:522
+#: public/class-buddypress-share-public.php:529
 msgid "Discard"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:523
+#: public/class-buddypress-share-public.php:530
 msgid "Post"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:586
-#: public/class-buddypress-share-public.php:743
+#: public/class-buddypress-share-public.php:593
+#: public/class-buddypress-share-public.php:754
 msgid "Read More"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:764
+#: public/class-buddypress-share-public.php:775
 #. translators: used between list items, there is a space after the comma.
 msgid ", "
 msgstr ""
 
-#: public/class-buddypress-share-public.php:771
+#: public/class-buddypress-share-public.php:782
 #. translators: used between list items, there is a space after the comma.
 msgctxt "list item separator"
 msgid ", "
