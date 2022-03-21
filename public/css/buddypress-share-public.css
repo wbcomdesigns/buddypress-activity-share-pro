@@ -697,15 +697,11 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     cursor: pointer;
     border-radius: 100px;
     height: 40px;
-    background: #333 !important;
-    color: #fff !important;
     box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
     transition: all .5s;
 }
 
 .bp-activity-post-share-btn .bp-activity-share-button:hover {
-    background: #111 !important;
-    color: #fff !important;
     box-shadow: 0 0 20px 0 rgba(117, 117, 117, .18);
 }
 

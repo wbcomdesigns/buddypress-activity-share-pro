@@ -429,7 +429,7 @@ class Buddypress_Share_Public {
 			$share_count = ( $share_count ) ? $share_count : 0;
 			?>
 			<div class="bp-activity-post-share-btn bp-activity-share-btn generic-button">
-				<a class="item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
+				<a class="button item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
 					<span class="bp-activity-reshare-icon">	
 						<i class="as-icon as-icon-share-square"></i>
 					</span>
@@ -536,7 +536,6 @@ class Buddypress_Share_Public {
 			</div>
 			<?php if ( ! empty( $bp_reshare_settings ) ) : ?>
 			<style>
-			.single  .bp-activity-post-share-btn .bp-activity-share-button,
 			#activity-share-modal button.activity-share-modal-close,
 			.bp-activity-share-post-footer-actions .button:not(.void) {
 				background-color:<?php echo $bp_reshare_settings['btn_bg_color']; ?> !important;
@@ -547,7 +546,6 @@ class Buddypress_Share_Public {
 				color: <?php echo $bp_reshare_settings['btn_text_color']; ?>!important;
 			}
 
-			.single  .bp-activity-post-share-btn .bp-activity-share-button:hover,
 			#activity-share-modal button.activity-share-modal-close:hover,
 			.bp-activity-share-post-footer-actions .button:hover {
 				background-color:<?php echo $bp_reshare_settings['btn_hover_bg_color']; ?>!important;
@@ -796,7 +794,7 @@ class Buddypress_Share_Public {
 		$share_count = ( $share_count ) ? $share_count : 0;
 		?>
 		<div class="bp-activity-post-share-btn bp-activity-share-btn generic-button">
-			<a class="item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
+			<a class="button item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
 				<span class="bp-activity-reshare-icon">	
 					<i class="as-icon as-icon-share-square"></i>
 				</span>
