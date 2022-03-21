@@ -19,6 +19,12 @@
 # Global
 --------------------------------------------------------------*/
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 .activity ul li .activity-meta .service-buttons a.bp-share {
     background: none !important;
     color: black !important;
@@ -676,6 +682,7 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 }
 
 .bp-activity-post-share-btn {
+    display: block;
     margin: 1rem 0;
     padding: 0;
     text-align: center;
@@ -707,8 +714,6 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 
 .bp-activity-post-share-btn .reshare-count {
     position: relative;
-    background: transparent;
-    color: #fff;
     font-size: 90%;
     font-weight: normal;
     display: inline;
