@@ -9,6 +9,7 @@
     # OneCommunity
     # Rehub
     # BuddyX
+    # Gwangi
 # BB Platform
 # RTL Fixes
 --------------------------------------------------------------*/
@@ -165,9 +166,21 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
 # Activity Reshare
 --------------------------------------------------------------*/
 
-.bp-activity-share-button::before {
-    font-family: "as-icons" !important;
-    margin-right: 10px !important;
+.bp-activity-share-btn {
+    display: inline-block;
+}
+
+a.bp-activity-share-button {
+    cursor: pointer;
+}
+
+.bp-activity-reshare-icon {
+    display: inline-block;
+    margin-right: 2px;
+}
+
+.bp-activity-reshare-count {
+    margin-left: 2px;
 }
 
 .activity-share-modal.modal .modal-content,
@@ -245,6 +258,10 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     border-radius: 12px;
 }
 
+.activity-share-modal .bp-activity-share-filter .form-item {
+    margin: 0;
+}
+
 .activity-share-modal label[for=post-in],
 .activity-share-modal .bp-activity-share-filter label {
     padding: 0 5px;
@@ -260,6 +277,7 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
 }
 
 .activity-share-modal .form-textarea textarea {
+    width: 100%;
     background-color: #fdfdfd;
     border: 0;
     border-radius: 0;
@@ -455,6 +473,10 @@ body.activity-permalink.bp-nouveau .activity-list .activity-reshare-item-contain
     display: block;
 }
 
+body.modal-open.modal-open .select2.select2-container .select2-selection .select2-selection__rendered {
+    padding: 0.4rem 0.8rem;
+}
+
 body.modal-open.modal-open .select2-dropdown {
     z-index: 100000;
 }
@@ -562,6 +584,13 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     order: 2;
 }
 
+.activity-share-modal .post-preview .post-preview-info .post-preview-timestamp span.link.cat-links i,
+.post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.cat-links i,
+.activity-share-modal .post-preview .post-preview-info .post-preview-timestamp span.link.date-links i,
+.post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.date-links i {
+    margin-right: 4px;
+}
+
 .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link a {
     font-size: 0.75rem;
     font-weight: 700;
@@ -648,9 +677,7 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 
 .bp-activity-post-share-btn {
     margin: 1rem 0;
-    border-top: 1px solid #e3e3e3;
-    border-bottom: 1px solid #e3e3e3;
-    padding: 1rem 0;
+    padding: 0;
     text-align: center;
 }
 
@@ -669,7 +696,7 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     justify-content: center;
     cursor: pointer;
     border-radius: 100px;
-    height: 45px;
+    height: 40px;
     background: #333 !important;
     color: #fff !important;
     box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
@@ -684,14 +711,13 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 
 .bp-activity-post-share-btn .reshare-count {
     position: relative;
-    padding: 2px 8px;
-    border-radius: 30px;
-    background: #646970;
+    background: transparent;
     color: #fff;
-    font-size: 11px;
-    font-weight: 500;
+    font-size: 90%;
+    font-weight: normal;
     display: inline;
-    margin-left: 5px;
+    margin-left: 10px;
+    padding: 0;
     line-height: normal;
 }
 
@@ -724,6 +750,10 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     font-size: initial;
 }
 
+.bp-nouveau.buddyboss-theme .bp-activity-reshare-icon i {
+    font-size: 15px;
+}
+
 
 /*--------------------------------------------------------------
 ## Kleo
@@ -733,7 +763,8 @@ body.kleo #buddypress .activity-meta a.button.bp-share-button {
     line-height: initial;
 }
 
-.kleo-page #buddypress .activity-meta a.button.bp-share-button {
+.kleo-page #buddypress .activity-meta a.button.bp-share-button,
+.kleo-page #buddypress .activity-meta a.button.bp-activity-share-button {
     display: inline;
 }
 
@@ -742,9 +773,14 @@ body.kleo #buddypress .activity-meta a.button.bp-share-button {
 ## OneCommunity
 --------------------------------------------------------------*/
 
-body.onecommunity.bp-nouveau #buddypress .activity-list .activity-item .activity-meta .bp-share-button {
+body.bp-nouveau #buddypress.onecommunity .activity-list .activity-item .activity-meta .bp-share-button {
     display: block;
     padding: 0 8px;
+}
+
+body.bp-nouveau #buddypress.onecommunity .activity-list .activity-item .activity-meta .bp-share-button::before {
+    top: 4px;
+    position: relative;
 }
 
 body.onecommunity.bp-nouveau .activity-list .activity-item .activity-meta .bp-share-button::before {
@@ -773,6 +809,42 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 #bp-activity-share-widget-box-status-header .activity-item-head {
     padding: 0;
     margin-bottom: 1rem;
+}
+
+
+/*--------------------------------------------------------------
+## Gwangi
+--------------------------------------------------------------*/
+
+.grimlock #buddypress:not(.youzer) #activity-stream .activity-reshare-item-container .activity-avatar,
+.grimlock .activity-share-modal .activity-avatar {
+    float: none;
+    margin: 0 0.75rem 0 0;
+    display: flex;
+    max-width: 35px;
+    flex: 0 0 35px;
+    height: 35px;
+    position: relative;
+}
+
+.grimlock #buddypress:not(.youzer) .generic-button.bp-share-btn span,
+.grimlock #buddypress:not(.youzer) .generic-button a.bp-activity-share-button>span,
+.grimlock #buddypress:not(.youzer) a.bp-activity-share-button>span {
+    font-size: inherit
+}
+
+.grimlock #activity-stream .bp-activity-reshare-icon i {
+    font-size: inherit;
+}
+
+@media (min-width: 768px) {
+    .grimlock #buddypress:not(.youzer) #activity-stream .activity-reshare-item-container .activity-avatar,
+    .grimlock .activity-share-modal .activity-avatar {
+        max-width: 60px;
+        flex: 0 0 60px;
+        width: 60px !important;
+        height: 60px !important;
+    }
 }
 
 
@@ -822,9 +894,14 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 # RTL Fixes
 --------------------------------------------------------------*/
 
-[dir='rtl'] .bp-activity-share-button::before {
-    margin-left: 10px;
+[dir='rtl'] .bp-activity-reshare-icon {
     margin-right: 0;
+    margin-left: 2px;
+}
+
+[dir='rtl'] .bp-activity-reshare-count {
+    margin-left: 0;
+    margin-right: 2px;
 }
 
 [dir='rtl'] .activity-share-modal .bp-activity-share-avatar {
@@ -839,5 +916,13 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 
 [dir='rtl'] .bp-activity-post-share-btn .reshare-count {
     margin-left: 0;
-    margin-right: 5px;
+    margin-right: 10px;
+}
+
+[dir='rtl'] .activity-share-modal .post-preview .post-preview-info .post-preview-timestamp span.link.cat-links i,
+[dir='rtl'] .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.cat-links i,
+[dir='rtl'] .activity-share-modal .post-preview .post-preview-info .post-preview-timestamp span.link.date-links i,
+[dir='rtl'] .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.date-links i {
+    margin-right: 0;
+    margin-left: 4px;
 }
