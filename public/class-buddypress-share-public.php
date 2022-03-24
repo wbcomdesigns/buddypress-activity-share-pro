@@ -124,7 +124,7 @@ class Buddypress_Share_Public {
 	public function bp_activity_share_button_dis() {
 		$all_services = get_site_option( 'bp_share_all_services_disable' );
 		if ( is_user_logged_in() && 'enable' === $all_services ) {
-			add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
+			//add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 
 		}
 		if ( is_user_logged_in() ) {
