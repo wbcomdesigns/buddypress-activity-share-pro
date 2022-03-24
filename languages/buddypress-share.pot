@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-21 13:23:24+00:00\n"
+"POT-Creation-Date: 2022-03-24 11:02:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -835,12 +835,9 @@ msgid "Enable this option to copy activity."
 msgstr ""
 
 #: public/class-buddypress-share-public.php:145
+#: public/class-buddypress-share-public.php:175
 #: public/class-buddypress-share-public.php:436
 #: public/class-buddypress-share-public.php:801
-msgid "Reshare"
-msgstr ""
-
-#: public/class-buddypress-share-public.php:175
 msgid "Share"
 msgstr ""
 

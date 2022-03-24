@@ -142,7 +142,7 @@ class Buddypress_Share_Public {
 				<span class="bp-activity-reshare-icon">	
 					<i class="as-icon as-icon-share-square"></i>
 				</span>
-				<span class="bp-screen-reader-text-"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
+				<span class="bp-screen-reader-text-"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
 				<span id="bp-activity-reshare-count-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html( $share_count ); ?></span>
 			</a>
 		</div>
@@ -433,7 +433,7 @@ class Buddypress_Share_Public {
 					<span class="bp-activity-reshare-icon">	
 						<i class="as-icon as-icon-share-square"></i>
 					</span>
-					<span class="bp-share-text"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
+					<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
 					<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() ); ?>" class="reshare-count bp-post-reshare-count"><?php echo esc_html( $share_count ); ?></span>
 				</a>
 			</div>
@@ -798,7 +798,7 @@ class Buddypress_Share_Public {
 				<span class="bp-activity-reshare-icon">	
 					<i class="as-icon as-icon-share-square"></i>
 				</span>
-				<span class="bp-share-text"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
+				<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
 				<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() ); ?>" class="reshare-count bp-post-reshare-count"><?php echo esc_html( $share_count ); ?></span>
 			</a>
 		</div>
