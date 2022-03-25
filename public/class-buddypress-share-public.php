@@ -124,7 +124,7 @@ class Buddypress_Share_Public {
 	public function bp_activity_share_button_dis() {
 		$all_services = get_site_option( 'bp_share_all_services_disable' );
 		if ( is_user_logged_in() && 'enable' === $all_services ) {
-			//add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
+			// add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 
 		}
 		if ( is_user_logged_in() ) {
@@ -142,7 +142,7 @@ class Buddypress_Share_Public {
 				<span class="bp-activity-reshare-icon">	
 					<i class="as-icon as-icon-share-square"></i>
 				</span>
-				<span class="bp-screen-reader-text-"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
+				<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
 				<span id="bp-activity-reshare-count-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html( $share_count ); ?></span>
 			</a>
 		</div>

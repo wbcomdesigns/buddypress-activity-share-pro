@@ -264,6 +264,10 @@ a.bp-activity-share-button {
     border-radius: 12px;
 }
 
+.activity-share-modal .bpsp-pinned-post-tag {
+    display: none;
+}
+
 .activity-share-modal .bp-activity-share-filter .form-item {
     margin: 0;
 }
