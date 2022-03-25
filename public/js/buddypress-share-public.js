@@ -163,6 +163,9 @@
 					var share_count = $( '#bp-activity-reshare-count-' + activity_id ).html();
 					
 					$( '#bp-activity-reshare-count-' + activity_id ).html( parseInt(share_count) + parseInt('1') );
+					if ( $( '#bp-activity-share-' + activity_id + ' .share-count' ).length != 0 ){
+						$( '#bp-activity-share-' + activity_id + ' .share-count' ).html( parseInt(share_count) + parseInt('1') );
+					}
 					
                 }
             });
