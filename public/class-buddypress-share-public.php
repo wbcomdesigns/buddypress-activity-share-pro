@@ -807,5 +807,17 @@ class Buddypress_Share_Public {
 		return ob_get_clean();
 	}
 
-
+	/**
+	 * Embed bp activity link preview data in rest api activity endpoint.
+	 *
+	 * @param  object $response get response data.
+	 * @param  object $request get request data.
+	 * @param  array  $activity get activity data.
+	 * @return $response
+	 */
+	public function bp_activity_post_reshare_data_embed_rest_api( $response, $request, $activity ) {
+		$bp_activity_link_data                     = bp_activity_get_meta( $activity->id, 'share_count', true );
+		$response->data['bp_activity_share_count'] = $bp_activity_link_data;
+		return $response;
+	}
 }

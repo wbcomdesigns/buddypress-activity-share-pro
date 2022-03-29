@@ -182,9 +182,9 @@ class Buddypress_Share {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-		$theme_support = apply_filters( 'buddyPress_reactions_theme_suuport', ['reign-theme', 'buddyx-pro'] );
-		$theme_name =  wp_get_theme();
-		
+		$theme_support = apply_filters( 'buddyPress_reactions_theme_suuport', array( 'reign-theme', 'buddyx-pro' ) );
+		$theme_name    = wp_get_theme();
+
 		$plugin_public = new Buddypress_Share_Public( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -192,15 +192,16 @@ class Buddypress_Share {
 		$this->loader->add_action( 'wp_head', $plugin_public, 'bp_share_opengraph', 999 );
 		$this->loader->add_action( 'bp_init', $plugin_public, 'bp_activity_share_button_dis' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'bp_activity_share_popup_box', 999 );
-		if( !in_array( $theme_name->template, $theme_support) ) {
+		if ( ! in_array( $theme_name->template, $theme_support ) ) {
 			$this->loader->add_filter( 'the_content', $plugin_public, 'bp_activity_post_share_button_action', 999 );
 		}
-		
+
 		$this->loader->add_action( 'bp_register_activity_actions', $plugin_public, 'bp_share_register_activity_actions' );
 		$this->loader->add_action( 'wp_ajax_bp_activity_create_reshare_ajax', $plugin_public, 'bp_activity_create_reshare_ajax' );
 		$this->loader->add_action( 'bp_activity_entry_content', $plugin_public, 'bp_activity_share_entry_content' );
-		
+
 		$this->loader->add_shortcode( 'bp_activity_post_reshare', $plugin_public, 'bp_activity_post_reshare' );
+		$this->loader->add_filter( 'bp_rest_activity_prepare_value', $plugin_public, 'bp_activity_post_reshare_data_embed_rest_api', 10, 3 );
 	}
 
 	/**
