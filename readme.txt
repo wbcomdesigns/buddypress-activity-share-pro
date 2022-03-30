@@ -5,7 +5,7 @@ Donate link: https://wbcomdesigns.com
 Tags: buddypress,activity,share
 Requires at least: 4.0
 Tested up to: 5.8.1
-Stable tag: 3.1.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,100 +107,6 @@ Please visit [wbcomdesigns] (http://wbcomdesigns.com/) for any query related to 
 3. The screenshot shows FAQ(s) related to BuddyPress Activity Social Share plugin and corresponds to screenshot-3.(jpg|jpeg|gif).
 
 == Changelog ==
-= 3.1.0 =
-* Fix: (#80) Removed unnecessary inline-style
-* Fix: (#80) Update backend UI and remove unnecessary inline-style
-* Fix: (#79) Fixed hide share button if services are not enabled
-* Fix: (#78) Fixed plugin redirect to page and display error
-* Fix: (#71) Managed share button UI with kleo
-* Fix: Fixed add new social link and sortable links
-* Fix: Implemented sortable social links functionality
-
-= 3.0.0 =
-* Fix: Updated backend UI
-
-= 2.9.1 =
-* Fix - Fixed social site and remove social site options
-
-= 2.8.0 =
-* Fix - Fixed missed esacping functions
-* Fix - Renamed plugin Title
-
-= 2.7.0 =
-* Enhancement - Added admin option for copy activity
-
-= 2.6.0 =
-* Enhancement - #54 Added Copy to Clipboard Functionality
-* Enhancement - Added Whatsapp Icon
-* Fix - #68 issues with BuddyBoss Theme
-
-= 2.5.0 =
-* Enhancement - Added support for BuddyBoss Platform
-* Fix - Removed default fallback to avatars
-
-= 2.4.0 =
-* Fix - Added admin notice for review
-
-= 2.3.0 =
-* Fix - update BuddyPress activation condition
-
-= 2.2.1 =
-* Fix - Removed Google+ Option as this is no more working. #39
-* Fix - Nouveau - improved UI of share button. #49
-
-= 2.2.0 =
-* Fix - Removed font-awesome 5.0 #37
-
-= 2.1.0 =
-* Fix - Fixed single page error. #34
-* Enhancement - Add setting for user open graph enable/disable. #35
-
-= 2.0.1 =
-* Fix - Compatibility with BuddyPress 4.3.0. #33
-
-= 2.0.0 =
-* Enhancement - Improve Backend UI where you can manage all wbcom plugin's settings at one place. #31
-
-= 1.2.2 =
-* Fix - Compatibility with BuddyPress 4.1.0. #29
-
-= 1.2.1 =
-* Fix - Share on wordpress and email popup fix.
-
-= 1.2.0 =
-* Fix - BuddyPress 3.1.0 Compatible
-
-= 1.1.0 =
-* Fix - Multisite Support
-
-= 1.0.7 =
-* Fix - Enqueue position of admin css and js files
-
-= 1.0.6 =
-* Fix - Extra content display on single post pages
-
-= 1.0.5 =
-* Fixing FB shares
-
-= 1.0.4 =
-* Fixed missing thumbnail after share activity post.
-* Fix - Remove glitch on click of share icon.
-* Enhancement - Provide filter to change 'Share' button text.
-* Enhancement - Provide filter to add new social service' in front end.
-* Enhancement - Change view of social share button icons.
-* Enhancement - Added post content for activity share on facebook and google plus.
-
-= 1.0.3 =
-* Fix - Translation Fixes
-* Enhancement - Enable sharing for logged out users
-* Enhancement - Allow to add more social icons
-
-= 1.0.2 =
-* Third Version.
-
-= 1.0.1 =
-* Second Version.
-
 = 1.0.0 =
 * first version.
 
