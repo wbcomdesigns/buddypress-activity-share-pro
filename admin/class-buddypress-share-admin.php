@@ -137,7 +137,7 @@ class Buddypress_Share_Admin {
 		$bpas_tabs = array(
 			'bpas_welcome'          => esc_html__( 'Welcome', 'buddypress-share' ),
 			'bpas_general_settings' => esc_html__( 'General Settings', 'buddypress-share' ),
-			'bpas_reshare_settings' => esc_html__( 'Reshare Settings', 'buddypress-share' ),
+			'bpas_reshare_settings' => esc_html__( 'Share Settings', 'buddypress-share' ),
 		);
 		$tab_html  = '<div class="wbcom-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
 		foreach ( $bpas_tabs as $bpas_tab => $bpas_name ) {
@@ -716,7 +716,7 @@ class Buddypress_Share_Admin {
 		<div class="wbcom-tab-content">
 			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
 				<?php wp_nonce_field( 'update-options' ); ?>
-				<h3><?php esc_html_e( 'Reshare Settings', 'buddypress-share' ); ?></h3>
+				<h3><?php esc_html_e( 'Share Settings', 'buddypress-share' ); ?></h3>
 				<table cellspacing="0" class="form-table">
 					<tbody>
 						<tr>
@@ -755,7 +755,7 @@ class Buddypress_Share_Admin {
 						
 						<tr>
 							<th scope="row">
-								<label><?php esc_html_e( 'Disable Post reShare Activity', 'buddypress-share' ); ?></label>
+								<label><?php esc_html_e( 'Disable Post Share Activity', 'buddypress-share' ); ?></label>
 							</th>
 							<td>
 								<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_post_reshare_activity]" value="1" 
