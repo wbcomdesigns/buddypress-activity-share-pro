@@ -218,7 +218,7 @@ add_action( 'activated_plugin', 'bpshare_pro_activation_redirect_settings' );
  * Redirect to plugin settings page after activated
  */
 function bpshare_pro_activation_redirect_settings( $plugin ) {
-	if ( class_exists( 'BuddyPress' ) ) {
+	if ( class_exists( 'BuddyPress' ) && !isset($_GET['tgmpa'])) {
 		if ( $plugin === plugin_basename( __FILE__ ) ) {
 			wp_redirect( admin_url( 'admin.php?page=buddypress-share' ) );
 			exit;
