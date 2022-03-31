@@ -8,6 +8,12 @@
 /* Layout helpers
 ----------------------------------*/
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 .ui-helper-hidden {
     display: none;
 }

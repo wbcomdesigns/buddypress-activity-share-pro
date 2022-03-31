@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-30 13:32:11+00:00\n"
+"POT-Creation-Date: 2022-03-31 09:16:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,68 +28,64 @@ msgstr ""
 msgid "Wbcom Designs - BuddyPress Activity Social Share"
 msgstr ""
 
-#: admin/bp-welcome-page.php:19
-msgid ""
-"BuddyPress Activity Social Share plugin allows users to share activity "
-"“Post Updates” to their social networking profiles."
-msgstr ""
-
 #: admin/bp-welcome-page.php:20
 msgid ""
-"This plugin adds the option ‘Share’ to BuddyPress Activity in post updates "
-"section parallel to the ‘Comment’, ‘Favorite’ and ‘Delete’ option."
-msgstr ""
-
-#: admin/bp-welcome-page.php:28
-msgid "Help &amp; Support Resources"
+"BP activity social share pro helps you to share your BP activities on "
+"social media. It also allows resharing the BuddyPress activities, WordPress "
+"posts on your website that helps to boost your activities, blog posts "
+"around the social network."
 msgstr ""
 
 #: admin/bp-welcome-page.php:29
+msgid "Help &amp; Support Resources"
+msgstr ""
+
+#: admin/bp-welcome-page.php:30
 msgid ""
 "Here are all the resources you may need to get help from us. Documentation "
 "is usually the best place to start. Should you require help anytime, our "
 "customer care team is available to assist you at the support center."
 msgstr ""
 
-#: admin/bp-welcome-page.php:35
+#: admin/bp-welcome-page.php:36
 msgid "Documentation"
 msgstr ""
 
-#: admin/bp-welcome-page.php:36
+#: admin/bp-welcome-page.php:37
 msgid ""
-"We have prepared an extensive guide on BuddyPress Activity Social Share to "
-"learn all aspects of the plugin. You will find most of your answers here."
+"We have prepared an extensive guide on BuddyPress Activity Social Share Pro "
+"to learn all aspects of the plugin. You will find most of your answers here."
 msgstr ""
 
-#: admin/bp-welcome-page.php:37
+#: admin/bp-welcome-page.php:38
 msgid "Read Documentation"
 msgstr ""
 
-#: admin/bp-welcome-page.php:41
+#: admin/bp-welcome-page.php:42
 msgid "Support Center"
 msgstr ""
 
-#: admin/bp-welcome-page.php:42
+#: admin/bp-welcome-page.php:43
 msgid ""
 "We strive to offer the best customer care via our support center. Once your "
 "theme is activated, you can ask us for help anytime."
 msgstr ""
 
-#: admin/bp-welcome-page.php:43
+#: admin/bp-welcome-page.php:44
 msgid "Get Support"
 msgstr ""
 
-#: admin/bp-welcome-page.php:47
+#: admin/bp-welcome-page.php:48
 msgid "Got Feedback?"
 msgstr ""
 
-#: admin/bp-welcome-page.php:48
+#: admin/bp-welcome-page.php:49
 msgid ""
 "We want to hear about your experience with the plugin. We would also love "
 "to hear any suggestions you may for future updates."
 msgstr ""
 
-#: admin/bp-welcome-page.php:49
+#: admin/bp-welcome-page.php:50
 msgid "Send Feedback"
 msgstr ""
 
@@ -355,7 +351,7 @@ msgid "a second"
 msgstr ""
 
 #: admin/class-buddypress-share-feedback.php:271
-#: admin/class-buddypress-share-feedback.php:311 buddypress-share.php:191
+#: admin/class-buddypress-share-feedback.php:311 buddypress-share.php:201
 msgid "BuddyPress Activity Social Share"
 msgstr ""
 
@@ -763,27 +759,27 @@ msgstr ""
 msgid "Our Themes"
 msgstr ""
 
-#: admin/wbcom/wbcom-admin-settings.php:505 buddypress-share.php:66
+#: admin/wbcom/wbcom-admin-settings.php:505 buddypress-share.php:75
 msgid "Settings"
 msgstr ""
 
-#: buddypress-share.php:141 buddypress-share.php:159
+#: buddypress-share.php:150 buddypress-share.php:168
 msgid ""
 "BuddyPress Activity Social Share requires to be activated on the blog where "
 "BuddyPress is activated."
 msgstr ""
 
-#: buddypress-share.php:145 buddypress-share.php:168
+#: buddypress-share.php:154 buddypress-share.php:177
 msgid ""
 "BuddyPress Activity Social Share and BuddyPress need to share the same "
 "network configuration."
 msgstr ""
 
-#: buddypress-share.php:192
+#: buddypress-share.php:202
 msgid "BuddyPress"
 msgstr ""
 
-#: buddypress-share.php:196
+#: buddypress-share.php:206
 #. translators: 1: Name of the plugin 2: Name of the dependent plugin
 msgid "%1$s is ineffective now as it requires %2$s to be installed and active."
 msgstr ""

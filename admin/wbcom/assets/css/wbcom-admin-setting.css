@@ -1,5 +1,11 @@
 /* Admin Header Style: Start */
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 #wb_admin_header {
     background: #fff;
     border-bottom: 1px solid #e8e8e8;
