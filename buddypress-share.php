@@ -217,14 +217,21 @@ function bpshare_activation_redirect_settings( $plugin ) {
 }
 
 
-add_filter('bp_activity_reshare_post_type', 'bp_activity_reshare_post_disable' );
+add_filter( 'bp_activity_reshare_post_type', 'bp_activity_reshare_post_disable' );
 function bp_activity_reshare_post_disable( $post_type ) {
 	$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
-	if(isset($bp_reshare_settings['disable_post_reshare_activity']) && $bp_reshare_settings['disable_post_reshare_activity'] == 1){
-		
-		if (($key = array_search('post', $post_type)) !== false) {
-			unset($post_type[$key]);
+	if ( isset( $bp_reshare_settings['disable_post_reshare_activity'] ) && $bp_reshare_settings['disable_post_reshare_activity'] == 1 ) {
+
+		if ( ( $key = array_search( 'post', $post_type ) ) !== false ) {
+			unset( $post_type[ $key ] );
 		}
-	}	
+	}
 	return $post_type;
 }
+
+require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';
+$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+	'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-activity-social-share-pro.json',
+	__FILE__, // Full path to the main plugin file or functions.php.
+	'buddypress-activity-social-share-pro'
+);
