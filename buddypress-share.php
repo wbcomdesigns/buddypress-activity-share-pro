@@ -43,8 +43,8 @@ if ( ! defined( 'BP_SHARE' ) ) {
  * @since    1.0.0
  */
 function activate_buddypress_share_pro() {
-	
-	if(in_array( 'buddypress-activity-social-share/buddypress-share.php', apply_filters('active_plugins', get_option('active_plugins')))){ 
+
+	if ( in_array( 'buddypress-activity-social-share/buddypress-share.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		deactivate_plugins( 'buddypress-activity-social-share/buddypress-share.php' );
 	}
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-buddypress-share-activator.php';
@@ -57,7 +57,7 @@ register_activation_hook( __FILE__, 'activate_buddypress_share_pro' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-if ( !class_exists( 'Buddypress_Share' ) ) {
+if ( ! class_exists( 'Buddypress_Share' ) ) {
 	require plugin_dir_path( __FILE__ ) . 'includes/class-buddypress-share.php';
 }
 
@@ -70,7 +70,7 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bp_activity_s
  * @desc Adds the Settings link to the plugin activate/deactivate page
  */
 function bp_activity_share_pro_plugin_actions( $links, $file ) {
-	
+
 	if ( class_exists( 'BuddyPress' ) ) {
 		$settings_link = '<a href="' . admin_url( 'admin.php?page=buddypress-share' ) . '">' . esc_html__( 'Settings', 'buddypress-share' ) . '</a>';
 		array_unshift( $links, $settings_link ); // before other links.
@@ -186,8 +186,8 @@ function bpshare_pro_requires_buddypress() {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		add_action( 'admin_notices', 'bpshare_pro_required_plugin_admin_notice' );
 		unset( $_GET['activate'] );
-	}	
-	
+	}
+
 }
 
 add_action( 'admin_init', 'bpshare_pro_requires_buddypress' );
