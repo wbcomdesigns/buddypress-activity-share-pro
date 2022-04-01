@@ -99,7 +99,7 @@ class Buddypress_Share_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-		 
+		global $bp_reshare_settings;
 		$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
 		$reshare_share_activity = isset( $bp_reshare_settings['reshare_share_activity'] )  ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
 		
@@ -659,7 +659,13 @@ class Buddypress_Share_Public {
 	}
 
 	public function bp_activity_share_entry_content() {
-		global $activities_template;
+		global $activities_template, $bp_reshare_settings;
+		
+		if ( !empty($bp_reshare_settings)) {
+			$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
+		}
+		$reshare_share_activity = isset( $bp_reshare_settings['reshare_share_activity'] )  ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
+		
 
 		$activity_id   = $activities_template->activity->id;
 		$activity_type = $activities_template->activity->type;
@@ -671,6 +677,9 @@ class Buddypress_Share_Public {
 			add_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
 			$_REQUEST['search_terms'] = $secondary_item_id;
 			if ( bp_has_activities( $args ) ) {
+				if ( $reshare_share_activity == 'parent' ) {
+					remove_action( 'bp_activity_entry_content', array($this, 'bp_activity_share_entry_content') );
+				}
 				while ( bp_activities() ) :
 					bp_the_activity();
 					?>
@@ -698,20 +707,23 @@ class Buddypress_Share_Public {
 								<?php endif; ?>
 
 							</div>
-							<div class="content-action">
+							<!--div class="content-action">
 								<div class="meta-line">
 									<p class="meta-line-text"><?php // echo wbcom_get_comment_count( bp_get_activity_id() ) . ' ' . esc_html( 'Comments' ); ?></p>
 								</div>
 								<div class="meta-line">
 									<p class="meta-line-text"><?php // echo wbcom_get_share_count( bp_get_activity_id() ) . ' ' . esc_html( 'Share' ); ?></p>
 								</div>
-							</div>
+							</div-->
 						</div>
 					</div>					
 					<?php
 				endwhile;
 			}
 			remove_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
+			if ( $reshare_share_activity == 'parent' ) {
+				add_action( 'bp_activity_entry_content', array($this, 'bp_activity_share_entry_content') );
+			}
 
 			$activities_template = $temp_activities_template;
 		}
