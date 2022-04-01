@@ -117,6 +117,11 @@
 						activity_id = $(this).attr( 'id' ).split("bp-reshare-activity-");
 						activity_id = activity_id[1];						
 						activity_html = $(this).html();
+						if ( $(this).hasClass('post-reshare-item-container')) {
+							$('#bp-reshare-type').val('post_share');
+						} else {
+							$('#bp-reshare-type').val('activity_share');
+						}
 					}) 
 				}
 			}
