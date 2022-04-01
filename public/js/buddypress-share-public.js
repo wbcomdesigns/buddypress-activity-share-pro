@@ -105,12 +105,20 @@
 			e.preventDefault();
 			var activity_id = '';
 			var activity_html = '';
+			var reshare_share_activity = bp_activity_sjare_vars.reshare_share_activity;
 			
 			 if ( typeof $(this).data( 'post-id' ) !== 'undefined' && $(this).data( 'post-id' ) != '' ) {
 				activity_id = $(this).data( 'post-id' );
 			} else {
 				activity_id = $(this).data('activity-id');
 				activity_html = $('#activity-' + activity_id).html();
+				if ( reshare_share_activity == 'child') {
+					$('#activity-' + activity_id + ' .activity-reshare-item-container').each( function(){
+						activity_id = $(this).attr( 'id' ).split("bp-reshare-activity-");
+						activity_id = activity_id[1];						
+						activity_html = $(this).html();
+					}) 
+				}
 			}
 
             $('#activity-share-modal').on('shown.bs.modal', function() {
@@ -119,12 +127,17 @@
 
             $('#bp-reshare-activity-id').val(activity_id);
             if (activity_html != '') {
+				
                 var activity_ul_class = $('#activity-stream ul').attr('class');
                 var activity_li_class = $('#activity-stream ul li#activity-' + activity_id).attr('class');
                 $('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').addClass('');
                 $('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').addClass(activity_ul_class);
                 $('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').html('');
                 $('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').html('<div class="' + activity_li_class + '">' + activity_html + '</div>');
+				
+				if ( reshare_share_activity == 'parent') {
+					$('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').find('.activity-reshare-item-container').remove();
+				}
             }
 
             $('#activity-share-modal .modal-body .activity-meta, #activity-share-modal .modal-body .post-footer, #activity-share-modal .modal-body .activity-comments, #activity-share-modal .modal-body .entry-button-wraper, #activity-share-modal .modal-body .bp-activity-post-footer').remove();

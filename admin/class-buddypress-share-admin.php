@@ -553,6 +553,7 @@ class Buddypress_Share_Admin {
 
 	public function bpas_reshare_setting_section() {
 		$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
+		$bp_reshare_settings['reshare_share_activity'] = isset( $bp_reshare_settings['reshare_share_activity'] )  ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
 		?>
 		<div class="wbcom-tab-content">
 			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
@@ -604,6 +605,26 @@ class Buddypress_Share_Admin {
 								if ( isset( $bp_reshare_settings['disable_post_reshare_activity'] ) && $bp_reshare_settings['disable_post_reshare_activity'] == 1 ) :
 									?>
 									checked <?php endif; ?> />
+							</td>
+						</tr>
+						
+						<tr>
+							<th scope="row">
+								<label><?php esc_html_e( 'Reshare share Activity', 'buddypress-share' ); ?></label>
+							</th>
+							<td>
+								<ul>
+									<li>
+										<label>
+											<input type="radio" name="bp_reshare_settings[reshare_share_activity]" value="parent" <?php checked( 'parent', $bp_reshare_settings['reshare_share_activity']);?> />&nbsp;<?php esc_html_e( 'Parent', 'buddypress-share');?>
+										</label>
+									</li>
+									<li>
+										<label>
+											<input type="radio" name="bp_reshare_settings[reshare_share_activity]" value="child" <?php checked( 'child', $bp_reshare_settings['reshare_share_activity']);?> />&nbsp;<?php esc_html_e( 'Child', 'buddypress-share');?>
+										</label>
+									</li>									
+								</ul>								
 							</td>
 						</tr>
 

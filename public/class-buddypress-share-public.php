@@ -99,6 +99,10 @@ class Buddypress_Share_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
+		 
+		$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
+		$reshare_share_activity = isset( $bp_reshare_settings['reshare_share_activity'] )  ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
+		
 		wp_enqueue_script( 'jquery-ui-tooltip' );
 		wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( 'select2-js', plugin_dir_url( __FILE__ ) . 'js/select2.min.js', array( 'jquery' ), $this->version, false );
@@ -108,9 +112,10 @@ class Buddypress_Share_Public {
 			$this->plugin_name,
 			'bp_activity_sjare_vars',
 			array(
-				'ajax_url'        => admin_url( 'admin-ajax.php' ),
-				'current_user_id' => get_current_user_id(),
-				'ajax_nonce'      => wp_create_nonce( 'bp-activity-share-nonce' ),
+				'ajax_url'        		=> admin_url( 'admin-ajax.php' ),
+				'current_user_id' 		=> get_current_user_id(),
+				'reshare_share_activity'=> $reshare_share_activity,
+				'ajax_nonce'      		=> wp_create_nonce( 'bp-activity-share-nonce' ),
 			)
 		);
 	}
@@ -669,7 +674,7 @@ class Buddypress_Share_Public {
 				while ( bp_activities() ) :
 					bp_the_activity();
 					?>
-					<div class="activity-reshare-item-container"> 
+					<div id="bp-reshare-activity-<?php echo bp_get_activity_id();?>" class="activity-reshare-item-container"> 
 						<div class="activity-item"> 
 							<div class="activity-avatar item-avatar">
 								<a href="<?php bp_activity_user_link(); ?>">
