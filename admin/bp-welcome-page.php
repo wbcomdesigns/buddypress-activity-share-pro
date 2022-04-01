@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="wbcom-tab-content">
 	<div class="wbcom-welcome-main-wrapper">
 		<div class="wbcom-welcome-head">
-			<h2 class="wbcom-welcome-title"><?php esc_html_e( 'Wbcom Designs - BuddyPress Activity Social Share', 'buddypress-share' ); ?></h2>
+			<h2 class="wbcom-welcome-title"><?php esc_html_e( 'Wbcom Designs - BuddyPress Activity Social Share Pro', 'buddypress-share' ); ?></h2>
 			<p class="wbcom-welcome-description">
 				<?php esc_html_e( 'BP activity social share pro helps you to share your BP activities on social media. It also allows resharing the BuddyPress activities, WordPress posts on your website that helps to boost your activities, blog posts around the social network.', 'buddypress-share' ); ?>
 			</p>
