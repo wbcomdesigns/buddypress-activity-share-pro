@@ -35,12 +35,20 @@
             $(this).parent().parent().next(".service-buttons").toggle(500);			
 			if ( $(this).parent().parent().next().next(".bp-share-service-popup-overlay").length) {
 				$(this).parent().parent().next().next(".bp-share-service-popup-overlay").show();
-			}            
+			}
+			
+			if ( $(this).parent().parent().parent(".bp-activity-more-options-wrap").length) {
+				$(this).parent().parent().parent().addClass('bp-activity-share-popup-open');
+			}
+			
         });
 		
 		$(document).on('click', ".bp-share-service-popup-overlay", function(e) {
 			$(this).hide();
-			$('.service-buttons').hide();            
+			$('.service-buttons').hide();
+			if ($('.bp-activity-more-options-wrap').hasClass( 'bp-activity-share-popup-open' ) ) {
+				$('.bp-activity-more-options-wrap').removeClass('bp-activity-share-popup-open');
+			}
             
         });
         $(document).on("click", ".bp-share.has-popup", function(e) {
