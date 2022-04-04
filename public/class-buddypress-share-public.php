@@ -133,7 +133,7 @@ class Buddypress_Share_Public {
 		$theme_name    = wp_get_theme();
 		
 		if ( is_user_logged_in() && 'enable' === $all_services ) {
-			if ( in_array( $theme_name->template, $theme_support )) {				
+			if ( in_array( $theme_name->template, $theme_support )) {
 				add_action( 'bp_activity_entry_dropdown_toggle_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 				add_action( 'bp_activity_entry_top_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 			} else {
@@ -184,12 +184,20 @@ class Buddypress_Share_Public {
 		if ( isset( $updated_text ) ) {
 			$share_button_text = $updated_text;
 		}
+		
+		$theme_support = apply_filters( 'buddyPress_reactions_theme_suuport', array( 'reign-theme', 'buddyx-pro' ) );
+		$theme_name    = wp_get_theme();
+		
+		$bp_share_class = '';
+		if ( in_array( $theme_name->template, $theme_support )) {
+			$bp_share_class = 'bp-share-service-popup';
+		}
 		?>
 		<div class="bp-share-btn generic-button">
 			<a class="button item-button bp-secondary-action bp-share-button" rel="nofollow"><span><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span></a>
 		</div>
 		</div>
-		<div class="service-buttons <?php echo esc_html( $activity_type ); ?>" style="display: none;">
+		<div class="service-buttons <?php echo esc_html( $activity_type . ' ' . $bp_share_class ); ?>" style="display: none;">
 		<?php
 		if ( ! empty( $service ) ) {
 			foreach ( $service as $key => $value ) {
@@ -238,6 +246,10 @@ class Buddypress_Share_Public {
 			do_action( 'bp_share_user_services', $services = array(), $activity_link, $activity_title );
 		?>
 		</div>
+		<?php if ( in_array( $theme_name->template, $theme_support )) { ?>
+			<div class="bp-share-service-popup-overlay"></div>
+		<?php }?>
+		
 		<div>
 			<script>
 				jQuery( document ).ready( function () {
