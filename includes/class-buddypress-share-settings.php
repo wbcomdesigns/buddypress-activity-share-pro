@@ -254,6 +254,7 @@ class Buddypress_Share_Options_Page {
 											<option value="bp_share_pocket"><?php esc_html_e( 'Pocket', 'buddypress-share' ); ?></option>
 											<option value="bp_share_email"><?php esc_html_e( 'Email', 'buddypress-share' ); ?></option>
 											<option value="bp_share_whatsapp"><?php esc_html_e( 'Whatsapp', 'buddypress-share' ); ?></option>
+											<option value="bp_copy_activity"><?php esc_html_e( 'Copy', 'buddypress-share' ); ?></option>
 										</select>
 									</div>
 									<p class="error_service error_service_selector"><?php esc_html_e( 'This field is required!', 'buddypress-share' ); ?></p>
@@ -327,8 +328,10 @@ class Buddypress_Share_Options_Page {
 											</div>
 											<div class="active second plugin-version-author-uri">
 											</div>
-										</td>									
-										<td class="service_delete bp-share-td"><p class="service_delete_icon" data-bind="<?php echo esc_attr( $service_key ); ?>"><i class="fa fa-window-close"></i></p></td>									
+										</td>
+									<?php if ( 'bp_copy_activity' !== $service_key ) : ?>
+										<td class="service_delete bp-share-td"><p class="service_delete_icon" data-bind="<?php echo esc_attr( $service_key ); ?>"><i class="fa fa-window-close"></i></p></td>
+									<?php endif; ?>
 									</tr>
 									<?php
 							}

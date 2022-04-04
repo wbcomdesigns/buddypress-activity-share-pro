@@ -57,7 +57,14 @@ class Buddypress_Share_Activator {
 							'service_icon'          => 'fa fa-whatsapp',
 							'service_description'   => esc_html__( 'WhatsApp Messenger, or simply WhatsApp, is an American freeware, cross-platform messaging and Voice over IP (VoIP) service owned by Facebook, Inc.', 'buddypress-share' ),
 						),
-						
+
+						'bp_copy_activity'  => array(
+							'chb_bp_copy_activity' => 0,
+							'service_name'         => esc_html__( 'Copy Activity', 'buddypress-share' ),
+							'service_icon'         => 'fa fa-copy',
+							'service_description'  => esc_html__( 'Enable this option to copy activity.', 'buddypress-share' ),
+						),
+
 						// "bp_share_google_plus" => array(
 						// "chb_bp_share_google_plus" => 1,
 						// "service_name" => esc_html__( 'Google Plus', 'buddypress-share' ),
@@ -97,11 +104,27 @@ class Buddypress_Share_Activator {
 						'service_description'   => esc_html__( 'WhatsApp Messenger, or simply WhatsApp, is an American freeware, cross-platform messaging and Voice over IP (VoIP) service owned by Facebook, Inc.', 'buddypress-share' ),
 					);
 
+					$copy_activity = array(
+						'chb_bp_copy_activity' => 0,
+						'service_name'         => esc_html__( 'Copy Activity', 'buddypress-share' ),
+						'service_icon'         => 'fa fa-copy',
+						'service_description'  => esc_html__( 'Enable this option to copy activity.', 'buddypress-share' ),
+					);
+
+					// $google_plus = array(
+					// "chb_bp_share_google_plus" => 1,
+					// "service_name" => esc_html__( 'Google Plus', 'buddypress-share' ),
+					// "service_icon" => "fa fa-google-plus",
+					// "service_description" => esc_html__( 'Google Plus is an interest-based social network that is owned and operated by Google.', 'buddypress-share' )
+					// );
+
 					foreach ( $services as $key => $value ) {
 						$services['bp_share_facebook'] = $facebook;
 						$services['bp_share_twitter']  = $twitter;
 						$services['bp_share_linkedin'] = $linkedin;
 						$services['bp_share_whatsapp'] = $whatsapp;
+						$services['bp_copy_activity']  = $copy_activity;
+						// $services['bp_share_google_plus'] = $google_plus;
 					}
 
 					update_site_option( 'bp_share_services', $services );
@@ -136,7 +159,13 @@ class Buddypress_Share_Activator {
 						'service_description'   => esc_html__( 'WhatsApp Messenger, or simply WhatsApp, is an American freeware, cross-platform messaging and Voice over IP (VoIP) service owned by Facebook, Inc.', 'buddypress-share' ),
 
 					),
-					
+
+					'bp_copy_activity'  => array(
+						'chb_bp_copy_activity' => 0,
+						'service_name'         => esc_html__( 'Copy Activity', 'buddypress-share' ),
+						'service_icon'         => 'fa fa-copy',
+						'service_description'  => esc_html__( 'Enable this option to copy activity.', 'buddypress-share' ),
+					),
 				);
 
 				// The option hasn't been added yet. We'll add it with $autoload set to 'no'.
