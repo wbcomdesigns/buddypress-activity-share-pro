@@ -182,7 +182,10 @@ class Buddypress_Share_Admin {
 						'service_icon'        => "$service_faw",
 						'service_description' => "$service_description",
 					);
-					$services[ $service_value ]   = $new_value;					
+					$bp_copy_activity = $services['bp_copy_activity'];
+					unset( $services['bp_copy_activity'] );
+					$services[ $service_value ]   = $new_value;
+					$services['bp_copy_activity'] = $bp_copy_activity;
 					update_site_option( $option_name, $services );
 				}
 			} else {
