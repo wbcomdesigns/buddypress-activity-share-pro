@@ -32,7 +32,16 @@
     $(document).ready(function() {
 
         $(document).on('click', ".bp-share-button", function(e) {
-            $(this).parent().parent().next(".service-buttons").toggle(500);
+            $(this).parent().parent().next(".service-buttons").toggle(500);			
+			if ( $(this).parent().parent().next().next(".bp-share-service-popup-overlay").length) {
+				$(this).parent().parent().next().next(".bp-share-service-popup-overlay").show();
+			}            
+        });
+		
+		$(document).on('click', ".bp-share-service-popup-overlay", function(e) {
+			$(this).hide();
+			$('.service-buttons').hide();            
+            
         });
         $(document).on("click", ".bp-share.has-popup", function(e) {
             var display_attr = $(this).attr('attr-display');
