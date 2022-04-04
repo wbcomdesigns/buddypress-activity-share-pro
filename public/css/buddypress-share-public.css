@@ -32,6 +32,12 @@
     text-align: center;
 }
 
+.activity ul li .activity-meta .service-buttons a.bp-share .fa-stack {
+    width: auto;
+    height: auto;
+    line-height: 1;
+}
+
 .activity ul li .activity-meta .service-buttons a.bp-share:hover {
     background: none !important;
 }
