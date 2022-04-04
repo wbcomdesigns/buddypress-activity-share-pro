@@ -2,6 +2,7 @@
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
 # Global
+# Activity Share Popup
 # Activity Reshare
 # Themes Specific
     # BuddyBoss
@@ -162,6 +163,43 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
 
 .tooltip-hide {
     display: none;
+}
+
+
+/*--------------------------------------------------------------
+# Activity Share Popup
+--------------------------------------------------------------*/
+
+.bp-share-service-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.03);
+    z-index: -1;
+    display: none;
+}
+
+.bp-share-service-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    transform: translateX(-50%);
+    z-index: 10;
+    width: calc(100% - 30px);
+    max-width: 550px;
+    background-color: #fff;
+    margin: auto;
+    padding: 30px 15px;
+    box-shadow: 0px 10px 15px rgb(0 0 0 / 10%), 0px 4px 6px rgb(0 0 0 / 5%);
+    border-top: 3px solid #DC2626;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
