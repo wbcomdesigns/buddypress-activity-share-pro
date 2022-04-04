@@ -128,8 +128,16 @@ class Buddypress_Share_Public {
 	 */
 	public function bp_activity_share_button_dis() {
 		$all_services = get_site_option( 'bp_share_all_services_disable' );
+		
+		$theme_support = apply_filters( 'buddyPress_reactions_theme_suuport', array( 'reign-theme', 'buddyx-pro' ) );
+		$theme_name    = wp_get_theme();
+		
 		if ( is_user_logged_in() && 'enable' === $all_services ) {
-			// add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
+			if ( in_array( $theme_name->template, $theme_support )) {				
+				add_action( 'bp_activity_entry_dropdown_toggle_meta', array( $this, 'bp_share_activity_filter' ), 999 );
+			} else {
+				add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
+			}
 
 		}
 		if ( is_user_logged_in() ) {
@@ -461,8 +469,11 @@ class Buddypress_Share_Public {
 
 		if ( is_user_logged_in() && ( is_buddypress() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) || apply_filters( 'bp_activity_reshare_action', false ) ) ) {
 			$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
-
-			$groups  = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
+			
+			$groups = [];
+			if ( bp_is_active( 'groups' ) ) {
+				$groups  = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
+			}
 			$friends = friends_get_friend_user_ids( bp_loggedin_user_id() );
 			?>
 			
