@@ -132,10 +132,7 @@ a.bp-share.has-popup {
 
 .bp-nouveau #buddypress .activity-list .activity-item .activity-meta .bp-share-button {
     background: none;
-    /*color: inherit;*/
-    font-size: inherit;
     margin: 0;
-    padding: 0;
     border: 0;
     box-shadow: none;
     display: -webkit-box;
