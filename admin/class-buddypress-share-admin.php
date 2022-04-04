@@ -603,7 +603,7 @@ class Buddypress_Share_Admin {
 											<option value="bp_share_pocket"><?php esc_html_e( 'Pocket', 'buddypress-share' ); ?></option>
 											<option value="bp_share_email"><?php esc_html_e( 'Email', 'buddypress-share' ); ?></option>
 											<option value="bp_share_whatsapp"><?php esc_html_e( 'Whatsapp', 'buddypress-share' ); ?></option>
-											<option value="bp_copy_activity"><?php esc_html_e( 'Copy', 'buddypress-share' ); ?></option>
+											<option value="bp_copy_activity" style="display:none"><?php esc_html_e( 'Copy', 'buddypress-share' ); ?></option>
 										</select>
 									</div>
 									<p class="error_service error_service_selector"><?php esc_html_e( 'This field is required!', 'buddypress-share' ); ?></p>
