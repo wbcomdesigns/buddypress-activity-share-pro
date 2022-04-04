@@ -495,17 +495,15 @@ class Buddypress_Share_Admin {
 			$count        = 0;
 			$new_settings = array();
 			foreach ( $services as $key => $service ) {
-				foreach ( $sorts as $srt ) {
-					if ( 'chb_bp_copy_activity' !== $srt['key'] ) {
-						if ( (int) $count === (int) $srt['newIndex'] ) {
-							$setting_key                  = str_replace( 'chb_', '', $srt['key'] );
-							$new_settings[ $setting_key ] = $services[ $setting_key ];
-						}
+				foreach ( $sorts as $srt ) {					
+					if ( (int) $count === (int) $srt['newIndex'] ) {
+						$setting_key                  = str_replace( 'chb_', '', $srt['key'] );
+						$new_settings[ $setting_key ] = $services[ $setting_key ];
 					}
+					
 				}
 				$count++;
-			}
-			$new_settings['bp_copy_activity'] = $services['bp_copy_activity'];
+			}			
 			update_site_option( 'bp_share_services', $new_settings );
 		}
 		exit();
@@ -584,7 +582,6 @@ class Buddypress_Share_Admin {
 											<option value="bp_share_pocket"><?php esc_html_e( 'Pocket', 'buddypress-share' ); ?></option>
 											<option value="bp_share_email"><?php esc_html_e( 'Email', 'buddypress-share' ); ?></option>
 											<option value="bp_share_whatsapp"><?php esc_html_e( 'Whatsapp', 'buddypress-share' ); ?></option>
-											<option value="bp_copy_activity"><?php esc_html_e( 'Copy', 'buddypress-share' ); ?></option>
 										</select>
 									</div>
 									<p class="error_service error_service_selector"><?php esc_html_e( 'This field is required!', 'buddypress-share' ); ?></p>
@@ -656,10 +653,9 @@ class Buddypress_Share_Admin {
 											</div>
 											<div class="active second plugin-version-author-uri">
 											</div>
-										</td>
-									<?php if ( 'bp_copy_activity' !== $service_key ) : ?>
+										</td>									
 										<td class="service_delete bp-share-td"><p class="service_delete_icon" data-bind="<?php echo esc_attr( $service_key ); ?>"><i class="fa fa-window-close"></i></p></td>
-									<?php endif; ?>
+									
 									</tr>
 									<?php
 									$count++;
