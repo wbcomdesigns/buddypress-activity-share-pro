@@ -135,6 +135,7 @@ class Buddypress_Share_Public {
 		if ( is_user_logged_in() && 'enable' === $all_services ) {
 			if ( in_array( $theme_name->template, $theme_support )) {				
 				add_action( 'bp_activity_entry_dropdown_toggle_meta', array( $this, 'bp_share_activity_filter' ), 999 );
+				add_action( 'bp_activity_entry_top_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 			} else {
 				add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 			}
