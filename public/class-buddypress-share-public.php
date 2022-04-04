@@ -128,11 +128,12 @@ class Buddypress_Share_Public {
 	 */
 	public function bp_activity_share_button_dis() {
 		$all_services = get_site_option( 'bp_share_all_services_disable' );
+		$bp_share_services_enable = get_site_option( 'bp_share_services_enable' );
 		
 		$theme_support = apply_filters( 'buddyPress_reactions_theme_suuport', array( 'reign-theme', 'buddyx-pro' ) );
 		$theme_name    = wp_get_theme();
 		
-		if ( is_user_logged_in() && 'enable' === $all_services ) {
+		if ( is_user_logged_in() && 'enable' === $all_services && $bp_share_services_enable == 1 ) {
 			if ( in_array( $theme_name->template, $theme_support )) {
 				add_action( 'bp_activity_entry_dropdown_toggle_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 				add_action( 'bp_activity_entry_top_meta', array( $this, 'bp_share_activity_filter' ), 999 );

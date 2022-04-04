@@ -100,7 +100,8 @@ jQuery(function () {
 
 		// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
 		jQuery.post(my_ajax_object.ajax_url, data, function (response) {
-			location.reload();
+			//location.reload();
+			jQuery('form#bp_share_form').submit();
 		});
 		return false;
 	});

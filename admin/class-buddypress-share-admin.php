@@ -460,6 +460,12 @@ class Buddypress_Share_Admin {
 			update_site_option( 'bp_reshare_settings', $_POST['bp_reshare_settings'] );
 			wp_redirect( $_POST['_wp_http_referer'] );
 			exit();
+		}		
+		
+		if ( isset( $_POST['social_services_selector'] ) && ! defined( 'DOING_AJAX' ) ) {
+			update_site_option( 'bp_share_services_enable', (isset($_POST['bp_share_services_enable'])) ? $_POST['bp_share_services_enable'] : '' );
+			wp_redirect( $_POST['_wp_http_referer'] );
+			exit();
 		}
 	}
 
@@ -553,10 +559,23 @@ class Buddypress_Share_Admin {
 	 * @since    1.0.0
 	 */
 	public function bpas_general_setting_section() {
+		$bp_share_services_enable = get_site_option( 'bp_share_services_enable' );
 		?>
 		<div class="wbcom-tab-content">
 			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
 			<?php wp_nonce_field( 'update-options' ); ?>
+					<table cellspacing="0" class="form-table">
+						<tbody>
+							<tr>
+								<th scope="row">
+									<label for="bp_share_services_enable"><?php esc_html_e( 'Enable Social Share', 'buddypress-share' ); ?></label>
+								</th>
+								<td>
+									<input type="checkbox" name="bp_share_services_enable" id="bp_share_services_enable" value="1" <?php checked( '1', $bp_share_services_enable)?>/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 					<h3><?php esc_html_e( 'Add Social Services', 'buddypress-share' ); ?></h3>
 					<table cellspacing="0" class="add_share_services widefat plugins">
 						<thead>
