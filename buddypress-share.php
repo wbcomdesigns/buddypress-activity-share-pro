@@ -241,7 +241,7 @@ function bp_activity_reshare_post_disable( $post_type ) {
 
 require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-	'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-activity-social-share-pro.json',
+	'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-activity-share-pro.json',
 	__FILE__, // Full path to the main plugin file or functions.php.
-	'buddypress-activity-social-share-pro'
+	'buddypress-activity-share-pro'
 );

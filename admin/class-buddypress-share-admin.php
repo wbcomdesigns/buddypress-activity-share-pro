@@ -111,7 +111,7 @@ class Buddypress_Share_Admin {
 				<div class="bpss-header">
 					<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 					<h1 class="wbcom-plugin-heading">
-					<?php esc_html_e( 'BuddyPress Activity Social Share Pro Settings', 'buddypress-share' ); ?>
+					<?php esc_html_e( 'BuddyPress Activity Share Pro Settings', 'buddypress-share' ); ?>
 					</h1>
 				</div>
 				<div class="wbcom-admin-settings-page">
@@ -460,10 +460,10 @@ class Buddypress_Share_Admin {
 			update_site_option( 'bp_reshare_settings', $_POST['bp_reshare_settings'] );
 			wp_redirect( $_POST['_wp_http_referer'] );
 			exit();
-		}		
-		
+		}
+
 		if ( isset( $_POST['social_services_selector'] ) && ! defined( 'DOING_AJAX' ) ) {
-			update_site_option( 'bp_share_services_enable', (isset($_POST['bp_share_services_enable'])) ? $_POST['bp_share_services_enable'] : '' );
+			update_site_option( 'bp_share_services_enable', ( isset( $_POST['bp_share_services_enable'] ) ) ? $_POST['bp_share_services_enable'] : '' );
 			wp_redirect( $_POST['_wp_http_referer'] );
 			exit();
 		}
@@ -552,7 +552,7 @@ class Buddypress_Share_Admin {
 			require_once BP_ACTIVITY_SHARE_PLUGIN_PATH . 'admin/bp-welcome-page.php';
 		}
 	}
-	
+
 	/**
 	 * Social service settig template
 	 *
@@ -564,14 +564,16 @@ class Buddypress_Share_Admin {
 		<div class="wbcom-tab-content">
 			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
 			<?php wp_nonce_field( 'update-options' ); ?>
-					<table cellspacing="0" class="form-table">
+					<h3><?php esc_html_e( 'Show Social Services', 'buddypress-share' ); ?></h3>
+					<table cellspacing="0" class="widefat plugins">
 						<tbody>
 							<tr>
-								<th scope="row">
-									<label for="bp_share_services_enable"><?php esc_html_e( 'Enable Social Share', 'buddypress-share' ); ?></label>
-								</th>
+								<td scope="row" style="width: 222px">
+									<label for="bp_share_services_enable"><strong><?php esc_html_e( 'Enable Social Share', 'buddypress-share' ); ?></strong></label>
+								</td>
 								<td>
-									<input type="checkbox" name="bp_share_services_enable" id="bp_share_services_enable" value="1" <?php checked( '1', $bp_share_services_enable)?>/>
+									<input type="checkbox" name="bp_share_services_enable" id="bp_share_services_enable" value="1" <?php checked( '1', $bp_share_services_enable ); ?>/>
+									<p class="description"><?php esc_html_e( 'Enable this option to show share button in activity page more options.', 'buddypress-share' ); ?></p>
 								</td>
 							</tr>
 						</tbody>
@@ -723,7 +725,7 @@ class Buddypress_Share_Admin {
 		<?php
 	}
 
-	
+
 
 	/**
 	 * reshare settig template
@@ -732,8 +734,8 @@ class Buddypress_Share_Admin {
 	 */
 
 	public function bpas_reshare_setting_section() {
-		$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
-		$bp_reshare_settings['reshare_share_activity'] = isset( $bp_reshare_settings['reshare_share_activity'] )  ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
+		$bp_reshare_settings                           = get_site_option( 'bp_reshare_settings' );
+		$bp_reshare_settings['reshare_share_activity'] = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
 		?>
 		<div class="wbcom-tab-content">
 			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
@@ -796,12 +798,12 @@ class Buddypress_Share_Admin {
 								<ul>
 									<li>
 										<label>
-											<input type="radio" name="bp_reshare_settings[reshare_share_activity]" value="parent" <?php checked( 'parent', $bp_reshare_settings['reshare_share_activity']);?> />&nbsp;<?php esc_html_e( 'Parent', 'buddypress-share');?>
+											<input type="radio" name="bp_reshare_settings[reshare_share_activity]" value="parent" <?php checked( 'parent', $bp_reshare_settings['reshare_share_activity'] ); ?> />&nbsp;<?php esc_html_e( 'Parent', 'buddypress-share' ); ?>
 										</label>
 									</li>
 									<li>
 										<label>
-											<input type="radio" name="bp_reshare_settings[reshare_share_activity]" value="child" <?php checked( 'child', $bp_reshare_settings['reshare_share_activity']);?> />&nbsp;<?php esc_html_e( 'Child', 'buddypress-share');?>
+											<input type="radio" name="bp_reshare_settings[reshare_share_activity]" value="child" <?php checked( 'child', $bp_reshare_settings['reshare_share_activity'] ); ?> />&nbsp;<?php esc_html_e( 'Child', 'buddypress-share' ); ?>
 										</label>
 									</li>									
 								</ul>								
