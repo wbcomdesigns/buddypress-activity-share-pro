@@ -221,6 +221,10 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
 # Activity Reshare
 --------------------------------------------------------------*/
 
+.modal-header {
+    background: #fff;
+}
+
 .bp-activity-share-btn {
     display: inline-block;
 }
