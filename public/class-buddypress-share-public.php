@@ -488,7 +488,7 @@ class Buddypress_Share_Public {
 			if ( bp_is_active( 'groups' ) ) {
 				$groups  = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
 			}
-			$friends = friends_get_friend_user_ids( bp_loggedin_user_id() );
+			$friends = ( function_exists( 'friends_get_friend_user_ids')) ? friends_get_friend_user_ids( bp_loggedin_user_id() ) : array();
 			?>
 			
 			<div class="modal fade activity-share-modal" id="activity-share-modal" tabindex="-1" role="dialog" aria-hidden="true">
