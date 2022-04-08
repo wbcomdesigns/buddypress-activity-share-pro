@@ -223,6 +223,7 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
 
 .modal-header {
     background: #fff;
+    color: inherit;
 }
 
 .bp-activity-share-btn {
@@ -539,6 +540,11 @@ body.activity-permalink.bp-nouveau .activity-list .activity-reshare-item-contain
 body.modal-open.modal-open .select2.select2-container .select2-selection .select2-selection__rendered {
     padding: 0.4rem 0.8rem;
     line-height: 28px;
+    height: 40px;
+}
+
+body.modal-open.modal-open .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 40px;
 }
 
 body.modal-open.modal-open .select2-dropdown {
