@@ -156,6 +156,12 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     margin-right: 3px;
 }
 
+.bp-nouveau #buddypress .activity-list .bb-activity-more-options-wrap .bb-activity-more-options .bp-share-button::before {
+    content: "\f237";
+    font-family: 'dashicons';
+    font-size: initial;
+}
+
 .bp-nouveau .button.item-button.bp-secondary-action.bp-share-button {
     line-height: 0;
     font-size: 0;
