@@ -213,11 +213,47 @@ function bpshare_pro_required_plugin_admin_notice() {
 	}
 }
 
+/**
+ *  Add notice with youzify plugin.
+ *
+ * @author wbcomdesigns
+ * @since  1.1.0
+ */
+function bpshare_pro_youzify() {
+	if ( class_exists( 'Youzify' ) ) {
+		deactivate_plugins( plugin_basename( __FILE__ ) );
+		add_action( 'admin_notices', 'bpshare_pro_youzify_plugin_admin_notice' );
+		unset( $_GET['activate'] );
+	}
+}
+add_action( 'admin_init', 'bpshare_pro_youzify' );
+
+/**
+ * Throw an Alert to tell the Admin why it didn't activate.
+ *
+ * @author wbcomdesigns
+ * @since  1.1.0
+ */
+function bpshare_pro_youzify_plugin_admin_notice() {
+	$bpsharepro_plugin = esc_html__( 'BuddyPress Activity Share Pro', 'buddypress-share' );
+	$youzify_plugin    = esc_html__( 'Youzify', 'buddypress-share' );
+	echo '<div class="error"><p>';
+	echo sprintf( esc_html__( '%1$s plugin can not be use with %2$s plugin.', 'buddypress-share' ), '<strong>' . esc_html( $bpsharepro_plugin ) . '</strong>', '<strong>' . esc_html( $youzify_plugin ) . '</strong>' );
+	echo '</p></div>';
+	if ( isset( $_GET['activate'] ) ) {
+		unset( $_GET['activate'] );
+	}
+}
+
 add_action( 'activated_plugin', 'bpshare_pro_activation_redirect_settings' );
 /**
  * Redirect to plugin settings page after activated
  */
 function bpshare_pro_activation_redirect_settings( $plugin ) {
+	if ( class_exists( 'Youzify' ) ) {
+		return;
+	}
+
 	if ( class_exists( 'BuddyPress' ) && !isset($_GET['page'])) {
 		if ( $plugin === plugin_basename( __FILE__ ) ) {
 			wp_redirect( admin_url( 'admin.php?page=buddypress-share' ) );

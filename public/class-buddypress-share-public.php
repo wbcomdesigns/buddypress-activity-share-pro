@@ -149,10 +149,6 @@ class Buddypress_Share_Public {
 
 	public function bp_share_inner_activity_filter() {
 
-		if ( class_exists( 'Youzify' ) ) {
-			return;
-		}
-
 		$share_count = bp_activity_get_meta( bp_get_activity_id(), 'share_count', true );
 		$share_count = ( $share_count ) ? $share_count : 0;
 		?>
