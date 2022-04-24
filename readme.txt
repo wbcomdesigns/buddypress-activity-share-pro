@@ -1,4 +1,4 @@
-=== Wbcom Designs - BuddyPress Activity Share ===
+=== Wbcom Designs - BuddyPress Activity Share Pro ===
 
 Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com
