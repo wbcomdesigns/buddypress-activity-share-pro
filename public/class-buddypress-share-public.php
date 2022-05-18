@@ -386,13 +386,13 @@ class Buddypress_Share_Public {
 			esc_html__( 'Activity Share', 'buddypress-share' ),
 			array( 'activity', 'group', 'member', 'member_groups' )
 		);
-		
+
 		bp_activity_set_action(
 			$bp->activity->id,
 			'post_share',
 			esc_html__( 'Shared an activity', 'buddypress-share' ),
 			array( $this, 'bp_share_activity_format_action_activity_reshare' ),
-			esc_html__( 'Activity Share', 'buddypress-share' ),
+			esc_html__( 'Post Activity Share', 'buddypress-share' ),
 			array( 'activity', 'group', 'member', 'member_groups' )
 		);
 
@@ -406,13 +406,12 @@ class Buddypress_Share_Public {
 				array( 'activity', 'group', 'member', 'member_groups' )
 			);
 
-			
 			bp_activity_set_action(
 				$bp->groups->id,
 				'post_share',
 				esc_html__( 'Shared an activity', 'buddypress-share' ),
 				array( $this, 'bp_share_activity_format_action_group_reshare' ),
-				esc_html__( 'Activity Share', 'buddypress-share' ),
+				esc_html__( 'Post Activity Share', 'buddypress-share' ),
 				array( 'activity', 'group', 'member', 'member_groups' )
 			);
 		}
