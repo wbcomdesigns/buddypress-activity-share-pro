@@ -27,6 +27,9 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+if ( ! defined( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION' ) ) {
+	define( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION', '1.1.0' );
+}
 if ( ! defined( 'BP_SHARE' ) ) {
 	define( 'BP_SHARE', 'buddypress-share' );
 	define( 'BP_ACTIVITY_SHARE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

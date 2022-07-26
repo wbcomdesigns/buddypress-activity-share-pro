@@ -91,6 +91,16 @@ class Buddypress_Share_Admin {
 		);
 	}
 
+	public function wbcom_hide_all_admin_notices_from_setting_page() {
+		$wbcom_pages_array  = array( 'wbcomplugins', 'wbcom-plugins-page', 'wbcom-support-page', 'buddypress-share' );
+		$wbcom_setting_page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : '';
+
+		if ( in_array( $wbcom_setting_page, $wbcom_pages_array, true ) ) {
+			remove_all_actions( 'admin_notices' );
+			remove_all_actions( 'all_admin_notices' );
+		}
+	}
+
 	/**
 	 * Build the admin options page.
 	 *
@@ -106,13 +116,22 @@ class Buddypress_Share_Admin {
 		}
 		?>
 		<div class="wrap">
-			<hr class="wp-header-end">
+			<div class="wbcom-bb-plugins-offer-wrapper">
+					<div id="wb_admin_logo">
+						<a href="https://wbcomdesigns.com/downloads/buddypress-community-bundle/" target="_blank">
+							<img src="<?php echo esc_url( BP_ACTIVITY_SHARE_PLUGIN_URL ) . 'admin/wbcom/assets/imgs/wbcom-offer-notice.png'; ?>">
+						</a>
+					</div>
+				</div>
 			<div class="wbcom-wrap">
 				<div class="bpss-header">
-					<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
-					<h1 class="wbcom-plugin-heading">
-					<?php esc_html_e( 'BuddyPress Activity Share Pro Settings', 'buddypress-share' ); ?>
-					</h1>
+					<div class="wbcom_admin_header-wrapper">
+						<div id="wb_admin_plugin_name">
+							<?php esc_html_e( 'BuddyPress Activity Share Pro Settings', 'buddypress-share' ); ?>
+							<span><?php printf( __( 'Version %s', 'buddypress-share' ), BP_ACTIVITY_SHARE_PLUGIN_VERSION ); ?></span>
+						</div>
+						<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
+					</div>
 				</div>
 				<div class="wbcom-admin-settings-page">
 					<?php
@@ -142,7 +161,7 @@ class Buddypress_Share_Admin {
 		$tab_html  = '<div class="wbcom-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
 		foreach ( $bpas_tabs as $bpas_tab => $bpas_name ) {
 			$class     = ( $bpas_tab === $current ) ? 'nav-tab-active' : '';
-			$tab_html .= '<li><a class="nav-tab ' . esc_attr( $class ) . '" href="admin.php?page=buddypress-share&tab=' . $bpas_tab . '">' . esc_html( $bpas_name ) . '</a></li>';
+			$tab_html .= '<li class="' . esc_attr( $bpas_tab ) . '"><a class="nav-tab ' . esc_attr( $class ) . '" href="admin.php?page=buddypress-share&tab=' . $bpas_tab . '">' . esc_html( $bpas_name ) . '</a></li>';
 		}
 		$tab_html .= '</div></ul></div>';
 		echo $tab_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -235,7 +254,8 @@ class Buddypress_Share_Admin {
 	 */
 	public function bp_share_settings_section_callback() {
 		echo '<div class="bp_share_settings_section_callback_class">';
-		esc_html_e( 'Default is set to open window in popup. If this option is disabled then services open in new tab instead popup.  ', 'buddypress-share' );
+		echo '<div class="title-bp-share-view">';esc_html_e( 'Default is set to open window in popup. If this option is disabled then services open in new tab instead popup.  ', 'buddypress-share' );
+		echo '</div>';
 	}
 
 	/**
@@ -562,134 +582,132 @@ class Buddypress_Share_Admin {
 		$bp_share_services_enable = get_site_option( 'bp_share_services_enable' );
 		?>
 		<div class="wbcom-tab-content">
-			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
-			<?php wp_nonce_field( 'update-options' ); ?>
-					<h3><?php esc_html_e( 'Show Social Services', 'buddypress-share' ); ?></h3>
-					<table cellspacing="0" class="widefat plugins">
-						<tbody>
-							<tr>
-								<td scope="row" style="width: 222px">
+			<div class="wbcom-wrapper-admin">
+				<div class="wbcom-admin-title-section">
+					<h3><?php esc_html_e( 'General Services', 'buddypress-share' ); ?></h3>
+				</div>
+				<div class="wbcom-admin-option-wrap wbcom-admin-option-wrap-view">
+					<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
+						<?php wp_nonce_field( 'update-options' ); ?>
+						<div class="form-table buddypress-profanity-admin-table">
+							<div class="wbcom-settings-section-wrap">
+								<div class="wbcom-settings-section-options-heading">
 									<label for="bp_share_services_enable"><strong><?php esc_html_e( 'Enable Social Share', 'buddypress-share' ); ?></strong></label>
-								</td>
-								<td>
-									<input type="checkbox" name="bp_share_services_enable" id="bp_share_services_enable" value="1" <?php checked( '1', $bp_share_services_enable ); ?>/>
 									<p class="description"><?php esc_html_e( 'Enable this option to show share button in activity page more options.', 'buddypress-share' ); ?></p>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<h3><?php esc_html_e( 'Add Social Services', 'buddypress-share' ); ?></h3>
-					<table cellspacing="0" class="add_share_services widefat plugins">
-						<thead>
-							<tr>
-								<th class="manage-column column-cb check-column" id="cb" scope="col">&nbsp;</th>
-								<th class="manage-column column-name" id="name" scope="col" style="width: 190px;"><?php esc_html_e( 'Component', 'buddypress-share' ); ?></th>
-								<th class="manage-column column-select_services" id="select_services" scope="col"><?php esc_html_e( 'Select Service', 'buddypress-share' ); ?></th>
-							</tr>
-						</thead>
-						<tbody id="the-list">
-							<tr>
-								<td scope="row"></td>
-								<td class="plugin-title">
-									<strong><?php esc_html_e( 'Social Sites', 'buddypress-share' ); ?></strong><span class="bp_share_req">*</span></td>
-								<td class="column-description desc">
-									<div class="plugin-description">
-										<select name="social_services_selector" id="social_services_selector_id" class="social_services_selector">
-											<option value="">-<?php esc_html_e( 'select', 'buddypress-share' ); ?>-</option>
-											<option value="bp_share_facebook"><?php esc_html_e( 'Facebook', 'buddypress-share' ); ?></option>
-											<option value="bp_share_twitter"><?php esc_html_e( 'Twitter', 'buddypress-share' ); ?></option>
-											<option value="bp_share_pinterest"><?php esc_html_e( 'Pinterest', 'buddypress-share' ); ?></option>
-											<option value="bp_share_linkedin"><?php esc_html_e( 'Linkedin', 'buddypress-share' ); ?></option>
-											<option value="bp_share_reddit"><?php esc_html_e( 'Reddit', 'buddypress-share' ); ?></option>
-											<option value="bp_share_wordpress"><?php esc_html_e( 'WordPress', 'buddypress-share' ); ?></option>
-											<option value="bp_share_pocket"><?php esc_html_e( 'Pocket', 'buddypress-share' ); ?></option>
-											<option value="bp_share_email"><?php esc_html_e( 'Email', 'buddypress-share' ); ?></option>
-											<option value="bp_share_whatsapp"><?php esc_html_e( 'Whatsapp', 'buddypress-share' ); ?></option>
-											<option value="bp_copy_activity" style="display:none"><?php esc_html_e( 'Copy', 'buddypress-share' ); ?></option>
-										</select>
-									</div>
-									<p class="error_service error_service_selector"><?php esc_html_e( 'This field is required!', 'buddypress-share' ); ?></p>
-								</td>
-							</tr>
-							<tr>
-								<td scope="row"></td>
-								<td class="plugin-title">
-									<strong><?php esc_html_e( 'Font Awesome Icon Class', 'buddypress-share' ); ?></strong><span class="bp_share_req">*</span></td>
-								<td class="column-faw-icon desc">
-									<div class="plugin-faw-icon">
-										<input class="faw_class_input" name="faw_class_input" type="text">
-										<p class="error_service error_service_faw-icon"><?php esc_html_e( 'This field is required!', 'buddypress-share' ); ?></p>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td scope="row"></td>
-								<td class="plugin-title">
-									<strong><?php esc_html_e( 'Description', 'buddypress-share' ); ?></strong><span class="bp_share_req">*</span></td>
-								<td class="column-description desc">
-									<div class="plugin-description">
-										<textarea name="bp_share_description" class="bp_share_description"></textarea>
-										<p class="error_service error_service_description"><?php esc_html_e( 'This field is required!', 'buddypress-share' ); ?></p>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td scope="row"></td>
-								<td class="plugin-title">
-								</td>
-								<td class="add_services_btn_td">
-									<input type="button" class="add_services_btn" name="add_services_btn" value="<?php esc_html_e( 'Add Services', 'buddypress-share' ); ?>">
-									<p class="spint_action"><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></p>
-								</td>
-							</tr>
-						</tbody>
-					</table><!--END: add_share_services table-->
-					<br/>
-					<table cellspacing="0" class="widefat plugins">
-						<thead>
-							<tr>
-								<th class="manage-column column-cb check-column" id="cb" scope="col">&nbsp;</th>
-								<th class="manage-column column-name" id="name" scope="col"><?php esc_html_e( 'Social Sites', 'buddypress-share' ); ?></th>
-								<th class="manage-column column-description" id="description" scope="col"><?php esc_html_e( 'Description', 'buddypress-share' ); ?></th>
-								<th class="manage-column column-services-action" id="services-action" scope="col"><?php esc_html_e( 'Action', 'buddypress-share' ); ?></th>
-							</tr>
-						</thead>
-						<tbody id="the-list" class="bp_share_social_list">
-						<?php
-						$social_options = get_site_option( 'bp_share_services' );
-						if ( ! empty( $social_options ) ) {
-							$count = 0;
-							foreach ( $social_options as $service_key => $social_option ) {
+								</div>
+								<div class="wbcom-settings-section-options">
+									<input type="checkbox" name="bp_share_services_enable" id="bp_share_services_enable" value="1" <?php checked( '1', $bp_share_services_enable ); ?>/>
+								</div>
+							</div>
+							<div class="wbcom-admin-title-section">
+							<h3><?php esc_html_e( 'Add Social Services', 'buddypress-share' ); ?></h3>
+						</div>
+						<table cellspacing="0" class="add_share_services add_share_services_list_wrap widefat plugins">
+							<thead>
+								<tr>
+									<th class="manage-column column-name" id="name" scope="col" style="width: 190px;"><?php esc_html_e( 'Component', 'buddypress-share' ); ?></th>
+									<th class="manage-column column-select_services" id="select_services" scope="col"><?php esc_html_e( 'Select Service', 'buddypress-share' ); ?></th>
+								</tr>
+							</thead>
+							<tbody id="the-list">
+								<tr>
+									<td class="plugin-title">
+										<strong><?php esc_html_e( 'Social Sites', 'buddypress-share' ); ?></strong><span class="bp_share_req">*</span></td>
+									<td class="column-description desc">
+										<div class="plugin-description">
+											<select name="social_services_selector" id="social_services_selector_id" class="social_services_selector">
+												<option value="">-<?php esc_html_e( 'select', 'buddypress-share' ); ?>-</option>
+												<option value="bp_share_facebook"><?php esc_html_e( 'Facebook', 'buddypress-share' ); ?></option>
+												<option value="bp_share_twitter"><?php esc_html_e( 'Twitter', 'buddypress-share' ); ?></option>
+												<option value="bp_share_pinterest"><?php esc_html_e( 'Pinterest', 'buddypress-share' ); ?></option>
+												<option value="bp_share_linkedin"><?php esc_html_e( 'Linkedin', 'buddypress-share' ); ?></option>
+												<option value="bp_share_reddit"><?php esc_html_e( 'Reddit', 'buddypress-share' ); ?></option>
+												<option value="bp_share_wordpress"><?php esc_html_e( 'WordPress', 'buddypress-share' ); ?></option>
+												<option value="bp_share_pocket"><?php esc_html_e( 'Pocket', 'buddypress-share' ); ?></option>
+												<option value="bp_share_email"><?php esc_html_e( 'Email', 'buddypress-share' ); ?></option>
+												<option value="bp_share_whatsapp"><?php esc_html_e( 'Whatsapp', 'buddypress-share' ); ?></option>
+												<option value="bp_copy_activity" style="display: none"><?php esc_html_e( 'Copy', 'buddypress-share' ); ?></option>
+											</select>
+										</div>
+										<p class="error_service error_service_selector"><?php esc_html_e( 'This field is required!', 'buddypress-share' ); ?></p>
+									</td>
+								</tr>
+								<tr>
+									<td class="plugin-title">
+										<strong><?php esc_html_e( 'Font Awesome Icon Class', 'buddypress-share' ); ?></strong><span class="bp_share_req">*</span></td>
+									<td class="column-faw-icon desc">
+										<div class="plugin-faw-icon">
+											<input class="faw_class_input" name="faw_class_input" type="text">
+											<p class="error_service error_service_faw-icon"><?php esc_html_e( 'This field is required!', 'buddypress-share' ); ?></p>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="plugin-title">
+										<strong><?php esc_html_e( 'Description', 'buddypress-share' ); ?></strong><span class="bp_share_req">*</span></td>
+									<td class="column-description desc">
+										<div class="plugin-description">
+											<textarea name="bp_share_description" class="bp_share_description"></textarea>
+											<p class="error_service error_service_description"><?php esc_html_e( 'This field is required!', 'buddypress-share' ); ?></p>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="plugin-title">
+									</td>
+									<td class="add_services_btn_td">
+										<input type="button" class="add_services_btn" name="add_services_btn" value="<?php esc_html_e( 'Add Services', 'buddypress-share' ); ?>">
+										<p class="spint_action"><i class="fa fa-cog fa-spin fa-3x fa-fw"></i></p>
+									</td>
+								</tr>
+							</tbody>
+						</table><!--END: add_share_services table-->
+						
+						<table cellspacing="0" class="add_share_services_list_wrap widefat plugins">
+							<thead>
+								<tr>
+									<th class="manage-column column-cb check-column" id="cb" scope="col">&nbsp;</th>
+									<th class="manage-column column-name" id="name" scope="col"><?php esc_html_e( 'Social Sites', 'buddypress-share' ); ?></th>
+									<th class="manage-column column-description" id="description" scope="col"><?php esc_html_e( 'Description', 'buddypress-share' ); ?></th>
+									<th class="manage-column column-services-action" id="services-action" scope="col"><?php esc_html_e( 'Action', 'buddypress-share' ); ?></th>
+								</tr>
+							</thead>
+							<tbody id="the-list" class="bp_share_social_list">
+							<?php
+							$social_options = get_site_option( 'bp_share_services' );
+							if ( ! empty( $social_options ) ) {
+								$count = 0;
+								foreach ( $social_options as $service_key => $social_option ) {
 
-								?>
-									<tr class="bp-share-services-row" id="<?php echo 'tr_' . esc_attr( $service_key ); ?>" data-pos-index="<?php echo esc_attr( $count ); ?>" data-key="<?php echo 'chb_' . esc_attr( $service_key ); ?>">
-										<td scope="row" id="bp_share_chb" class="bp-share-td">
-											<input type="checkbox" name="<?php echo 'chb_' . esc_attr( $service_key ); ?>" value="1" <?php	echo ( 1 === $social_options[ $service_key ][ 'chb_' . $service_key ] ) ? 'checked="checked"' : ''; ?>
-											/>
-										</td>
-										<td class="bp-share-title bp-share-td">
-											<strong><i class="<?php echo esc_attr( $social_option['service_icon'] ); ?> fa-lg"></i> <?php echo esc_html( $social_option['service_name'] ); ?></strong>
-											<div class="row-actions-visible"></div>
-										</td>
-										<td class="bp-share-column-description desc bp-share-td">
-											<div class="plugin-description">
-												<p><?php echo esc_html( $social_option['service_description'] ); ?></p>
-											</div>
-											<div class="active second plugin-version-author-uri">
-											</div>
-										</td>
-									<?php if ( 'bp_copy_activity' !== $service_key ) : ?>
-										<td class="service_delete bp-share-td"><p class="service_delete_icon" data-bind="<?php echo esc_attr( $service_key ); ?>"><i class="fa fa-window-close"></i></p></td>
-									<?php endif; ?>
-									</tr>
-									<?php
-									$count++;
+									?>
+										<tr class="bp-share-services-row" id="<?php echo 'tr_' . esc_attr( $service_key ); ?>" data-pos-index="<?php echo esc_attr( $count ); ?>" data-key="<?php echo 'chb_' . esc_attr( $service_key ); ?>">
+											<td scope="row" id="bp_share_chb" class="bp-share-td">
+												<input type="checkbox" name="<?php echo 'chb_' . esc_attr( $service_key ); ?>" value="1" <?php	echo ( 1 === $social_options[ $service_key ][ 'chb_' . $service_key ] ) ? 'checked="checked"' : ''; ?>
+												/>
+											</td>
+											<td class="bp-share-title bp-share-td">
+												<strong><i class="<?php echo esc_attr( $social_option['service_icon'] ); ?> fa-lg"></i> <?php echo esc_html( $social_option['service_name'] ); ?></strong>
+												<div class="row-actions-visible"></div>
+											</td>
+											<td class="bp-share-column-description desc bp-share-td">
+												<div class="plugin-description">
+													<p><?php echo esc_html( $social_option['service_description'] ); ?></p>
+												</div>
+												<div class="active second plugin-version-author-uri">
+												</div>
+											</td>
+										<?php if ( 'bp_copy_activity' !== $service_key ) : ?>
+											<td class="service_delete bp-share-td"><p class="service_delete_icon" data-bind="<?php echo esc_attr( $service_key ); ?>"><i class="fa fa-close"></i></p></td>
+										<?php endif; ?>
+										</tr>
+										<?php
+										$count++;
+								}
 							}
-						}
-						?>
-						</tbody>
-					</table><!--END:social options table-->
-					<div class="bp-share-services-extra">
+							?>
+							</tbody>
+						</table><!--END:social options table-->
+						<div class="bp-share-services-extra">
 							<?php
 							do_settings_sections( 'bp_share_services_extra' );
 							echo '</div>';
@@ -716,11 +734,13 @@ class Buddypress_Share_Admin {
 								<?php
 							}
 							?>
-				<p class="submit">
-					<input type="submit" class="button-primary bp_share_option_save" value="<?php esc_html_e( 'Save Changes', 'buddypress-share' ); ?>" />
-				</p>
-			</form>
-				<?php do_action( 'bp_share_add_services_options', $arg1 = '', $arg2 = '' ); ?>
+						<p class="submit">
+							<input type="submit" class="button button-primary bp_share_option_save" value="<?php esc_html_e( 'Save Changes', 'buddypress-share' ); ?>" />
+						</p>
+					</form>
+						<?php do_action( 'bp_share_add_services_options', $arg1 = '', $arg2 = '' ); ?>
+				</div>
+			</div>
 		</div>
 		<?php
 	}
@@ -738,98 +758,98 @@ class Buddypress_Share_Admin {
 		$bp_reshare_settings['reshare_share_activity'] = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
 		?>
 		<div class="wbcom-tab-content">
-			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
-				<?php wp_nonce_field( 'update-options' ); ?>
-				<h3><?php esc_html_e( 'Share Settings', 'buddypress-share' ); ?></h3>
-				<table cellspacing="0" class="form-table">
-					<tbody>
-						<tr>
-							<th scope="row">
-								<label><?php esc_html_e( 'Button Background Color', 'buddypress-share' ); ?></label>
-							</th>
-							<td>
-								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_bg_color'] ) ) ? $bp_reshare_settings['btn_bg_color'] : ''; ?>" />
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label><?php esc_html_e( 'Button Text Color', 'buddypress-share' ); ?></label>
-							</th>
-							<td>
-								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_text_color'] ) ) ? $bp_reshare_settings['btn_text_color'] : ''; ?>" />
-							</td>
-						</tr>
-						
-						<tr>
-							<th scope="row">
-								<label><?php esc_html_e( 'Button Hover Background Color', 'buddypress-share' ); ?></label>
-							</th>
-							<td>
-								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_bg_color'] ) ) ? $bp_reshare_settings['btn_hover_bg_color'] : ''; ?>" />
-							</td>
-						</tr>
-						<tr>
-							<th scope="row">
-								<label><?php esc_html_e( 'Button Hover Text Color', 'buddypress-share' ); ?></label>
-							</th>
-							<td>
-								<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_text_color'] ) ) ? $bp_reshare_settings['btn_hover_text_color'] : ''; ?>" />
-							</td>
-						</tr>
-						
-						<tr>
-							<th scope="row">
-								<label><?php esc_html_e( 'Disable Post Share Activity', 'buddypress-share' ); ?></label>
-							</th>
-							<td>
+			<div class="wbcom-wrapper-admin">
+				<div class="wbcom-admin-title-section">
+					<h3><?php esc_html_e( 'Share Settings', 'buddypress-share' ); ?></h3>
+				</div>
+				<div class="wbcom-admin-option-wrap wbcom-admin-option-wrap-view">
+					<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
+						<?php wp_nonce_field( 'update-options' ); ?>
+						<div class="form-table">
+							<div class="wbcom-settings-section-wrap">
+								<div class="wbcom-settings-section-options-heading">
+									<label><?php esc_html_e( 'Button Background Color', 'buddypress-share' ); ?></label>
+								</div>
+								<div class="wbcom-settings-section-options">
+									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_bg_color'] ) ) ? $bp_reshare_settings['btn_bg_color'] : ''; ?>" />
+								</div>
+							</div>
+							<div class="wbcom-settings-section-wrap">
+								<div class="wbcom-settings-section-options-heading">
+									<label><?php esc_html_e( 'Button Text Color', 'buddypress-share' ); ?></label>
+								</div>
+								<div class="wbcom-settings-section-options">
+									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_text_color'] ) ) ? $bp_reshare_settings['btn_text_color'] : ''; ?>" />
+								</div>
+							</div>
+							<div class="wbcom-settings-section-wrap">
+								<div class="wbcom-settings-section-options-heading">
+									<label><?php esc_html_e( 'Button Hover Background Color', 'buddypress-share' ); ?></label>
+								</div>
+								<div class="wbcom-settings-section-options">
+									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_bg_color'] ) ) ? $bp_reshare_settings['btn_hover_bg_color'] : ''; ?>" />
+								</div>
+							</div>
+							<div class="wbcom-settings-section-wrap">
+								<div class="wbcom-settings-section-options-heading">
+									<label><?php esc_html_e( 'Button Hover Text Color', 'buddypress-share' ); ?></label>
+								</div>
+								<div class="wbcom-settings-section-options">
+									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_text_color'] ) ) ? $bp_reshare_settings['btn_hover_text_color'] : ''; ?>" />
+								</div>
+							</div>
+							<div class="wbcom-settings-section-wrap">
+								<div class="wbcom-settings-section-options-heading">
+									<label><?php esc_html_e( 'Disable Post Share Activity', 'buddypress-share' ); ?></label>
+								</div>
+								<div class="wbcom-settings-section-options">
 								<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_post_reshare_activity]" value="1" 
 								<?php
 								if ( isset( $bp_reshare_settings['disable_post_reshare_activity'] ) && $bp_reshare_settings['disable_post_reshare_activity'] == 1 ) :
 									?>
 									checked <?php endif; ?> />
-							</td>
-						</tr>
-						
-						<tr>
-							<th scope="row">
-								<label><?php esc_html_e( 'Reshare share Activity', 'buddypress-share' ); ?></label>
-							</th>
-							<td>
-								<ul>
-									<li>
-										<label>
-											<input type="radio" name="bp_reshare_settings[reshare_share_activity]" value="parent" <?php checked( 'parent', $bp_reshare_settings['reshare_share_activity'] ); ?> />&nbsp;<?php esc_html_e( 'Parent', 'buddypress-share' ); ?>
-										</label>
-									</li>
-									<li>
-										<label>
-											<input type="radio" name="bp_reshare_settings[reshare_share_activity]" value="child" <?php checked( 'child', $bp_reshare_settings['reshare_share_activity'] ); ?> />&nbsp;<?php esc_html_e( 'Child', 'buddypress-share' ); ?>
-										</label>
-									</li>									
-								</ul>								
-							</td>
-						</tr>
-
-						<tr>
-							<td colspan="2">
-								<code>[bp_activity_post_reshare]</code>
-								<?php esc_html_e( 'Use this shortcode in which post type you want to reshare in Activity.', 'buddypress-share' ); ?>
-								<br/><br/>
-								<code>
-								add_filter('bp_activity_reshare_post_type', 'function_name' );
-								function function_name( $post_type ) {
-									$post_type[] = 'custom post type slug';
-									return $post_type;
-								}
-								</code>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<p class="submit">
-					<input type="submit" class="button-primary"  value="<?php esc_html_e( 'Save Changes', 'buddypress-share' ); ?>" />
-				</p>
-			</form>			
+								</div>
+							</div>
+							<div class="wbcom-settings-section-wrap">
+								<div class="wbcom-settings-section-options-heading">
+									<label><?php esc_html_e( 'Reshare share Activity', 'buddypress-share' ); ?></label>
+								</div>
+								<div class="wbcom-settings-section-options">
+									<ul>
+										<li>
+											<label>
+												<input type="radio" name="bp_reshare_settings[reshare_share_activity]" value="parent" <?php checked( 'parent', $bp_reshare_settings['reshare_share_activity'] ); ?> />&nbsp;<?php esc_html_e( 'Parent', 'buddypress-share' ); ?>
+											</label>
+										</li>
+										<li>
+											<label>
+												<input type="radio" name="bp_reshare_settings[reshare_share_activity]" value="child" <?php checked( 'child', $bp_reshare_settings['reshare_share_activity'] ); ?> />&nbsp;<?php esc_html_e( 'Child', 'buddypress-share' ); ?>
+											</label>
+										</li>									
+									</ul>	
+								</div>
+							</div>
+							<div class="wbcom-settings-section-wrap">
+								<div class="wbcom-settings-section-options">
+									<code>[bp_activity_post_reshare]</code>
+									<?php esc_html_e( 'Use this shortcode in which post type you want to reshare in Activity.', 'buddypress-share' ); ?>
+									<br/><br/>
+									<code>
+									add_filter('bp_activity_reshare_post_type', 'function_name' );
+									function function_name( $post_type ) {
+										$post_type[] = 'custom post type slug';
+										return $post_type;
+									}
+									</code>
+								</div>
+							</div>
+							<p class="submit">
+								<input type="submit" class="button-primary"  value="<?php esc_html_e( 'Save Changes', 'buddypress-share' ); ?>" />
+							</p>
+						</div>
+					</form>
+				</div>
+			</div>			
 		</div>
 		<?php
 	}
