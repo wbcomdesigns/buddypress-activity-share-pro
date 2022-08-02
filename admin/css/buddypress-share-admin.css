@@ -1649,3 +1649,6 @@ td.bp-share-title {
 .nav-tab-wrapper ul .bpas_reshare_settings a:before {
     content: "\f237" !important;
 }
+.wbcom-wrap .notice.notice-error.is-dismissible.learndash-license-is-dismissible {
+    display: none !important;
+}
