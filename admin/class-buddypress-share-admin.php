@@ -844,7 +844,7 @@ class Buddypress_Share_Admin {
 								</div>
 							</div>
 							<p class="submit">
-								<input type="submit" class="button-primary"  value="<?php esc_html_e( 'Save Changes', 'buddypress-share' ); ?>" />
+								<input type="submit" class="button button-primary"  value="<?php esc_html_e( 'Save Changes', 'buddypress-share' ); ?>" />
 							</p>
 						</div>
 					</form>
