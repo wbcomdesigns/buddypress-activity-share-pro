@@ -5,7 +5,7 @@ Donate link: https://wbcomdesigns.com
 Tags: buddypress,activity,share
 Requires at least: 4.0
 Tested up to: 5.9.3
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,9 @@ If you need additional help you can contact us for [Custom Development](https://
 Yes, this plugin requires BuddyPress plugin.
 
 == Changelog ==
+= 1.1.1 =
+* Fix: Update admin wrapper UI
+
 = 1.1.0 =
 * Fix: Managed share button icon with bb platform
 * Fix: Fixed popup select2 UI with 3rd party plugins
