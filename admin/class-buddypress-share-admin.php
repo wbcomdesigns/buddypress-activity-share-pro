@@ -66,7 +66,10 @@ class Buddypress_Share_Admin {
 			wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), $this->version, 'all' );
 		}
 		wp_enqueue_style( 'wp-color-picker' );
-		if ( isset( $_GET['page'] )   && 'wbcom-support-page' == $_GET['page'] || 'wb-plugins_page_buddypress-share' === $hook  || 'wbcomplugins' === $_GET['page'] || 'wbcom-plugins-page' === $_GET['page'] || 'buddypress-share' === $_GET['page'] ){
+		if (! isset( $_GET['page']) ){
+			return;
+		}
+		if ( isset( $_GET['page'] ) && 'wbcom-support-page' == $_GET['page'] || 'wb-plugins_page_buddypress-share' === $hook  || 'wbcomplugins' === $_GET['page'] || 'wbcom-plugins-page' === $_GET['page'] || 'buddypress-share' === $_GET['page'] ){
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/buddypress-share-admin.css', array(), $this->version, 'all' );
 
@@ -78,7 +81,7 @@ class Buddypress_Share_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts(  ) {
+	public function enqueue_scripts( $hook ) {
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		if ( 'wb-plugins_page_buddypress-share' !== $hook ) {
 			return;
