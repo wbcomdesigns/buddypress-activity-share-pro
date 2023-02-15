@@ -171,7 +171,7 @@ class Buddypress_Share_Public {
 	 * @since    1.0.0
 	 */
 	function bp_share_activity_filter() {
-		$service        = get_site_option( 'bp_share_services' );
+		$social_service = get_site_option( 'wss_admin_social_icon_value' );
 		$extra_options  = get_site_option( 'bp_share_services_extra' );
 		$activity_type  = bp_get_activity_type();
 		$activity_link  = bp_get_activity_thread_permalink();
@@ -185,10 +185,10 @@ class Buddypress_Share_Public {
 		if ( isset( $updated_text ) ) {
 			$share_button_text = $updated_text;
 		}
-		
+
 		$theme_support = apply_filters( 'buddyPress_reactions_theme_suuport', array( 'reign-theme', 'buddyx-pro' ) );
 		$theme_name    = wp_get_theme();
-		
+
 		$bp_share_class = '';
 		if ( in_array( $theme_name->template, $theme_support )) {
 			$bp_share_class = 'bp-share-service-popup';
@@ -200,46 +200,42 @@ class Buddypress_Share_Public {
 		</div>
 		<div class="service-buttons <?php echo esc_html( $activity_type . ' ' . $bp_share_class ); ?>" style="display: none;">
 		<?php
-		if ( ! empty( $service ) ) {
-			foreach ( $service as $key => $value ) {
-				if ( isset( $key ) && 'bp_share_facebook' === $key && 1 === $value[ 'chb_' . $key ] ) {
-					echo '<a target="blank" class="bp-share" href="https://www.facebook.com/sharer/sharer.php?u=' . esc_url( $activity_link ) . '" rel="facebook"><span class="fa-stack fa-lg"><i class="' . esc_attr( $value['service_icon'] ) . '"></i></span></a>';
-				}
-				if ( isset( $key ) && 'bp_share_twitter' === $key && 1 === $value[ 'chb_' . $key ] ) {
-					echo '<a target="blank" class="bp-share" href="http://twitter.com/share?text=' . esc_html( $activity_title ) . '&url=' . esc_url( $activity_link ) . '" rel="twitter"><span class="fa-stack fa-lg"><i class="' . esc_attr( $value['service_icon'] ) . '"></i></span></a>';
-				}
-				if ( isset( $key ) && 'bp_share_pinterest' === $key && 1 === $value[ 'chb_' . $key ] ) {
-					$media = '';
-					$video = '';
-					echo '<a target="blank" class="bp-share" href="https://pinterest.com/pin/create/bookmarklet/?media=' . esc_url( $media ) . '&url=' . esc_url( $activity_link ) . '&is_video=' . esc_url( $video ) . '&description=' . esc_html( $activity_title ) . '" rel="penetrest"><span class="fa-stack fa-lg"><i class="' . esc_attr( $value['service_icon'] ) . '"></i></span></a>';
-				}
-				if ( isset( $key ) && 'bp_share_linkedin' === $key && 1 === $value[ 'chb_' . $key ] ) {
-					echo '<a target="blank" class="bp-share" href="http://www.linkedin.com/shareArticle?url=' . esc_url( $activity_link ) . '&title=' . esc_html( $activity_title ) . '"><span class="fa-stack fa-lg"><i class="' . esc_attr( $value['service_icon'] ) . '"></i></span></a>';
-				}
-				if ( isset( $key ) && 'bp_share_reddit' === $key && 1 === $value[ 'chb_' . $key ] ) {
-					echo '<a target="blank" class="bp-share" href="http://reddit.com/submit?url=' . esc_url( $activity_link ) . '&title=' . esc_html( $activity_title ) . '"><span class="fa-stack fa-lg"><i class="' . esc_attr( $value['service_icon'] ) . '"></i></span></a>';
-				}
-				if ( isset( $key ) && 'bp_share_wordpress' === $key && 1 === $value[ 'chb_' . $key ] ) {
-					$description = '';
-					$img         = '';
-					echo '<a target="blank" class="bp-share" href="https://wordpress.com/wp-admin/press-this.php?u=' . esc_url( $activity_link ) . '&t=' . esc_html( $activity_title ) . '&s=' . esc_url( $description ) . '&i= ' . esc_url( $img ) . ' "><span class="fa-stack fa-lg"><i class="' . esc_attr( $value['service_icon'] ) . '"></i></span></a>';
-				}
-				if ( isset( $key ) && 'bp_share_pocket' === $key && 1 === $value[ 'chb_' . $key ] ) {
-					echo '<a target="blank" class="bp-share" href="https://getpocket.com/save?url=' . esc_url( $activity_link ) . '&title=' . esc_html( $activity_title ) . '"><span class="fa-stack fa-lg"><i class="' . esc_attr( $value['service_icon'] ) . '"></i></span></a>';
-				}
-				if ( isset( $key ) && 'bp_share_email' === $key && 1 === $value[ 'chb_' . $key ] ) {
-					$email = 'mailto:?subject=' . esc_url( $activity_link ) . '&body=Check out this site: ' . esc_html( $activity_title ) . '" title="Share by Email';
-					echo '<a class="bp-share" href="' . esc_url( $email ) . '" attr-display="no-popup"><span class="fa-stack fa-lg"><i class="' . esc_attr( $value['service_icon'] ) . '"></i></span></a>';
-				}
-				if ( isset( $key ) && 'bp_share_whatsapp' === $key && 1 === $value[ 'chb_' . $key ] ) {
-					echo '<a target="blank" class="bp-share" href="https://api.whatsapp.com/send?text=' . esc_url( $activity_link ) . '&image_sharer=1" data-action="share/whatsapp/share" rel="whatsapp"><span class="fa-stack fa-lg"><i class="' . esc_attr( $value['service_icon'] ) . '"></i></span></a>';
-				}
-
-				if ( isset( $key ) && 'bp_copy_activity' === $key && 1 === $value[ 'chb_' . $key ] ) {
-					echo '<a class="bp-share bp-cpoy" href="#" data-href="' . esc_url( $activity_link ) . '" attr-display="no-popup"><span class="fa-stack fa-lg"><i class="fa fa-copy"></i></span></a>';
-					echo '<span class="tooltiptext tooltip-hide">' . esc_attr__( 'Link Copied!', 'buddypress-share' ) . '</span>';
-
-				}
+		if ( ! empty( $social_service ) ) {
+			if ( isset( $social_service ) && ! empty( $social_service['Facebook'] ) ) {
+				echo '<a href="https://www.facebook.com/sharer.php?u=' . esc_url( $activity_link ) . '" class="bp-share" id="bp_facebook_share"><span class="dashicons dashicons-facebook-alt"></span></a>';
+			}
+			if ( isset( $social_service ) && ! empty( $social_service['Twitter'] ) ) {
+				$twitter_title = urlencode( html_entity_decode( get_the_title(), ENT_COMPAT, 'UTF-8' ) );
+				echo '<a class="bp-share" id="bp_twitter_share"  href="https://twitter.com/share?url=' . esc_url( $activity_link ) . '&text=' . esc_html( $activity_title ) . '"><span class="dashicons dashicons-twitter"></span></a>';
+			}
+			if ( isset( $social_service ) && ! empty( $social_service['Pinterest'] ) ) {
+				$media = '';
+				$video = '';
+				echo '<a class="bp-share" id="bp_pinterest_share"  href="https://pinterest.com/pin/create/bookmarklet/?media=' . esc_url( $media ) . '&url=' . esc_url( $activity_link ) . '&is_video=' . esc_url( $video ) . '&description=' . esc_html( $activity_title ) .  '"><span class="dashicons dashicons-pinterest
+				"></span></a>';
+			}
+			if ( isset( $social_service ) && ! empty( $social_service['Reddit'] ) ) {
+				echo '<a class="bp-share" id="bp_reddit_share"  href="http://reddit.com/submit?url=' . esc_url( $activity_link ) . '&title=' . esc_html( $activity_title ) . '"><span class="dashicons dashicons-reddit"></span></a>';
+			}
+			if ( isset( $social_service ) && ! empty( $social_service['WordPress'] ) ) {
+				$description = '';
+				$img         = '';
+				echo '<a class="bp-share" id="bp_wordpress_share"  href="https://wordpress.com/wp-admin/press-this.php?u=' . esc_url( $activity_link ) . '&t=' . esc_html( $activity_title ) . '&s=' . esc_url( $description ) . '&i= ' . esc_url( $img ) . ' "><span class="dashicons dashicons-wordpress"></span></a>';
+			}
+			if ( isset( $social_service ) && ! empty( $social_service['Pocket'] ) ) {
+				$description = '';
+				$img         = '';
+				echo '<a class="bp-share" id="bp_pocket_share"  href="https://getpocket.com/save?url=' . esc_url( $activity_link ) . '&title=' . esc_html( $activity_title ) . '"><span class="dashicons dashicons-arrow-down-alt2"></span></a>';
+			}
+			if ( isset( $social_service ) && ! empty( $social_service['LinkedIn'] ) ) {
+				echo '<a class="bp-share" id="bp_linkedin_share" href="http://www.linkedin.com/shareArticle?mini=true&url=' . esc_url( $activity_link ) . '&text=' . esc_html( $activity_title ) . '"><span class="dashicons dashicons-linkedin"></span></a>';
+			}
+			if ( isset( $social_service ) && ! empty( $social_service['WhatsApp'] ) ) {
+				echo '<a class="bp-share" id="bp_whatsapp_share" href="https://api.whatsapp.com/send?text=' . esc_url( $activity_link ) . '&image_sharer=1"><span class="dashicons dashicons-whatsapp"></span></a>';
+			}
+			if ( isset( $social_service ) && ! empty( $social_service['E-mail'] ) ) {
+				$email = 'mailto:?subject=' . esc_url( $activity_link ) . '&body=Check out this site: ' . esc_html( $activity_title ) . '" title="Share by Email';
+				echo '<a class="bp-share" id="bp_email_share" href="' . esc_url( $email ) . '"><span class="dashicons dashicons-email"></span></a>';
 			}
 		} else {
 			esc_html_e( 'Please enable share services!', 'buddypress-share' );
@@ -250,7 +246,7 @@ class Buddypress_Share_Public {
 		<?php if ( in_array( $theme_name->template, $theme_support )) { ?>
 			<div class="bp-share-service-popup-overlay"></div>
 		<?php }?>
-		
+
 		<div>
 			<script>
 				jQuery( document ).ready( function () {

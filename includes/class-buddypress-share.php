@@ -173,6 +173,8 @@ class Buddypress_Share {
 		$this->loader->add_action( 'bp_share_user_services', $plugin_admin, 'bp_share_user_added_services', 10, 3 );
 		$this->loader->add_action( 'wp_ajax_bp_share_sort_social_links_ajax', $plugin_admin, 'bp_share_sort_social_links_ajax' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
+		$this->loader->add_action( 'wp_ajax_wss_social_icons', $plugin_admin, 'wss_social_icons' );
+		$this->loader->add_action( 'wp_ajax_wss_social_remove_icons', $plugin_admin, 'wss_social_remove_icons' );
 	}
 
 	/**

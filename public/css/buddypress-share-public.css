@@ -91,23 +91,23 @@ a.bp-share.has-popup {
     border-radius: 2px;
 }
 
-.bp-share .fa-facebook {
+.bp-share .dashicons-facebook-alt {
     color: #3B5998;
 }
 
-.bp-share .fa-twitter {
+.bp-share .dashicons-twitter {
     color: #1DA1F2;
 }
 
-.bp-share .fa-linkedin {
+.bp-share .dashicons-linkedin {
     color: #007BB6;
 }
 
-.bp-share .fa-google-plus {
-    color: #DF4B37;
+.bp-share .dashicons-whatsapp {
+    color: #46bd00;
 }
 
-.bp-share .fa-envelope {
+.bp-share .dashicons-email {
     color: #AD0000;
 }
 
@@ -149,9 +149,10 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     color: inherit;
 }
 
-.bp-nouveau .activity-list .activity-item .activity-meta .bp-share-button::before {
-    content: "\f237";
-    font-family: 'dashicons';
+.bp-nouveau .activity-list .activity-item .activity-meta .bp-share-button::before,
+.bp-nouveau .activity-list .activity-item .bp-share-button::before {
+    content: "\f237" !important;
+    font-family: 'dashicons' !important;
     font-size: initial;
     margin-right: 3px;
 }
@@ -176,12 +177,30 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     display: none;
 }
 
+/*--------------------------------------------------------------
+# Reign Theme
+--------------------------------------------------------------*/
+.theme-reign-theme .service-buttons {
+    margin-top: 20px;
+    padding-bottom: 0;
+}
+
+#drag_social_icon,
+#drag_icon_ul {
+    padding: 20px;
+    border: 1px solid #e3e2ec;
+    background: #fff;
+    box-shadow: 0 10px 20px #f5f5f6;
+    width: 48%;
+    border-radius: 10px;
+    margin: 0 1%;
+}
 
 /*--------------------------------------------------------------
 # Activity Share Popup
 --------------------------------------------------------------*/
 
-.bp-share-service-popup-overlay {
+.bp-activity-more-options-wrap .bp-share-service-popup-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -192,7 +211,7 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     display: none;
 }
 
-.bp-share-service-popup {
+.bp-activity-more-options-wrap .bp-share-service-popup {
     position: fixed;
     top: 50%;
     left: 50%;

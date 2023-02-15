@@ -7,6 +7,10 @@
 
 /* Layout helpers
 ----------------------------------*/
+.social_icon_section .ui-droppable h3 {
+    margin-top: 0;
+}
+
 .wbcom-admin-option-wrap.wbcom-admin-option-wrap-view table.add_share_services_list_wrap.widefat.plugins,
 .bp-share-services-extra .bp_share_settings_section_callback_class {
     background: #fff;
@@ -1628,12 +1632,12 @@ p.error_service_description {
     margin: 5px 0;
 }
 
-td.plugin-title {
+.add_share_services td.plugin-title {
     display: inline-block;
     margin: 5px 0;
 }
 
-td.plugin-title strong {
+.add_share_services td.plugin-title strong {
     display: inline;
 }
 
@@ -1649,19 +1653,116 @@ td.bp-share-title {
     cursor: move;
 }
 
-.nav-tab-wrapper ul .bpas_general_settings a:before {
-    content: "\f111" !important;
+.nav-tab-wrapper ul li a#bpas_general_settings:before {
+    content: "\f111";
 }
 
-.nav-tab-wrapper ul .bpas_reshare_settings a:before {
-    content: "\f237" !important;
-}
-
-.wbcom-wrap .notice.notice-error.is-dismissible.learndash-license-is-dismissible {
+.wb-plugins_page_buddypress-share .update-nag,
+.wb-plugins_page_buddypress-share .updated,
+.wb-plugins_page_buddypress-share .error,
+.wb-plugins_page_buddypress-share .notice-error,
+.wb-plugins_page_buddypress-share .is-dismissible {
     display: none !important;
 }
 
-.wbcom-wrap .notice.notice-error.is-dismissible.learndash-license-is-dismissible,
-#wpwrap .notice.notice-error {
+.wb-plugins_page_wbcom-support-page .update-nag,
+.wb-plugins_page_wbcom-support-page .updated,
+.wb-plugins_page_wbcom-support-page .error,
+.wb-plugins_page_wbcom-support-page .notice-error,
+.wb-plugins_page_wbcom-support-page .is-dismissible,
+.wb-plugins_page_wbcom-plugins-page .update-nag,
+.wb-plugins_page_wbcom-plugins-page .updated,
+.wb-plugins_page_wbcom-plugins-page .error,
+.wb-plugins_page_wbcom-plugins-page .notice-error,
+.wb-plugins_page_wbcom-plugins-page .is-dismissible {
     display: none !important;
+}
+
+.socialicon {
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin: 6px 0;
+    border: 1px dashed #b5b5b5;
+    display: flex;
+    cursor: move;
+    background: #fafaff;
+    align-items: center;
+    gap: 15px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.socialicon:hover {
+    box-shadow: 0 0px 20px #dedede;
+}
+
+.socialicon:before {
+    display: flex;
+    font-size: 18px;
+    font-family: dashicons;
+    line-height: normal;
+    font-weight: 400;
+    align-items: center;
+    width: 32px;
+    border-radius: 100px;
+    background: #eee;
+    height: 32px;
+    justify-content: center;
+}
+
+.socialicon.icon_Facebook:before {
+    content: "\f305";
+}
+
+.socialicon.icon_Pinterest:before {
+    content: "\f192";
+}
+
+.socialicon.icon_Reddit:before {
+    content: "\f195";
+}
+
+.socialicon.icon_WordPress:before {
+    content: "\f120";
+}
+
+.socialicon.icon_Pocket:before {
+    content: "\f347";
+}
+
+.socialicon.icon_Twitter:before {
+    content: "\f301";
+}
+
+.socialicon.icon_E-mail:before,
+.icon_Gmail:before {
+    content: "\f465";
+}
+
+.socialicon.icon_WhatsApp:before,
+.socialicon.icon_Whatsapp:before,
+.icon_WhatAapp:before {
+    content: "\f19a";
+}
+
+.socialicon.icon_LinkedIn:before {
+    content: "\f18d";
+}
+
+.social_icon_section {
+    width: 100%;
+    display: flex;
+    margin: 0 -1%;
+    justify-content: space-between;
+}
+
+#drag_social_icon,
+#drag_icon_ul {
+    padding: 20px;
+    border: 1px solid #e3e2ec;
+    background: #fff;
+    box-shadow: 0 10px 20px #f5f5f6;
+    width: 48%;
+    border-radius: 10px;
+    margin: 0 1%;
 }
