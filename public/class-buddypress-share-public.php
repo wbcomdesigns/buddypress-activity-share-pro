@@ -227,10 +227,10 @@ class Buddypress_Share_Public {
 				$img         = '';
 				echo '<a class="bp-share" id="bp_pocket_share"  href="https://getpocket.com/save?url=' . esc_url( $activity_link ) . '&title=' . esc_html( $activity_title ) . '"><span class="dashicons dashicons-arrow-down-alt2"></span></a>';
 			}
-			if ( isset( $social_service ) && ! empty( $social_service['LinkedIn'] ) ) {
+			if ( isset( $social_service ) && ! empty( $social_service['Linkedin'] ) ) {
 				echo '<a class="bp-share" id="bp_linkedin_share" href="http://www.linkedin.com/shareArticle?mini=true&url=' . esc_url( $activity_link ) . '&text=' . esc_html( $activity_title ) . '"><span class="dashicons dashicons-linkedin"></span></a>';
 			}
-			if ( isset( $social_service ) && ! empty( $social_service['WhatsApp'] ) ) {
+			if ( isset( $social_service ) && ! empty( $social_service['Whatsapp'] ) ) {
 				echo '<a class="bp-share" id="bp_whatsapp_share" href="https://api.whatsapp.com/send?text=' . esc_url( $activity_link ) . '&image_sharer=1"><span class="dashicons dashicons-whatsapp"></span></a>';
 			}
 			if ( isset( $social_service ) && ! empty( $social_service['E-mail'] ) ) {

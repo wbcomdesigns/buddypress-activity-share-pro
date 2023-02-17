@@ -278,6 +278,32 @@ function bp_activity_reshare_post_disable( $post_type ) {
 	return $post_type;
 }
 
+// add existing user option
+add_action( 'admin_init', 'bp_share_default_option' );
+function bp_share_default_option(){
+	$services = get_site_option( 'bp_share_services' );
+	$get_flag = get_site_option( 'bp_share_flag' );
+		if( '' !== $services && '' == $get_flag   ){
+				$bp_share_social_icon_default = array();
+				foreach($services as $get_key => $get_val){						
+					$service_name = $get_val['service_name'];
+					$bp_share_social_icon_default[$get_val['service_name']] = $get_val['service_name'];						
+				}
+				update_site_option( 'wss_admin_social_icon_value', $bp_share_social_icon_default );
+				update_site_option( 'bp_share_flag', 1 );
+			}else{
+				if( empty( get_option( 'wss_admin_social_icon_value' ) ) ){
+				$social_icon_default         = array(
+					'Facebook' => 'Facebook',
+					'Twitter'  => 'Twitter',
+					'Linkedin'  => 'Linkedin',
+					'Whatsapp'  => 'Whatsapp',
+				);
+				update_site_option( 'wss_admin_social_icon_value', $social_icon_default );
+				}
+			}
+}
+
 require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-activity-share-pro.json',
