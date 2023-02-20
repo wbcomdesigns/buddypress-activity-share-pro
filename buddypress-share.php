@@ -257,7 +257,7 @@ function bpshare_pro_activation_redirect_settings( $plugin ) {
 		return;
 	}
 
-	if ( class_exists( 'BuddyPress' ) && !isset($_GET['page'])) {
+	if ( class_exists( 'BuddyPress' ) && ! isset( $_GET['page'] ) ) {
 		if ( $plugin === plugin_basename( __FILE__ ) ) {
 			wp_redirect( admin_url( 'admin.php?page=buddypress-share' ) );
 			exit;
@@ -279,29 +279,25 @@ function bp_activity_reshare_post_disable( $post_type ) {
 }
 
 // add existing user option
-add_action( 'admin_init', 'bp_share_default_option' );
-function bp_share_default_option(){
+add_action( 'admin_init', 'bp_share_pro_default_option' );
+function bp_share_pro_default_option() {
 	$services = get_site_option( 'bp_share_services' );
 	$get_flag = get_site_option( 'bp_share_flag' );
-		if( '' !== $services && '' == $get_flag   ){
-				$bp_share_social_icon_default = array();
-				foreach($services as $get_key => $get_val){						
-					$service_name = $get_val['service_name'];
-					$bp_share_social_icon_default[$get_val['service_name']] = $get_val['service_name'];						
-				}
-				update_site_option( 'wss_admin_social_icon_value', $bp_share_social_icon_default );
-				update_site_option( 'bp_share_flag', 1 );
-			}else{
-				if( empty( get_option( 'wss_admin_social_icon_value' ) ) ){
-				$social_icon_default         = array(
-					'Facebook' => 'Facebook',
-					'Twitter'  => 'Twitter',
-					'Linkedin'  => 'Linkedin',
-					'Whatsapp'  => 'Whatsapp',
-				);
-				update_site_option( 'wss_admin_social_icon_value', $social_icon_default );
-				}
+	if ( '' !== $services && '' == $get_flag ) {
+		$flag_check                   = false;
+		$bp_share_social_pro_icon_default = array();
+		foreach ( $services as $get_key => $get_val ) {
+			if ( isset( $get_val['service_name'] ) && ! empty( $get_val['service_name'] ) ) {
+				$flag_check   = true;
+				$service_name = $get_val['service_name'];
+				$bp_share_social_pro_icon_default[ $get_val['service_name'] ] = $get_val['service_name'];
 			}
+		}
+		if ( $flag_check ) {
+			update_site_option( 'bp_share_pro_services', $bp_share_social_pro_icon_default );
+			update_site_option( 'bp_share_flag', 1 );
+		}
+	}
 }
 
 require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';

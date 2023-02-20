@@ -171,7 +171,7 @@ class Buddypress_Share_Public {
 	 * @since    1.0.0
 	 */
 	function bp_share_activity_filter() {
-		$social_service = get_site_option( 'wss_admin_social_icon_value' );
+		$social_service = get_site_option( 'bp_share_pro_services' );
 		$extra_options  = get_site_option( 'bp_share_services_extra' );
 		$activity_type  = bp_get_activity_type();
 		$activity_link  = bp_get_activity_thread_permalink();
