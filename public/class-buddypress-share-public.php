@@ -860,4 +860,84 @@ class Buddypress_Share_Public {
 		$response->data['bp_activity_share_count'] = $bp_activity_link_data;
 		return $response;
 	}
+
+	public function bp_share_icon_custom_color() {
+		$bpas_icon_color_settings = get_option( 'bpas_icon_color_settings' );
+		$bpas_facebook_bg_color = isset( $bpas_icon_color_settings['bpas_facebook_bg_color'] ) ? $bpas_icon_color_settings['bpas_facebook_bg_color'] : '';
+		$bpas_twitter_bg_color = isset( $bpas_icon_color_settings['bpas_twitter_bg_color'] ) ? $bpas_icon_color_settings['bpas_twitter_bg_color'] : '';
+		$bpas_pinterest_bg_color = isset( $bpas_icon_color_settings['bpas_pinterest_bg_color'] ) ? $bpas_icon_color_settings['bpas_pinterest_bg_color'] : '';
+		$bpas_linkedin_bg_color = isset( $bpas_icon_color_settings['bpas_linkedin_bg_color'] ) ? $bpas_icon_color_settings['bpas_linkedin_bg_color'] : '';
+		$bpas_reddit_bg_color = isset( $bpas_icon_color_settings['bpas_reddit_bg_color'] ) ? $bpas_icon_color_settings['bpas_reddit_bg_color'] : '';
+		$bpas_wordpress_bg_color = isset( $bpas_icon_color_settings['bpas_wordpress_bg_color'] ) ? $bpas_icon_color_settings['bpas_wordpress_bg_color'] : '';
+		$bpas_pocket_bg_color = isset( $bpas_icon_color_settings['bpas_pocket_bg_color'] ) ? $bpas_icon_color_settings['bpas_pocket_bg_color'] : '';
+		$bpas_email_bg_color = isset( $bpas_icon_color_settings['bpas_email_bg_color'] ) ? $bpas_icon_color_settings['bpas_email_bg_color'] : '';
+		$bpas_whatsapp_bg_color = isset( $bpas_icon_color_settings['bpas_whatsapp_bg_color'] ) ? $bpas_icon_color_settings['bpas_whatsapp_bg_color'] : '';
+		?>
+		<style>
+			#bp_facebook_share span{
+			<?php
+			if ( ! empty( $bpas_facebook_bg_color ) ) {
+				echo "color:$bpas_facebook_bg_color" . ';';
+			}
+			?>
+			}
+			#bp_twitter_share span{
+			<?php
+			if ( ! empty( $bpas_twitter_bg_color ) ) {
+				echo "color:$bpas_twitter_bg_color" . ';';
+			}
+			?>
+			}
+			#bp_pinterest_share span{
+			<?php
+			if ( ! empty( $bpas_pinterest_bg_color ) ) {
+				echo "color:$bpas_pinterest_bg_color" . ';';
+			}
+			?>
+			}
+			#bp_linkedin_share span{
+			<?php
+			if ( ! empty( $bpas_linkedin_bg_color ) ) {
+				echo "color:$bpas_linkedin_bg_color" . ';';
+			}
+			?>
+			}
+			#bp_reddit_share span{
+			<?php
+			if ( ! empty( $bpas_reddit_bg_color ) ) {
+				echo "color:$bpas_reddit_bg_color" . ';';
+			}
+			?>
+			}
+			#bp_wordpress_share span{
+			<?php
+			if ( ! empty( $bpas_wordpress_bg_color ) ) {
+				echo "color:$bpas_wordpress_bg_color" . ';';
+			}
+			?>
+			}
+			#bp_pocket_share span{
+			<?php
+			if ( ! empty( $bpas_pocket_bg_color ) ) {
+				echo "color:$bpas_pocket_bg_color" . ';';
+			}
+			?>
+			}
+			#bp_email_share span{
+			<?php
+			if ( ! empty( $bpas_email_bg_color ) ) {
+				echo "color:$bpas_email_bg_color" . ';';
+			}
+			?>
+			}
+			#bp_whatsapp_share .dashicons-whatsapp{
+			<?php
+			if ( ! empty( $bpas_whatsapp_bg_color ) ) {
+				echo "color:$bpas_whatsapp_bg_color" . ';';
+			}
+			?>
+			}
+			</style>
+			<?php
+	}
 }
