@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-15 10:00:52+00:00\n"
+"POT-Creation-Date: 2023-02-21 08:40:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,6 +23,50 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
+
+#: admin/bp-icon-color-page.php:8 admin/class-buddypress-share-admin.php:169
+msgid "Icon Color Settings"
+msgstr ""
+
+#: admin/bp-icon-color-page.php:21
+msgid "Sharing Icon Color"
+msgstr ""
+
+#: admin/bp-icon-color-page.php:29
+msgid "Facebbok Icon Color"
+msgstr ""
+
+#: admin/bp-icon-color-page.php:35
+msgid "Twitter Icon Color"
+msgstr ""
+
+#: admin/bp-icon-color-page.php:41
+msgid "Pinterest Icon Color"
+msgstr ""
+
+#: admin/bp-icon-color-page.php:47
+msgid "Linkedin Icon Color"
+msgstr ""
+
+#: admin/bp-icon-color-page.php:53
+msgid "Raddit Icon Color"
+msgstr ""
+
+#: admin/bp-icon-color-page.php:59
+msgid "Wordpress Icon Color"
+msgstr ""
+
+#: admin/bp-icon-color-page.php:65
+msgid "Pocket Icon Color"
+msgstr ""
+
+#: admin/bp-icon-color-page.php:71
+msgid "E-mail Icon Color"
+msgstr ""
+
+#: admin/bp-icon-color-page.php:77
+msgid "Whatsapp Icon Color"
+msgstr ""
 
 #: admin/bp-welcome-page.php:17
 msgid ""
@@ -109,162 +153,158 @@ msgid "General Settings"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:168
-#: admin/class-buddypress-share-admin.php:784
+#: admin/class-buddypress-share-admin.php:794
 msgid "Share Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:267
+#: admin/class-buddypress-share-admin.php:268
 #: includes/class-buddypress-share-settings.php:121
 msgid ""
 "Default is set to open window in popup. If this option is disabled then "
 "services open in new tab instead popup.  "
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:477
+#: admin/class-buddypress-share-admin.php:478
 #: includes/class-buddypress-share-settings.php:80
 msgid "Extra Options"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:483
+#: admin/class-buddypress-share-admin.php:484
 #: includes/class-buddypress-share-settings.php:86
 msgid "Open as popup window"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:511
+#: admin/class-buddypress-share-admin.php:512
 #: includes/class-buddypress-share-settings.php:63
 msgid "WB Plugins"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:512
+#: admin/class-buddypress-share-admin.php:513
 #: includes/class-buddypress-share-settings.php:64
 msgid "General"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:514
+#: admin/class-buddypress-share-admin.php:515
 #: includes/class-buddypress-share-settings.php:66
 msgid "BuddyPress Share"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:597
+#: admin/class-buddypress-share-admin.php:601
 msgid "General Services"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:607
+#: admin/class-buddypress-share-admin.php:611
 msgid "Enable Social Share"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:608
+#: admin/class-buddypress-share-admin.php:612
 msgid "Enable this option to show share button in activity page more options."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:619
+#: admin/class-buddypress-share-admin.php:623
 msgid "Enable Sharing Sites"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:626
+#: admin/class-buddypress-share-admin.php:630
 msgid "Disable"
-msgstr ""
-
-#: admin/class-buddypress-share-admin.php:631
-#: admin/class-buddypress-share-admin.php:656
-#: includes/class-buddypress-share-activator.php:35
-#: includes/class-buddypress-share-activator.php:75
-#: includes/class-buddypress-share-activator.php:122
-#: includes/class-buddypress-share-settings.php:248
-msgid "Facebook"
-msgstr ""
-
-#: admin/class-buddypress-share-admin.php:633
-#: admin/class-buddypress-share-admin.php:658
-#: includes/class-buddypress-share-activator.php:42
-#: includes/class-buddypress-share-activator.php:82
-#: includes/class-buddypress-share-activator.php:129
-#: includes/class-buddypress-share-settings.php:249
-msgid "Twitter"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:635
 #: admin/class-buddypress-share-admin.php:660
-#: includes/class-buddypress-share-settings.php:250
-msgid "Pinterest"
+#: includes/class-buddypress-share-settings.php:248
+msgid "Facebook"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:637
 #: admin/class-buddypress-share-admin.php:662
-msgid "LinkedIn"
+#: includes/class-buddypress-share-settings.php:249
+msgid "Twitter"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:639
 #: admin/class-buddypress-share-admin.php:664
-#: includes/class-buddypress-share-settings.php:252
-msgid "Reddit"
+#: includes/class-buddypress-share-settings.php:250
+msgid "Pinterest"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:641
 #: admin/class-buddypress-share-admin.php:666
-#: includes/class-buddypress-share-settings.php:253
-msgid "WordPress"
+#: includes/class-buddypress-share-settings.php:251
+msgid "Linkedin"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:643
 #: admin/class-buddypress-share-admin.php:668
-#: includes/class-buddypress-share-settings.php:254
-msgid "Pocket"
+#: includes/class-buddypress-share-settings.php:252
+msgid "Reddit"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:645
 #: admin/class-buddypress-share-admin.php:670
-msgid "E-mail"
+#: includes/class-buddypress-share-settings.php:253
+msgid "WordPress"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:647
 #: admin/class-buddypress-share-admin.php:672
-msgid "WhatsApp"
+#: includes/class-buddypress-share-settings.php:254
+msgid "Pocket"
+msgstr ""
+
+#: admin/class-buddypress-share-admin.php:649
+#: admin/class-buddypress-share-admin.php:674
+msgid "E-mail"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:651
+#: admin/class-buddypress-share-admin.php:676
+#: includes/class-buddypress-share-settings.php:256
+msgid "Whatsapp"
+msgstr ""
+
+#: admin/class-buddypress-share-admin.php:655
 msgid "Enable"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:707
-#: admin/class-buddypress-share-admin.php:868
+#: admin/class-buddypress-share-admin.php:711
+#: admin/class-buddypress-share-admin.php:878
 #: includes/class-buddypress-share-settings.php:370
 msgid "Save Changes"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:792
+#: admin/class-buddypress-share-admin.php:802
 msgid "Button Background Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:800
+#: admin/class-buddypress-share-admin.php:810
 msgid "Button Text Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:808
+#: admin/class-buddypress-share-admin.php:818
 msgid "Button Hover Background Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:816
+#: admin/class-buddypress-share-admin.php:826
 msgid "Button Hover Text Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:824
+#: admin/class-buddypress-share-admin.php:834
 msgid "Disable Post Share Activity"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:836
+#: admin/class-buddypress-share-admin.php:846
 msgid "Reshare share Activity"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:842
+#: admin/class-buddypress-share-admin.php:852
 msgid "Parent"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:847
+#: admin/class-buddypress-share-admin.php:857
 msgid "Child"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:856
+#: admin/class-buddypress-share-admin.php:866
 msgid "Use this shortcode in which post type you want to reshare in Activity."
 msgstr ""
 
@@ -942,66 +982,6 @@ msgstr ""
 
 #: buddypress-share.php:244
 msgid "%1$s plugin can not be use with %2$s plugin."
-msgstr ""
-
-#: includes/class-buddypress-share-activator.php:37
-#: includes/class-buddypress-share-activator.php:77
-#: includes/class-buddypress-share-activator.php:124
-msgid ""
-"Facebook is an American for-profit corporation and online social media and "
-"social networking service based in Menlo Park, California, United States."
-msgstr ""
-
-#: includes/class-buddypress-share-activator.php:44
-#: includes/class-buddypress-share-activator.php:84
-#: includes/class-buddypress-share-activator.php:131
-msgid ""
-"Twitter is an online news and social networking service where users post "
-"and read short 140-character messages called 'tweets'. Registered users can "
-"post and read tweets, but those who are unregistered can only read them."
-msgstr ""
-
-#: includes/class-buddypress-share-activator.php:49
-#: includes/class-buddypress-share-activator.php:89
-#: includes/class-buddypress-share-activator.php:136
-#: includes/class-buddypress-share-settings.php:251
-msgid "Linkedin"
-msgstr ""
-
-#: includes/class-buddypress-share-activator.php:51
-#: includes/class-buddypress-share-activator.php:91
-#: includes/class-buddypress-share-activator.php:138
-msgid ""
-"LinkedIn is a business and employment-oriented social networking service "
-"that operates via websites."
-msgstr ""
-
-#: includes/class-buddypress-share-activator.php:56
-#: includes/class-buddypress-share-activator.php:96
-#: includes/class-buddypress-share-activator.php:143
-#: includes/class-buddypress-share-settings.php:256
-msgid "Whatsapp"
-msgstr ""
-
-#: includes/class-buddypress-share-activator.php:58
-#: includes/class-buddypress-share-activator.php:98
-#: includes/class-buddypress-share-activator.php:145
-msgid ""
-"WhatsApp Messenger, or simply WhatsApp, is an American freeware, "
-"cross-platform messaging and Voice over IP (VoIP) service owned by "
-"Facebook, Inc."
-msgstr ""
-
-#: includes/class-buddypress-share-activator.php:63
-#: includes/class-buddypress-share-activator.php:103
-#: includes/class-buddypress-share-activator.php:151
-msgid "Copy Activity"
-msgstr ""
-
-#: includes/class-buddypress-share-activator.php:65
-#: includes/class-buddypress-share-activator.php:105
-#: includes/class-buddypress-share-activator.php:153
-msgid "Enable this option to copy activity."
 msgstr ""
 
 #: includes/class-buddypress-share-settings.php:144

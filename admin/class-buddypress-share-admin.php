@@ -719,6 +719,12 @@ class Buddypress_Share_Admin {
 		<?php
 	}
 
+	public function bpas_icon_color_setting_section() {
+		if ( file_exists( BP_ACTIVITY_SHARE_PLUGIN_PATH . 'admin/bp-icon-color-page.php' ) ) {
+			require_once BP_ACTIVITY_SHARE_PLUGIN_PATH . 'admin/bp-icon-color-page.php';
+		}
+	}
+
 	/**
 	 * This function is for that save social icon values in database
 	 **/
@@ -877,12 +883,6 @@ class Buddypress_Share_Admin {
 			</div>			
 		</div>
 		<?php
-	}
-
-	public function bpas_icon_color_setting_section(){
-		if ( file_exists( BP_ACTIVITY_SHARE_PLUGIN_PATH . 'admin/bp-icon-color-page.php' ) ) {
-			require_once BP_ACTIVITY_SHARE_PLUGIN_PATH . 'admin/bp-icon-color-page.php';
-		}
 	}
 
 }
