@@ -294,7 +294,7 @@ function bp_share_pro_default_option() {
 			}
 		}
 		if ( $flag_check ) {
-			update_site_option( 'bp_share_pro_services', $bp_share_social_pro_icon_default );
+			update_site_option( 'bp_share_services', $bp_share_social_pro_icon_default );
 			update_site_option( 'bp_share_flag', 1 );
 		}
 	}

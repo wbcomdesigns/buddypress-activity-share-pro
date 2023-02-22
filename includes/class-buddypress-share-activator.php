@@ -25,14 +25,14 @@ class Buddypress_Share_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-                 if ( get_site_option( 'bp_share_pro_services' ) == false ) {
+                 if ( get_site_option( 'bp_share_services' ) == false ) {
 			$bp_share_pro_icon_default = array(
 				'Facebook' => 'Facebook',
 				'Twitter'  => 'Twitter',
 				'Linkedin' => 'Linkedin',
 				'Whatsapp' => 'Whatsapp',
 			);
-			update_site_option( 'bp_share_pro_services', $bp_share_pro_icon_default );
+			update_site_option( 'bp_share_services', $bp_share_pro_icon_default );
 		}
 		if ( get_site_option( 'bpas_icon_color_settings' ) == false ) {
 				$bp_icon_color_default = array(
