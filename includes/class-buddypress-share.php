@@ -175,6 +175,7 @@ class Buddypress_Share {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
 		$this->loader->add_action( 'wp_ajax_wss_social_icons', $plugin_admin, 'wss_social_icons' );
 		$this->loader->add_action( 'wp_ajax_wss_social_remove_icons', $plugin_admin, 'wss_social_remove_icons' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'bpas_pro_icon_color_register_setting' );
 	}
 
 	/**

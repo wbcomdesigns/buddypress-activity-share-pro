@@ -885,4 +885,8 @@ class Buddypress_Share_Admin {
 		<?php
 	}
 
+	public function bpas_pro_icon_color_register_setting() {
+		register_setting( 'bpas_icon_color_settings', 'bpas_icon_color_settings' );
+	}
+
 }
