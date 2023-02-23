@@ -259,8 +259,10 @@ function bpshare_pro_activation_redirect_settings( $plugin ) {
 
 	if ( class_exists( 'BuddyPress' ) && ! isset( $_GET['page'] ) ) {
 		if ( $plugin === plugin_basename( __FILE__ ) ) {
-			wp_redirect( admin_url( 'admin.php?page=buddypress-share' ) );
-			exit;
+			if ( isset( $_REQUEST['action'] ) && $_REQUEST['action']  == 'activate' && isset( $_REQUEST['plugin'] ) && $_REQUEST['plugin'] == $plugin) {
+				wp_redirect( admin_url( 'admin.php?page=buddypress-share' ) );
+				exit;
+			}
 		}
 	}
 }
