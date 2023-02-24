@@ -294,23 +294,10 @@ class Buddypress_Share_Admin {
 			update_site_option( 'bp_share_services_extra', $extra_option_new );
 			$services = get_site_option( 'bp_share_services' );
 			if ( ! empty( $services ) ) {
-				if ( ! empty( $active_services ) ) {
-					foreach ( $services as $service_key => $value ) {
-						if ( in_array( 'chb_' . $service_key, $active_services ) ) {
-							$services[ $service_key ][ 'chb_' . $service_key ] = 1;
-							update_site_option( $option_name, $services );
-						} else {
-							$services[ $service_key ][ 'chb_' . $service_key ] = 0;
-							update_site_option( $option_name, $services );
-						}
-					}
-					update_site_option( 'bp_share_all_services_disable', 'enable' );
-				} else {
-					foreach ( $services as $service_key => $value ) {
-						$services[ $service_key ][ 'chb_' . $service_key ] = 0;
-						update_site_option( $option_name, $services );
-					}
-					update_site_option( 'bp_share_all_services_disable', 'disable' );
+				if ( ! empty( $active_services ) ) {					
+					update_site_option( 'bp_share_services_enable', 1 );
+				} else {					
+					update_site_option( 'bp_share_services_enable', 0 );
 				}
 			}
 		}

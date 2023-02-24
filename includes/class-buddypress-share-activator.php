@@ -34,6 +34,12 @@ class Buddypress_Share_Activator {
 			);
 			update_site_option( 'bp_share_services', $bp_share_pro_icon_default );
 		}
+		 if ( get_site_option( 'bp_share_all_services_disable' ) == false ) {
+		 	update_site_option( 'bp_share_all_services_disable', 'enable' );
+		 }
+		 if ( get_site_option( 'bp_share_services_enable' ) == false ) {
+		 	update_site_option( 'bp_share_services_enable', 1 );
+		 }
 		if ( get_site_option( 'bpas_icon_color_settings' ) == false ) {
 				$bp_icon_color_default = array(
 					'bpas_facebook_bg_color'  => '#3B5998',
