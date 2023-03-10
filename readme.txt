@@ -4,8 +4,8 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com
 Tags: buddypress,activity,share
 Requires at least: 4.0
-Tested up to: 5.9.3
-Stable tag: 1.1.1
+Tested up to: 6.2.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,13 @@ If you need additional help you can contact us for [Custom Development](https://
 Yes, this plugin requires BuddyPress plugin.
 
 == Changelog ==
+= 1.2.0 =
+* Fix: Fixed enable social share option issue
+* Fix: Fixed Plugin redirect issue when multi plugin activate the same time
+* Fix: Added missing action and text domain fixes
+* Fix: Update social icons backend setting drag drop structure
+* Fix: (#113) Removed failed to load source map error
+
 = 1.1.1 =
 * Fix: Update admin wrapper UI
 
