@@ -391,7 +391,7 @@ class Buddypress_Share_Options_Page {
 		$html_view_arr           = array();
 		$html_view               = '';
 		$html_view_arr['status'] = false;
-		if ( ! empty( $_POST ) && check_admin_referer( 'bp_share_nonce', 'nonce' ) ) {
+		if ( ! empty( $_POST ) && check_admin_referer( 'bp_share_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 			if ( get_site_option( $option_name ) !== false ) {
 				$services = get_site_option( $option_name );
 				if ( empty( $services ) ) {
@@ -484,7 +484,7 @@ class Buddypress_Share_Options_Page {
 	 * @since    1.0.0
 	 */
 	public function bp_share_delete_services_ajax() {
-		if ( ! empty( $_POST ) && check_admin_referer( 'bp_share_nonce', 'nonce' ) ) {
+		if ( ! empty( $_POST ) && check_admin_referer( 'bp_share_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 			$option_name  = 'bp_share_services';
 			$service_name = isset( $_POST['service_name'] ) ? wp_unslash( $_POST['service_name'] ) : array();
 			$services     = get_site_option( $option_name );
@@ -509,6 +509,9 @@ class Buddypress_Share_Options_Page {
 	 * @since    1.0.0
 	 */
 	public function bp_share_delete_user_services_ajax() {
+		if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'bp_share_nonce' ) && ! current_user_can( 'manage_options' ) ) {
+			exit();
+		}
 		$option_name   = 'bp_share_services';
 		$service_array = filter_var_array( $_POST['service_array'], FILTER_SANITIZE_STRING );
 		$services      = get_site_option( $option_name );
@@ -533,7 +536,7 @@ class Buddypress_Share_Options_Page {
 	 * @since    1.0.0
 	 */
 	public function bp_share_chb_services_ajax() {
-		if ( ! empty( $_POST ) && check_admin_referer( 'bp_share_nonce', 'nonce' ) ) {
+		if ( ! empty( $_POST ) && check_admin_referer( 'bp_share_nonce', 'nonce' ) && current_user_can( 'manage_options' ) ) {
 			$option_name      = 'bp_share_services';
 			$active_services  = isset( $_POST['active_chb_array'] ) ? wp_unslash( $_POST['active_chb_array'] ) : array();
 			$extras_options   = isset( $_POST['active_chb_extras'] ) ? wp_unslash( $_POST['active_chb_extras'] ) : array();
@@ -629,6 +632,7 @@ class Buddypress_Share_Options_Page {
 						var data = {
 							'action': 'bp_share_delete_user_services_ajax',
 							'service_array': difference,
+							'nonce' : <?php echo wp_create_nonce( 'bp_share_nonce' ); ?>,
 						};
 						// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
 						jQuery.post(my_ajax_object.ajax_url, data, function (response) {
