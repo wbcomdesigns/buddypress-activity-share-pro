@@ -163,9 +163,9 @@ class Buddypress_Share_Admin {
 	 */
 	public function bpas_plugin_settings_tabs( $current ) {
 		$bpas_tabs = array(
-			'bpas_welcome'          => esc_html__( 'Welcome', 'buddypress-share' ),
-			'bpas_general_settings' => esc_html__( 'General Settings', 'buddypress-share' ),
-			'bpas_reshare_settings' => esc_html__( 'Share Settings', 'buddypress-share' ),
+			'bpas_welcome'             => esc_html__( 'Welcome', 'buddypress-share' ),
+			'bpas_general_settings'    => esc_html__( 'General Settings', 'buddypress-share' ),
+			'bpas_reshare_settings'    => esc_html__( 'Share Settings', 'buddypress-share' ),
 			'bpas_icon_color_settings' => esc_html__( 'Icon Color Settings', 'buddypress-share' ),
 		);
 		$tab_html  = '<div class="wbcom-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
@@ -294,9 +294,9 @@ class Buddypress_Share_Admin {
 			update_site_option( 'bp_share_services_extra', $extra_option_new );
 			$services = get_site_option( 'bp_share_services' );
 			if ( ! empty( $services ) ) {
-				if ( ! empty( $active_services ) ) {					
+				if ( ! empty( $active_services ) ) {
 					update_site_option( 'bp_share_services_enable', 1 );
-				} else {					
+				} else {
 					update_site_option( 'bp_share_services_enable', 0 );
 				}
 			}
@@ -315,7 +315,7 @@ class Buddypress_Share_Admin {
 		if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'bp_share_nonce' ) && ! current_user_can( 'manage_options' ) ) {
 			exit();
 		}
-		
+
 		$option_name   = 'bp_share_services';
 		$service_array = filter_var_array( $_POST['service_array'], FILTER_SANITIZE_STRING );
 		$services      = get_site_option( $option_name );
@@ -513,7 +513,7 @@ class Buddypress_Share_Admin {
 	 * @since    1.0.0
 	 */
 	public function bp_share_sort_social_links_ajax() {
-		if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'bp_share_nonce' ) && ! current_user_can( 'manage_options' )  ) {
+		if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'bp_share_nonce' ) && ! current_user_can( 'manage_options' ) ) {
 			exit();
 		} else {
 			if ( ! isset( $_POST['sorted_data'] ) ) {
@@ -722,7 +722,7 @@ class Buddypress_Share_Admin {
 	 **/
 	public function wss_social_icons() {
 		$nonce = ! empty( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
-		if ( ! wp_verify_nonce( $nonce, 'bp_share_nonce' ) && ! current_user_can( 'manage_options' )  ) {
+		if ( ! wp_verify_nonce( $nonce, 'bp_share_nonce' ) && ! current_user_can( 'manage_options' ) ) {
 			$error = new WP_Error( '001', 'Sorry, your nonce did not verify.', 'Some information' );
 			wp_send_json_error( $error );
 		}
@@ -749,7 +749,7 @@ class Buddypress_Share_Admin {
 	 **/
 	public function wss_social_remove_icons() {
 		$nonce = ! empty( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
-		if ( ! wp_verify_nonce( $nonce, 'bp_share_nonce' ) && && ! current_user_can( 'manage_options' ) ) {
+		if ( ! wp_verify_nonce( $nonce, 'bp_share_nonce' ) && ! current_user_can( 'manage_options' ) ) {
 			$error = new WP_Error( '001', 'Sorry, your nonce did not verify.', 'Some information' );
 			wp_send_json_error( $error );
 		}
