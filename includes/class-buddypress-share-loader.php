@@ -38,6 +38,15 @@ class Buddypress_Share_Loader {
 	protected $filters;
 
 	/**
+	 * The array of filters registered with WordPress.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      array $shortcode add shortcode in the plugin.
+	 */
+	protected $shortcode;
+
+	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
 	 * @since    1.0.0
