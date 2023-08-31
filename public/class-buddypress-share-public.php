@@ -429,9 +429,11 @@ class Buddypress_Share_Public {
 	public function bp_share_activity_format_action_group_reshare( $action, $activity ) {
 		$user_link = bp_core_get_userlink( $activity->user_id );
 		$group     = bp_groups_get_activity_group( $activity->item_id );
-
+		if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
+		$group_link = '<a href="' . esc_url( bp_get_group_url( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
+		} else {
 		$group_link = '<a href="' . esc_url( bp_get_group_permalink( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
-
+		}
 		// Set the Activity update posted in a Group action.
 		$action = sprintf(
 			/* translators: 1: the user link. 2: the group link. */
@@ -637,7 +639,11 @@ class Buddypress_Share_Public {
 
 		// Add the activity.
 		if ( isset( $_POST['activity_in_type'] ) && $_POST['activity_in_type'] == 'user' ) {
+			if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
+			$username                  = bp_members_get_user_slug( $_POST['activity_in'] );
+			}else {
 			$username                  = bp_core_get_username( $_POST['activity_in'] );
+			}
 			$_POST['activity_content'] = "@$username \r\n" . $_POST['activity_content'];
 			$_POST['activity_in']      = '0';
 
