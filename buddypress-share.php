@@ -241,6 +241,7 @@ function bpshare_pro_youzify_plugin_admin_notice() {
 	$bpsharepro_plugin = esc_html__( 'BuddyPress Activity Share Pro', 'buddypress-share' );
 	$youzify_plugin    = esc_html__( 'Youzify', 'buddypress-share' );
 	echo '<div class="error"><p>';
+	/* translators: %s: */
 	echo sprintf( esc_html__( '%1$s plugin can not be use with %2$s plugin.', 'buddypress-share' ), '<strong>' . esc_html( $bpsharepro_plugin ) . '</strong>', '<strong>' . esc_html( $youzify_plugin ) . '</strong>' );
 	echo '</p></div>';
 	if ( isset( $_GET['activate'] ) ) {

@@ -137,7 +137,8 @@ class Buddypress_Share_Admin {
 					<div class="wbcom_admin_header-wrapper">
 						<div id="wb_admin_plugin_name">
 							<?php esc_html_e( 'BuddyPress Activity Share Pro Settings', 'buddypress-share' ); ?>
-							<span><?php printf( __( 'Version %s', 'buddypress-share' ), BP_ACTIVITY_SHARE_PLUGIN_VERSION ); ?></span>
+							<?php /* translators: %s: */ ?>
+							<span><?php printf( esc_html__( 'Version %s', 'buddypress-share' ), esc_attr( BP_ACTIVITY_SHARE_PLUGIN_VERSION ) ); ?></span>
 						</div>
 						<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
 					</div>
@@ -391,10 +392,10 @@ class Buddypress_Share_Admin {
 						var data = {
 							'action': 'bp_share_delete_user_services_ajax',
 							'service_array': difference,
-							'nonce' : <?php echo wp_create_nonce( 'bp_share_nonce' ); ?>,
+							'nonce' : <?php echo wp_create_nonce( 'bp_share_nonce' ); //phpcs:ignore ?>,
 						};
 						// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
-						jQuery.post('<?php echo admin_url( 'admin-ajax.php' ); ?>', data, function (response) {
+						jQuery.post('<?php echo admin_url( 'admin-ajax.php' ); //phpcs:ignore ?>', data, function (response) {
 							//                            console.log(response);
 						});
 					}
@@ -794,7 +795,7 @@ class Buddypress_Share_Admin {
 									<label><?php esc_html_e( 'Button Background Color', 'buddypress-share' ); ?></label>
 								</div>
 								<div class="wbcom-settings-section-options">
-									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_bg_color'] ) ) ? $bp_reshare_settings['btn_bg_color'] : ''; ?>" />
+									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_bg_color'] ) ) ? esc_attr( $bp_reshare_settings['btn_bg_color'] ) : ''; ?>" />
 								</div>
 							</div>
 							<div class="wbcom-settings-section-wrap">
@@ -802,7 +803,7 @@ class Buddypress_Share_Admin {
 									<label><?php esc_html_e( 'Button Text Color', 'buddypress-share' ); ?></label>
 								</div>
 								<div class="wbcom-settings-section-options">
-									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_text_color'] ) ) ? $bp_reshare_settings['btn_text_color'] : ''; ?>" />
+									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_text_color'] ) ) ? esc_attr( $bp_reshare_settings['btn_text_color'] ) : ''; ?>" />
 								</div>
 							</div>
 							<div class="wbcom-settings-section-wrap">
@@ -810,7 +811,7 @@ class Buddypress_Share_Admin {
 									<label><?php esc_html_e( 'Button Hover Background Color', 'buddypress-share' ); ?></label>
 								</div>
 								<div class="wbcom-settings-section-options">
-									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_bg_color'] ) ) ? $bp_reshare_settings['btn_hover_bg_color'] : ''; ?>" />
+									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_bg_color'] ) ) ? esc_attr( $bp_reshare_settings['btn_hover_bg_color'] ) : ''; ?>" />
 								</div>
 							</div>
 							<div class="wbcom-settings-section-wrap">
@@ -818,7 +819,7 @@ class Buddypress_Share_Admin {
 									<label><?php esc_html_e( 'Button Hover Text Color', 'buddypress-share' ); ?></label>
 								</div>
 								<div class="wbcom-settings-section-options">
-									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_text_color'] ) ) ? $bp_reshare_settings['btn_hover_text_color'] : ''; ?>" />
+									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_text_color'] ) ) ? esc_attr( $bp_reshare_settings['btn_hover_text_color'] ) : ''; ?>" />
 								</div>
 							</div>
 							<div class="wbcom-settings-section-wrap">

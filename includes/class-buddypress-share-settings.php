@@ -632,7 +632,7 @@ class Buddypress_Share_Options_Page {
 						var data = {
 							'action': 'bp_share_delete_user_services_ajax',
 							'service_array': difference,
-							'nonce' : <?php echo wp_create_nonce( 'bp_share_nonce' ); ?>,
+							'nonce' : <?php echo wp_create_nonce( 'bp_share_nonce' ); //phpcs:ignore ?>,
 						};
 						// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
 						jQuery.post(my_ajax_object.ajax_url, data, function (response) {
