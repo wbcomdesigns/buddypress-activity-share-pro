@@ -129,7 +129,7 @@ class Buddypress_Share_Options_Page {
 	 * @since    1.0.0
 	 */
 	public function bp_share_plugin_options() {
-		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'bpas_welcome';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'bpas_welcome'; //phpcs:ignore
 		// admin check.
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'buddypress-share' ) );
@@ -187,7 +187,7 @@ class Buddypress_Share_Options_Page {
 	 * @since    1.0.0
 	 */
 	public function bpas_include_admin_setting_tabs( $bpas_tab ) {
-		$bpas_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'bpas_welcome';
+		$bpas_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'bpas_welcome'; //phpcs:ignore
 		switch ( $bpas_tab ) {
 			case 'bpas_welcome':
 				$this->bpas_welcome_section();

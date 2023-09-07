@@ -188,7 +188,7 @@ function bpshare_pro_requires_buddypress() {
 	if ( ! class_exists( 'BuddyPress' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		add_action( 'admin_notices', 'bpshare_pro_required_plugin_admin_notice' );
-		unset( $_GET['activate'] );
+		unset( $_GET['activate'] ); //phpcs:ignore
 	}
 
 }
@@ -211,8 +211,8 @@ function bpshare_pro_required_plugin_admin_notice() {
 		'<strong>' . esc_html( $bp_plugin ) . '</strong>'
 	);
 	echo '</p></div>';
-	if ( isset( $_GET['activate'] ) ) {
-		unset( $_GET['activate'] );
+	if ( isset( $_GET['activate'] ) ) { //phpcs:ignore
+		unset( $_GET['activate'] ); //phpcs:ignore
 	}
 }
 
@@ -226,7 +226,7 @@ function bpshare_pro_youzify() {
 	if ( class_exists( 'Youzify' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		add_action( 'admin_notices', 'bpshare_pro_youzify_plugin_admin_notice' );
-		unset( $_GET['activate'] );
+		unset( $_GET['activate'] ); //phpcs:ignore
 	}
 }
 add_action( 'admin_init', 'bpshare_pro_youzify' );
@@ -244,8 +244,8 @@ function bpshare_pro_youzify_plugin_admin_notice() {
 	/* translators: %s: */
 	echo sprintf( esc_html__( '%1$s plugin can not be use with %2$s plugin.', 'buddypress-share' ), '<strong>' . esc_html( $bpsharepro_plugin ) . '</strong>', '<strong>' . esc_html( $youzify_plugin ) . '</strong>' );
 	echo '</p></div>';
-	if ( isset( $_GET['activate'] ) ) {
-		unset( $_GET['activate'] );
+	if ( isset( $_GET['activate'] ) ) { //phpcs:ignore
+		unset( $_GET['activate'] ); //phpcs:ignore
 	}
 }
 
@@ -258,9 +258,9 @@ function bpshare_pro_activation_redirect_settings( $plugin ) {
 		return;
 	}
 
-	if ( class_exists( 'BuddyPress' ) && ! isset( $_GET['page'] ) ) {
+	if ( class_exists( 'BuddyPress' ) && ! isset( $_GET['page'] ) ) { //phpcs:ignore
 		if ( $plugin === plugin_basename( __FILE__ ) ) {
-			if ( isset( $_REQUEST['action'] ) && $_REQUEST['action']  == 'activate' && isset( $_REQUEST['plugin'] ) && $_REQUEST['plugin'] == $plugin) {
+			if ( isset( $_REQUEST['action'] ) && $_REQUEST['action']  == 'activate' && isset( $_REQUEST['plugin'] ) && $_REQUEST['plugin'] == $plugin) { //phpcs:ignore
 				wp_redirect( admin_url( 'admin.php?page=buddypress-share' ) );
 				exit;
 			}

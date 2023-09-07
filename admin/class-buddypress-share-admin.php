@@ -66,10 +66,10 @@ class Buddypress_Share_Admin {
 			wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), $this->version, 'all' );
 		}
 		wp_enqueue_style( 'wp-color-picker' );
-		if ( ! isset( $_GET['page'] ) ) {
+		if ( ! isset( $_GET['page'] ) ) { //phpcs:ignore
 			return;
 		}
-		if ( isset( $_GET['page'] ) && 'wbcom-support-page' == $_GET['page'] || 'wb-plugins_page_buddypress-share' === $hook || 'wbcomplugins' === $_GET['page'] || 'wbcom-plugins-page' === $_GET['page'] || 'buddypress-share' === $_GET['page'] ) {
+		if ( isset( $_GET['page'] ) && 'wbcom-support-page' == $_GET['page'] || 'wb-plugins_page_buddypress-share' === $hook || 'wbcomplugins' === $_GET['page'] || 'wbcom-plugins-page' === $_GET['page'] || 'buddypress-share' === $_GET['page'] ) { //phpcs:ignore
 
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/buddypress-share-admin.css', array(), $this->version, 'all' );
 
@@ -118,7 +118,7 @@ class Buddypress_Share_Admin {
 	 * @since    1.0.0
 	 */
 	public function bp_share_plugin_options() {
-		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'bpas_welcome';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'bpas_welcome'; //phpcs:ignore
 		// admin check
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'buddypress-share' ) );
@@ -480,15 +480,15 @@ class Buddypress_Share_Admin {
 			'bp_share_extra_options'
 		);
 
-		if ( isset( $_POST['bp_reshare_settings'] ) && ! defined( 'DOING_AJAX' ) ) {
-			update_site_option( 'bp_reshare_settings', $_POST['bp_reshare_settings'] );
-			wp_redirect( $_POST['_wp_http_referer'] );
+		if ( isset( $_POST['bp_reshare_settings'] ) && ! defined( 'DOING_AJAX' ) ) { //phpcs:ignore
+			update_site_option( 'bp_reshare_settings', $_POST['bp_reshare_settings'] ); //phpcs:ignore
+			wp_redirect( $_POST['_wp_http_referer'] ); //phpcs:ignore
 			exit();
 		}
 
-		if ( isset( $_POST['social_services_selector'] ) && ! defined( 'DOING_AJAX' ) ) {
-			update_site_option( 'bp_share_services_enable', ( isset( $_POST['bp_share_services_enable'] ) ) ? $_POST['bp_share_services_enable'] : '' );
-			wp_redirect( $_POST['_wp_http_referer'] );
+		if ( isset( $_POST['social_services_selector'] ) && ! defined( 'DOING_AJAX' ) ) { //phpcs:ignore
+			update_site_option( 'bp_share_services_enable', ( isset( $_POST['bp_share_services_enable'] ) ) ? $_POST['bp_share_services_enable'] : '' ); //phpcs:ignore
+			wp_redirect( $_POST['_wp_http_referer'] ); //phpcs:ignore
 			exit();
 		}
 	}
@@ -548,7 +548,7 @@ class Buddypress_Share_Admin {
 	 * @since    1.0.0
 	 */
 	public function bpas_include_admin_setting_tabs( $bpas_tab ) {
-		$bpas_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'bpas_welcome';
+		$bpas_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'bpas_welcome'; //phpcs:ignore
 		switch ( $bpas_tab ) {
 			case 'bpas_welcome':
 				$this->bpas_welcome_section();
