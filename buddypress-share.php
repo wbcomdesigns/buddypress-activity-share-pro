@@ -308,3 +308,28 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	__FILE__, // Full path to the main plugin file or functions.php.
 	'buddypress-activity-share-pro'
 );
+
+/**
+ * 
+ * BuddyPress Version compare code.
+ */
+	function bp_share_pro_is_buddypress_supported() {
+	$bp_plugin_basename      = 'buddypress/bp-loader.php';
+	$is_buddypress_supported = false;
+	$sitewide_plugins        = (array) get_site_option( 'active_sitewide_plugins', array() );
+
+	if ( $sitewide_plugins ) {
+		$is_buddypress_supported = isset( $sitewide_plugins[ $bp_plugin_basename ] );
+	}
+
+	if ( ! $is_buddypress_supported ) {
+		$plugins                 = (array) get_option( 'active_plugins', array() );
+		$is_buddypress_supported = in_array( $bp_plugin_basename, $plugins, true );
+	}
+
+	if ( $is_buddypress_supported ) {
+		$is_buddypress_supported = version_compare( bp_get_version(), '12.0.0-beta', '>=' );
+	}
+
+	return $is_buddypress_supported;
+}

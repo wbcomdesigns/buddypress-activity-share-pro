@@ -429,7 +429,7 @@ class Buddypress_Share_Public {
 	public function bp_share_activity_format_action_group_reshare( $action, $activity ) {
 		$user_link = bp_core_get_userlink( $activity->user_id );
 		$group     = bp_groups_get_activity_group( $activity->item_id );
-		if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
+		if ( bp_share_pro_is_buddypress_supported() ) {
 		$group_link = '<a href="' . esc_url( bp_get_group_url( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
 		} else {
 		$group_link = '<a href="' . esc_url( bp_get_group_permalink( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
@@ -502,7 +502,7 @@ class Buddypress_Share_Public {
 										<?php bp_loggedin_user_avatar( 'width=' . bp_core_avatar_thumb_width() . '&height=' . bp_core_avatar_thumb_height() ); ?>
 									</a>
 									<?php
-									if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
+									if ( bp_share_pro_is_buddypress_supported() ) {
 										echo esc_html( bp_members_get_user_slug( bp_loggedin_user_id() ) );
 									} else {
 										echo esc_html( bp_core_get_username( bp_loggedin_user_id() ) );
@@ -639,7 +639,7 @@ class Buddypress_Share_Public {
 
 		// Add the activity.
 		if ( isset( $_POST['activity_in_type'] ) && $_POST['activity_in_type'] == 'user' ) {
-			if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
+			if ( bp_share_pro_is_buddypress_supported() ) {
 			$username                  = bp_members_get_user_slug( $_POST['activity_in'] );
 			}else {
 			$username                  = bp_core_get_username( $_POST['activity_in'] );
