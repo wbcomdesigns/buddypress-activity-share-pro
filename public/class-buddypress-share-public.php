@@ -100,9 +100,9 @@ class Buddypress_Share_Public {
 		 * class.
 		 */
 		global $bp_reshare_settings;
-		$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
-		$reshare_share_activity = isset( $bp_reshare_settings['reshare_share_activity'] )  ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
-		
+		$bp_reshare_settings    = get_site_option( 'bp_reshare_settings' );
+		$reshare_share_activity = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
+
 		wp_enqueue_script( 'jquery-ui-tooltip' );
 		wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( 'select2-js', plugin_dir_url( __FILE__ ) . 'js/select2.min.js', array( 'jquery' ), $this->version, false );
@@ -112,10 +112,10 @@ class Buddypress_Share_Public {
 			$this->plugin_name,
 			'bp_activity_sjare_vars',
 			array(
-				'ajax_url'        		=> admin_url( 'admin-ajax.php' ),
-				'current_user_id' 		=> get_current_user_id(),
-				'reshare_share_activity'=> $reshare_share_activity,
-				'ajax_nonce'      		=> wp_create_nonce( 'bp-activity-share-nonce' ),
+				'ajax_url'               => admin_url( 'admin-ajax.php' ),
+				'current_user_id'        => get_current_user_id(),
+				'reshare_share_activity' => $reshare_share_activity,
+				'ajax_nonce'             => wp_create_nonce( 'bp-activity-share-nonce' ),
 			)
 		);
 	}
@@ -127,20 +127,19 @@ class Buddypress_Share_Public {
 	 * @since    1.0.0
 	 */
 	public function bp_activity_share_button_dis() {
-		$all_services = get_site_option( 'bp_share_all_services_disable' );
+		$all_services             = get_site_option( 'bp_share_all_services_disable' );
 		$bp_share_services_enable = get_site_option( 'bp_share_services_enable' );
-		
+
 		$theme_support = apply_filters( 'buddyPress_reactions_theme_suuport', array( 'reign-theme', 'buddyx-pro' ) );
 		$theme_name    = wp_get_theme();
-		
+
 		if ( is_user_logged_in() && 'enable' === $all_services && $bp_share_services_enable == 1 ) {
-			if ( in_array( $theme_name->template, $theme_support )) {
+			if ( in_array( $theme_name->template, $theme_support ) ) {
 				add_action( 'bp_activity_entry_dropdown_toggle_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 				add_action( 'bp_activity_entry_top_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 			} else {
 				add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 			}
-
 		}
 		if ( is_user_logged_in() ) {
 			add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_inner_activity_filter' ) );
@@ -190,7 +189,7 @@ class Buddypress_Share_Public {
 		$theme_name    = wp_get_theme();
 
 		$bp_share_class = '';
-		if ( in_array( $theme_name->template, $theme_support )) {
+		if ( in_array( $theme_name->template, $theme_support ) ) {
 			$bp_share_class = 'bp-share-service-popup';
 		}
 		?>
@@ -211,7 +210,7 @@ class Buddypress_Share_Public {
 			if ( isset( $social_service ) && ! empty( $social_service['Pinterest'] ) ) {
 				$media = '';
 				$video = '';
-				echo '<a class="bp-share" id="bp_pinterest_share"  href="https://pinterest.com/pin/create/bookmarklet/?media=' . esc_url( $media ) . '&url=' . esc_url( $activity_link ) . '&is_video=' . esc_url( $video ) . '&description=' . esc_html( $activity_title ) .  '"><span class="dashicons dashicons-pinterest
+				echo '<a class="bp-share" id="bp_pinterest_share"  href="https://pinterest.com/pin/create/bookmarklet/?media=' . esc_url( $media ) . '&url=' . esc_url( $activity_link ) . '&is_video=' . esc_url( $video ) . '&description=' . esc_html( $activity_title ) . '"><span class="dashicons dashicons-pinterest
 				"></span></a>';
 			}
 			if ( isset( $social_service ) && ! empty( $social_service['Reddit'] ) ) {
@@ -237,15 +236,17 @@ class Buddypress_Share_Public {
 				$email = 'mailto:?subject=' . esc_url( $activity_link ) . '&body=Check out this site: ' . esc_html( $activity_title ) . '" title="Share by Email';
 				echo '<a class="bp-share" id="bp_email_share" href="' . esc_url( $email ) . '"><span class="dashicons dashicons-email"></span></a>';
 			}
+			echo '<a class="bp-share bp-cpoy" href="#" data-href="' . esc_attr( $activity_link ) . '" attr-display="no-popup"><span class="dashicons dashicons-admin-page"></span></a>';
+			echo '<span class="tooltiptext tooltip-hide">' . esc_attr__( 'Link Copied!', 'buddypress-share' ) . '</span>';
 		} else {
 			esc_html_e( 'Please enable share services!', 'buddypress-share' );
 		}
 			do_action( 'bp_share_user_services', $services = array(), $activity_link, $activity_title );
 		?>
 		</div>
-		<?php if ( in_array( $theme_name->template, $theme_support )) { ?>
+		<?php if ( in_array( $theme_name->template, $theme_support ) ) { ?>
 			<div class="bp-share-service-popup-overlay"></div>
-		<?php }?>
+		<?php } ?>
 
 		<div>
 			<script>
@@ -289,7 +290,7 @@ class Buddypress_Share_Public {
 
 			if ( isset( $result[2] ) && ! empty( $result[2] ) ) {
 				$result_new = array_map(
-					function( $i ) {
+					function ( $i ) {
 								return trim( $i, '"' );
 					},
 					$result[2]
@@ -423,7 +424,6 @@ class Buddypress_Share_Public {
 		);
 
 		return $action;
-
 	}
 
 	public function bp_share_activity_format_action_group_reshare( $action, $activity ) {
@@ -441,7 +441,6 @@ class Buddypress_Share_Public {
 		);
 
 		return $action;
-
 	}
 
 	public function bp_activity_post_share_button_action( $content ) {
@@ -468,7 +467,6 @@ class Buddypress_Share_Public {
 		}
 
 		return $content;
-
 	}
 
 	public function bp_activity_share_popup_box() {
@@ -478,12 +476,12 @@ class Buddypress_Share_Public {
 
 		if ( is_user_logged_in() && ( is_buddypress() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) || apply_filters( 'bp_activity_reshare_action', false ) ) ) {
 			$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
-			
-			$groups = [];
+
+			$groups = array();
 			if ( bp_is_active( 'groups' ) ) {
-				$groups  = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
+				$groups = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
 			}
-			$friends = ( function_exists( 'friends_get_friend_user_ids')) ? friends_get_friend_user_ids( bp_loggedin_user_id() ) : array();
+			$friends = ( function_exists( 'friends_get_friend_user_ids' ) ) ? friends_get_friend_user_ids( bp_loggedin_user_id() ) : array();
 			?>
 			
 			<div class="modal fade activity-share-modal" id="activity-share-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -497,7 +495,7 @@ class Buddypress_Share_Public {
 							<div class="quick-post-header-filters-wrap">
 								<div class="bp-activity-share-avatar">
 									<a href="<?php echo bp_loggedin_user_domain(); //phpcs:ignore ?>">
-										<?php bp_loggedin_user_avatar( 'width=' . bp_core_avatar_thumb_width() . '&height=' . bp_core_avatar_thumb_height() );  ?>
+										<?php bp_loggedin_user_avatar( 'width=' . bp_core_avatar_thumb_width() . '&height=' . bp_core_avatar_thumb_height() ); ?>
 									</a>
 									<?php echo bp_core_get_username( bp_loggedin_user_id() );  //phpcs:ignore ?>
 									<small class="user-status-text"><?php esc_html_e( 'Status Update', 'buddypress-share' ); ?></small>
@@ -509,19 +507,19 @@ class Buddypress_Share_Public {
 											<select id="post-in" name="postIn">
 												<option value="0"><?php esc_html_e( 'My Profile', 'buddypress-share' ); ?></option>
 												<?php if ( ! empty( $groups ) ) : ?>
-													 <optgroup label="<?php esc_html_e( 'Group lists', 'buddypress-share' ); ?>">
+													<optgroup label="<?php esc_html_e( 'Group lists', 'buddypress-share' ); ?>">
 													<?php foreach ( $groups['groups'] as $group ) : ?>
 														<option value="<?php echo esc_attr( $group->id ); ?>" data-type="group"><?php echo esc_attr( $group->name ); ?></option>
 													<?php endforeach; ?>
-													 </optgroup>
+													</optgroup>
 												<?php endif; ?>
 												
 												<?php if ( ! empty( $friends ) ) : ?>
-													 <optgroup label="<?php esc_html_e( 'Friend lists', 'buddypress-share' ); ?>">
+													<optgroup label="<?php esc_html_e( 'Friend lists', 'buddypress-share' ); ?>">
 													<?php foreach ( $friends as $friend ) : ?>
 														<option value="<?php echo esc_attr( $friend ); ?>" data-type="user"><?php echo esc_attr( get_user_by( 'ID', $friend )->display_name ); ?></option>
 													<?php endforeach; ?>
-													 </optgroup>
+													</optgroup>
 												<?php endif; ?>
 											</select>
 										</div>
@@ -660,12 +658,11 @@ class Buddypress_Share_Public {
 
 	public function bp_activity_share_entry_content() {
 		global $activities_template, $bp_reshare_settings;
-		
-		if ( !empty($bp_reshare_settings)) {
+
+		if ( ! empty( $bp_reshare_settings ) ) {
 			$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
 		}
-		$reshare_share_activity = isset( $bp_reshare_settings['reshare_share_activity'] )  ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
-		
+		$reshare_share_activity = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
 
 		$activity_id   = $activities_template->activity->id;
 		$activity_type = $activities_template->activity->type;
@@ -678,7 +675,7 @@ class Buddypress_Share_Public {
 			$_REQUEST['search_terms'] = $secondary_item_id;
 			if ( bp_has_activities( $args ) ) {
 				if ( $reshare_share_activity == 'parent' ) {
-					remove_action( 'bp_activity_entry_content', array($this, 'bp_activity_share_entry_content') );
+					remove_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
 				}
 				while ( bp_activities() ) :
 					bp_the_activity();
@@ -722,7 +719,7 @@ class Buddypress_Share_Public {
 			}
 			remove_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
 			if ( $reshare_share_activity == 'parent' ) {
-				add_action( 'bp_activity_entry_content', array($this, 'bp_activity_share_entry_content') );
+				add_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
 			}
 
 			$activities_template = $temp_activities_template;
@@ -743,7 +740,7 @@ class Buddypress_Share_Public {
 				while ( $query->have_posts() ) {
 					$query->the_post();
 					?>
-					<div id="bp-reshare-activity-<?php echo get_the_ID();?>" class="post-reshare-item-container activity-reshare-item-container"> 
+					<div id="bp-reshare-activity-<?php echo get_the_ID(); ?>" class="post-reshare-item-container activity-reshare-item-container"> 
 						<div class="post-preview animate-slide-down entry-wrapper ">
 							<?php if ( has_post_thumbnail() ) { ?>
 
@@ -840,15 +837,15 @@ class Buddypress_Share_Public {
 
 	public function bp_share_icon_custom_color() {
 		$bpas_icon_color_settings = get_option( 'bpas_icon_color_settings' );
-		$bpas_facebook_bg_color = isset( $bpas_icon_color_settings['bpas_facebook_bg_color'] ) ? $bpas_icon_color_settings['bpas_facebook_bg_color'] : '';
-		$bpas_twitter_bg_color = isset( $bpas_icon_color_settings['bpas_twitter_bg_color'] ) ? $bpas_icon_color_settings['bpas_twitter_bg_color'] : '';
-		$bpas_pinterest_bg_color = isset( $bpas_icon_color_settings['bpas_pinterest_bg_color'] ) ? $bpas_icon_color_settings['bpas_pinterest_bg_color'] : '';
-		$bpas_linkedin_bg_color = isset( $bpas_icon_color_settings['bpas_linkedin_bg_color'] ) ? $bpas_icon_color_settings['bpas_linkedin_bg_color'] : '';
-		$bpas_reddit_bg_color = isset( $bpas_icon_color_settings['bpas_reddit_bg_color'] ) ? $bpas_icon_color_settings['bpas_reddit_bg_color'] : '';
-		$bpas_wordpress_bg_color = isset( $bpas_icon_color_settings['bpas_wordpress_bg_color'] ) ? $bpas_icon_color_settings['bpas_wordpress_bg_color'] : '';
-		$bpas_pocket_bg_color = isset( $bpas_icon_color_settings['bpas_pocket_bg_color'] ) ? $bpas_icon_color_settings['bpas_pocket_bg_color'] : '';
-		$bpas_email_bg_color = isset( $bpas_icon_color_settings['bpas_email_bg_color'] ) ? $bpas_icon_color_settings['bpas_email_bg_color'] : '';
-		$bpas_whatsapp_bg_color = isset( $bpas_icon_color_settings['bpas_whatsapp_bg_color'] ) ? $bpas_icon_color_settings['bpas_whatsapp_bg_color'] : '';
+		$bpas_facebook_bg_color   = isset( $bpas_icon_color_settings['bpas_facebook_bg_color'] ) ? $bpas_icon_color_settings['bpas_facebook_bg_color'] : '';
+		$bpas_twitter_bg_color    = isset( $bpas_icon_color_settings['bpas_twitter_bg_color'] ) ? $bpas_icon_color_settings['bpas_twitter_bg_color'] : '';
+		$bpas_pinterest_bg_color  = isset( $bpas_icon_color_settings['bpas_pinterest_bg_color'] ) ? $bpas_icon_color_settings['bpas_pinterest_bg_color'] : '';
+		$bpas_linkedin_bg_color   = isset( $bpas_icon_color_settings['bpas_linkedin_bg_color'] ) ? $bpas_icon_color_settings['bpas_linkedin_bg_color'] : '';
+		$bpas_reddit_bg_color     = isset( $bpas_icon_color_settings['bpas_reddit_bg_color'] ) ? $bpas_icon_color_settings['bpas_reddit_bg_color'] : '';
+		$bpas_wordpress_bg_color  = isset( $bpas_icon_color_settings['bpas_wordpress_bg_color'] ) ? $bpas_icon_color_settings['bpas_wordpress_bg_color'] : '';
+		$bpas_pocket_bg_color     = isset( $bpas_icon_color_settings['bpas_pocket_bg_color'] ) ? $bpas_icon_color_settings['bpas_pocket_bg_color'] : '';
+		$bpas_email_bg_color      = isset( $bpas_icon_color_settings['bpas_email_bg_color'] ) ? $bpas_icon_color_settings['bpas_email_bg_color'] : '';
+		$bpas_whatsapp_bg_color   = isset( $bpas_icon_color_settings['bpas_whatsapp_bg_color'] ) ? $bpas_icon_color_settings['bpas_whatsapp_bg_color'] : '';
 		?>
 		<style>
 			#bp_facebook_share span{
