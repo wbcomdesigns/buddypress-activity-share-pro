@@ -794,38 +794,6 @@ class Buddypress_Share_Admin {
 						<div class="form-table">
 							<div class="wbcom-settings-section-wrap">
 								<div class="wbcom-settings-section-options-heading">
-									<label><?php esc_html_e( 'Button Background Color', 'buddypress-share' ); ?></label>
-								</div>
-								<div class="wbcom-settings-section-options">
-									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_bg_color'] ) ) ? esc_attr( $bp_reshare_settings['btn_bg_color'] ) : ''; ?>" />
-								</div>
-							</div>
-							<div class="wbcom-settings-section-wrap">
-								<div class="wbcom-settings-section-options-heading">
-									<label><?php esc_html_e( 'Button Text Color', 'buddypress-share' ); ?></label>
-								</div>
-								<div class="wbcom-settings-section-options">
-									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_text_color'] ) ) ? esc_attr( $bp_reshare_settings['btn_text_color'] ) : ''; ?>" />
-								</div>
-							</div>
-							<div class="wbcom-settings-section-wrap">
-								<div class="wbcom-settings-section-options-heading">
-									<label><?php esc_html_e( 'Button Hover Background Color', 'buddypress-share' ); ?></label>
-								</div>
-								<div class="wbcom-settings-section-options">
-									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_bg_color'] ) ) ? esc_attr( $bp_reshare_settings['btn_hover_bg_color'] ) : ''; ?>" />
-								</div>
-							</div>
-							<div class="wbcom-settings-section-wrap">
-								<div class="wbcom-settings-section-options-heading">
-									<label><?php esc_html_e( 'Button Hover Text Color', 'buddypress-share' ); ?></label>
-								</div>
-								<div class="wbcom-settings-section-options">
-									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_text_color'] ) ) ? esc_attr( $bp_reshare_settings['btn_hover_text_color'] ) : ''; ?>" />
-								</div>
-							</div>
-							<div class="wbcom-settings-section-wrap">
-								<div class="wbcom-settings-section-options-heading">
 									<label><?php esc_html_e( 'Disable Post Share Activity', 'buddypress-share' ); ?></label>
 								</div>
 								<div class="wbcom-settings-section-options">
