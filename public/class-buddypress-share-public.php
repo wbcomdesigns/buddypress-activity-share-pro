@@ -180,6 +180,13 @@ class Buddypress_Share_Public {
 			echo '<div class = "activity-meta" >';
 		}
 
+		$bpas_icon_color_settings = get_option( 'bpas_icon_color_settings' );
+		if ( isset( $bpas_icon_color_settings['icon_style'] ) ) {
+			$style = $bpas_icon_color_settings['icon_style'];
+		} else {
+			$style = 'circle';
+		}
+
 		$updated_text = apply_filters( 'bpas_share_button_text_override', 'Share' );
 		if ( isset( $updated_text ) ) {
 			$share_button_text = $updated_text;
@@ -193,11 +200,11 @@ class Buddypress_Share_Public {
 			$bp_share_class = 'bp-share-service-popup';
 		}
 		?>
-		<div class="bp-share-btn generic-button">
+		<div class="bp-share-btn generic-button"> 
 			<a class="button item-button bp-secondary-action bp-share-button" rel="nofollow"><span><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span></a>
 		</div>
 		</div>
-		<div class="service-buttons <?php echo esc_html( $activity_type . ' ' . $bp_share_class ); ?>" style="display: none;">
+		<div class="service-buttons bpas-social-share-container <?php echo esc_html( $activity_type . ' ' . $bp_share_class . ' ' . $style ); ?>" style="display: none;">
 		<?php
 		if ( ! empty( $social_service ) ) {
 			if ( isset( $social_service ) && ! empty( $social_service['Facebook'] ) ) {
@@ -833,85 +840,5 @@ class Buddypress_Share_Public {
 		$bp_activity_link_data                     = bp_activity_get_meta( $activity->id, 'share_count', true );
 		$response->data['bp_activity_share_count'] = $bp_activity_link_data;
 		return $response;
-	}
-
-	public function bp_share_icon_custom_color() {
-		$bpas_icon_color_settings = get_option( 'bpas_icon_color_settings' );
-		$bpas_facebook_bg_color   = isset( $bpas_icon_color_settings['bpas_facebook_bg_color'] ) ? $bpas_icon_color_settings['bpas_facebook_bg_color'] : '';
-		$bpas_twitter_bg_color    = isset( $bpas_icon_color_settings['bpas_twitter_bg_color'] ) ? $bpas_icon_color_settings['bpas_twitter_bg_color'] : '';
-		$bpas_pinterest_bg_color  = isset( $bpas_icon_color_settings['bpas_pinterest_bg_color'] ) ? $bpas_icon_color_settings['bpas_pinterest_bg_color'] : '';
-		$bpas_linkedin_bg_color   = isset( $bpas_icon_color_settings['bpas_linkedin_bg_color'] ) ? $bpas_icon_color_settings['bpas_linkedin_bg_color'] : '';
-		$bpas_reddit_bg_color     = isset( $bpas_icon_color_settings['bpas_reddit_bg_color'] ) ? $bpas_icon_color_settings['bpas_reddit_bg_color'] : '';
-		$bpas_wordpress_bg_color  = isset( $bpas_icon_color_settings['bpas_wordpress_bg_color'] ) ? $bpas_icon_color_settings['bpas_wordpress_bg_color'] : '';
-		$bpas_pocket_bg_color     = isset( $bpas_icon_color_settings['bpas_pocket_bg_color'] ) ? $bpas_icon_color_settings['bpas_pocket_bg_color'] : '';
-		$bpas_email_bg_color      = isset( $bpas_icon_color_settings['bpas_email_bg_color'] ) ? $bpas_icon_color_settings['bpas_email_bg_color'] : '';
-		$bpas_whatsapp_bg_color   = isset( $bpas_icon_color_settings['bpas_whatsapp_bg_color'] ) ? $bpas_icon_color_settings['bpas_whatsapp_bg_color'] : '';
-		?>
-		<style>
-			#bp_facebook_share span{
-			<?php
-			if ( ! empty( $bpas_facebook_bg_color ) ) {
-				echo esc_attr( "color:$bpas_facebook_bg_color" . ';' );
-			}
-			?>
-			}
-			#bp_twitter_share span{
-			<?php
-			if ( ! empty( $bpas_twitter_bg_color ) ) {
-				echo esc_attr( "color:$bpas_twitter_bg_color" . ';' );
-			}
-			?>
-			}
-			#bp_pinterest_share span{
-			<?php
-			if ( ! empty( $bpas_pinterest_bg_color ) ) {
-				echo esc_attr( "color:$bpas_pinterest_bg_color" . ';' );
-			}
-			?>
-			}
-			#bp_linkedin_share span{
-			<?php
-			if ( ! empty( $bpas_linkedin_bg_color ) ) {
-				echo esc_attr( "color:$bpas_linkedin_bg_color" . ';' );
-			}
-			?>
-			}
-			#bp_reddit_share span{
-			<?php
-			if ( ! empty( $bpas_reddit_bg_color ) ) {
-				echo esc_attr( "color:$bpas_reddit_bg_color" . ';' );
-			}
-			?>
-			}
-			#bp_wordpress_share span{
-			<?php
-			if ( ! empty( $bpas_wordpress_bg_color ) ) {
-				echo esc_attr( "color:$bpas_wordpress_bg_color" . ';' );
-			}
-			?>
-			}
-			#bp_pocket_share span{
-			<?php
-			if ( ! empty( $bpas_pocket_bg_color ) ) {
-				echo esc_attr( "color:$bpas_pocket_bg_color" . ';' );
-			}
-			?>
-			}
-			#bp_email_share span{
-			<?php
-			if ( ! empty( $bpas_email_bg_color ) ) {
-				echo esc_attr( "color:$bpas_email_bg_color" . ';' );
-			}
-			?>
-			}
-			#bp_whatsapp_share .dashicons-whatsapp{
-			<?php
-			if ( ! empty( $bpas_whatsapp_bg_color ) ) {
-				echo esc_attr( "color:$bpas_whatsapp_bg_color" . ';' );
-			}
-			?>
-			}
-			</style>
-			<?php
 	}
 }

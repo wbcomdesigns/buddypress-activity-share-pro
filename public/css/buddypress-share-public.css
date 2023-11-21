@@ -13,6 +13,10 @@
     # Gwangi
 # BB Platform
 # RTL Fixes
+# Icons Styles
+    # Circle/Rec Style
+    # Black/White Style
+    # Baricon Style
 --------------------------------------------------------------*/
 
 
@@ -89,42 +93,6 @@ a.bp-share.has-popup {
     transform: rotate(45deg);
     z-index: -1;
     border-radius: 2px;
-}
-
-.bp-share .dashicons-facebook-alt {
-    color: #3B5998;
-}
-
-.bp-share .dashicons-twitter {
-    color: #1DA1F2;
-}
-
-.bp-share .dashicons-linkedin {
-    color: #007BB6;
-}
-
-.bp-share .dashicons-whatsapp {
-    color: #46bd00;
-}
-
-.bp-share .dashicons-email {
-    color: #AD0000;
-}
-
-.bp-share .fa-pinterest-p {
-    color: #BD081C;
-}
-
-.bp-share .fa-reddit-alien {
-    color: #FF4501;
-}
-
-.bp-share .fa-wordpress {
-    color: #21759B;
-}
-
-.bp-share .fa-get-pocket {
-    color: #EF3E56;
 }
 
 .bp-list li .generic-button.bp-share-btn,
@@ -404,6 +372,7 @@ a.bp-activity-share-button {
         flex-direction: column;
         padding: 28px 0;
     }
+
     .activity-share-modal .bp-activity-share-filter {
         margin-top: 28px;
         padding: 0 16px;
@@ -838,6 +807,7 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
         opacity: 0;
         transform: translate(0, -20px);
     }
+
     100% {
         opacity: 1;
         transform: translate(0, 0);
@@ -943,6 +913,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 }
 
 @media (min-width: 768px) {
+
     .grimlock #buddypress:not(.youzer) #activity-stream .activity-reshare-item-container .activity-avatar,
     .grimlock .activity-share-modal .activity-avatar {
         max-width: 60px;
@@ -1030,4 +1001,210 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 [dir='rtl'] .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.date-links i {
     margin-right: 0;
     margin-left: 4px;
+}
+
+/*--------------------------------------------------------------
+# Icons Styles
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+## Circle/Rec Style
+--------------------------------------------------------------*/
+
+#buddypress .activity-list .bpas-social-share-container.circle>a,
+#buddypress .activity-list .bpas-social-share-container.rec>a {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    transition: all .3s;
+    border: 0;
+    border-radius: 100px !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.rec>a {
+    border-radius: 0 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle>a:hover,
+#buddypress .activity-list .bpas-social-share-container.rec>a:hover,
+#buddypress .activity-list .bpas-social-share-container.blackwhite>a:hover,
+#buddypress .activity-list .bpas-social-share-container.baricon>a:hover {
+    transform: scale(1.1);
+}
+
+/*--------------------------------------------------------------
+## Black/White Style
+--------------------------------------------------------------*/
+#buddypress .activity-list .bpas-social-share-container.blackwhite>a {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    transition: all .3s;
+    border-radius: 100px !important;
+
+    background: transparent !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+}
+
+/*--------------------------------------------------------------
+## Baricon Style
+--------------------------------------------------------------*/
+#buddypress .activity-list .bpas-social-share-container.baricon>a {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    transition: all .3s;
+    border-radius: 0 !important;
+    border-top: 3px solid currentColor;
+}
+
+/* Styles */
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_facebook_share {
+    color: #3B5998 !important;
+    border-color: #3B5998 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_twitter_share {
+    color: #1DA1F2 !important;
+    border-color: #1DA1F2 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_email_share {
+    color: #AD0000 !important;
+    border-color: #AD0000 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_whatsapp_share {
+    color: #46bd00 !important;
+    border-color: #46bd00 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_linkedin_share {
+    color: #007BB6 !important;
+    border-color: #007BB6 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_pinterest_share {
+    color: #BD081C !important;
+    border-color: #BD081C !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_reddit_share {
+    color: #FF4501 !important;
+    border-color: #FF4501 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_wordpress_share {
+    color: #21759B !important;
+    border-color: #21759B !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_pocket_share {
+    color: #EF3E56 !important;
+    border-color: #EF3E56 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.baricon .bp-cpoy {
+    color: #696f75 !important;
+    border-color: #696f75 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle #bp_facebook_share,
+#buddypress .activity-list .bpas-social-share-container.rec #bp_facebook_share,
+#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_facebook_share:hover,
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_facebook_share:hover {
+    background: #3B5998 !important;
+    color: #fff !important;
+    border-color: #3B5998 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle #bp_twitter_share,
+#buddypress .activity-list .bpas-social-share-container.rec #bp_twitter_share,
+#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_twitter_share:hover,
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_twitter_share:hover {
+    background: #1DA1F2 !important;
+    color: #fff !important;
+    border-color: #1DA1F2 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle #bp_email_share,
+#buddypress .activity-list .bpas-social-share-container.rec #bp_email_share,
+#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_email_share:hover,
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_email_share:hover {
+    background: #AD0000 !important;
+    color: #fff !important;
+    border-color: #AD0000 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle #bp_whatsapp_share,
+#buddypress .activity-list .bpas-social-share-container.rec #bp_whatsapp_share,
+#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_whatsapp_share:hover,
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_whatsapp_share:hover {
+    background: #46bd00 !important;
+    color: #fff !important;
+    border-color: #46bd00 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle #bp_linkedin_share,
+#buddypress .activity-list .bpas-social-share-container.rec #bp_linkedin_share,
+#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_linkedin_share:hover,
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_linkedin_share:hover {
+    background: #007BB6 !important;
+    color: #fff !important;
+    border-color: #007BB6 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle #bp_pinterest_share,
+#buddypress .activity-list .bpas-social-share-container.rec #bp_pinterest_share,
+#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_pinterest_share:hover,
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_pinterest_share:hover {
+    background: #BD081C !important;
+    color: #fff !important;
+    border-color: #BD081C !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle #bp_reddit_share,
+#buddypress .activity-list .bpas-social-share-container.rec #bp_reddit_share,
+#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_reddit_share:hover,
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_reddit_share:hover {
+    background: #FF4501 !important;
+    color: #fff !important;
+    border-color: #FF4501 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle #bp_wordpress_share,
+#buddypress .activity-list .bpas-social-share-container.rec #bp_wordpress_share,
+#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_wordpress_share:hover,
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_wordpress_share:hover {
+    background: #21759B !important;
+    color: #fff !important;
+    border-color: #21759B !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle #bp_pocket_share,
+#buddypress .activity-list .bpas-social-share-container.rec #bp_pocket_share,
+#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_pocket_share:hover,
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_pocket_share:hover {
+    background: #EF3E56 !important;
+    color: #fff !important;
+    border-color: #EF3E56 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle .bp-cpoy,
+#buddypress .activity-list .bpas-social-share-container.rec .bp-cpoy,
+#buddypress .activity-list .bpas-social-share-container.blackwhite .bp-cpoy:hover,
+#buddypress .activity-list .bpas-social-share-container.baricon .bp-cpoy:hover {
+    background: #696f75 !important;
+    color: #fff !important;
+    border-color: #696f75 !important;
 }

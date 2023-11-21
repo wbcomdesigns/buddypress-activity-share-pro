@@ -1844,3 +1844,32 @@ ul.wb-social-icon-color-option {
     line-height: 1;
     border-radius: 12px;
 }
+
+/* Share Icons Style */
+.wbcom-settings-section-options .bpas-social-radio-btn {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.wbcom-social-icon-style .wbcom-settings-section-options label img {
+    cursor: pointer;
+    width: 85%;
+    padding: 5%;
+    border-radius: 8px;
+    border: 2px solid #ded9d9;
+}
+
+.wbcom-social-icon-style .wbcom-settings-section-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.wbcom-social-icon-style .wbcom-settings-section-options label {
+    width: 25%;
+}
+
+.wbcom-social-icon-style input[type=radio]:checked+img {
+  border-color: #334fff;
+}

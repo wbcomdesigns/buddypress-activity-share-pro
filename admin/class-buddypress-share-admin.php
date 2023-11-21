@@ -167,7 +167,7 @@ class Buddypress_Share_Admin {
 			'bpas_welcome'             => esc_html__( 'Welcome', 'buddypress-share' ),
 			'bpas_general_settings'    => esc_html__( 'General Settings', 'buddypress-share' ),
 			'bpas_reshare_settings'    => esc_html__( 'Share Settings', 'buddypress-share' ),
-			'bpas_icon_color_settings' => esc_html__( 'Icon Color Settings', 'buddypress-share' ),
+			'bpas_icon_color_settings' => esc_html__( 'Icon Settings', 'buddypress-share' ),
 		);
 		$tab_html  = '<div class="wbcom-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
 		foreach ( $bpas_tabs as $bpas_tab => $bpas_name ) {
