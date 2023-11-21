@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <div class="wbcom-tab-content">
 	<div class="wbcom-welcome-main-wrapper">
 		<div class="wbcom-welcome-head">
-		<p class="wbcom-welcome-description"><?php esc_html_e( 'BP activity share pro helps you to share your BP activities on social media. It also allows resharing the BuddyPress activities, WordPress posts on your website that helps to boost your activities, blog posts around the social network.', 'buddypress-share' ); ?></p>
+		<p class="wbcom-welcome-description"><?php esc_html_e( 'BuddyPress Activity Share Pro facilitates sharing your BuddyPress activities on social media platforms. Additionally, it enables the resharing of BuddyPress activities and WordPress posts on your website, contributing to increased visibility and engagement across the social network for your activities and blog posts.', 'buddypress-share' ); ?></p>
 		<div class="wbcom-welcome-content">
 			<div class="wbcom-welcome-support-info">
 				<h3><?php esc_html_e( 'Help &amp; Support Resources', 'buddypress-share' ); ?></h3>
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<div class="wbcom-support-inner">
 						<h3><span class="dashicons dashicons-book"></span><?php esc_html_e( 'Documentation', 'buddypress-share' ); ?></h3>
 						<p><?php esc_html_e( 'We have prepared an extensive guide on BuddyPress Activity Share Pro to learn all aspects of the plugin. You will find most of your answers here.', 'buddypress-share' ); ?></p>
-						<a href="<?php echo esc_url( 'https://wbcomdesigns.com/docs/buddypress-free-addons/buddypress-activity-social-share/' ); ?>" class="button button-primary button-welcome-support" target="_blank"><?php esc_html_e( 'Read Documentation', 'buddypress-share' ); ?></a>
+						<a href="<?php echo esc_url( 'https://docs.wbcomdesigns.com/doc_category/buddypress-activity-social-share/' ); ?>" class="button button-primary button-welcome-support" target="_blank"><?php esc_html_e( 'Read Documentation', 'buddypress-share' ); ?></a>
 						</div>
 					</div>
 
@@ -40,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<div class="wbcom-support-inner">
 						<h3><span class="dashicons dashicons-admin-comments"></span><?php esc_html_e( 'Got Feedback?', 'buddypress-share' ); ?></h3>
 						<p><?php esc_html_e( 'We want to hear about your experience with the plugin. We would also love to hear any suggestions you may for future updates.', 'buddypress-share' ); ?></p>
-						<a href="<?php echo esc_url( 'https://wbcomdesigns.com/contact/' ); ?>" class="button button-primary button-welcome-support" target="_blank"><?php esc_html_e( 'Send Feedback', 'buddypress-share' ); ?></a>
+						<a href="<?php echo esc_url( 'https://wbcomdesigns.com/submit-review/' ); ?>" class="button button-primary button-welcome-support" target="_blank"><?php esc_html_e( 'Send Feedback', 'buddypress-share' ); ?></a>
 					</div>
 					</div>
 				</div>
