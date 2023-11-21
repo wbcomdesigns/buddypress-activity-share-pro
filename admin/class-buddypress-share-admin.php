@@ -166,7 +166,7 @@ class Buddypress_Share_Admin {
 		$bpas_tabs = array(
 			'bpas_welcome'             => esc_html__( 'Welcome', 'buddypress-share' ),
 			'bpas_general_settings'    => esc_html__( 'General Settings', 'buddypress-share' ),
-			'bpas_reshare_settings'    => esc_html__( 'Reshare Settings', 'buddypress-share' ),
+			'bpas_reshare_settings'    => esc_html__( 'Share Settings', 'buddypress-share' ),
 			'bpas_icon_color_settings' => esc_html__( 'Icon Color Settings', 'buddypress-share' ),
 		);
 		$tab_html  = '<div class="wbcom-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
@@ -786,7 +786,7 @@ class Buddypress_Share_Admin {
 		<div class="wbcom-tab-content">
 			<div class="wbcom-wrapper-admin">
 				<div class="wbcom-admin-title-section">
-					<h3><?php esc_html_e( 'Reshare Settings', 'buddypress-share' ); ?></h3>
+					<h3><?php esc_html_e( 'Share Settings', 'buddypress-share' ); ?></h3>
 				</div>
 				<div class="wbcom-admin-option-wrap wbcom-admin-option-wrap-view">
 					<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
