@@ -30,7 +30,8 @@
     box-sizing: border-box;
 }
 
-.activity ul li .activity-meta .service-buttons a.bp-share {
+.activity ul li .activity-meta .service-buttons a.bp-share,
+#buddypress .activity-list .bpas-social-share-container>a {
     background: none !important;
     margin: 10px !important;
     text-align: center;
@@ -125,7 +126,8 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     margin-right: 3px;
 }
 
-.bp-nouveau #buddypress .activity-list .bp-activity-more-options-wrap .bp-share-button::before {
+.bp-nouveau #buddypress .activity-list .bp-activity-more-options-wrap .bp-share-button::before,
+.bp-nouveau #buddypress .activity-list .bb-activity-more-options-wrap .bp-share-button::before {
     margin-right: 0;
 }
 
@@ -143,6 +145,11 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
 
 .tooltip-hide {
     display: none;
+}
+
+body.bp-share-popup-active .reign-menu-panel,
+body.bp-share-popup-active #masthead {
+    z-index: 1;
 }
 
 /*--------------------------------------------------------------
@@ -168,7 +175,8 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
 # Activity Share Popup
 --------------------------------------------------------------*/
 
-.bp-activity-more-options-wrap .bp-share-service-popup-overlay {
+.bp-activity-more-options-wrap .bp-share-service-popup-overlay,
+.bb-activity-more-options-wrap .bp-share-service-popup-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -179,7 +187,8 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     display: none;
 }
 
-.bp-activity-more-options-wrap .bp-share-service-popup {
+.bp-activity-more-options-wrap .bp-share-service-popup,
+.bb-activity-more-options-wrap .bp-share-service-popup {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -209,7 +218,8 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activ
     border-radius: 4px !important;
 }
 
-#buddypress .activity-list .bp-activity-more-options-wrap.bp-activity-share-popup-open:not(.selected) {
+#buddypress .activity-list .bp-activity-more-options-wrap.bp-activity-share-popup-open:not(.selected),
+#buddypress .activity-list .bb-activity-more-options-wrap.bp-activity-share-popup-open:not(.selected) {
     opacity: 0;
 }
 
