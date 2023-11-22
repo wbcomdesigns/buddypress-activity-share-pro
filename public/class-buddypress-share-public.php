@@ -298,7 +298,7 @@ class Buddypress_Share_Public {
 			if ( isset( $result[2] ) && ! empty( $result[2] ) ) {
 				$result_new = array_map(
 					function ( $i ) {
-								return trim( $i, '"' );
+						return trim( $i, '"' );
 					},
 					$result[2]
 				);
@@ -313,7 +313,7 @@ class Buddypress_Share_Public {
 			}
 
 			$content = explode( '<span', $content );
-			$title   = strip_tags( ent2ncr( trim( convert_chars( $content[0] ) ) ) );
+			$title   = wp_strip_all_tags( ent2ncr( trim( convert_chars( $content[0] ) ) ) );
 
 			if ( ':' === substr( $title, -1 ) ) {
 				$title = substr( $title, 0, -1 );
@@ -348,9 +348,9 @@ class Buddypress_Share_Public {
 				}
 			}
 
-			// Youzer media support
-			if ( class_exists( 'Youzer' ) ) {
-				$media_ids = bp_activity_get_meta( $activity_obj->id, 'yz_attachments', true );
+			// Youzer media support.
+			if ( class_exists( 'Youzer' ) || class_exists( 'Youzify' ) ) {
+				$media_ids = ! empty( bp_activity_get_meta( $activity_obj->id, 'yz_attachments', true ) ) ? bp_activity_get_meta( $activity_obj->id, 'yz_attachments', true ) : bp_activity_get_meta( $activity_obj->id, 'youzify_attachments', true );
 				if ( ! empty( $media_ids ) ) {
 					$media_id = array_key_first( $media_ids );
 					$og_image = esc_attr( wp_get_attachment_image_url( $media_id, 'full' ) );
