@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-22 12:32:59+00:00\n"
+"POT-Creation-Date: 2023-11-23 12:32:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -230,7 +230,7 @@ msgid "Enable"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:706
-#: admin/class-buddypress-share-admin.php:841
+#: admin/class-buddypress-share-admin.php:842
 #: includes/class-buddypress-share-settings.php:370
 msgid "Save Changes"
 msgstr ""
@@ -239,19 +239,23 @@ msgstr ""
 msgid "Disable Post Share Activity"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:809
+#: admin/class-buddypress-share-admin.php:798
+msgid "You can turn on or off the blog post sharing feature as per your preference."
+msgstr ""
+
+#: admin/class-buddypress-share-admin.php:810
 msgid "Reshare share Activity"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:815
+#: admin/class-buddypress-share-admin.php:816
 msgid "Parent"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:820
+#: admin/class-buddypress-share-admin.php:821
 msgid "Child"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:829
+#: admin/class-buddypress-share-admin.php:830
 msgid "Use this shortcode in which post type you want to reshare in Activity."
 msgstr ""
 

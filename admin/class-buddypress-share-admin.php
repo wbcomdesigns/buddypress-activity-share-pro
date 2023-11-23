@@ -795,6 +795,7 @@ class Buddypress_Share_Admin {
 							<div class="wbcom-settings-section-wrap">
 								<div class="wbcom-settings-section-options-heading">
 									<label><?php esc_html_e( 'Disable Post Share Activity', 'buddypress-share' ); ?></label>
+									<p class="description"><?php esc_html_e( 'You can turn on or off the blog post sharing feature as per your preference.', 'buddypress-share' ); ?></p>
 								</div>
 								<div class="wbcom-settings-section-options">
 								<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_post_reshare_activity]" value="1" 
