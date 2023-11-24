@@ -63,6 +63,14 @@ a.bp-share.has-popup {
     padding: 10px;
 }
 
+.activity-content .service-buttons {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+}
+
 .service-buttons span.tooltiptext {
     position: relative;
     font-size: 13px;
@@ -193,9 +201,10 @@ body.bp-share-popup-active #masthead {
     top: 50%;
     left: 50%;
     -webkit-transform: translateX(-50%);
-    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
     transform: translateX(-50%);
     z-index: 100;
+    width: -webkit-calc(100% - 30px);
     width: calc(100% - 30px);
     max-width: 550px;
     background-color: #fff;
@@ -210,9 +219,9 @@ body.bp-share-popup-active #masthead {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
-    -webkit-flex-flow: row wrap;
-    -moz-flex-flow: row wrap;
     -ms-flex-flow: row wrap;
     flex-flow: row wrap;
     border-radius: 4px !important;
@@ -287,6 +296,8 @@ a.bp-activity-share-button {
 .activity-share-modal .bp-activity-share-avatar img.avatar {
     width: 44px;
     height: 44px;
+    -webkit-transform: unset;
+    -ms-transform: unset;
     transform: unset;
     margin-right: 5px;
     border-radius: 50%;
@@ -369,16 +380,21 @@ a.bp-activity-share-button {
     min-height: 80px;
     padding: 0 28px;
     display: -ms-flexbox;
+    display: -webkit-box;
     display: flex;
     -ms-flex-pack: justify;
+    -webkit-box-pack: justify;
     justify-content: space-between;
     -ms-flex-align: center;
+    -webkit-box-align: center;
     align-items: center;
 }
 
 @media screen and (max-width: 680px) {
     .activity-share-modal .quick-post-header-filters-wrap {
         -ms-flex-direction: column;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
         flex-direction: column;
         padding: 28px 0;
     }
@@ -399,10 +415,13 @@ a.bp-activity-share-button {
 
 #activity-share-modal button.activity-share-modal-close {
     display: -ms-flexbox;
+    display: -webkit-box;
     display: flex;
     -ms-flex-pack: center;
+    -webkit-box-pack: center;
     justify-content: center;
     -ms-flex-align: center;
+    -webkit-box-align: center;
     align-items: center;
     width: 40px;
     height: 40px;
@@ -418,6 +437,7 @@ a.bp-activity-share-button {
     border: 0;
     outline: none;
     z-index: 2;
+    -webkit-transition: background-color .2s ease-in-out;
     transition: background-color .2s ease-in-out;
 }
 
@@ -431,6 +451,7 @@ a.bp-activity-share-button {
 }
 
 .activity-share-modal #bp-activity-share-widget-box-status-header {
+    width: -webkit-calc(100% - 56px);
     width: calc(100% - 56px);
     background-color: #fff;
     margin: 0 28px;
@@ -453,12 +474,15 @@ a.bp-activity-share-button {
 }
 
 .bp-activity-share-post-footer-actions {
+    display: -webkit-box;
     display: flex;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-pack: justify;
+    -webkit-box-pack: justify;
     justify-content: space-between;
     -ms-flex-align: center;
+    -webkit-box-align: center;
     align-items: center;
     min-height: 43px;
 }
@@ -468,10 +492,13 @@ a.bp-activity-share-button {
     width: 80px;
     margin-right: 6px;
     display: -ms-flexbox;
+    display: -webkit-box;
     display: flex;
     -ms-flex-pack: center;
+    -webkit-box-pack: center;
     justify-content: center;
     -ms-flex-align: center;
+    -webkit-box-align: center;
     align-items: center;
     border-radius: 10px;
     background-color: #333;
@@ -479,6 +506,7 @@ a.bp-activity-share-button {
     font-weight: 700;
     text-align: center;
     cursor: pointer;
+    -webkit-transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out, box-shadow .2s ease-in-out;
     transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out, box-shadow .2s ease-in-out;
     box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
     height: 40px;
@@ -628,10 +656,14 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     margin: auto;
     padding: 28px 28px 22px;
     display: -ms-flexbox;
+    display: -webkit-box;
     display: flex;
     -ms-flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
     flex-direction: column;
     -ms-flex-pack: justify;
+    -webkit-box-pack: justify;
     justify-content: space-between;
 }
 
@@ -643,6 +675,7 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 .activity-share-modal .post-preview .post-preview-info.fixed-height,
 .post-reshare-item-container .post-preview .post-preview-info.fixed-height {
     -ms-flex-pack: start;
+    -webkit-box-pack: start;
     justify-content: flex-start;
 }
 
@@ -655,21 +688,24 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     font-weight: 700;
     text-transform: uppercase;
     display: -ms-flexbox;
+    display: -webkit-box;
     display: flex;
-    -webkit-flex-flow: row wrap;
-    -moz-flex-flow: row wrap;
     -ms-flex-flow: row wrap;
     flex-flow: row wrap;
 }
 
 .activity-share-modal .post-preview .post-preview-info .post-preview-timestamp span.link.cat-links,
 .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.cat-links {
+    -webkit-box-ordinal-group: 2;
+    -ms-flex-order: 1;
     order: 1;
     margin-right: 10px;
 }
 
 .activity-share-modal .post-preview .post-preview-info .post-preview-timestamp span.link.date-links,
 .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.date-links {
+    -webkit-box-ordinal-group: 3;
+    -ms-flex-order: 2;
     order: 2;
 }
 
@@ -714,12 +750,17 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 .activity-share-modal .post-preview .post-preview-info.fixed-height .post-preview-info-bottom,
 .post-reshare-item-container .post-preview .post-preview-info.fixed-height .post-preview-info-bottom {
     display: -ms-flexbox;
+    display: -webkit-box;
     display: flex;
     -ms-flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
     flex-direction: column;
     -ms-flex-pack: start;
+    -webkit-box-pack: start;
     justify-content: flex-start;
     -ms-flex-align: start;
+    -webkit-box-align: start;
     align-items: flex-start;
     height: 100%;
     margin: 0;
@@ -761,6 +802,7 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
+    -webkit-transition: color .2s ease-in-out;
     transition: color .2s ease-in-out;
 }
 
@@ -774,20 +816,24 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 .bp-activity-post-share-btn .bp-activity-share-button {
     width: 160px;
     margin: auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -ms-flex-pack: center;
+    -webkit-box-pack: center;
     justify-content: center;
     -ms-flex-align: center;
+    -webkit-box-align: center;
     align-items: center;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
-    -webkit-justify-content: center;
     -moz-justify-content: center;
     justify-content: center;
     cursor: pointer;
     border-radius: 100px;
     height: 40px;
     box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
+    -webkit-transition: all .5s;
     transition: all .5s;
 }
 
@@ -807,19 +853,39 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 
 .animate-slide-down {
     opacity: 0;
+    -webkit-transform: translate(0, -20px);
+    -ms-transform: translate(0, -20px);
     transform: translate(0, -20px);
+    -webkit-animation: slideDown .4s ease-in-out forwards;
     animation: slideDown .4s ease-in-out forwards;
+    -webkit-transition: -webkit-transform .4s ease-in-out, opacity .4s ease-in-out;
     transition: transform .4s ease-in-out, opacity .4s ease-in-out;
 }
 
-@keyframes slideDown {
+@-webkit-keyframes slideDown {
     0% {
         opacity: 0;
+        -webkit-transform: translate(0, -20px);
         transform: translate(0, -20px);
     }
 
     100% {
         opacity: 1;
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate(0, -20px);
+        transform: translate(0, -20px);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translate(0, 0);
         transform: translate(0, 0);
     }
 }
@@ -905,8 +971,12 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 .grimlock .activity-share-modal .activity-avatar {
     float: none;
     margin: 0 0.75rem 0 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     max-width: 35px;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 35px;
     flex: 0 0 35px;
     height: 35px;
     position: relative;
@@ -927,6 +997,8 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     .grimlock #buddypress:not(.youzer) #activity-stream .activity-reshare-item-container .activity-avatar,
     .grimlock .activity-share-modal .activity-avatar {
         max-width: 60px;
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 60px;
         flex: 0 0 60px;
         width: 60px !important;
         height: 60px !important;
@@ -1025,10 +1097,17 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 #buddypress .activity-list .bpas-social-share-container.rec>a {
     width: 45px;
     height: 45px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
     text-decoration: none !important;
+    -webkit-transition: all .3s;
     transition: all .3s;
     border: 0;
     border-radius: 100px !important;
@@ -1042,6 +1121,8 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 #buddypress .activity-list .bpas-social-share-container.rec>a:hover,
 #buddypress .activity-list .bpas-social-share-container.blackwhite>a:hover,
 #buddypress .activity-list .bpas-social-share-container.baricon>a:hover {
+    -webkit-transform: scale(1.1);
+    -ms-transform: scale(1.1);
     transform: scale(1.1);
 }
 
@@ -1051,10 +1132,17 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 #buddypress .activity-list .bpas-social-share-container.blackwhite>a {
     width: 45px;
     height: 45px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
     text-decoration: none !important;
+    -webkit-transition: all .3s;
     transition: all .3s;
     border-radius: 100px !important;
 
@@ -1069,10 +1157,17 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 #buddypress .activity-list .bpas-social-share-container.baricon>a {
     width: 45px;
     height: 45px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
     text-decoration: none !important;
+    -webkit-transition: all .3s;
     transition: all .3s;
     border-radius: 0 !important;
     border-top: 3px solid currentColor;
