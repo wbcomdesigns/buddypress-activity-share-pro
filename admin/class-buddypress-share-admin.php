@@ -127,7 +127,7 @@ class Buddypress_Share_Admin {
 		<div class="wrap">
 			<div class="wbcom-bb-plugins-offer-wrapper">
 					<div id="wb_admin_logo">
-						<a href="https://wbcomdesigns.com/downloads/buddypress-community-bundle/" target="_blank">
+						<a href="https://wbcomdesigns.com/downloads/buddypress-community-bundle/?utm_source=pluginoffernotice&utm_medium=community_banner" target="_blank">
 							<img src="<?php echo esc_url( BP_ACTIVITY_SHARE_PLUGIN_URL ) . 'admin/wbcom/assets/imgs/wbcom-offer-notice.png'; ?>">
 						</a>
 					</div>
@@ -167,7 +167,7 @@ class Buddypress_Share_Admin {
 			'bpas_welcome'             => esc_html__( 'Welcome', 'buddypress-share' ),
 			'bpas_general_settings'    => esc_html__( 'General Settings', 'buddypress-share' ),
 			'bpas_reshare_settings'    => esc_html__( 'Share Settings', 'buddypress-share' ),
-			'bpas_icon_color_settings' => esc_html__( 'Icon Color Settings', 'buddypress-share' ),
+			'bpas_icon_color_settings' => esc_html__( 'Icon Settings', 'buddypress-share' ),
 		);
 		$tab_html  = '<div class="wbcom-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
 		foreach ( $bpas_tabs as $bpas_tab => $bpas_name ) {
@@ -533,7 +533,7 @@ class Buddypress_Share_Admin {
 						}
 					}
 				}
-				$count++;
+				++$count;
 			}
 			$new_settings['bp_copy_activity'] = $services['bp_copy_activity'];
 			update_site_option( 'bp_share_services', $new_settings );
@@ -590,9 +590,11 @@ class Buddypress_Share_Admin {
 		?>
 		<div class="wbcom-tab-content">
 			<div class="wbcom-wrapper-admin">
-				<div class="wbcom-admin-title-section">
-					<h3><?php esc_html_e( 'General Services', 'buddypress-share' ); ?></h3>
+				<div class="wbcom-admin-title-section wbcom-flex">
+					<h3 class="wbcom-welcome-title"><?php esc_html_e( 'General Settings', 'buddypress-share' ); ?></h3>
+					<a href="<?php echo esc_url( 'https://docs.wbcomdesigns.com/doc_category/buddypress-activity-social-share/' ); ?>" class="wbcom-docslink" target="_blank"><?php esc_html_e( 'Documentation', 'buddypress-share' ); ?></a>
 				</div>
+
 				<div class="wbcom-admin-option-wrap wbcom-admin-option-wrap-view">
 					<div class="save-option-message"></div>
 					<div class="option-not-save-message"></div>
@@ -778,7 +780,7 @@ class Buddypress_Share_Admin {
 	 */
 
 	public function bpas_reshare_setting_section() {
-		$bp_reshare_settings                           = get_site_option( 'bp_reshare_settings' );
+		$bp_reshare_settings          = get_site_option( 'bp_reshare_settings' );
 		$bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
 		?>
 		<div class="wbcom-tab-content">
@@ -792,39 +794,8 @@ class Buddypress_Share_Admin {
 						<div class="form-table">
 							<div class="wbcom-settings-section-wrap">
 								<div class="wbcom-settings-section-options-heading">
-									<label><?php esc_html_e( 'Button Background Color', 'buddypress-share' ); ?></label>
-								</div>
-								<div class="wbcom-settings-section-options">
-									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_bg_color'] ) ) ? esc_attr( $bp_reshare_settings['btn_bg_color'] ) : ''; ?>" />
-								</div>
-							</div>
-							<div class="wbcom-settings-section-wrap">
-								<div class="wbcom-settings-section-options-heading">
-									<label><?php esc_html_e( 'Button Text Color', 'buddypress-share' ); ?></label>
-								</div>
-								<div class="wbcom-settings-section-options">
-									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_text_color'] ) ) ? esc_attr( $bp_reshare_settings['btn_text_color'] ) : ''; ?>" />
-								</div>
-							</div>
-							<div class="wbcom-settings-section-wrap">
-								<div class="wbcom-settings-section-options-heading">
-									<label><?php esc_html_e( 'Button Hover Background Color', 'buddypress-share' ); ?></label>
-								</div>
-								<div class="wbcom-settings-section-options">
-									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_bg_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_bg_color'] ) ) ? esc_attr( $bp_reshare_settings['btn_hover_bg_color'] ) : ''; ?>" />
-								</div>
-							</div>
-							<div class="wbcom-settings-section-wrap">
-								<div class="wbcom-settings-section-options-heading">
-									<label><?php esc_html_e( 'Button Hover Text Color', 'buddypress-share' ); ?></label>
-								</div>
-								<div class="wbcom-settings-section-options">
-									<input class="regular-btn bp-reshare-color-picker" type="text" name="bp_reshare_settings[btn_hover_text_color]" value="<?php echo ( isset( $bp_reshare_settings['btn_hover_text_color'] ) ) ? esc_attr( $bp_reshare_settings['btn_hover_text_color'] ) : ''; ?>" />
-								</div>
-							</div>
-							<div class="wbcom-settings-section-wrap">
-								<div class="wbcom-settings-section-options-heading">
 									<label><?php esc_html_e( 'Disable Post Share Activity', 'buddypress-share' ); ?></label>
+									<p class="description"><?php esc_html_e( 'You can turn on or off the blog post sharing feature as per your preference.', 'buddypress-share' ); ?></p>
 								</div>
 								<div class="wbcom-settings-section-options">
 								<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_post_reshare_activity]" value="1" 
@@ -881,5 +852,4 @@ class Buddypress_Share_Admin {
 	public function bpas_pro_icon_color_register_setting() {
 		register_setting( 'bpas_icon_color_settings', 'bpas_icon_color_settings' );
 	}
-
 }
