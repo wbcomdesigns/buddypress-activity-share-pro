@@ -1092,9 +1092,17 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 /*--------------------------------------------------------------
 ## Circle/Rec Style
 --------------------------------------------------------------*/
+.service-buttons .bp-cpoy-wrapper {
+    position: relative;
+}
 
-#buddypress .activity-list .bpas-social-share-container.circle>a,
-#buddypress .activity-list .bpas-social-share-container.rec>a {
+.service-buttons .bp-cpoy-wrapper span.tooltiptext {
+    position: absolute;
+    top: 16px;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle a,
+#buddypress .activity-list .bpas-social-share-container.rec a {
     width: 45px;
     height: 45px;
     display: -webkit-box;
@@ -1113,14 +1121,14 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     border-radius: 100px !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.rec>a {
+#buddypress .activity-list .bpas-social-share-container.rec a {
     border-radius: 0 !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.circle>a:hover,
-#buddypress .activity-list .bpas-social-share-container.rec>a:hover,
-#buddypress .activity-list .bpas-social-share-container.blackwhite>a:hover,
-#buddypress .activity-list .bpas-social-share-container.baricon>a:hover {
+#buddypress .activity-list .bpas-social-share-container.circle a:hover,
+#buddypress .activity-list .bpas-social-share-container.rec a:hover,
+#buddypress .activity-list .bpas-social-share-container.blackwhite a:hover,
+#buddypress .activity-list .bpas-social-share-container.baricon a:hover {
     -webkit-transform: scale(1.1);
     -ms-transform: scale(1.1);
     transform: scale(1.1);
@@ -1129,7 +1137,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 /*--------------------------------------------------------------
 ## Black/White Style
 --------------------------------------------------------------*/
-#buddypress .activity-list .bpas-social-share-container.blackwhite>a {
+#buddypress .activity-list .bpas-social-share-container.blackwhite a {
     width: 45px;
     height: 45px;
     display: -webkit-box;
@@ -1154,7 +1162,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 /*--------------------------------------------------------------
 ## Baricon Style
 --------------------------------------------------------------*/
-#buddypress .activity-list .bpas-social-share-container.baricon>a {
+#buddypress .activity-list .bpas-social-share-container.baricon a {
     width: 45px;
     height: 45px;
     display: -webkit-box;

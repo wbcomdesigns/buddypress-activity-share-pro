@@ -243,8 +243,10 @@ class Buddypress_Share_Public {
 				$email = 'mailto:?subject=' . esc_url( $activity_link ) . '&body=Check out this site: ' . esc_html( $activity_title ) . '" title="Share by Email';
 				echo '<a class="bp-share" id="bp_email_share" href="' . esc_url( $email ) . '"><span class="dashicons dashicons-email"></span></a>';
 			}
+			echo '<div class="bp-cpoy-wrapper">';
 			echo '<a class="bp-share bp-cpoy" href="#" data-href="' . esc_attr( $activity_link ) . '" attr-display="no-popup"><span class="dashicons dashicons-admin-page"></span></a>';
 			echo '<span class="tooltiptext tooltip-hide">' . esc_attr__( 'Link Copied!', 'buddypress-share' ) . '</span>';
+			echo '</div>';
 		} else {
 			esc_html_e( 'Please enable share services!', 'buddypress-share' );
 		}
