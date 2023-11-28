@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-27 08:53:33+00:00\n"
+"POT-Creation-Date: 2023-11-28 05:41:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -988,91 +988,95 @@ msgstr ""
 msgid "Add Services"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:159
-#: public/class-buddypress-share-public.php:204
-#: public/class-buddypress-share-public.php:469
-#: public/class-buddypress-share-public.php:824
+#: public/class-buddypress-share-public.php:160
+#: public/class-buddypress-share-public.php:205
+#: public/class-buddypress-share-public.php:470
+#: public/class-buddypress-share-public.php:826
 msgid "Share"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:248
+#: public/class-buddypress-share-public.php:249
 msgid "Link Copied!"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:251
+#: public/class-buddypress-share-public.php:252
 msgid "Please enable share services!"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:390
-#: public/class-buddypress-share-public.php:399
-#: public/class-buddypress-share-public.php:409
-#: public/class-buddypress-share-public.php:418
+#: public/class-buddypress-share-public.php:391
+#: public/class-buddypress-share-public.php:400
+#: public/class-buddypress-share-public.php:410
+#: public/class-buddypress-share-public.php:419
 msgid "Shared an activity"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:392
-#: public/class-buddypress-share-public.php:411
+#: public/class-buddypress-share-public.php:393
+#: public/class-buddypress-share-public.php:412
 msgid "Activity Share"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:401
-#: public/class-buddypress-share-public.php:420
+#: public/class-buddypress-share-public.php:402
+#: public/class-buddypress-share-public.php:421
 msgid "Post Activity Share"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:431
+#: public/class-buddypress-share-public.php:432
 #. translators: 1: the user link. 2: the group link.
 msgid "%1$s Shared an activity"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:447
+#: public/class-buddypress-share-public.php:448
 #. translators: 1: the user link. 2: the group link.
 msgid "%1$s shared an activity in the group %2$s"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:510
+#: public/class-buddypress-share-public.php:511
 msgid "Status Update"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:515
+#: public/class-buddypress-share-public.php:516
 msgid "Post In"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:517
+#: public/class-buddypress-share-public.php:518
 msgid "My Profile"
 msgstr ""
 
 #: public/class-buddypress-share-public.php:519
+msgid "Message"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:521
 msgid "Group lists"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:527
+#: public/class-buddypress-share-public.php:529
 msgid "Friend lists"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:543
+#: public/class-buddypress-share-public.php:545
 msgid "Hi admin! Write something here, use @ to mention someone..."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:564
+#: public/class-buddypress-share-public.php:566
 msgid "Discard"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:565
+#: public/class-buddypress-share-public.php:567
 msgid "Post"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:603
-#: public/class-buddypress-share-public.php:775
+#: public/class-buddypress-share-public.php:605
+#: public/class-buddypress-share-public.php:777
 msgid "Read More"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:796
+#: public/class-buddypress-share-public.php:798
 #. translators: used between list items, there is a space after the comma.
 msgid ", "
 msgstr ""
 
-#: public/class-buddypress-share-public.php:803
+#: public/class-buddypress-share-public.php:805
 #. translators: used between list items, there is a space after the comma.
 msgctxt "list item separator"
 msgid ", "

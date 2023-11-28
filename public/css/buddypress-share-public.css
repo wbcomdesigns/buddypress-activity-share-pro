@@ -31,7 +31,7 @@
 }
 
 .activity ul li .activity-meta .service-buttons a.bp-share,
-#buddypress .activity-list .bpas-social-share-container>a {
+#buddypress .activity-list .bpas-social-share-container a {
     background: none !important;
     margin: 10px !important;
     text-align: center;
@@ -72,6 +72,7 @@ a.bp-share.has-popup {
 }
 
 .service-buttons span.tooltiptext {
+    width: 100px;
     position: relative;
     font-size: 13px;
     font-weight: 500;
@@ -93,9 +94,9 @@ a.bp-share.has-popup {
     height: 12px;
     background: #444;
     position: absolute;
-    left: -5px;
-    top: 0;
-    bottom: 0;
+    left: 0;
+    right: 0;
+    bottom: -5px;
     margin: auto;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
@@ -1098,7 +1099,9 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 
 .service-buttons .bp-cpoy-wrapper span.tooltiptext {
     position: absolute;
-    top: 16px;
+    top: -30px;
+    left: -18px;
+    right: 0;
 }
 
 #buddypress .activity-list .bpas-social-share-container.circle a,
