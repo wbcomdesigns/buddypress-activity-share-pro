@@ -311,12 +311,25 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 );
 
 function bp_share_pro_share_activity_url_on_compose(){
+	$check_bb_bp = '';
+	if ( function_exists( 'buddypress' ) && isset( buddypress()->buddyboss ) ) {
+		$check_bb_bp = 'buddyboss';
+	}else{
+		$check_bb_bp = 'buddypress';
+	}
 	if( isset( $_GET['activity_id'] ) ){		
 		?>
 		<script>
 			jQuery(document).ready(function(){
 				var url = "<?php echo $_GET['activity_id']; ?>";
-				jQuery('#message_content').val(url);
+				var active_bb_bp = "<?php echo $check_bb_bp; ?>";
+				if( 'buddyboss' == active_bb_bp ){
+					jQuery( '#bp-message-content' ).addClass( 'focus-in--content' );
+					jQuery('#bp-message-content div #message_content').removeAttr("data-placeholder");
+					jQuery('#bp-message-content div #message_content').append(url);
+				}else if( 'buddypress' == active_bb_bp ){
+					jQuery('#message_content').val(url);
+				}
 			});
 		</script>
 		<?php
