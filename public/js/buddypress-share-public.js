@@ -214,8 +214,11 @@
             var activity_url = member_msg_url +  'activity/' + activity_id + '/'; 
             var parameter = '?activity_id=' + activity_url; 
             if( $(this).val() == 'message' ){
-                $('.bp-activity-share-activity').remove();
-                $("<a href= " + member_msg_url + parameter +"  class='button small secondary'>Post</a>").insertAfter(".bp-activity-share-post-footer-actions p");
+                $('.bp-activity-share-activity').hide();
+                $("<a href= " + member_msg_url + parameter +"  class='button small secondary'>Post</a>").insertAfter(".bp-activity-share-activity");
+            }else{
+                $('.bp-activity-share-activity').show();
+                $('.bp-activity-share-post-footer-actions a').remove();
             }
         });
 		
