@@ -177,7 +177,6 @@
             var activity_in = $('#activity-share-modal #post-in').val();
             var type = $('#activity-share-modal #bp-reshare-type').val();
             var activity_in_type = $('#activity-share-modal #post-in option:selected').data( 'type' );
-			
 
             jQuery.ajax({
                 url: bp_activity_sjare_vars.ajax_url,
@@ -207,6 +206,17 @@
                 }
             });
 
+        });
+
+        $(document).on('change', '#post-in', function() {
+            var activity_id = $('#activity-share-modal #bp-reshare-activity-id').val();
+            var member_msg_url = bp_activity_sjare_vars.member_profile_url;
+            var activity_url = member_msg_url +  'activity/' + activity_id + '/'; 
+            var parameter = '?activity_id=' + activity_url; 
+            if( $(this).val() == 'message' ){
+                $('.bp-activity-share-activity').remove();
+                $("<a href= " + member_msg_url + parameter +"  class='button small secondary'>Post</a>").insertAfter(".bp-activity-share-post-footer-actions p");
+            }
         });
 		
 		$( document ).on('click','.bp-activity-share-close', function(){

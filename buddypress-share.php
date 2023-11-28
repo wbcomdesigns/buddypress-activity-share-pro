@@ -309,3 +309,17 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	__FILE__, // Full path to the main plugin file or functions.php.
 	'buddypress-activity-share-pro'
 );
+
+function bp_share_pro_share_activity_url_on_compose(){
+	if( isset( $_GET['activity_id'] ) ){		
+		?>
+		<script>
+			jQuery(document).ready(function(){
+				var url = "<?php echo $_GET['activity_id']; ?>";
+				jQuery('#message_content').val(url);
+			});
+		</script>
+		<?php
+	}
+}
+add_action( 'wp_footer', 'bp_share_pro_share_activity_url_on_compose' );

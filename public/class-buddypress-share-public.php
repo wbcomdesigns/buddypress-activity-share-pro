@@ -116,6 +116,7 @@ class Buddypress_Share_Public {
 				'current_user_id'        => get_current_user_id(),
 				'reshare_share_activity' => $reshare_share_activity,
 				'ajax_nonce'             => wp_create_nonce( 'bp-activity-share-nonce' ),
+				'member_profile_url'     => bp_loggedin_user_domain(). 'messages/compose/' ,
 			)
 		);
 	}
@@ -515,6 +516,7 @@ class Buddypress_Share_Public {
 											<label for="post-in"><?php esc_html_e( 'Post In', 'buddypress-share' ); ?></label>
 											<select id="post-in" name="postIn">
 												<option value="0"><?php esc_html_e( 'My Profile', 'buddypress-share' ); ?></option>
+												<option value="message"><?php esc_html_e( 'Message', 'buddypress-share' ); ?></option>
 												<?php if ( ! empty( $groups ) ) : ?>
 													<optgroup label="<?php esc_html_e( 'Group lists', 'buddypress-share' ); ?>">
 													<?php foreach ( $groups['groups'] as $group ) : ?>
