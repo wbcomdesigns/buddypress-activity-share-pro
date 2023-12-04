@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Wbcom Designs - BuddyPress Activity Share Pro\n"
-"POT-Creation-Date: 2023-11-06 14:23+0530\n"
-"PO-Revision-Date: 2023-11-06 14:24+0530\n"
+"POT-Creation-Date: 2023-12-04 18:26+0530\n"
+"PO-Revision-Date: 2023-12-04 18:28+0530\n"
 "Last-Translator: Varun Dubey <varun@wbcomdesigns.com>\n"
 "Language-Team: Varun Dubey <varun@wbcomdesigns.com>\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.1\n"
+"X-Generator: Poedit 3.4.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: buddypress-share.php\n"
@@ -19,59 +19,23 @@ msgstr ""
 "_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
-"X-Poedit-SearchPathExcluded-1: .git\n"
-"X-Poedit-SearchPathExcluded-2: plugin-update-checker\n"
+"X-Poedit-SearchPathExcluded-1: plugin-update-checker/vendor\n"
 
-#: admin/bp-icon-color-page.php:8 admin/class-buddypress-share-admin.php:170
-msgid "Icon Color Settings"
-msgstr "Instellingen pictogramkleuren"
+#: admin/bp-icon-color-page.php:6 admin/class-buddypress-share-admin.php:170
+msgid "Icon Settings"
+msgstr "Icoon instellingen"
 
-#: admin/bp-icon-color-page.php:21
-msgid "Sharing Icon Color"
+#: admin/bp-icon-color-page.php:19
+msgid "Sharing Icon Style"
 msgstr "Pictogram Kleur Delen"
-
-#: admin/bp-icon-color-page.php:28
-msgid "Facebbok Icon Color"
-msgstr "Kleur Pictogram Facebbok"
-
-#: admin/bp-icon-color-page.php:34
-msgid "Twitter Icon Color"
-msgstr "Twitter Pictogram Kleur"
-
-#: admin/bp-icon-color-page.php:40
-msgid "Pinterest Icon Color"
-msgstr "Pinterest Pictogram Kleur"
-
-#: admin/bp-icon-color-page.php:46
-msgid "Linkedin Icon Color"
-msgstr "Linkedin Pictogram Kleur"
-
-#: admin/bp-icon-color-page.php:52
-msgid "Raddit Icon Color"
-msgstr "Kleur pictogram Raddit"
-
-#: admin/bp-icon-color-page.php:58
-msgid "WordPress Icon Color"
-msgstr "WordPress Pictogram Kleur"
-
-#: admin/bp-icon-color-page.php:64
-msgid "Pocket Icon Color"
-msgstr "Pocket Pictogram Kleur"
-
-#: admin/bp-icon-color-page.php:70
-msgid "E-mail Icon Color"
-msgstr "Kleur e-mailpictogram"
-
-#: admin/bp-icon-color-page.php:76
-msgid "Whatsapp Icon Color"
-msgstr "Whatsapp Pictogram Kleur"
 
 #: admin/bp-welcome-page.php:17
 msgid ""
-"BP activity share pro helps you to share your BP activities on social media. "
-"It also allows resharing the BuddyPress activities, WordPress posts on your "
-"website that helps to boost your activities, blog posts around the social "
-"network."
+"BuddyPress Activity Share Pro facilitates sharing your BuddyPress activities "
+"on social media platforms. Additionally, it enables the resharing of "
+"BuddyPress activities and WordPress posts on your website, contributing to "
+"increased visibility and engagement across the social network for your "
+"activities and blog posts."
 msgstr ""
 "BP activity share pro helpt je om je BP activiteiten te delen op sociale "
 "media. Het maakt ook het opnieuw delen van BuddyPress-activiteiten en "
@@ -93,7 +57,7 @@ msgstr ""
 "moment hulp nodig hebben, dan staat ons klantenserviceteam klaar om je te "
 "helpen in het ondersteuningscentrum."
 
-#: admin/bp-welcome-page.php:26
+#: admin/bp-welcome-page.php:26 admin/class-buddypress-share-admin.php:595
 msgid "Documentation"
 msgstr "Documentatie"
 
@@ -164,12 +128,13 @@ msgid "Welcome"
 msgstr "Welkom"
 
 #: admin/class-buddypress-share-admin.php:168
+#: admin/class-buddypress-share-admin.php:594
 #: includes/class-buddypress-share-settings.php:170
 msgid "General Settings"
 msgstr "Algemene instellingen"
 
 #: admin/class-buddypress-share-admin.php:169
-#: admin/class-buddypress-share-admin.php:787
+#: admin/class-buddypress-share-admin.php:789
 msgid "Share Settings"
 msgstr "Instellingen voor delen"
 
@@ -208,124 +173,111 @@ msgstr "Algemeen"
 msgid "BuddyPress Share"
 msgstr "BuddyPress delen"
 
-#: admin/class-buddypress-share-admin.php:594
-msgid "General Services"
-msgstr "Algemene Processen"
-
-#: admin/class-buddypress-share-admin.php:604
+#: admin/class-buddypress-share-admin.php:606
 msgid "Enable Social Share"
 msgstr "Activeer delen met sociale netwerken"
 
-#: admin/class-buddypress-share-admin.php:605
+#: admin/class-buddypress-share-admin.php:607
 msgid "Enable this option to show share button in activity page more options."
 msgstr ""
 "Schakel deze optie in om de deelknop op de activiteitenpagina met meer "
 "opties weer te geven."
 
-#: admin/class-buddypress-share-admin.php:616
+#: admin/class-buddypress-share-admin.php:618
 msgid "Enable Sharing Sites"
 msgstr "Sites voor delen inschakelen"
 
-#: admin/class-buddypress-share-admin.php:623
+#: admin/class-buddypress-share-admin.php:625
 msgid "Disable"
 msgstr "Uitschakelen"
 
-#: admin/class-buddypress-share-admin.php:628
-#: admin/class-buddypress-share-admin.php:653
+#: admin/class-buddypress-share-admin.php:630
+#: admin/class-buddypress-share-admin.php:655
 #: includes/class-buddypress-share-settings.php:248
 msgid "Facebook"
 msgstr "Facebook"
 
-#: admin/class-buddypress-share-admin.php:630
-#: admin/class-buddypress-share-admin.php:655
+#: admin/class-buddypress-share-admin.php:632
+#: admin/class-buddypress-share-admin.php:657
 #: includes/class-buddypress-share-settings.php:249
 msgid "Twitter"
 msgstr "Twitter"
 
-#: admin/class-buddypress-share-admin.php:632
-#: admin/class-buddypress-share-admin.php:657
+#: admin/class-buddypress-share-admin.php:634
+#: admin/class-buddypress-share-admin.php:659
 #: includes/class-buddypress-share-settings.php:250
 msgid "Pinterest"
 msgstr "Pinterest"
 
-#: admin/class-buddypress-share-admin.php:634
-#: admin/class-buddypress-share-admin.php:659
+#: admin/class-buddypress-share-admin.php:636
+#: admin/class-buddypress-share-admin.php:661
 #: includes/class-buddypress-share-settings.php:251
 msgid "Linkedin"
 msgstr "LinkedIn"
 
-#: admin/class-buddypress-share-admin.php:636
-#: admin/class-buddypress-share-admin.php:661
+#: admin/class-buddypress-share-admin.php:638
+#: admin/class-buddypress-share-admin.php:663
 #: includes/class-buddypress-share-settings.php:252
 msgid "Reddit"
 msgstr "Reddit"
 
-#: admin/class-buddypress-share-admin.php:638
-#: admin/class-buddypress-share-admin.php:663
+#: admin/class-buddypress-share-admin.php:640
+#: admin/class-buddypress-share-admin.php:665
 #: includes/class-buddypress-share-settings.php:253
 msgid "WordPress"
 msgstr "WordPress"
 
-#: admin/class-buddypress-share-admin.php:640
-#: admin/class-buddypress-share-admin.php:665
+#: admin/class-buddypress-share-admin.php:642
+#: admin/class-buddypress-share-admin.php:667
 #: includes/class-buddypress-share-settings.php:254
 msgid "Pocket"
 msgstr "Pocket"
 
-#: admin/class-buddypress-share-admin.php:642
-#: admin/class-buddypress-share-admin.php:667
+#: admin/class-buddypress-share-admin.php:644
+#: admin/class-buddypress-share-admin.php:669
 msgid "E-mail"
 msgstr "E-mail"
 
-#: admin/class-buddypress-share-admin.php:644
-#: admin/class-buddypress-share-admin.php:669
+#: admin/class-buddypress-share-admin.php:646
+#: admin/class-buddypress-share-admin.php:671
 #: includes/class-buddypress-share-settings.php:256
 msgid "Whatsapp"
 msgstr "Whatsapp"
 
-#: admin/class-buddypress-share-admin.php:648
+#: admin/class-buddypress-share-admin.php:650
 msgid "Enable"
 msgstr "Inschakelen"
 
-#: admin/class-buddypress-share-admin.php:704
-#: admin/class-buddypress-share-admin.php:871
+#: admin/class-buddypress-share-admin.php:706
+#: admin/class-buddypress-share-admin.php:842
 #: includes/class-buddypress-share-settings.php:370
 msgid "Save Changes"
 msgstr "Wijzigingen opslaan"
 
-#: admin/class-buddypress-share-admin.php:795
-msgid "Button Background Color"
-msgstr "Button Achtergrondkleur"
-
-#: admin/class-buddypress-share-admin.php:803
-msgid "Button Text Color"
-msgstr "Button Tekstkleur"
-
-#: admin/class-buddypress-share-admin.php:811
-msgid "Button Hover Background Color"
-msgstr "Button Hover Achtergrondkleur"
-
-#: admin/class-buddypress-share-admin.php:819
-msgid "Button Hover Text Color"
-msgstr "Button Hover Tekstkleur"
-
-#: admin/class-buddypress-share-admin.php:827
+#: admin/class-buddypress-share-admin.php:797
 msgid "Disable Post Share Activity"
 msgstr "Post Share activiteit uitschakelen"
 
-#: admin/class-buddypress-share-admin.php:839
+#: admin/class-buddypress-share-admin.php:798
+msgid ""
+"You can turn on or off the blog post sharing feature as per your preference."
+msgstr ""
+"U kunt de functie voor het delen van blogposts naar eigen voorkeur in- of "
+"uitschakelen."
+
+#: admin/class-buddypress-share-admin.php:810
 msgid "Reshare share Activity"
 msgstr "Delen opnieuw delen Activiteit"
 
-#: admin/class-buddypress-share-admin.php:845
+#: admin/class-buddypress-share-admin.php:816
 msgid "Parent"
 msgstr "Parent"
 
-#: admin/class-buddypress-share-admin.php:850
+#: admin/class-buddypress-share-admin.php:821
 msgid "Child"
 msgstr "Kind"
 
-#: admin/class-buddypress-share-admin.php:859
+#: admin/class-buddypress-share-admin.php:830
 msgid "Use this shortcode in which post type you want to reshare in Activity."
 msgstr ""
 "Gebruik deze shortcode in het berichttype dat je opnieuw wilt delen in "
@@ -802,7 +754,7 @@ msgid ""
 "links to BuddyPress activity and bbPress topics. "
 msgstr ""
 "BuddyPress Hashtags voor BuddyPress en bbPress. Hiermee kun je hashtag-links "
-"toevoegen aan BuddyPress-activiteiten en bbPress-onderwerpen."
+"toevoegen aan BuddyPress-activiteiten en bbPress-onderwerpen. "
 
 #: admin/wbcom/templates/wbcom-plugins-page.php:285
 msgid "BuddyPress Profanity"
@@ -1166,89 +1118,137 @@ msgstr "Omschrijving"
 msgid "Add Services"
 msgstr "Services toevoegen"
 
+#: plugin-update-checker/Puc/v4p10/Plugin/Ui.php:54
+msgid "View details"
+msgstr "Bekijk details"
+
+#: plugin-update-checker/Puc/v4p10/Plugin/Ui.php:77
+#, php-format
+msgid "More information about %s"
+msgstr "Meer informatie over %s"
+
+#: plugin-update-checker/Puc/v4p10/Plugin/Ui.php:128
+msgid "Check for updates"
+msgstr "Controleer op updates"
+
+#: plugin-update-checker/Puc/v4p10/Plugin/Ui.php:213
+#, php-format
+msgctxt "the plugin title"
+msgid "The %s plugin is up to date."
+msgstr "De %s plugin is bijgewerkt."
+
+#: plugin-update-checker/Puc/v4p10/Plugin/Ui.php:215
+#, php-format
+msgctxt "the plugin title"
+msgid "A new version of the %s plugin is available."
+msgstr "Er is een nieuwe versie van de %s plugin beschikbaar."
+
+#: plugin-update-checker/Puc/v4p10/Plugin/Ui.php:217
+#, php-format
+msgctxt "the plugin title"
+msgid "Could not determine if updates are available for %s."
+msgstr "Kon niet bepalen of updates beschikbaar zijn voor %s."
+
+#: plugin-update-checker/Puc/v4p10/Plugin/Ui.php:223
+#, php-format
+msgid "Unknown update checker status \"%s\""
+msgstr "Onbekende update checker status \"%s\""
+
+#: plugin-update-checker/Puc/v4p10/Vcs/PluginUpdateChecker.php:98
+msgid "There is no changelog available."
+msgstr "Er is geen changelog beschikbaar."
+
 #: public/class-buddypress-share-public.php:160
-#: public/class-buddypress-share-public.php:198
-#: public/class-buddypress-share-public.php:461
-#: public/class-buddypress-share-public.php:841
+#: public/class-buddypress-share-public.php:206
+#: public/class-buddypress-share-public.php:471
+#: public/class-buddypress-share-public.php:827
 msgid "Share"
 msgstr "Delen"
 
-#: public/class-buddypress-share-public.php:241
+#: public/class-buddypress-share-public.php:250
+msgid "Link Copied!"
+msgstr "Link gekopieerd!"
+
+#: public/class-buddypress-share-public.php:253
 msgid "Please enable share services!"
 msgstr "Schakel share services in!"
 
-#: public/class-buddypress-share-public.php:380
-#: public/class-buddypress-share-public.php:389
-#: public/class-buddypress-share-public.php:399
-#: public/class-buddypress-share-public.php:408
+#: public/class-buddypress-share-public.php:392
+#: public/class-buddypress-share-public.php:401
+#: public/class-buddypress-share-public.php:411
+#: public/class-buddypress-share-public.php:420
 msgid "Shared an activity"
 msgstr "Een activiteit delen"
 
-#: public/class-buddypress-share-public.php:382
-#: public/class-buddypress-share-public.php:401
+#: public/class-buddypress-share-public.php:394
+#: public/class-buddypress-share-public.php:413
 msgid "Activity Share"
 msgstr "Activiteit Aandeel"
 
-#: public/class-buddypress-share-public.php:391
-#: public/class-buddypress-share-public.php:410
+#: public/class-buddypress-share-public.php:403
+#: public/class-buddypress-share-public.php:422
 msgid "Post Activity Share"
 msgstr "Post Activiteit Delen"
 
 #. translators: 1: the user link. 2: the group link.
-#: public/class-buddypress-share-public.php:421
+#: public/class-buddypress-share-public.php:433
 #, php-format
 msgid "%1$s Shared an activity"
 msgstr "%1$s Deelde een activiteit"
 
 #. translators: 1: the user link. 2: the group link.
-#: public/class-buddypress-share-public.php:438
+#: public/class-buddypress-share-public.php:449
 #, php-format
 msgid "%1$s shared an activity in the group %2$s"
 msgstr "%1$s deelde een activiteit in de groep %2$s"
 
-#: public/class-buddypress-share-public.php:503
+#: public/class-buddypress-share-public.php:512
 msgid "Status Update"
 msgstr "Statusupdate"
 
-#: public/class-buddypress-share-public.php:508
+#: public/class-buddypress-share-public.php:517
 msgid "Post In"
 msgstr "Plaats in"
 
-#: public/class-buddypress-share-public.php:510
+#: public/class-buddypress-share-public.php:519
 msgid "My Profile"
 msgstr "Mijn profiel"
 
-#: public/class-buddypress-share-public.php:512
+#: public/class-buddypress-share-public.php:520
+msgid "Message"
+msgstr "Bericht"
+
+#: public/class-buddypress-share-public.php:522
 msgid "Group lists"
 msgstr "Groepslijsten"
 
-#: public/class-buddypress-share-public.php:520
+#: public/class-buddypress-share-public.php:530
 msgid "Friend lists"
 msgstr "Vriendenlijsten"
 
-#: public/class-buddypress-share-public.php:536
+#: public/class-buddypress-share-public.php:546
 msgid "Hi admin! Write something here, use @ to mention someone..."
 msgstr "Hallo admin! Schrijf hier iets, gebruik @ om iemand te noemen..."
 
-#: public/class-buddypress-share-public.php:557
+#: public/class-buddypress-share-public.php:567
 msgid "Discard"
 msgstr "Negeer"
 
-#: public/class-buddypress-share-public.php:558
+#: public/class-buddypress-share-public.php:568
 msgid "Post"
 msgstr "Bericht"
 
-#: public/class-buddypress-share-public.php:619
-#: public/class-buddypress-share-public.php:792
+#: public/class-buddypress-share-public.php:606
+#: public/class-buddypress-share-public.php:778
 msgid "Read More"
 msgstr "Lees verder"
 
 #. translators: used between list items, there is a space after the comma.
-#: public/class-buddypress-share-public.php:813
+#: public/class-buddypress-share-public.php:799
 msgid ", "
 msgstr ", "
 
-#: public/class-buddypress-share-public.php:820
+#: public/class-buddypress-share-public.php:806
 msgctxt "list item separator"
 msgid ", "
 msgstr ", "
@@ -1274,3 +1274,45 @@ msgstr ""
 #. Author of the plugin/theme
 msgid "Wbcom Designs<admin@wbcomdesigns.com>"
 msgstr "Wbcom Ontwerpen<admin@wbcomdesigns.com>"
+
+#~ msgid "Facebbok Icon Color"
+#~ msgstr "Kleur Pictogram Facebbok"
+
+#~ msgid "Twitter Icon Color"
+#~ msgstr "Twitter Pictogram Kleur"
+
+#~ msgid "Pinterest Icon Color"
+#~ msgstr "Pinterest Pictogram Kleur"
+
+#~ msgid "Linkedin Icon Color"
+#~ msgstr "Linkedin Pictogram Kleur"
+
+#~ msgid "Raddit Icon Color"
+#~ msgstr "Kleur pictogram Raddit"
+
+#~ msgid "WordPress Icon Color"
+#~ msgstr "WordPress Pictogram Kleur"
+
+#~ msgid "Pocket Icon Color"
+#~ msgstr "Pocket Pictogram Kleur"
+
+#~ msgid "E-mail Icon Color"
+#~ msgstr "Kleur e-mailpictogram"
+
+#~ msgid "Whatsapp Icon Color"
+#~ msgstr "Whatsapp Pictogram Kleur"
+
+#~ msgid "General Services"
+#~ msgstr "Algemene Processen"
+
+#~ msgid "Button Background Color"
+#~ msgstr "Button Achtergrondkleur"
+
+#~ msgid "Button Text Color"
+#~ msgstr "Button Tekstkleur"
+
+#~ msgid "Button Hover Background Color"
+#~ msgstr "Button Hover Achtergrondkleur"
+
+#~ msgid "Button Hover Text Color"
+#~ msgstr "Button Hover Tekstkleur"
