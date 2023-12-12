@@ -505,10 +505,16 @@ class Buddypress_Share_Public {
 						<div class="modal-header">
 							<div class="quick-post-header-filters-wrap">
 								<div class="bp-activity-share-avatar">
-									<a href="<?php echo bp_loggedin_user_domain(); //phpcs:ignore ?>">
+									<a href="<?php echo esc_attr( bp_loggedin_user_domain() ); ?>">
 										<?php bp_loggedin_user_avatar( 'width=' . bp_core_avatar_thumb_width() . '&height=' . bp_core_avatar_thumb_height() ); ?>
 									</a>
-									<?php echo bp_core_get_username( bp_loggedin_user_id() );  //phpcs:ignore ?>
+									<?php
+										if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
+											echo esc_html( bp_members_get_user_slug( bp_loggedin_user_id() ) );
+										} else {
+											echo esc_html( bp_core_get_username( bp_loggedin_user_id() ) );
+										}
+									  ?>
 									<small class="user-status-text"><?php esc_html_e( 'Status Update', 'buddypress-share' ); ?></small>
 								</div>
 								<div class="bp-activity-share-filter">
