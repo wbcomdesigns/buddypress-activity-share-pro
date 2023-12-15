@@ -5,7 +5,7 @@ Donate link: https://wbcomdesigns.com
 Tags: buddypress,activity,share
 Requires at least: 4.0
 Tested up to: 6.2.0
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,28 @@ If you need additional help you can contact us for [Custom Development](https://
 Yes, this plugin requires BuddyPress plugin.
 
 == Changelog ==
+= 1.2.2 =
+* Updated: Share activity URL
+* Updated: (#135) Labels
+* Updated: (#135) Lable, content, top banner, and doc link
+* Updated: (#135) Lable, content, top banner, and doc link
+* Updated: (#135) Tooltip text position
+* Updated: (#135) Copy bottom tooltip position
+* Fix: Bp v12 fixes
+* Fix: Reshare activity from message with BuddyBoss
+* Fix: Duplicate post button issue
+* Fix: Reshare activity on message
+* Fix: (#135) Service buttons UI fixes
+* Fix: (#135) Added description for a post-sharing option
+* Fix: (#135) Managed share popup UI with bb platform
+* Fix: (#135) BP share open graph Youzify support
+* Fix: (#135) Removed icon color options and added icon pattern
+* Fix: (135) Added copy link functionality
+* Fix: (#135) Removed post button color setting managed via theme color scheme
+* Fix: PHPCS nonce fixes
+* Fix: PHPCS fixes
+* Fix: (#127) Issue with PHP 8.2
+
 = 1.2.1 =
 * Fix: Fixed fatal error on plugin activation
 * Fix: Fixed wc-vendors dropdown issue with select2 js
