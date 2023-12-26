@@ -24,23 +24,23 @@ $bpas_icon_color_settings = get_option( 'bpas_icon_color_settings' );
 						<div class="wbcom-settings-section-options">
 							<label>
 								<input type="radio" class="bpas-social-radio-btn" name="bpas_icon_color_settings[icon_style]" value="circle"<?php ( isset( $bpas_icon_color_settings['icon_style'] ) ) ? checked( $bpas_icon_color_settings['icon_style'], 'circle' ) : ''; ?>>
-								<img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) ) . 'images/style_01.jpg'; ?>">
+								<img src="<?php echo esc_attr( BP_ACTIVITY_SHARE_PLUGIN_URL ) . 'admin/images/style_01.jpg'; ?>">
 							</label>
 							<label>
 								<input type="radio" class="bpas-social-radio-btn" name="bpas_icon_color_settings[icon_style]" value="rec"<?php ( isset( $bpas_icon_color_settings['icon_style'] ) ) ? checked( $bpas_icon_color_settings['icon_style'], 'rec' ) : ''; ?>>
-								<img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) ) . 'images/style_02.jpg'; ?>">
+								<img src="<?php echo esc_attr( BP_ACTIVITY_SHARE_PLUGIN_URL ) . 'admin/images/style_02.jpg'; ?>">
 							</label>
 							<label>
 								<input type="radio" class="bpas-social-radio-btn" name="bpas_icon_color_settings[icon_style]" value="blackwhite"<?php echo ( isset( $bpas_icon_color_settings['icon_style'] ) ) ? checked( $bpas_icon_color_settings['icon_style'], 'blackwhite' ) : ''; ?>>
-								<img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) ) . 'images/style_03.jpg'; ?>">
+								<img src="<?php echo esc_attr( BP_ACTIVITY_SHARE_PLUGIN_URL ) . 'admin/images/style_03.jpg'; ?>">
 							</label>
 							<label>
 								<input type="radio" class="bpas-social-radio-btn" name="bpas_icon_color_settings[icon_style]" value="baricon"<?php echo ( isset( $bpas_icon_color_settings['icon_style'] ) ) ? checked( $bpas_icon_color_settings['icon_style'], 'baricon' ) : ''; ?>>
-								<img src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) ) . 'images/style_04.jpg'; ?>'?>">
+								<img src="<?php echo esc_attr( BP_ACTIVITY_SHARE_PLUGIN_URL ) . 'admin/images/style_04.jpg'; ?>'?>">
 							</label>
 							<label>
 								<input type="radio" class="bpas-social-radio-btn" name="bpas_icon_color_settings[icon_style]" value="benzene"<?php echo ( isset( $bpas_icon_color_settings['icon_style'] ) ) ? checked( $bpas_icon_color_settings['icon_style'], 'benzene' ) : ''; ?>>
-								<img style="display:none;" src="<?php echo esc_attr( plugin_dir_url( __FILE__ ) ) . 'images/style_05.jpg'; ?>">
+								<img style="display:none;" src="<?php echo esc_attr( BP_ACTIVITY_SHARE_PLUGIN_URL ) . 'admin/images/style_05.jpg'; ?>">
 							</label>
 						</div>
 					</div>
