@@ -116,7 +116,7 @@ class Buddypress_Share_Public {
 				'current_user_id'        => get_current_user_id(),
 				'reshare_share_activity' => $reshare_share_activity,
 				'ajax_nonce'             => wp_create_nonce( 'bp-activity-share-nonce' ),
-				'member_profile_url'     => bp_loggedin_user_domain(). 'messages/compose/' ,
+				'member_profile_url'     => bp_loggedin_user_domain() . 'messages/compose/',
 			)
 		);
 	}
@@ -175,7 +175,7 @@ class Buddypress_Share_Public {
 		$social_service = get_site_option( 'bp_share_services' );
 		$extra_options  = get_site_option( 'bp_share_services_extra' );
 		$activity_type  = bp_get_activity_type();
-		$activity_link  = $activities_template->activity->primary_link . bp_get_activity_slug() . '/'. $activities_template->activity->id.'/';
+		$activity_link  = $activities_template->activity->primary_link . bp_get_activity_slug() . '/' . $activities_template->activity->id . '/';
 		$activity_title = bp_get_activity_feed_item_title(); // use for description : bp_get_activity_feed_item_description()
 		$plugin_path    = plugins_url();
 		if ( ! is_user_logged_in() ) {
@@ -263,7 +263,7 @@ class Buddypress_Share_Public {
 			<script>
 				jQuery( document ).ready( function () {
 					var pop_active = '<?php echo isset( $extra_options['bp_share_services_open'] ) ? esc_html( $extra_options['bp_share_services_open'] ) : ''; ?>';
-					if ( pop_active == 1 ) {
+					if ( pop_active == 'on' ) {
 						jQuery( '.bp-share' ).addClass( 'has-popup' );
 					}
 				} );
@@ -442,10 +442,9 @@ class Buddypress_Share_Public {
 		$group     = bp_groups_get_activity_group( $activity->item_id );
 		if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
 			$group_link = '<a href="' . esc_url( bp_get_group_url( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
-		} else{
+		} else {
 			$group_link = '<a href="' . esc_url( bp_get_group_permalink( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
 		}
-		
 
 		// Set the Activity update posted in a Group action.
 		$action = sprintf(
@@ -513,12 +512,12 @@ class Buddypress_Share_Public {
 										<?php bp_loggedin_user_avatar( 'width=' . bp_core_avatar_thumb_width() . '&height=' . bp_core_avatar_thumb_height() ); ?>
 									</a>
 									<?php
-										if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
-											echo esc_html( bp_members_get_user_slug( bp_loggedin_user_id() ) );
-										} else {
-											echo esc_html( bp_core_get_username( bp_loggedin_user_id() ) );
-										}
-									  ?>
+									if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
+										echo esc_html( bp_members_get_user_slug( bp_loggedin_user_id() ) );
+									} else {
+										echo esc_html( bp_core_get_username( bp_loggedin_user_id() ) );
+									}
+									?>
 									<small class="user-status-text"><?php esc_html_e( 'Status Update', 'buddypress-share' ); ?></small>
 								</div>
 								<div class="bp-activity-share-filter">
@@ -629,9 +628,9 @@ class Buddypress_Share_Public {
 		// Add the activity.
 		if ( isset( $_POST['activity_in_type'] ) && $_POST['activity_in_type'] == 'user' ) {
 			if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
-				$username                  = bp_members_get_user_slug( $_POST['activity_in'] );
-			}else{
-				$username                  = bp_core_get_username( $_POST['activity_in'] );
+				$username = bp_members_get_user_slug( $_POST['activity_in'] );
+			} else {
+				$username = bp_core_get_username( $_POST['activity_in'] );
 			}
 			$_POST['activity_content'] = "@$username \r\n" . $_POST['activity_content'];
 			$_POST['activity_in']      = '0';
