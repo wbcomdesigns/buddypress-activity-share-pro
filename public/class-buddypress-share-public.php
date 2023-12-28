@@ -496,8 +496,13 @@ class Buddypress_Share_Public {
 				$groups = groups_get_groups( array( 'user_id' => bp_loggedin_user_id() ) );
 			}
 			$friends = ( function_exists( 'friends_get_friend_user_ids' ) ) ? friends_get_friend_user_ids( bp_loggedin_user_id() ) : array();
+
+			if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
+				$user_name = esc_html( bp_members_get_user_slug( bp_loggedin_user_id() ) );
+			} else {
+				$user_name = esc_html( bp_core_get_username( bp_loggedin_user_id() ) );
+			}
 			?>
-			
 			<div class="modal fade activity-share-modal" id="activity-share-modal" tabindex="-1" role="dialog" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered" role="document">
 					<div class="modal-content">
@@ -511,13 +516,7 @@ class Buddypress_Share_Public {
 									<a href="<?php echo esc_attr( bp_loggedin_user_domain() ); ?>">
 										<?php bp_loggedin_user_avatar( 'width=' . bp_core_avatar_thumb_width() . '&height=' . bp_core_avatar_thumb_height() ); ?>
 									</a>
-									<?php
-									if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
-										echo esc_html( bp_members_get_user_slug( bp_loggedin_user_id() ) );
-									} else {
-										echo esc_html( bp_core_get_username( bp_loggedin_user_id() ) );
-									}
-									?>
+									<span class="user-name"><?php echo esc_html( $user_name ); ?></span>
 									<small class="user-status-text"><?php esc_html_e( 'Status Update', 'buddypress-share' ); ?></small>
 								</div>
 								<div class="bp-activity-share-filter">
@@ -551,9 +550,17 @@ class Buddypress_Share_Public {
 						<!-- Modal Body -->
 						<div class="modal-body">
 							<form class="form">
-								<div class="form-textarea">
-									<textarea id="bp-activity-share-text" name="bp-activity-share-text" class=" " placeholder="<?php esc_html_e( 'Hi admin! Write something here, use @ to mention someone...', 'buddypress-share' ); ?>" maxlength="1000" spellcheck="false"></textarea>
+								<div class="form-textarea"> 
+									<?php
+									$placeholder_text = sprintf(
+										/* translators: Placeholder is for the username */
+										esc_html__( 'Hi %s! Write something here, use @ to mention someone...', 'buddypress-share' ),
+										$user_name
+									);
+									?>
+									<textarea id="bp-activity-share-text" name="bp-activity-share-text" class="" placeholder="<?php echo esc_attr( $placeholder_text ); ?>" maxlength="1000" spellcheck="false"></textarea>
 								</div>
+
 								<input type="hidden" id="bp-reshare-activity-id" name="activity-id" value="" />
 								<input type="hidden" id="bp-reshare-activity-user-id" name="user-id" value="<?php echo bp_loggedin_user_id(); //phpcs:ignore ?>" />
 								
