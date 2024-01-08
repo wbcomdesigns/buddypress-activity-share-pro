@@ -31,9 +31,7 @@
 }
 
 .activity ul li .activity-meta .service-buttons a.bp-share,
-#buddypress .activity-list .bpas-social-share-container a {
-    background: none !important;
-    margin: 10px !important;
+#buddypress .activity-list .activity-share-dropdown-menu-container a .dashicons {
     text-align: center;
 }
 
@@ -253,7 +251,7 @@ a.bp-activity-share-button {
 
 .bp-activity-reshare-icon {
     display: inline-block;
-    margin-right: 2px;
+    /* margin-right: 2px; */
 }
 
 .bp-activity-reshare-count {
@@ -1104,10 +1102,11 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     right: 0;
 }
 
-#buddypress .activity-list .bpas-social-share-container.circle a,
-#buddypress .activity-list .bpas-social-share-container.rec a {
-    width: 45px;
-    height: 45px;
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons {
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1124,25 +1123,17 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     border-radius: 100px !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.rec a {
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons {
     border-radius: 0 !important;
-}
-
-#buddypress .activity-list .bpas-social-share-container.circle a:hover,
-#buddypress .activity-list .bpas-social-share-container.rec a:hover,
-#buddypress .activity-list .bpas-social-share-container.blackwhite a:hover,
-#buddypress .activity-list .bpas-social-share-container.baricon a:hover {
-    -webkit-transform: scale(1.1);
-    -ms-transform: scale(1.1);
-    transform: scale(1.1);
 }
 
 /*--------------------------------------------------------------
 ## Black/White Style
 --------------------------------------------------------------*/
-#buddypress .activity-list .bpas-social-share-container.blackwhite a {
-    width: 45px;
-    height: 45px;
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a .dashicons {
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1165,9 +1156,10 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 /*--------------------------------------------------------------
 ## Baricon Style
 --------------------------------------------------------------*/
-#buddypress .activity-list .bpas-social-share-container.baricon a {
-    width: 45px;
-    height: 45px;
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon a .dashicons {
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1185,142 +1177,300 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 }
 
 /* Styles */
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_facebook_share {
-    color: #3B5998 !important;
-    border-color: #3B5998 !important;
-}
-
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_twitter_share {
-    color: #1DA1F2 !important;
-    border-color: #1DA1F2 !important;
-}
-
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_email_share {
-    color: #AD0000 !important;
-    border-color: #AD0000 !important;
-}
-
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_whatsapp_share {
-    color: #46bd00 !important;
-    border-color: #46bd00 !important;
-}
-
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_linkedin_share {
-    color: #007BB6 !important;
-    border-color: #007BB6 !important;
-}
-
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_pinterest_share {
-    color: #BD081C !important;
-    border-color: #BD081C !important;
-}
-
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_reddit_share {
-    color: #FF4501 !important;
-    border-color: #FF4501 !important;
-}
-
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_wordpress_share {
-    color: #21759B !important;
-    border-color: #21759B !important;
-}
-
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_pocket_share {
-    color: #EF3E56 !important;
-    border-color: #EF3E56 !important;
-}
-
-#buddypress .activity-list .bpas-social-share-container.baricon .bp-cpoy {
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon .bp-activity-reshare-icon .dashicons {
     color: #696f75 !important;
     border-color: #696f75 !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.circle #bp_facebook_share,
-#buddypress .activity-list .bpas-social-share-container.rec #bp_facebook_share,
-#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_facebook_share:hover,
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_facebook_share:hover {
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_facebook_share .dashicons {
+    color: #3B5998 !important;
+    border-color: #3B5998 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_twitter_share .dashicons {
+    color: #1DA1F2 !important;
+    border-color: #1DA1F2 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_email_share .dashicons {
+    color: #AD0000 !important;
+    border-color: #AD0000 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_whatsapp_share .dashicons {
+    color: #46bd00 !important;
+    border-color: #46bd00 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_linkedin_share .dashicons {
+    color: #007BB6 !important;
+    border-color: #007BB6 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_pinterest_share .dashicons {
+    color: #BD081C !important;
+    border-color: #BD081C !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_reddit_share .dashicons {
+    color: #FF4501 !important;
+    border-color: #FF4501 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_wordpress_share .dashicons {
+    color: #21759B !important;
+    border-color: #21759B !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_pocket_share .dashicons {
+    color: #EF3E56 !important;
+    border-color: #EF3E56 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon .bp-cpoy .dashicons {
+    color: #696f75 !important;
+    border-color: #696f75 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle .bp-activity-reshare-icon .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec .bp-activity-reshare-icon .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .bp-activity-reshare-icon .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon a:hover .bp-activity-reshare-icon .dashicons {
+    background: #696f75 !important;
+    color: #fff !important;
+    border-color: #696f75 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_facebook_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_facebook_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_facebook_share:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_facebook_share:hover .dashicons {
     background: #3B5998 !important;
     color: #fff !important;
     border-color: #3B5998 !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.circle #bp_twitter_share,
-#buddypress .activity-list .bpas-social-share-container.rec #bp_twitter_share,
-#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_twitter_share:hover,
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_twitter_share:hover {
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_twitter_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_twitter_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_twitter_share:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_twitter_share:hover .dashicons {
     background: #1DA1F2 !important;
     color: #fff !important;
     border-color: #1DA1F2 !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.circle #bp_email_share,
-#buddypress .activity-list .bpas-social-share-container.rec #bp_email_share,
-#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_email_share:hover,
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_email_share:hover {
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_email_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_email_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_email_share:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_email_share:hover .dashicons {
     background: #AD0000 !important;
     color: #fff !important;
     border-color: #AD0000 !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.circle #bp_whatsapp_share,
-#buddypress .activity-list .bpas-social-share-container.rec #bp_whatsapp_share,
-#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_whatsapp_share:hover,
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_whatsapp_share:hover {
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_whatsapp_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_whatsapp_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_whatsapp_share:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_whatsapp_share:hover .dashicons {
     background: #46bd00 !important;
     color: #fff !important;
     border-color: #46bd00 !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.circle #bp_linkedin_share,
-#buddypress .activity-list .bpas-social-share-container.rec #bp_linkedin_share,
-#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_linkedin_share:hover,
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_linkedin_share:hover {
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_linkedin_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_linkedin_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_linkedin_share:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_linkedin_share:hover .dashicons {
     background: #007BB6 !important;
     color: #fff !important;
     border-color: #007BB6 !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.circle #bp_pinterest_share,
-#buddypress .activity-list .bpas-social-share-container.rec #bp_pinterest_share,
-#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_pinterest_share:hover,
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_pinterest_share:hover {
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_pinterest_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_pinterest_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_pinterest_share:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_pinterest_share:hover .dashicons {
     background: #BD081C !important;
     color: #fff !important;
     border-color: #BD081C !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.circle #bp_reddit_share,
-#buddypress .activity-list .bpas-social-share-container.rec #bp_reddit_share,
-#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_reddit_share:hover,
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_reddit_share:hover {
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_reddit_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_reddit_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_reddit_share:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_reddit_share:hover .dashicons {
     background: #FF4501 !important;
     color: #fff !important;
     border-color: #FF4501 !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.circle #bp_wordpress_share,
-#buddypress .activity-list .bpas-social-share-container.rec #bp_wordpress_share,
-#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_wordpress_share:hover,
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_wordpress_share:hover {
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_wordpress_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_wordpress_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_wordpress_share:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_wordpress_share:hover .dashicons {
     background: #21759B !important;
     color: #fff !important;
     border-color: #21759B !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.circle #bp_pocket_share,
-#buddypress .activity-list .bpas-social-share-container.rec #bp_pocket_share,
-#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_pocket_share:hover,
-#buddypress .activity-list .bpas-social-share-container.baricon #bp_pocket_share:hover {
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_pocket_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_pocket_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_pocket_share:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_pocket_share:hover .dashicons {
     background: #EF3E56 !important;
     color: #fff !important;
     border-color: #EF3E56 !important;
 }
 
-#buddypress .activity-list .bpas-social-share-container.circle .bp-cpoy,
-#buddypress .activity-list .bpas-social-share-container.rec .bp-cpoy,
-#buddypress .activity-list .bpas-social-share-container.blackwhite .bp-cpoy:hover,
-#buddypress .activity-list .bpas-social-share-container.baricon .bp-cpoy:hover {
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle .bp-cpoy .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec .bp-cpoy .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite .bp-cpoy:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon .bp-cpoy:hover .dashicons {
     background: #696f75 !important;
     color: #fff !important;
     border-color: #696f75 !important;
+}
+
+/* New */
+.bp-activity-share-dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 35px;
+    text-align: left;
+    width: 250px;
+    padding: 10px 0;
+    border: 1px solid var(--reign-site-border-color);
+    border-radius: var(--reign-global-border-radius) !important;
+    background-color: var(--reign-site-sections-bg-color);
+    box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, .1);
+    opacity: 0;
+    pointer-events: none;
+    -webkit-transform: translateY(15px);
+    -ms-transform: translateY(15px);
+    transform: translateY(15px);
+    -webkit-transition: opacity .3s, -webkit-transform .5s cubic-bezier(.215, .61, .355, 1);
+    transition: opacity .3s, transform .5s cubic-bezier(.215, .61, .355, 1);
+    z-index: 999;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 300px) {
+    .bp-activity-share-dropdown-menu {
+        right: -20px;
+    }
+}
+
+.generic-button.bp-activity-share-dropdown-toggle {
+    position: relative;
+}
+
+.bp-activity-share-dropdown-toggle.selected .bp-activity-share-dropdown-menu {
+    opacity: 1;
+    pointer-events: all;
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+}
+
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-activity-share-btn,
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-wrapper {
+    width: 100% !important;
+    padding: 10px 15px !important;
+}
+
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-activity-share-btn span.bp-activity-reshare-icon i {
+    font-size: 16px;
+}
+
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-btn .bp-share-button::before {
+    margin-right: 8px !important;
+    font-size: 18px !important;
+    margin-left: 0.2em;
+}
+
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-activity-share-btn a,
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-btn a {
+    width: 100%;
+    text-align: left;
+}
+
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-activity-share-btn a span.bp-share-text {
+    display: inline-block !important;
+}
+
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-activity-share-btn:hover,
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-wrapper:hover {
+    background-color: rgba(0, 0, 0, .02);
+}
+
+.bp-nouveau #buddypress .activity-list div.activity-meta .bp-share-wrapper a {
+    justify-content: flex-start;
+    color: var(--reign-site-link-color);
+}
+
+.bp-nouveau #buddypress .activity-list div.activity-meta .bp-share-wrapper a:hover {
+    color: var(--reign-site-link-hover-color);
+}
+
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-wrapper span.bp-share-label {
+    display: block;
+    margin-left: 10px;
+    font-size: inherit;
+    font-weight: 500;
+}
+
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-wrapper span.tooltiptext {
+    width: 100px;
+    position: absolute;
+    font-size: 13px;
+    font-weight: 500;
+    background: #444;
+    border-radius: 4px;
+    color: #fff;
+    line-height: 1.3;
+    padding: 7px 15px;
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+    -webkit-transition: all .18s ease-out .18s;
+    transition: all .18s ease-out .18s;
+    top: -30px;
+}
+
+.bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-wrapper span.tooltiptext:before {
+    content: ' ';
+    width: 12px;
+    height: 12px;
+    background: #444;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    margin: auto;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    z-index: -1;
+    border-radius: 2px;
+}
+
+/* Share popup */
+.activity-share-modal.my-profile .select2-dropdown,
+.activity-share-modal.message .select2-dropdown,
+.activity-share-modal.select-group [aria-label="Friend lists"],
+.activity-share-modal.select-friend [aria-label="Group lists"] {
+    display: none;
+}
+
+.activity-share-modal.select-group .select2-results>.select2-results__options>li:first-child,
+.activity-share-modal.select-friend .select2-results>.select2-results__options>li:first-child,
+.activity-share-modal.select-group .select2-results>.select2-results__options>li:nth-child(2),
+.activity-share-modal.select-friend .select2-results>.select2-results__options>li:nth-child(2) {
+    display: none;
 }

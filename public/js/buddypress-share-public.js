@@ -226,6 +226,67 @@
 			$('#activity-share-modal').modal('hide');
 		});
 
+        /* Share button toggle */
+        $(document).on(
+            'click',
+            '.bp-activity-share-dropdown-toggle a.dropdown-toggle',
+            function(e) {
+                e.preventDefault();
+                var current = $(this).closest('.bp-activity-share-dropdown-toggle');
+                current.siblings('.selected').removeClass('selected');
+                current.toggleClass('selected');
+            }
+        );
+
+        $('body').mouseup(
+            function(e) {
+                var container = $('.bp-activity-share-dropdown-toggle *');
+                if (!container.is(e.target)) {
+                    $('.bp-activity-share-dropdown-toggle').removeClass('selected');
+                }
+            }
+        );
+
+        // Custom Code - Start
+        $(document).on('click', '.bp-activity-reshare-btn', function(e) {
+            e.preventDefault();
+            var reshareOption = $(this).data('reshare');
+
+            // Get the data-title attribute of the clicked button
+            var reshareOptionText = $(this).attr('data-title');
+
+            // Change the selected option in the regular dropdown
+            $('#post-in').val(reshareOption).trigger('change');
+
+            // Refresh the Select2 control and set the text of the selected option
+            $('#post-in').next('.select2-container').find('.select2-selection__rendered').text(reshareOptionText);
+            
+        });
+
+        $(document).on('click', '.bp-activity-reshare-btn', function(e) {
+            var reshareOptionText = $(this).attr('data-title');
+            var reshareOptionTextClass = reshareOptionText.toLowerCase().replace(/\s+/g, '-');
+            
+            $('.activity-share-modal').addClass(reshareOptionTextClass).data('reshareOptionTextClass', reshareOptionTextClass);
+        });
+
+        $('body').mouseup(function(e) {
+            var container = $('.activity-share-modal');
+            var reshareOptionTextClass = container.data('reshareOptionTextClass');
+            
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                container.removeClass(reshareOptionTextClass);
+            }
+        });
+
+        $('.bp-activity-share-activity, .activity-share-modal-close').on('click', function(e) {
+            var container = $('.activity-share-modal');
+            var reshareOptionTextClass = container.data('reshareOptionTextClass');
+            
+            e.preventDefault();
+            container.removeClass(reshareOptionTextClass);
+        });
+
 
     });
 
