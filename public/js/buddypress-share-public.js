@@ -98,24 +98,57 @@
 
 
 
-        $(document).on('click', ".bp-cpoy", function(e) {
+        // $(document).on('click', ".bp-cpoy", function(e) {
+        //     e.preventDefault();
+        //     var copyText = $(this).data('href');
+
+        //     document.addEventListener('copy', function(e) {
+        //         e.clipboardData.setData('text/plain', copyText);
+        //         e.preventDefault();
+        //     }, true);
+
+        //     document.execCommand('copy');
+        //     var tooltip = $(this).next();
+        //     tooltip.removeClass('tooltip-hide');
+        //     setTimeout(function() {
+        //         tooltip.addClass('tooltip-hide');
+        //     }, 500);
+
+
+        // });
+
+       $(document).on('click', ".bp-cpoy", function(e) {
             e.preventDefault();
             var copyText = $(this).data('href');
 
-            document.addEventListener('copy', function(e) {
-                e.clipboardData.setData('text/plain', copyText);
-                e.preventDefault();
-            }, true);
+            // Attempt to use navigator.clipboard.writeText() if available
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(copyText).then(function() {
+                    var tooltip = $(this).next();
+                    tooltip.removeClass('tooltip-hide');
+                    setTimeout(function() {
+                        tooltip.addClass('tooltip-hide');
+                    }, 500);
+                }).catch(function(error) {
+                    console.error('Failed to copy:', error);
+                });
+            } else {
+                // Fallback for browsers that don't support navigator.clipboard
+                var dummyInput = document.createElement("textarea");
+                document.body.appendChild(dummyInput);
+                dummyInput.value = copyText;
+                dummyInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(dummyInput);
 
-            document.execCommand('copy');
-            var tooltip = $(this).next();
-            tooltip.removeClass('tooltip-hide');
-            setTimeout(function() {
-                tooltip.addClass('tooltip-hide');
-            }, 500);
-
-
+                var tooltip = $(this).next();
+                tooltip.removeClass('tooltip-hide');
+                setTimeout(function() {
+                    tooltip.addClass('tooltip-hide');
+                }, 500);
+            }
         });
+        
 		$("#activity-share-modal #post-in").select2({
 			dropdownParent: $('#activity-share-modal')
 		});
@@ -208,19 +241,19 @@
 
         });
 
-        $(document).on('change', '#post-in', function() {
-            var activity_id = $('#activity-share-modal #bp-reshare-activity-id').val();
-            var member_msg_url = bp_activity_sjare_vars.member_profile_url;
-            var activity_url = member_msg_url +  'activity/' + activity_id + '/'; 
-            var parameter = '?activity_id=' + activity_url; 
-            if( $(this).val() == 'message' ){
-                $('.bp-activity-share-activity').hide();
-                $("<a href= " + member_msg_url + parameter +"  class='button small secondary'>Post</a>").insertAfter(".bp-activity-share-activity");
-            }else{
-                $('.bp-activity-share-activity').show();
-                $('.bp-activity-share-post-footer-actions a').remove();
-            }
-        });
+        // $(document).on('change', '#post-in', function() {
+        //     var activity_id = $('#activity-share-modal #bp-reshare-activity-id').val();
+        //     var member_msg_url = bp_activity_sjare_vars.member_profile_url;
+        //     var activity_url = member_msg_url +  'activity/' + activity_id + '/'; 
+        //     var parameter = '?activity_id=' + activity_url;
+        //     if( $(this).val() == 'message' ){
+        //         $('.bp-activity-share-activity').hide();
+        //         $("<a href= " + member_msg_url + parameter +"  class='button small secondary'>Post</a>").insertAfter(".bp-activity-share-activity");
+        //     }else{
+        //         $('.bp-activity-share-activity').show();
+        //         $('.bp-activity-share-post-footer-actions a').remove();
+        //     }
+        // });
 		
 		$( document ).on('click','.bp-activity-share-close', function(){
 			$('#activity-share-modal').modal('hide');
