@@ -95,7 +95,6 @@ function run_buddypress_share_pro() {
 
 	$plugin = new Buddypress_Share();
 	$plugin->run();
-
 }
 
 /**
@@ -191,7 +190,6 @@ function bpshare_pro_requires_buddypress() {
 		add_action( 'admin_notices', 'bpshare_pro_required_plugin_admin_notice' );
 		unset( $_GET['activate'] ); //phpcs:ignore
 	}
-
 }
 
 add_action( 'admin_init', 'bpshare_pro_requires_buddypress' );
@@ -243,7 +241,7 @@ function bpshare_pro_youzify_plugin_admin_notice() {
 	$youzify_plugin    = esc_html__( 'Youzify', 'buddypress-share' );
 	echo '<div class="error"><p>';
 	/* translators: %s: */
-	echo sprintf( esc_html__( '%1$s plugin can not be use with %2$s plugin.', 'buddypress-share' ), '<strong>' . esc_html( $bpsharepro_plugin ) . '</strong>', '<strong>' . esc_html( $youzify_plugin ) . '</strong>' );
+	printf( esc_html__( '%1$s plugin can not be use with %2$s plugin.', 'buddypress-share' ), '<strong>' . esc_html( $bpsharepro_plugin ) . '</strong>', '<strong>' . esc_html( $youzify_plugin ) . '</strong>' );
 	echo '</p></div>';
 	if ( isset( $_GET['activate'] ) ) { //phpcs:ignore
 		unset( $_GET['activate'] ); //phpcs:ignore
@@ -288,7 +286,7 @@ function bp_share_pro_default_option() {
 	$services = get_site_option( 'bp_share_services' );
 	$get_flag = get_site_option( 'bp_share_flag' );
 	if ( '' !== $services && '' == $get_flag ) {
-		$flag_check                   = false;
+		$flag_check                       = false;
 		$bp_share_social_pro_icon_default = array();
 		foreach ( $services as $get_key => $get_val ) {
 			if ( isset( $get_val['service_name'] ) && ! empty( $get_val['service_name'] ) ) {
@@ -311,18 +309,21 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	'buddypress-activity-share-pro'
 );
 
-function bp_share_pro_share_activity_url_on_compose(){
+/**
+ * This function handles sharing an activity URL on the compose message box in BuddyPress or BuddyBoss.
+ */
+function bp_share_pro_share_activity_url_on_compose() {
 	$check_bb_bp = '';
 	if ( function_exists( 'buddypress' ) && isset( buddypress()->buddyboss ) ) {
 		$check_bb_bp = 'buddyboss';
-	}else{
+	} else {
 		$check_bb_bp = 'buddypress';
 	}
-	if( isset( $_GET['activity_id'] ) ){		
+	if ( isset( $_GET['activity_url'] ) ) {
 		?>
 		<script>
 			jQuery(document).ready(function(){
-				var url = "<?php echo $_GET['activity_id']; ?>";
+				var url = "<?php echo $_GET['activity_url']; ?>";
 				var active_bb_bp = "<?php echo $check_bb_bp; ?>";
 				if( 'buddyboss' == active_bb_bp ){
 					jQuery( '#bp-message-content' ).addClass( 'focus-in--content' );

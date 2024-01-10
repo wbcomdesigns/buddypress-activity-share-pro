@@ -1420,7 +1420,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 
 .bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-wrapper span.bp-share-label {
     display: block;
-    margin-left: 10px;
+    margin-left: 10px !important;
     font-size: inherit;
     font-weight: 500;
 }

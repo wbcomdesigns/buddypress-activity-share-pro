@@ -211,8 +211,8 @@ class Buddypress_Share_Public {
 					</a>
 				</div>
 				<div class="bp-share-wrapper bp-activity-share-btn" data-reshare="message" data-title="<?php esc_attr_e( 'Message', 'buddypress-share' ); ?>">
-					<a href="<?php echo esc_attr( bp_loggedin_user_domain() . 'messages/compose/?activity_url=' . bp_activity_get_permalink( bp_get_activity_id() ) ); ?>" class="button item-button bp-secondary-action" rel="nofollow">
-						<span class="bp-activity-reshare-icon">	
+					<a href="<?php echo esc_attr( bp_loggedin_user_domain() . 'messages/compose/?activity_url=' . bp_loggedin_user_domain() . 'activity/' . bp_get_activity_id() ); ?>" class="button item-button bp-secondary-action" rel="nofollow">
+						<span class="bp-activity-reshare-icon">
 							<span class="dashicons dashicons-email"></span>
 						</span>
 						<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Share to Message', 'buddypress-share' ); ?></span>					
