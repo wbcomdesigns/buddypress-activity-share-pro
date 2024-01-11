@@ -104,7 +104,12 @@ class Buddypress_Share_Public {
 		$reshare_share_activity = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
 
 		wp_enqueue_script( 'jquery-ui-tooltip' );
-		wp_enqueue_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, false );
+		wp_register_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, false );
+		if ( class_exists( 'WeDevs_Dokan' ) && dokan_is_seller_dashboard() ) {
+			wp_dequeue_script( 'bootstrap-js' );
+		} else {
+			wp_enqueue_script( 'bootstrap-js' );
+		}
 		wp_enqueue_script( 'select2-js', plugin_dir_url( __FILE__ ) . 'js/select2.min.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/buddypress-share-public.js', array( 'jquery' ), $this->version, false );
 

@@ -10,7 +10,13 @@
   overflow-y: auto;
   outline: 0;
 }
-
+.fade {
+  opacity: 0;
+  transition: opacity .15s linear;
+}
+.fade.show {
+  opacity: 1;
+}
 .modal-dialog {
   position: relative;
   width: auto;
