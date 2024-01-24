@@ -37,6 +37,21 @@
     text-align: center;
 }
 
+.activity ul li .activity-meta .service-buttons a.bp-share .dashicons-twitter {
+    min-width: auto;
+}
+
+.activity ul li .activity-meta .service-buttons a.bp-share .dashicons-twitter:before {
+    content: "";
+    background-image: url("../images/twitter-x-line.svg");
+    background-size: 17px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
 .activity ul li .activity-meta .service-buttons a.bp-share .fa-stack {
     width: auto;
     height: auto;
@@ -1251,6 +1266,13 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     background: #1DA1F2 !important;
     color: #fff !important;
     border-color: #1DA1F2 !important;
+}
+
+#buddypress .activity-list .bpas-social-share-container.circle #bp_twitter_share .dashicons-twitter:before,
+#buddypress .activity-list .bpas-social-share-container.rec #bp_twitter_share .dashicons-twitter:before,
+#buddypress .activity-list .bpas-social-share-container.blackwhite #bp_twitter_share:hover .dashicons-twitter:before,
+#buddypress .activity-list .bpas-social-share-container.baricon #bp_twitter_share:hover .dashicons-twitter:before {
+    filter: invert(1);
 }
 
 #buddypress .activity-list .bpas-social-share-container.circle #bp_email_share,

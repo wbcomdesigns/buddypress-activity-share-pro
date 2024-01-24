@@ -1742,6 +1742,14 @@ td.bp-share-title {
     content: "\f301";
 }
 
+.socialicon.icon_Twitter:before {
+    content: "";
+    background-image: url("../images/twitter-x-line.svg");
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .socialicon.icon_E-mail:before,
 .icon_Gmail:before {
     content: "\f465";
