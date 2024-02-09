@@ -39,7 +39,7 @@
     min-width: auto;
 }
 
-.activity ul li .activity-meta .service-buttons a.bp-share .dashicons-twitter:before {
+.activity ul li .activity-meta a.bp-share .dashicons-twitter:before {
     content: "";
     background-image: url("../images/twitter-x-line.svg");
     background-size: 17px;
@@ -1138,6 +1138,12 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     border-radius: 100px !important;
 }
 
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons-twitter:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons-twitter:before {
+    background-size: 12px;
+    filter: invert(1);
+}
+
 #buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons {
     border-radius: 0 !important;
 }
@@ -1168,6 +1174,15 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     border: 1px solid #000 !important;
 }
 
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a .dashicons-twitter:before {
+    background-size: 12px;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .dashicons-twitter:before {
+    background-size: 12px;
+    filter: invert(1);
+}
+
 /*--------------------------------------------------------------
 ## Baricon Style
 --------------------------------------------------------------*/
@@ -1189,6 +1204,14 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     transition: all .3s;
     border-radius: 0 !important;
     border-top: 3px solid currentColor;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon a .dashicons-twitter:before {
+    background-size: 12px;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon a:hover .dashicons-twitter:before {
+    filter: invert(1);
 }
 
 /* Styles */
