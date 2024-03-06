@@ -637,54 +637,48 @@ class Buddypress_Share_Public {
 
 		$user_id = get_current_user_id();
 
-		// Add the activity.
+		// Prepare activity content for user mentions.
 		if ( isset( $_POST['activity_in_type'] ) && $_POST['activity_in_type'] == 'user' ) {
-			if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
-				$username = bp_members_get_user_slug( $_POST['activity_in'] );
-			} else {
-				$username = bp_core_get_username( $_POST['activity_in'] );
-			}
+			$username = ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) ?
+			bp_members_get_user_slug( $_POST['activity_in'] ) :
+			bp_core_get_username( $_POST['activity_in'] );
+
 			$_POST['activity_content'] = "@$username \r\n" . $_POST['activity_content'];
 			$_POST['activity_in']      = '0';
-
 		}
 
-		$activity_id = bp_activity_add(
-			array(
-				'user_id'           => $user_id,
-				'component'         => ( isset( $_POST['activity_in'] ) && $_POST['activity_in'] != 0 ) ? 'groups' : 'activity',
-				'type'              => $_POST['type'],
-				'content'           => $_POST['activity_content'],
-				'secondary_item_id' => $_POST['activity_id'],
-				'item_id'           => $_POST['activity_in'],
-
-			)
+		// Add the activity.
+		$activity_args = array(
+			'user_id'           => $user_id,
+			'component'         => ( isset( $_POST['activity_in'] ) && $_POST['activity_in'] != 0 ) ? 'groups' : 'activity',
+			'type'              => $_POST['type'],
+			'content'           => $_POST['activity_content'],
+			'secondary_item_id' => $_POST['activity_id'],
+			'item_id'           => $_POST['activity_in'],
 		);
 
-		if ( $activity_id && $_POST['type'] == 'activity_share' ) {
+		$activity_id = bp_activity_add( $activity_args );
 
-			/* Count reshare activity */
-			$share_count = bp_activity_get_meta( $_POST['activity_id'], 'share_count', true );
-			if ( ! $share_count ) {
-				bp_activity_update_meta( $_POST['activity_id'], 'share_count', 1 );
+		if ( $activity_id && in_array( $_POST['type'], array( 'activity_share', 'post_share' ) ) ) {
+			// Update reshare count.
+			$meta_key = ( $_POST['type'] == 'activity_share' ) ? 'share_count' : 'share_count'; // Assuming the meta key for post share count is same as activity share count.
+
+			$share_count = ( $_POST['type'] == 'activity_share' ) ?
+			bp_activity_get_meta( $_POST['activity_id'], $meta_key, true ) :
+			get_post_meta( $_POST['activity_id'], $meta_key, true );
+
+			$share_count = ( $share_count ) ? $share_count + 1 : 1;
+
+			if ( $_POST['type'] == 'activity_share' ) {
+				bp_activity_update_meta( $_POST['activity_id'], $meta_key, $share_count );
 			} else {
-				bp_activity_update_meta( $_POST['activity_id'], 'share_count', $share_count + 1 );
+				update_post_meta( $_POST['activity_id'], $meta_key, $share_count );
 			}
 		}
 
-		/* Share Post as activity */
-		if ( $activity_id && $_POST['type'] == 'post_share' ) {
-
-			/* Count reshare activity */
-			$share_count = get_post_meta( $_POST['activity_id'], 'share_count', true );
-			if ( ! $share_count ) {
-				update_post_meta( $_POST['activity_id'], 'share_count', 1 );
-			} else {
-				update_post_meta( $_POST['activity_id'], 'share_count', $share_count + 1 );
-			}
-		}
 		die();
 	}
+
 
 
 	public function bp_activity_share_get_where_conditions( $where_conditions ) {
