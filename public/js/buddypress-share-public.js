@@ -154,7 +154,7 @@
 					dataType: 'json',
 					success: function(response) {
 						activity_html = response.data.contents;
-						if ( activity_html != '' ) {
+						if ( activity_html != '' ) {							
 							activity_html =  $($.parseHTML(activity_html)).filter("#activity-" + activity_id).html(); 
 							var activity_ul_class = $('#activity-stream ul').attr('class');
 							if ( typeof activity_ul_class == 'undefined' || activity_ul_class == '') {
@@ -177,13 +177,22 @@
 							$('#activity-share-modal').on('shown.bs.modal', function() {
 								$('#activity-share-modal').modal('show');
 							});
-							$('#bp-reshare-activity-id').val(activity_id);
+							
 							$('#activity-share-modal .modal-body .activity-meta, #activity-share-modal .modal-body .post-footer, #activity-share-modal .modal-body .activity-comments, #activity-share-modal .modal-body .entry-button-wraper, #activity-share-modal .modal-body .bp-activity-post-footer').remove();
 							
 						}
 					}
 				});
 			}
+			
+			$('#bp-reshare-activity-id').val(activity_id);
+			if ( reshare_share_activity == 'parent') {
+				$('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').find('.activity-reshare-item-container').remove();
+			}
+			$('#activity-share-modal').on('shown.bs.modal', function() {
+				$('#activity-share-modal').modal('show');
+			});
+			$('#activity-share-modal .modal-body .activity-meta, #activity-share-modal .modal-body .post-footer, #activity-share-modal .modal-body .activity-comments, #activity-share-modal .modal-body .entry-button-wraper, #activity-share-modal .modal-body .bp-activity-post-footer').remove();
 
            
         });
