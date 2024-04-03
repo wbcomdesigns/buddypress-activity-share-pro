@@ -130,12 +130,12 @@
 				activity_id = $(this).data( 'post-id' );
 			} else {
 				activity_id = $(this).data('activity-id');
-				activity_html = $('#activity-' + activity_id).html();
+				//activity_html = $('#activity-' + activity_id).html();
 				if ( reshare_share_activity == 'child') {
 					$('#activity-' + activity_id + ' .activity-reshare-item-container').each( function(){
 						activity_id = $(this).attr( 'id' ).split("bp-reshare-activity-");
 						activity_id = activity_id[1];						
-						activity_html = $(this).html();
+						//activity_html = $(this).html();
 						if ( $(this).hasClass('post-reshare-item-container')) {
 							$('#bp-reshare-type').val('post_share');
 						} else {
@@ -143,27 +143,48 @@
 						}
 					}) 
 				}
+				$.ajax({
+					url: bp_activity_sjare_vars.ajax_url,
+					method: 'POST',
+					data: {
+						action: 'bp_share_get_activity_content',						
+						activity_id: activity_id,												
+						_ajax_nonce: bp_activity_sjare_vars.ajax_nonce
+					},
+					dataType: 'json',
+					success: function(response) {
+						activity_html = response.data.contents;
+						if ( activity_html != '' ) {
+							activity_html =  $($.parseHTML(activity_html)).filter("#activity-" + activity_id).html(); 
+							var activity_ul_class = $('#activity-stream ul').attr('class');
+							if ( typeof activity_ul_class == 'undefined' || activity_ul_class == '') {
+								activity_ul_class = 'activity-list item-list bp-list';
+							}
+							var activity_li_class = $('#activity-stream ul li#activity-' + activity_id).attr('class');
+							if ( typeof activity_li_class == 'undefined' || activity_li_class == '' ) {
+								activity_li_class = "activity activity_update activity-item";
+							}							
+							
+							$('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').addClass('');
+							$('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').addClass(activity_ul_class);
+							$('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').html('');
+							$('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').html('<div class="' + activity_li_class + '">' + activity_html + '</div>');
+							
+							if ( reshare_share_activity == 'parent') {
+								$('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').find('.activity-reshare-item-container').remove();
+							}
+							
+						}
+					}
+				});
+				
+				
 			}
 
             $('#activity-share-modal').on('shown.bs.modal', function() {
                 $('#activity-share-modal').modal('show');
             });
-
             $('#bp-reshare-activity-id').val(activity_id);
-            if (activity_html != '') {
-				
-                var activity_ul_class = $('#activity-stream ul').attr('class');
-                var activity_li_class = $('#activity-stream ul li#activity-' + activity_id).attr('class');
-                $('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').addClass('');
-                $('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').addClass(activity_ul_class);
-                $('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').html('');
-                $('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').html('<div class="' + activity_li_class + '">' + activity_html + '</div>');
-				
-				if ( reshare_share_activity == 'parent') {
-					$('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').find('.activity-reshare-item-container').remove();
-				}
-            }
-
             $('#activity-share-modal .modal-body .activity-meta, #activity-share-modal .modal-body .post-footer, #activity-share-modal .modal-body .activity-comments, #activity-share-modal .modal-body .entry-button-wraper, #activity-share-modal .modal-body .bp-activity-post-footer').remove();
         });
 

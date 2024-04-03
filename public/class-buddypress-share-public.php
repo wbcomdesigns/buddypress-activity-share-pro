@@ -865,4 +865,29 @@ class Buddypress_Share_Public {
 		$response->data['bp_activity_share_count'] = $bp_activity_link_data;
 		return $response;
 	}
+	
+	
+	/**
+	 * Load the single activity loop for the reshare object
+	 *	 
+	 *
+	 * @return string Template loop for the specified object
+	 */
+	public function bp_share_get_activity_content() {
+		check_ajax_referer( 'bp-activity-share-nonce', '_ajax_nonce' );
+		
+		$activity_id = sanitize_text_field($_POST['activity_id']);
+		
+		ob_start();
+		if ( bp_has_activities( 'include=' . $activity_id  ) ) {
+			while ( bp_activities() ) {
+				bp_the_activity();
+				bp_get_template_part( 'activity/entry' );
+			}
+			
+		}		
+		$result['contents'] = ob_get_contents();
+		ob_end_clean();
+		wp_send_json_success( $result );
+	}
 }

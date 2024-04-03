@@ -193,6 +193,8 @@ class Buddypress_Share {
 
 		$this->loader->add_shortcode( 'bp_activity_post_reshare', $plugin_public, 'bp_activity_post_reshare' );
 		$this->loader->add_filter( 'bp_rest_activity_prepare_value', $plugin_public, 'bp_activity_post_reshare_data_embed_rest_api', 10, 3 );
+		
+		$this->loader->add_action( 'wp_ajax_bp_share_get_activity_content', $plugin_public, 'bp_share_get_activity_content' );
 	}
 
 	/**
