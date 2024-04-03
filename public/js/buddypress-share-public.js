@@ -174,18 +174,18 @@
 								$('#activity-share-modal .modal-body #bp-activity-share-widget-box-status-header').find('.activity-reshare-item-container').remove();
 							}
 							
+							$('#activity-share-modal').on('shown.bs.modal', function() {
+								$('#activity-share-modal').modal('show');
+							});
+							$('#bp-reshare-activity-id').val(activity_id);
+							$('#activity-share-modal .modal-body .activity-meta, #activity-share-modal .modal-body .post-footer, #activity-share-modal .modal-body .activity-comments, #activity-share-modal .modal-body .entry-button-wraper, #activity-share-modal .modal-body .bp-activity-post-footer').remove();
+							
 						}
 					}
 				});
-				
-				
 			}
 
-            $('#activity-share-modal').on('shown.bs.modal', function() {
-                $('#activity-share-modal').modal('show');
-            });
-            $('#bp-reshare-activity-id').val(activity_id);
-            $('#activity-share-modal .modal-body .activity-meta, #activity-share-modal .modal-body .post-footer, #activity-share-modal .modal-body .activity-comments, #activity-share-modal .modal-body .entry-button-wraper, #activity-share-modal .modal-body .bp-activity-post-footer').remove();
+           
         });
 
 
