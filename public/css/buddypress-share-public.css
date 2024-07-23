@@ -1057,7 +1057,8 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     margin-left: 5px;
 }
 
-.activity-share-modal .activity-list .bb-activity-more-options-wrap {
+.activity-share-modal .activity-list .bb-activity-more-options-wrap,
+.activity-share-modal .activity-list .bb-media-privacy-wrap {
     display: none;
 }
 
