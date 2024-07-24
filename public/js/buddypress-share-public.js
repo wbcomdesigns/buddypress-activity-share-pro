@@ -96,8 +96,6 @@
             window.open(meh, '', 'height=485,width=700,left=' + x + ',top=' + y);
         }
 
-
-
         // $(document).on('click', ".bp-cpoy", function(e) {
         //     e.preventDefault();
         //     var copyText = $(this).data('href');
@@ -113,41 +111,42 @@
         //     setTimeout(function() {
         //         tooltip.addClass('tooltip-hide');
         //     }, 500);
-
-
         // });
 
-       $(document).on('click', ".bp-cpoy", function(e) {
+        $(document).on('click', ".bp-cpoy", function(e) {
             e.preventDefault();
+        
             var copyText = $(this).data('href');
-
-            // Attempt to use navigator.clipboard.writeText() if available
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(copyText).then(function() {
-                    var tooltip = $(this).next();
-                    tooltip.removeClass('tooltip-hide');
-                    setTimeout(function() {
-                        tooltip.addClass('tooltip-hide');
-                    }, 500);
-                }).catch(function(error) {
-                    console.error('Failed to copy:', error);
-                });
-            } else {
-                // Fallback for browsers that don't support navigator.clipboard
-                var dummyInput = document.createElement("textarea");
-                document.body.appendChild(dummyInput);
-                dummyInput.value = copyText;
-                dummyInput.select();
-                document.execCommand("copy");
-                document.body.removeChild(dummyInput);
-
-                var tooltip = $(this).next();
-                tooltip.removeClass('tooltip-hide');
-                setTimeout(function() {
-                    tooltip.addClass('tooltip-hide');
-                }, 500);
+        
+            // Create a temporary textarea element to handle clipboard copying
+            var tempTextarea = $('<textarea>');
+            tempTextarea.val(copyText);
+            $('body').append(tempTextarea);
+        
+            tempTextarea.select();
+        
+            try {
+                // Copy the text to the clipboard
+                var successful = document.execCommand('copy');
+                var message = successful ? 'Copied!' : 'Copy failed';
+                console.log(message);
+            } catch (err) {
+                console.error('Unable to copy', err);
             }
+        
+            // Remove the temporary textarea
+            tempTextarea.remove();
+        
+            // Show the tooltip
+            var tooltip = $(this).next();
+            tooltip.removeClass('tooltip-hide');
+        
+            // Hide the tooltip after 1000 milliseconds
+            setTimeout(function() {
+                tooltip.addClass('tooltip-hide');
+            }, 1000);
         });
+        
         
 		$("#activity-share-modal #post-in").select2({
 			dropdownParent: $('#activity-share-modal')
