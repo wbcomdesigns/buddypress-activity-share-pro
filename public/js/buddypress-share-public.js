@@ -368,6 +368,33 @@
             container.removeClass(reshareOptionTextClass);
         });
 
+        // Adjust position on page bottom.
+        $(document).ready(function() {
+            function toggleDropdownPosition() {
+                $('.bp-activity-share-dropdown-menu').each(function() {
+                    var $dropdown = $(this);
+                    var windowScrollTop = $(window).scrollTop();
+                    var windowHeight = $(window).height();
+                    var documentHeight = $(document).height();
+                    var isNearBottom = (windowScrollTop + windowHeight) >= (documentHeight - 100); // Threshold.
+        
+                    if (isNearBottom) {
+                        $dropdown.addClass('position-top');
+                    } else {
+                        $dropdown.removeClass('position-top');
+                    }
+                });
+            }
+        
+            // Run on scroll
+            $(window).scroll(function() {
+                toggleDropdownPosition();
+            });
+        
+            // Run on load
+            toggleDropdownPosition();
+        });
+
 
     });
 
