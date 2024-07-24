@@ -15,7 +15,7 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 					<div class="wbcom-settings-section-wrap">
 						<div class="wbcom-settings-section-options-heading">
 							<label><?php esc_html_e( 'Disable Post Share Activity', 'buddypress-share' ); ?></label>
-							<p class="description"><?php esc_html_e( 'You can turn on or off the blog post sharing feature as per your preference.', 'buddypress-share' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Enable or disable the feature for sharing blog posts according to your preference.', 'buddypress-share' ); ?></p>
 						</div>
 						<div class="wbcom-settings-section-options">
 						<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_post_reshare_activity]" value="1" 
@@ -28,7 +28,7 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 					<div class="wbcom-settings-section-wrap">
 						<div class="wbcom-settings-section-options-heading">
 							<label><?php esc_html_e( 'Disable My Profile Sharing', 'buddypress-share' ); ?></label>
-							<p class="description"><?php esc_html_e( 'You can turn on or off the my profile sharing feature as per your preference.', 'buddypress-share' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Enable or disable the feature for sharing your profile according to your preference.', 'buddypress-share' ); ?></p>
 						</div>
 						<div class="wbcom-settings-section-options">
 						<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_my_profile_reshare_activity]" value="1" 
@@ -41,7 +41,7 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 					<div class="wbcom-settings-section-wrap">
 						<div class="wbcom-settings-section-options-heading">
 							<label><?php esc_html_e( 'Disable Message Sharing', 'buddypress-share' ); ?></label>
-							<p class="description"><?php esc_html_e( 'You can turn on or off the message sharing feature as per your preference.', 'buddypress-share' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Enable or disable the feature for sharing messages according to your preference.', 'buddypress-share' ); ?></p>
 						</div>
 						<div class="wbcom-settings-section-options">
 						<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_message_reshare_activity]" value="1" 
@@ -54,7 +54,7 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 					<div class="wbcom-settings-section-wrap">
 						<div class="wbcom-settings-section-options-heading">
 							<label><?php esc_html_e( 'Disable Group Sharing', 'buddypress-share' ); ?></label>
-							<p class="description"><?php esc_html_e( 'You can turn on or off the group sharing feature as per your preference.', 'buddypress-share' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Enable or disable the feature for sharing groups according to your preference.', 'buddypress-share' ); ?></p>
 						</div>
 						<div class="wbcom-settings-section-options">
 						<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_group_reshare_activity]" value="1" 
@@ -67,7 +67,7 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 					<div class="wbcom-settings-section-wrap">
 						<div class="wbcom-settings-section-options-heading">
 							<label><?php esc_html_e( 'Disable Friends Sharing', 'buddypress-share' ); ?></label>
-							<p class="description"><?php esc_html_e( 'You can turn on or off the friends sharing feature as per your preference.', 'buddypress-share' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Enable or disable the feature for sharing friends according to your preference.', 'buddypress-share' ); ?></p>
 						</div>
 						<div class="wbcom-settings-section-options">
 						<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_friends_reshare_activity]" value="1" 
