@@ -265,7 +265,7 @@ class Buddypress_Share_Public {
 							$media = '';
 							$video = '';
 							echo '<div class="bp-share-wrapper">';
-							echo '<a class="button bp-share" id="bp_pinterest_share"  href="https://pinterest.com/pin/create/bookmarklet/?media=' . esc_url( $media ) . '&url=' . esc_url( $activity_link ) . '&is_video=' . esc_url( $video ) . '&description=' . esc_html( $activity_title ) . '"><span class="dashicons dashicons-pinterest"></span></a><span class="bp-share-label">' . esc_html__( 'Pinterest', 'buddypress-share' ) . '</spna>';
+							echo '<a class="button bp-share" id="bp_pinterest_share"  href="https://pinterest.com/pin/create/bookmarklet/?media=' . esc_url( $media ) . '&url=' . esc_url( $activity_link ) . '&is_video=' . esc_url( $video ) . '&description=' . esc_html( $activity_title ) . '"><span class="dashicons dashicons-pinterest"></span><span class="bp-share-label">' . esc_html__( 'Pinterest', 'buddypress-share' ) . '</spna></a>';
 							echo '</div>';
 						}
 						if ( isset( $social_service ) && ! empty( $social_service['Reddit'] ) ) {
