@@ -315,26 +315,29 @@ class Buddypress_Share_Public {
 				do_action( 'bp_share_user_services', $services = array(), $activity_link, $activity_title );
 				?>
 			</div>
+			<?php if ( in_array( $theme_name->template, $theme_support ) ) { ?>
+				<div class="bp-share-service-popup-overlay"></div>
+			<?php } ?>
+			
+			<?php
+			if ( ! is_user_logged_in() ) {
+				echo '<div>';
+			}
+			?>
+			<script>
+				jQuery( document ).ready( function () {
+					var pop_active = '<?php echo isset( $extra_options['bp_share_services_open'] ) ? esc_html( $extra_options['bp_share_services_open'] ) : ''; ?>';
+					if ( pop_active == 'on' ) {
+						jQuery( '.bp-share' ).addClass( 'has-popup' );
+					}
+				} );
+			</script>
+			<?php
+			if ( ! is_user_logged_in() ) {
+				echo '</div>';
+			}
+			?>
 		</div>
-
-		<?php if ( in_array( $theme_name->template, $theme_support ) ) { ?>
-			<div class="bp-share-service-popup-overlay"></div>
-		<?php } ?>
-
-		<div>
-		<script>
-			jQuery( document ).ready( function () {
-				var pop_active = '<?php echo isset( $extra_options['bp_share_services_open'] ) ? esc_html( $extra_options['bp_share_services_open'] ) : ''; ?>';
-				if ( pop_active == 'on' ) {
-					jQuery( '.bp-share' ).addClass( 'has-popup' );
-				}
-			} );
-		</script>
-		<?php
-		if ( ! is_user_logged_in() ) {
-			echo '</div>';
-		}
-		?>
 			
 		<?php
 	}
