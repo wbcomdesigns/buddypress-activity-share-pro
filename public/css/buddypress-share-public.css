@@ -1472,6 +1472,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     width: 100%;
     padding: 0 !important;
     background: transparent !important;
+    border: 0 !important;
     box-shadow: none !important;
 }
 
