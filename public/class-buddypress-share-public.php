@@ -207,42 +207,50 @@ class Buddypress_Share_Public {
 				<span id="bp-activity-reshare-count-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html( $share_count ); ?></span>
 			</a>
 			<div class="bp-activity-share-dropdown-menu activity-share-dropdown-menu-container <?php echo esc_attr( $activity_type . ' ' . $style ); ?>">
-				<div class="bp-activity-share-btn bp-activity-reshare-btn" data-reshare="my-profile" data-title="<?php esc_attr_e( 'My Profile', 'buddypress-share' ); ?>">
-					<a class="button item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
-						<span class="bp-activity-reshare-icon">	
-							<span class="dashicons dashicons-admin-users"></span>
-						</span>
-						<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Share to My Profile', 'buddypress-share' ); ?></span>
-					</a>
-				</div>
-				<div class="bp-activity-share-btn" data-reshare="message" data-title="<?php esc_attr_e( 'Message', 'buddypress-share' ); ?>">
-					<a href="<?php echo esc_attr( bp_loggedin_user_domain() . 'messages/compose/?activity_url=' . bp_loggedin_user_domain() . 'activity/' . bp_get_activity_id() ); ?>" class="button item-button bp-secondary-action" rel="nofollow">
-						<span class="bp-activity-reshare-icon">
-							<span class="dashicons dashicons-email"></span>
-						</span>
-						<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Share to Message', 'buddypress-share' ); ?></span>					
-					</a>
-				</div>
-				<?php if ( ! empty( $groups ) ) : ?>
-				<div class="bp-activity-share-btn bp-activity-reshare-btn" data-reshare="groups" data-title="<?php esc_attr_e( 'Select Group', 'buddypress-share' ); ?>">
-					<a class="button item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
-						<span class="bp-activity-reshare-icon">	
-							<span class="dashicons dashicons-groups"></span>
-						</span>
-						<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Share to a group', 'buddypress-share' ); ?></span>
-					</a>
-				</div>
-				<?php endif; ?>				
-				<?php if ( ! empty( $friends ) ) : ?>
-				<div class="bp-activity-share-btn bp-activity-reshare-btn" data-reshare="friends" data-title="<?php esc_attr_e( 'Select Friend', 'buddypress-share' ); ?>">
-					<a class="button item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
-						<span class="bp-activity-reshare-icon">	
-							<span class="dashicons dashicons-share-alt2"></span>
-						</span>
-						<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Share now (Frinds)', 'buddypress-share' ); ?></span>
-					</a>
-				</div>
-				<?php endif; ?>
+				<?php if ( ! isset( $bp_reshare_settings['disable_my_profile_reshare_activity'] ) ) { ?>
+					<div class="bp-activity-share-btn bp-activity-reshare-btn" data-reshare="my-profile" data-title="<?php esc_attr_e( 'My Profile', 'buddypress-share' ); ?>">
+						<a class="button item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
+							<span class="bp-activity-reshare-icon">	
+								<span class="dashicons dashicons-admin-users"></span>
+							</span>
+							<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Share to My Profile', 'buddypress-share' ); ?></span>
+						</a>
+					</div>
+				<?php } ?>
+				<?php if ( ! isset( $bp_reshare_settings['disable_message_reshare_activity'] ) ) { ?>
+					<div class="bp-activity-share-btn" data-reshare="message" data-title="<?php esc_attr_e( 'Message', 'buddypress-share' ); ?>">
+						<a href="<?php echo esc_attr( bp_loggedin_user_domain() . 'messages/compose/?activity_url=' . bp_loggedin_user_domain() . 'activity/' . bp_get_activity_id() ); ?>" class="button item-button bp-secondary-action" rel="nofollow">
+							<span class="bp-activity-reshare-icon">
+								<span class="dashicons dashicons-email"></span>
+							</span>
+							<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Share to Message', 'buddypress-share' ); ?></span>					
+						</a>
+					</div>
+				<?php } ?>
+				<?php if ( ! isset( $bp_reshare_settings['disable_group_reshare_activity'] ) ) { ?>
+					<?php if ( ! empty( $groups ) ) : ?>
+					<div class="bp-activity-share-btn bp-activity-reshare-btn" data-reshare="groups" data-title="<?php esc_attr_e( 'Select Group', 'buddypress-share' ); ?>">
+						<a class="button item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
+							<span class="bp-activity-reshare-icon">	
+								<span class="dashicons dashicons-groups"></span>
+							</span>
+							<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Share to a group', 'buddypress-share' ); ?></span>
+						</a>
+					</div>
+					<?php endif; ?>	
+				<?php } ?>
+				<?php if ( ! isset( $bp_reshare_settings['disable_friends_reshare_activity'] ) ) { ?>
+					<?php if ( ! empty( $friends ) ) : ?>
+					<div class="bp-activity-share-btn bp-activity-reshare-btn" data-reshare="friends" data-title="<?php esc_attr_e( 'Select Friend', 'buddypress-share' ); ?>">
+						<a class="button item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
+							<span class="bp-activity-reshare-icon">	
+								<span class="dashicons dashicons-share-alt2"></span>
+							</span>
+							<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Share now (Friends)', 'buddypress-share' ); ?></span>
+						</a>
+					</div>
+					<?php endif; ?>
+				<?php } ?>
 				<?php
 				$bp_share_services_enable = get_site_option( 'bp_share_services_enable' );
 				if ( is_user_logged_in() && $bp_share_services_enable == 1 ) {

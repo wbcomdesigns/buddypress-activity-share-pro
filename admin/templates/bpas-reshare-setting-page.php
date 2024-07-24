@@ -27,6 +27,58 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 					</div>
 					<div class="wbcom-settings-section-wrap">
 						<div class="wbcom-settings-section-options-heading">
+							<label><?php esc_html_e( 'Disable My Profile Sharing', 'buddypress-share' ); ?></label>
+							<p class="description"><?php esc_html_e( 'You can turn on or off the my profile sharing feature as per your preference.', 'buddypress-share' ); ?></p>
+						</div>
+						<div class="wbcom-settings-section-options">
+						<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_my_profile_reshare_activity]" value="1" 
+						<?php
+						if ( isset( $bp_reshare_settings['disable_my_profile_reshare_activity'] ) && $bp_reshare_settings['disable_my_profile_reshare_activity'] == 1 ) :
+							?>
+							checked <?php endif; ?> />
+						</div>
+					</div>
+					<div class="wbcom-settings-section-wrap">
+						<div class="wbcom-settings-section-options-heading">
+							<label><?php esc_html_e( 'Disable Message Sharing', 'buddypress-share' ); ?></label>
+							<p class="description"><?php esc_html_e( 'You can turn on or off the message sharing feature as per your preference.', 'buddypress-share' ); ?></p>
+						</div>
+						<div class="wbcom-settings-section-options">
+						<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_message_reshare_activity]" value="1" 
+						<?php
+						if ( isset( $bp_reshare_settings['disable_message_reshare_activity'] ) && $bp_reshare_settings['disable_message_reshare_activity'] == 1 ) :
+							?>
+							checked <?php endif; ?> />
+						</div>
+					</div>
+					<div class="wbcom-settings-section-wrap">
+						<div class="wbcom-settings-section-options-heading">
+							<label><?php esc_html_e( 'Disable Group Sharing', 'buddypress-share' ); ?></label>
+							<p class="description"><?php esc_html_e( 'You can turn on or off the group sharing feature as per your preference.', 'buddypress-share' ); ?></p>
+						</div>
+						<div class="wbcom-settings-section-options">
+						<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_group_reshare_activity]" value="1" 
+						<?php
+						if ( isset( $bp_reshare_settings['disable_group_reshare_activity'] ) && $bp_reshare_settings['disable_group_reshare_activity'] == 1 ) :
+							?>
+							checked <?php endif; ?> />
+						</div>
+					</div>
+					<div class="wbcom-settings-section-wrap">
+						<div class="wbcom-settings-section-options-heading">
+							<label><?php esc_html_e( 'Disable Friends Sharing', 'buddypress-share' ); ?></label>
+							<p class="description"><?php esc_html_e( 'You can turn on or off the friends sharing feature as per your preference.', 'buddypress-share' ); ?></p>
+						</div>
+						<div class="wbcom-settings-section-options">
+						<input class="regular-btn " type="checkbox" name="bp_reshare_settings[disable_friends_reshare_activity]" value="1" 
+						<?php
+						if ( isset( $bp_reshare_settings['disable_friends_reshare_activity'] ) && $bp_reshare_settings['disable_friends_reshare_activity'] == 1 ) :
+							?>
+							checked <?php endif; ?> />
+						</div>
+					</div>
+					<div class="wbcom-settings-section-wrap">
+						<div class="wbcom-settings-section-options-heading">
 							<label><?php esc_html_e( 'Reshare share Activity', 'buddypress-share' ); ?></label>
 						</div>
 						<div class="wbcom-settings-section-options">
@@ -42,20 +94,6 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 									</label>
 								</li>									
 							</ul>	
-						</div>
-					</div>
-					<div class="wbcom-settings-section-wrap">
-						<div class="wbcom-settings-section-options">
-							<code>[bp_activity_post_reshare]</code>
-							<?php esc_html_e( 'Use this shortcode in which post type you want to reshare in Activity.', 'buddypress-share' ); ?>
-							<br/><br/>
-							<code>
-							add_filter('bp_activity_reshare_post_type', 'function_name' );
-							function function_name( $post_type ) {
-								$post_type[] = 'custom post type slug';
-								return $post_type;
-							}
-							</code>
 						</div>
 					</div>
 					<p class="submit">
