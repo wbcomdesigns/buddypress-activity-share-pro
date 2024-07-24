@@ -31,15 +31,18 @@
 }
 
 .activity ul li .activity-meta .service-buttons a.bp-share,
+.activity ul li .groups-meta .service-buttons a.bp-share,
 #buddypress .activity-list .activity-share-dropdown-menu-container a .dashicons {
     text-align: center;
 }
 
-.activity ul li .activity-meta .service-buttons a.bp-share .dashicons-twitter {
+.activity ul li .activity-meta .service-buttons a.bp-share .dashicons-twitter,
+.activity ul li .groups-meta .service-buttons a.bp-share .dashicons-twitter {
     min-width: auto;
 }
 
-.activity ul li .activity-meta a.bp-share .dashicons-twitter:before {
+.activity ul li .activity-meta a.bp-share .dashicons-twitter:before,
+.activity ul li .groups-meta a.bp-share .dashicons-twitter:before {
     content: "";
     background-image: url("../images/twitter-x-line.svg");
     background-size: 17px;
@@ -50,13 +53,15 @@
     height: 20px;
 }
 
-.activity ul li .activity-meta .service-buttons a.bp-share .fa-stack {
+.activity ul li .activity-meta .service-buttons a.bp-share .fa-stack,
+.activity ul li .groups-meta .service-buttons a.bp-share .fa-stack {
     width: auto;
     height: auto;
     line-height: 1;
 }
 
-.activity ul li .activity-meta .service-buttons a.bp-share:hover {
+.activity ul li .activity-meta .service-buttons a.bp-share:hover,
+.activity ul li .groups-meta .service-buttons a.bp-share:hover {
     background: none !important;
 }
 
@@ -123,7 +128,8 @@ a.bp-share.has-popup {
     display: inline-block;
 }
 
-.bp-nouveau #buddypress .activity-list .activity-item .activity-meta .bp-share-button {
+.bp-nouveau #buddypress .activity-list .activity-item .activity-meta .bp-share-button,
+.bp-nouveau #buddypress .activity-list .activity-item .groups-meta .bp-share-button {
     background: none;
     margin: 0;
     border: 0;
@@ -136,11 +142,13 @@ a.bp-share.has-popup {
     align-items: center;
 }
 
-body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activity-meta .bp-share-button {
+body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .activity-meta .bp-share-button,
+body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .groups-meta .bp-share-button {
     color: inherit;
 }
 
 .bp-nouveau .activity-list .activity-item .activity-meta .bp-share-button::before,
+.bp-nouveau .activity-list .activity-item .groups-meta .bp-share-button::before,
 .bp-nouveau .activity-list .activity-item .bp-share-button::before {
     content: "\f237" !important;
     font-family: 'dashicons' !important;
@@ -1459,7 +1467,9 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 }
 
 .bp-nouveau #buddypress .activity-list div.activity-meta .bp-activity-share-btn a,
-.bp-nouveau #buddypress .activity-list div.activity-meta .bp-share-wrapper a {
+.bp-nouveau #buddypress .activity-list div.activity-meta .bp-share-wrapper a,
+.bp-nouveau #buddypress .activity-list div.groups-meta .bp-activity-share-btn a,
+.bp-nouveau #buddypress .activity-list div.groups-meta .bp-share-wrapper a {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1470,6 +1480,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     -ms-flex-pack: start;
     justify-content: flex-start;
     width: 100%;
+    height: auto;
     padding: 0 !important;
     background: transparent !important;
     border: 0 !important;
@@ -1553,12 +1564,14 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
         border-top: 1px solid #e3e3e3;
     }
 
-    .bp-nouveau #buddypress .activity-list div.activity-meta .bp-share-wrapper a {
+    .bp-nouveau #buddypress .activity-list div.activity-meta .bp-share-wrapper a,
+    .bp-nouveau #buddypress .activity-list div.groups-meta .bp-share-wrapper a {
         -ms-flex-flow: nowrap;
         flex-flow: nowrap;
     }
 
-    .bp-nouveau #buddypress .activity-list div.activity-meta .bp-share-activity-share-to-wrapper .bp-share-wrapper a {
+    .bp-nouveau #buddypress .activity-list div.activity-meta .bp-share-activity-share-to-wrapper .bp-share-wrapper a,
+    .bp-nouveau #buddypress .activity-list div.groups-meta .bp-share-activity-share-to-wrapper .bp-share-wrapper a {
         -ms-flex-flow: wrap;
         flex-flow: wrap;
     }
