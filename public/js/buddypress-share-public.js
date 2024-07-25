@@ -335,7 +335,10 @@
             // Get the data-title attribute of the clicked button
             var reshareOptionText = $(this).attr('data-title');
 
-            // Change the selected option in the regular dropdown
+            // Change the selected option in the regular dropdown			
+			if( reshareOption == 'my-profile' ) {
+				reshareOption = 0;
+			}
             $('#post-in').val(reshareOption).trigger('change');
 
             // Refresh the Select2 control and set the text of the selected option
