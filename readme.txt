@@ -4,8 +4,8 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com
 Tags: buddypress,activity,share
 Requires at least: 4.0
-Tested up to: 6.2.0
-Stable tag: 1.2.2
+Tested up to: 6.6.1
+Stable tag: 1.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,26 @@ If you need additional help you can contact us for [Custom Development](https://
 Yes, this plugin requires BuddyPress plugin.
 
 == Changelog ==
+= 1.2.3 =
+* Fix: Issue with BuddyBoss
+* Fix: UI fixes
+* Fix: Warning 
+* Fix: Merge share option in one place
+* Fix: (#146) UI fixes with BB Platform
+* Fix: (#146) Meta action section
+* Fix: (#146) BuddyPress Photos, Videos and Documents reshare issues
+* Fix: (#146) Blog post reshare content issue
+* Fix: Optimize activity share code flow
+* Added: Activity share button to show/hide setting
+* Updated: Twitter to X and condition to show share icons
+* Updated: Backend options description
+* Managed:  Popup window option
+* Managed:  Show share dropdown menu on the last activity
+* Managed: Group activity listing share UI
+* Managed: (#141) Dokan tooltip not working with plugin
+* Managed: (#140) Copy share URL with the Safari browser
+* Managed: (#140) Share URL in a compose message
+
 = 1.2.2 =
 * Updated: Share activity URL
 * Updated: (#135) Labels
