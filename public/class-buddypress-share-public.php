@@ -260,7 +260,7 @@ class Buddypress_Share_Public {
 					if ( ! empty( $social_service ) ) {
 						if ( isset( $social_service ) && ! empty( $social_service['Facebook'] ) ) {
 							echo '<div class="bp-share-wrapper">';
-							echo '<a href="https://www.facebook.com/sharer.php?u=' . esc_url( $activity_link ) . '" class="button bp-share" id="bp_facebook_share" target="_blank"><span class="dashicons dashicons-facebook-alt"></span><span class="bp-share-label">' . esc_html__( 'Facobook', 'buddypress-share' ) . '</spna></a>';
+							echo '<a href="https://www.facebook.com/sharer.php?u=' . esc_url( $activity_link ) . '" class="button bp-share" id="bp_facebook_share" target="_blank"><span class="dashicons dashicons-facebook-alt"></span><span class="bp-share-label">' . esc_html__( 'Facebook', 'buddypress-share' ) . '</spna></a>';
 							echo '</div>';
 						}
 						if ( isset( $social_service ) && ! empty( $social_service['Twitter'] ) ) {
