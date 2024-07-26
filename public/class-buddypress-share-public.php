@@ -171,11 +171,7 @@ class Buddypress_Share_Public {
 		$social_service = get_site_option( 'bp_share_services' );
 		$extra_options  = get_site_option( 'bp_share_services_extra' );
 		$activity_type  = bp_get_activity_type();
-		if ( ( function_exists( 'buddypress' ) && isset( buddypress()->buddyboss ) ) ) {
-			$activity_link = site_url() . '/' . bp_get_members_slug() . '/' . $activities_template->activity->user_nicename . '/' . bp_get_activity_slug() . '/' . $activities_template->activity->id . '/';
-		} else {
-			$activity_link = $activities_template->activity->primary_link . bp_get_activity_slug() . '/' . $activities_template->activity->id . '/';
-		}
+		$activity_link  = site_url() . '/' . bp_get_members_slug() . '/' . $activities_template->activity->user_nicename . '/' . bp_get_activity_slug() . '/' . $activities_template->activity->id . '/';
 		$activity_title = bp_get_activity_feed_item_title(); // use for description : bp_get_activity_feed_item_description().
 		$plugin_path    = plugins_url();
 		if ( ! is_user_logged_in() ) {
