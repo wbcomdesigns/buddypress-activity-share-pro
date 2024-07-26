@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-26 10:05:08+00:00\n"
+"POT-Creation-Date: 2024-07-26 10:08:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -221,7 +221,6 @@ msgstr ""
 
 #: admin/templates/bpas-general-settings-page.php:60
 #: admin/templates/bpas-general-settings-page.php:85
-#: public/class-buddypress-share-public.php:305
 msgid "Whatsapp"
 msgstr ""
 
@@ -1008,6 +1007,10 @@ msgstr ""
 
 #: public/class-buddypress-share-public.php:269
 msgid "X"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:305
+msgid "WhatsApp"
 msgstr ""
 
 #: public/class-buddypress-share-public.php:315

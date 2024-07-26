@@ -302,7 +302,7 @@ class Buddypress_Share_Public {
 						}
 						if ( isset( $social_service ) && ! empty( $social_service['Whatsapp'] ) ) {
 							echo '<div class="bp-share-wrapper">';
-							echo '<a class="button bp-share" id="bp_whatsapp_share" href="https://api.whatsapp.com/send?text=' . esc_url( $activity_link ) . '&image_sharer=1" target="_blank"><span class="dashicons dashicons-whatsapp"></span><span class="bp-share-label">' . esc_html__( 'Whatsapp', 'buddypress-share' ) . '</spna></a>';
+							echo '<a class="button bp-share" id="bp_whatsapp_share" href="https://api.whatsapp.com/send?text=' . esc_url( $activity_link ) . '&image_sharer=1" target="_blank"><span class="dashicons dashicons-whatsapp"></span><span class="bp-share-label">' . esc_html__( 'WhatsApp', 'buddypress-share' ) . '</spna></a>';
 							echo '</div>';
 						}
 						if ( isset( $social_service ) && ! empty( $social_service['E-mail'] ) ) {
