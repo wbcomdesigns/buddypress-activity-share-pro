@@ -141,10 +141,10 @@ class Buddypress_Share_Public {
 
 		if ( is_user_logged_in() && 'enable' === $all_services && $bp_share_services_enable == 1 ) {
 			if ( in_array( $theme_name->template, $theme_support ) ) {
-				//add_action( 'bp_activity_entry_dropdown_toggle_meta', array( $this, 'bp_share_activity_filter' ), 999 );
-				//add_action( 'bp_activity_entry_top_meta', array( $this, 'bp_share_activity_filter' ), 999 );
+				// add_action( 'bp_activity_entry_dropdown_toggle_meta', array( $this, 'bp_share_activity_filter' ), 999 );
+				// add_action( 'bp_activity_entry_top_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 			} else {
-				//add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
+				// add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_activity_filter' ), 999 );
 			}
 		}
 		if ( is_user_logged_in() ) {
@@ -171,10 +171,10 @@ class Buddypress_Share_Public {
 		$social_service = get_site_option( 'bp_share_services' );
 		$extra_options  = get_site_option( 'bp_share_services_extra' );
 		$activity_type  = bp_get_activity_type();
-		if( ( function_exists( 'buddypress' ) && isset( buddypress()->buddyboss  ) ) ){
-			$activity_link = site_url(). '/' . bp_get_members_slug() . '/' . $activities_template->activity->display_name . '/' .  bp_get_activity_slug() . '/' . $activities_template->activity->id . '/';
+		if ( ( function_exists( 'buddypress' ) && isset( buddypress()->buddyboss ) ) ) {
+			$activity_link = site_url() . '/' . bp_get_members_slug() . '/' . $activities_template->activity->user_nicename . '/' . bp_get_activity_slug() . '/' . $activities_template->activity->id . '/';
 		} else {
-			$activity_link  = $activities_template->activity->primary_link . bp_get_activity_slug() . '/' . $activities_template->activity->id . '/';
+			$activity_link = $activities_template->activity->primary_link . bp_get_activity_slug() . '/' . $activities_template->activity->id . '/';
 		}
 		$activity_title = bp_get_activity_feed_item_title(); // use for description : bp_get_activity_feed_item_description().
 		$plugin_path    = plugins_url();
@@ -1050,27 +1050,25 @@ class Buddypress_Share_Public {
 		$response->data['bp_activity_share_count'] = $bp_activity_link_data;
 		return $response;
 	}
-	
-	
+
+
 	/**
 	 * Load the single activity loop for the reshare object
-	 *	 
 	 *
 	 * @return string Template loop for the specified object
 	 */
 	public function bp_share_get_activity_content() {
 		check_ajax_referer( 'bp-activity-share-nonce', '_ajax_nonce' );
-		
-		$activity_id = sanitize_text_field($_POST['activity_id']);
-		
+
+		$activity_id = sanitize_text_field( $_POST['activity_id'] );
+
 		ob_start();
-		if ( bp_has_activities( 'include=' . $activity_id  ) ) {
+		if ( bp_has_activities( 'include=' . $activity_id ) ) {
 			while ( bp_activities() ) {
 				bp_the_activity();
 				bp_get_template_part( 'activity/entry' );
 			}
-			
-		}		
+		}
 		$result['contents'] = ob_get_contents();
 		ob_end_clean();
 		wp_send_json_success( $result );
