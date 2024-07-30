@@ -128,6 +128,9 @@ function bp_activity_share_pro_check_config() {
 	}
 
 	$network_plugins = get_site_option( 'active_sitewide_plugins', array() );
+	if ( ! is_array( $network_plugins ) ) {
+   		 $network_plugins = array();
+	}
 	// No Network plugins.
 	if ( empty( $network_plugins ) ) {
 		// Looking for BuddyPress and bp-activity plugin.
