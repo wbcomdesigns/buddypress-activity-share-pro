@@ -463,6 +463,12 @@ a.bp-activity-share-button {
     transition: background-color .2s ease-in-out;
 }
 
+@media screen and (max-width: 767px) {
+    #activity-share-modal button.activity-share-modal-close {
+        right: -15px;
+    }
+}
+
 #activity-share-modal button.activity-share-modal-close:hover {
     background-color: #800;
 }

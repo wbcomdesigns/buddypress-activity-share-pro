@@ -327,6 +327,13 @@
             }
         );
 
+        // Hide popup on .bp-share click, except for .bp-cpoy
+        $(document).on('click', '.bp-share-activity-share-to-wrapper .bp-share', function(e) {
+            if (!$(this).hasClass('bp-cpoy')) {
+                $('.bp-activity-share-dropdown-toggle').removeClass('selected');
+            }
+        });
+
         // Custom Code - Start
         $(document).on('click', '.bp-activity-reshare-btn', function(e) {
             e.preventDefault();
