@@ -165,7 +165,7 @@ class Buddypress_Share_Public {
 	public function bp_share_inner_activity_filter() {
 
 		$share_count = bp_activity_get_meta( bp_get_activity_id(), 'share_count', true );
-		$share_count = ( $share_count ) ? $share_count : 0;
+		$share_count = ( $share_count ) ? $share_count : '';
 
 		global $activities_template;
 		$social_service = get_site_option( 'bp_share_services' );
@@ -650,7 +650,7 @@ class Buddypress_Share_Public {
 			ob_start();
 
 			$share_count = get_post_meta( get_the_ID(), 'share_count', true );
-			$share_count = ( $share_count ) ? $share_count : 0;
+			$share_count = ( $share_count ) ? $share_count : '';
 			?>
 			<div class="bp-activity-post-share-btn bp-activity-share-btn generic-button">
 				<a class="button item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
@@ -1017,7 +1017,7 @@ class Buddypress_Share_Public {
 		ob_start();
 
 		$share_count = get_post_meta( get_the_ID(), 'share_count', true );
-		$share_count = ( $share_count ) ? $share_count : 0;
+		$share_count = ( $share_count ) ? $share_count : '';
 		?>
 		<div class="bp-activity-post-share-btn bp-activity-share-btn generic-button">
 			<a class="button item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" rel="nofollow">
