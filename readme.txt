@@ -5,7 +5,7 @@ Donate link: https://wbcomdesigns.com
 Tags: buddypress,activity,share
 Requires at least: 4.0
 Tested up to: 6.6.1
-Stable tag: 1.2.3
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,16 @@ If you need additional help you can contact us for [Custom Development](https://
 Yes, this plugin requires BuddyPress plugin.
 
 == Changelog ==
+= 1.3.0 =
+* Fix: Hide share count when the count is 0 for a cleaner UI.
+* Fix: Managed the behavior of the share popup, now hidden upon clicking the BuddyPress share icon.
+* Fix: Resolved fatal error caused by the Share Pro feature.
+* Update: Corrected "Whatsapp" typo to "WhatsApp."
+* Update: Managed shared links to open in a new tab for better navigation.
+* Fix: Managed BuddyPress activity share URL for improved functionality.
+* Fix: Managed share URLs for BuddyBoss Platform for consistency.
+* Fix: Corrected issue where "My Profile" shares were posted in groups instead of activities.
+
 = 1.2.3 =
 * Fix: Issue with BuddyBoss
 * Fix: UI fixes
