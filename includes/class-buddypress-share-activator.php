@@ -40,6 +40,9 @@ class Buddypress_Share_Activator {
 		if ( get_site_option( 'bp_share_services_enable' ) == false ) {
 			update_site_option( 'bp_share_services_enable', 1 );
 		}
+		if ( get_site_option( 'bp_share_services_logout_enable' ) == false ) {
+			update_site_option( 'bp_share_services_logout_enable', 1 );
+		}
 		if ( get_site_option( 'bpas_icon_color_settings' ) == false ) {
 			$bpas_icon_color_settings = array(
 				'icon_style' => 'circle',

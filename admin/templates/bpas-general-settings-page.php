@@ -1,6 +1,7 @@
 <?php
-$bp_share_services_enable = get_site_option( 'bp_share_services_enable' );
-$extra_options            = get_site_option( 'bp_share_services_extra' );
+$bp_share_services_enable        = get_site_option( 'bp_share_services_enable' );
+$bp_share_services_logout_enable = get_site_option( 'bp_share_services_logout_enable' );
+$extra_options                   = get_site_option( 'bp_share_services_extra' );
 ?>
 <div class="wbcom-tab-content">
 	<div class="wbcom-wrapper-admin">
@@ -18,10 +19,20 @@ $extra_options            = get_site_option( 'bp_share_services_extra' );
 					<div class="wbcom-settings-section-wrap">
 						<div class="wbcom-settings-section-options-heading">
 							<label for="bp_share_services_enable"><strong><?php esc_html_e( 'Enable Social Share', 'buddypress-share' ); ?></strong></label>
-							<p class="description"><?php esc_html_e( 'Enable this option to show share button in activity page more options.', 'buddypress-share' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Enable this option to show share button in activity page.', 'buddypress-share' ); ?></p>
 						</div>
 						<div id="bp_share_chb" class="wbcom-settings-section-options">
 							<input type="checkbox" name="bp_share_services_enable" id="bp_share_services_enable" value="1" <?php checked( '1', $bp_share_services_enable ); ?>/>
+						</div>
+					</div>
+
+					<div id="social_share_logout_wrap" class="wbcom-settings-section-wrap">
+						<div class="wbcom-settings-section-options-heading">
+							<label for="bp_share_services_logout_enable"><strong><?php esc_html_e( 'Social Share In Logout Mode', 'buddypress-share' ); ?></strong></label>
+							<p class="description"><?php esc_html_e( 'Enable this option to display social share icons when the user is logged out.', 'buddypress-share' ); ?></p>
+						</div>
+						<div id="bp_share_chb" class="wbcom-settings-section-options">
+							<input type="checkbox" name="bp_share_services_logout_enable" id="bp_share_services_logout_enable" value="1" <?php checked( '1', $bp_share_services_logout_enable ); ?>/>
 						</div>
 					</div>
 				</div>

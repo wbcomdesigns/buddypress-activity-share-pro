@@ -281,6 +281,9 @@ class Buddypress_Share_Admin {
 			$service_enable = isset( $_POST['bp_share_services_enable'] ) ? sanitize_text_field( $_POST['bp_share_services_enable'] ) : '';
 			update_site_option( 'bp_share_services_enable', $service_enable );
 
+			$service_enable_logout = isset( $_POST['bp_share_services_logout_enable'] ) ? sanitize_text_field( $_POST['bp_share_services_logout_enable'] ) : '';
+			update_site_option( 'bp_share_services_logout_enable', $service_enable_logout );
+
 			/**
 			 * We are saving the popup option as array again as it was previously saved in a similar manner.
 			 */

@@ -94,4 +94,22 @@ jQuery(function () {
 		bpas_drag_drop_social_icon();
     });
 
+	jQuery(document).ready(function($) {
+		
+		function toggleLogoutOption() {
+			if ($('#bp_share_services_enable').is(':checked')) {
+				$('#social_share_logout_wrap').show();
+			} else {
+				$('#social_share_logout_wrap').hide();
+			}
+		}
+	
+		// Initial check on page load
+		toggleLogoutOption();
+	
+		// Listen for changes on the bp_share_services_enable checkbox
+		$('#bp_share_services_enable').on('change', function() {
+			toggleLogoutOption();
+		});
+	});
 });
