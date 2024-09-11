@@ -61,9 +61,33 @@ module.exports = function(grunt) {
                     updateTimestamp: true // Whether the POT-Creation-Date should be updated without other changes.
                 }
             }
+        },
+        // CSS minification
+        cssmin: {
+            target: {
+                files: [{
+                    expand: true,
+                    cwd: 'public/css', // Source directory for CSS files
+                    src: ['*.css', '!*.min.css'], // Minify all .css files except already minified ones
+                    dest: 'public/css', // Destination directory for minified CSS
+                    ext: '.min.css' // Output file extension
+                }]
+            }
+        },
+        // JS minification (uglify)
+        uglify: {
+            target: {
+                files: [{
+                    expand: true,
+                    cwd: 'public/js', // Source directory for JS files
+                    src: ['*.js', '!*.min.js'], // Minify all .js files except already minified ones
+                    dest: 'public/js', // Destination directory for minified JS
+                    ext: '.min.js' // Output file extension
+                }]
+            }
         }
     });
 
     // register task  'checktextdomain', 'makepot',
-    grunt.registerTask('default', ['checktextdomain', 'makepot']);
+    grunt.registerTask('default', ['checktextdomain', 'makepot', 'cssmin', 'uglify']);
 };

@@ -76,8 +76,8 @@ class Buddypress_Share_Public {
 		}
 		wp_enqueue_style( 'bootstrap-css', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'select2-css', plugin_dir_url( __FILE__ ) . 'css/select2.min.css', array(), $this->version, 'all' );
-		wp_enqueue_style( 'icons-css', plugin_dir_url( __FILE__ ) . 'css/as-icons.css', array(), $this->version, 'all' );
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/buddypress-share-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'icons-css', plugin_dir_url( __FILE__ ) . 'css/as-icons.min.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/buddypress-share-public.min.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -111,7 +111,7 @@ class Buddypress_Share_Public {
 			wp_enqueue_script( 'bootstrap-js' );
 		}
 		wp_enqueue_script( 'select2-js', plugin_dir_url( __FILE__ ) . 'js/select2.min.js', array( 'jquery' ), $this->version, false );
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/buddypress-share-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/buddypress-share-public.min.js', array( 'jquery' ), $this->version, false );
 
 		wp_localize_script(
 			$this->plugin_name,
