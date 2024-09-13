@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-13 11:03:30+00:00\n"
+"POT-Creation-Date: 2024-09-13 11:19:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -73,7 +73,7 @@ msgid "zero seconds"
 msgstr ""
 
 #: admin/class-buddypress-share-feedback.php:239
-#: admin/class-buddypress-share-feedback.php:279 buddypress-share.php:212
+#: admin/class-buddypress-share-feedback.php:284 buddypress-share.php:212
 msgid "BuddyPress Activity Social Share"
 msgstr ""
 

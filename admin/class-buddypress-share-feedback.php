@@ -132,125 +132,125 @@ if ( ! class_exists( 'BP_Share_Feedback' ) ) :
 				$time       = $this->seconds_to_words( time() - get_site_option( $this->date_option ) );
 				?>
 
-<style>
-.notice.buddypress-share-notice {
-	border-left-color: #008ec2 !important;
-	padding: 20px;
-}
+				<style>
+				.notice.buddypress-share-notice {
+					border-left-color: #008ec2 !important;
+					padding: 20px;
+				}
 
-.rtl .notice.buddypress-share-notice {
-	border-right-color: #008ec2 !important;
-}
+				.rtl .notice.buddypress-share-notice {
+					border-right-color: #008ec2 !important;
+				}
 
-.notice.notice.buddypress-share-notice .buddypress-share-notice-inner {
-	display: table;
-	width: 100%;
-}
+				.notice.notice.buddypress-share-notice .buddypress-share-notice-inner {
+					display: table;
+					width: 100%;
+				}
 
-.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-notice-icon,
-.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-notice-content,
-.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-install-now {
-	display: table-cell;
-	vertical-align: middle;
-}
+				.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-notice-icon,
+				.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-notice-content,
+				.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-install-now {
+					display: table-cell;
+					vertical-align: middle;
+				}
 
-.notice.buddypress-share-notice .buddypress-share-notice-icon {
-	color: #509ed2;
-	font-size: 50px;
-	width: 60px;
-}
+				.notice.buddypress-share-notice .buddypress-share-notice-icon {
+					color: #509ed2;
+					font-size: 50px;
+					width: 60px;
+				}
 
-.notice.buddypress-share-notice .buddypress-share-notice-icon img {
-	width: 64px;
-}
+				.notice.buddypress-share-notice .buddypress-share-notice-icon img {
+					width: 64px;
+				}
 
-.notice.buddypress-share-notice .buddypress-share-notice-content {
-	padding: 0 40px 0 20px;
-}
+				.notice.buddypress-share-notice .buddypress-share-notice-content {
+					padding: 0 40px 0 20px;
+				}
 
-.notice.buddypress-share-notice p {
-	padding: 0;
-	margin: 0;
-}
+				.notice.buddypress-share-notice p {
+					padding: 0;
+					margin: 0;
+				}
 
-.notice.buddypress-share-notice h3 {
-	margin: 0 0 5px;
-}
+				.notice.buddypress-share-notice h3 {
+					margin: 0 0 5px;
+				}
 
-.notice.buddypress-share-notice .buddypress-share-install-now {
-	text-align: center;
-}
+				.notice.buddypress-share-notice .buddypress-share-install-now {
+					text-align: center;
+				}
 
-.notice.buddypress-share-notice .buddypress-share-install-now .buddypress-share-install-button {
-	padding: 6px 50px;
-	height: auto;
-	line-height: 20px;
-}
+				.notice.buddypress-share-notice .buddypress-share-install-now .buddypress-share-install-button {
+					padding: 6px 50px;
+					height: auto;
+					line-height: 20px;
+				}
 
-.notice.buddypress-share-notice a.no-thanks {
-	display: block;
-	margin-top: 10px;
-	color: #72777c;
-	text-decoration: none;
-}
+				.notice.buddypress-share-notice a.no-thanks {
+					display: block;
+					margin-top: 10px;
+					color: #72777c;
+					text-decoration: none;
+				}
 
-.notice.buddypress-share-notice a.no-thanks:hover {
-	color: #444;
-}
+				.notice.buddypress-share-notice a.no-thanks:hover {
+					color: #444;
+				}
 
-@media (max-width: 767px) {
+				@media (max-width: 767px) {
 
-	.notice.notice.buddypress-share-notice .buddypress-share-notice-inner {
-		display: block;
-	}
+					.notice.notice.buddypress-share-notice .buddypress-share-notice-inner {
+						display: block;
+					}
 
-	.notice.buddypress-share-notice {
-		padding: 20px !important;
-	}
+					.notice.buddypress-share-notice {
+						padding: 20px !important;
+					}
 
-	.notice.buddypress-share-noticee .buddypress-share-notice-inner {
-		display: block;
-	}
+					.notice.buddypress-share-noticee .buddypress-share-notice-inner {
+						display: block;
+					}
 
-	.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-notice-content {
-		display: block;
-		padding: 0;
-	}
+					.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-notice-content {
+						display: block;
+						padding: 0;
+					}
 
-	.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-notice-icon {
-		display: none;
-	}
+					.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-notice-icon {
+						display: none;
+					}
 
-	.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-install-now {
-		margin-top: 20px;
-		display: block;
-		text-align: left;
-	}
+					.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-install-now {
+						margin-top: 20px;
+						display: block;
+						text-align: left;
+					}
 
-	.notice.buddypress-share-notice .buddypress-share-notice-inner .no-thanks {
-		display: inline-block;
-		margin-left: 15px;
-	}
-}
-</style>
-			<div class="notice updated buddypress-share-notice">
-				<div class="buddypress-share-notice-inner">
-					<div class="buddypress-share-notice-icon">
-						<img src="<?php echo esc_url( BP_ACTIVITY_SHARE_PLUGIN_URL . 'admin/images/bp_social_share.png' ); ?>" alt="<?php echo esc_attr__( 'BuddyPress Activity Social Share', 'buddypress-share' ); ?>" />
-					</div>
-					<div class="buddypress-share-notice-content">
-						<h3><?php echo esc_html__( 'Are you enjoying BuddyPress Activity Social Share?', 'buddypress-share' ); ?></h3>
-						<p>
-							<?php /* translators: 1. Name, 2. Time */ ?>
-							<?php printf( esc_html__( 'We hope you\'re enjoying %1$s! Could you please do us a BIG favor and give it a 5-star rating on WordPress to help us spread the word and boost our motivation?', 'buddypress-share' ), esc_html( $this->name ) ); ?>
-						</p>
-					</div>
-					<div class="buddypress-share-install-now">
-						<?php printf( '<a href="%1$s" class="button button-primary buddypress-share-install-button" target="_blank">%2$s</a>', esc_url( 'https://wordpress.org/support/plugin/bp-activity-social-share/reviews/' ), esc_html__( 'Leave a Review', 'buddypress-share' ) ); ?>
-						<a href="<?php echo esc_url( $no_bug_url ); ?>" class="no-thanks"><?php echo esc_html__( 'No thanks / I already have', 'buddypress-share' ); ?></a>
+					.notice.buddypress-share-notice .buddypress-share-notice-inner .no-thanks {
+						display: inline-block;
+						margin-left: 15px;
+					}
+				}
+				</style>
+				<div class="notice updated buddypress-share-notice">
+					<div class="buddypress-share-notice-inner">
+						<div class="buddypress-share-notice-icon">
+							<img src="<?php echo esc_url( BP_ACTIVITY_SHARE_PLUGIN_URL . 'admin/images/bp_social_share.png' ); ?>" alt="<?php echo esc_attr__( 'BuddyPress Activity Social Share', 'buddypress-share' ); ?>" />
+						</div>
+						<div class="buddypress-share-notice-content">
+							<h3><?php echo esc_html__( 'Are you enjoying BuddyPress Activity Social Share?', 'buddypress-share' ); ?></h3>
+							<p>
+								<?php /* translators: 1. Name, 2. Time */ ?>
+								<?php printf( esc_html__( 'We hope you\'re enjoying %1$s! Could you please do us a BIG favor and give it a 5-star rating on WordPress to help us spread the word and boost our motivation?', 'buddypress-share' ), esc_html( $this->name ) ); ?>
+							</p>
+						</div>
+						<div class="buddypress-share-install-now">
+							<?php printf( '<a href="%1$s" class="button button-primary buddypress-share-install-button" target="_blank">%2$s</a>', esc_url( 'https://wordpress.org/support/plugin/bp-activity-social-share/reviews/' ), esc_html__( 'Leave a Review', 'buddypress-share' ) ); ?>
+							<a href="<?php echo esc_url( $no_bug_url ); ?>" class="no-thanks"><?php echo esc_html__( 'No thanks / I already have', 'buddypress-share' ); ?></a>
+						</div>
 					</div>
 				</div>
-			</div>
 				<?php
 			}
 		}
@@ -259,13 +259,18 @@ if ( ! class_exists( 'BP_Share_Feedback' ) ) :
 		 * Set the plugin to no longer bug users if user asks not to be.
 		 */
 		public function set_no_bug() {
-
-			// Bail out if not on correct page.
-			if ( ! isset( $_GET['_wpnonce'] ) || ( ! wp_verify_nonce( $_GET['_wpnonce'], 'buddypress-share-feedback-nounce' ) || ! is_admin() || ! isset( $_GET[ $this->nobug_option ] ) || ! current_user_can( 'manage_options' ) ) ) {
+			// Bail out if nonce is not set, verification fails, or user doesn't have proper capabilities.
+			if (
+				! isset( $_GET['_wpnonce'] ) ||
+				! wp_verify_nonce( sanitize_text_field( $_GET['_wpnonce'] ), 'buddypress-share-feedback-nonce' ) ||
+				! current_user_can( 'manage_options' ) ||
+				! isset( $_GET[ $this->nobug_option ] )
+			) {
 				return;
 			}
 
-			add_site_option( $this->nobug_option, true );
+			// Add site option if all checks pass.
+			add_site_option( sanitize_key( $this->nobug_option ), true );
 		}
 	}
 endif;
