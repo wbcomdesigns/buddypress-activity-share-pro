@@ -152,7 +152,14 @@ class Buddypress_Share_Public {
 	 */
 	public function bp_share_inner_activity_filter() {
 
-		$share_count = bp_activity_get_meta( bp_get_activity_id(), 'share_count', true );
+		$activity_id = bp_get_activity_id();
+		$share_count = wp_cache_get( 'share_count_' . $activity_id, 'buddypress' );
+
+		if ( false === $share_count ) {
+			$share_count = bp_activity_get_meta( $activity_id, 'share_count', true );
+			wp_cache_set( 'share_count_' . $activity_id, $share_count, 'buddypress' );
+		}
+
 		$share_count = ( $share_count ) ? $share_count : '';
 
 		global $activities_template;

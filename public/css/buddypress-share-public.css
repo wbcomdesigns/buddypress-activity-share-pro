@@ -274,11 +274,10 @@ a.bp-activity-share-button {
 
 .bp-activity-reshare-icon {
     display: inline-block;
-    /* margin-right: 2px; */
 }
 
 .bp-activity-reshare-count {
-    margin-left: 2px;
+    margin-left: 5px;
 }
 
 .activity-share-modal.modal .modal-content,
