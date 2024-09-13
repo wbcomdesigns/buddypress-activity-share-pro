@@ -188,14 +188,20 @@ function bpshare_pro_same_network_config() {
  *  Check if buddypress activate.
  */
 function bpshare_pro_requires_buddypress() {
-	if ( ! class_exists( 'BuddyPress' ) ) {
+	// Check if in the admin area and current user has permission to manage options.
+	if ( is_admin() && current_user_can( 'activate_plugins' ) && ! class_exists( 'BuddyPress' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		add_action( 'admin_notices', 'bpshare_pro_required_plugin_admin_notice' );
-		unset( $_GET['activate'] ); //phpcs:ignore
+
+		// Safely unset 'activate' parameter to prevent activation notice.
+        if ( isset( $_GET['activate'] ) ) { // phpcs:ignore
+            unset( $_GET['activate'] ); // phpcs:ignore
+		}
 	}
 }
 
 add_action( 'admin_init', 'bpshare_pro_requires_buddypress' );
+
 /**
  * Throw an Alert to tell the Admin why it didn't activate.
  *
