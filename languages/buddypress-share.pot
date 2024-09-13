@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-13 06:05:28+00:00\n"
+"POT-Creation-Date: 2024-09-13 07:27:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -976,7 +976,7 @@ msgstr ""
 
 #: public/class-buddypress-share-public.php:201
 #: public/class-buddypress-share-public.php:547
-#: public/class-buddypress-share-public.php:914
+#: public/class-buddypress-share-public.php:942
 msgid "Share"
 msgstr ""
 
@@ -1091,16 +1091,16 @@ msgid "Post"
 msgstr ""
 
 #: public/class-buddypress-share-public.php:695
-#: public/class-buddypress-share-public.php:865
+#: public/class-buddypress-share-public.php:893
 msgid "Read More"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:886
+#: public/class-buddypress-share-public.php:914
 #. translators: used between list items, there is a space after the comma.
 msgid ", "
 msgstr ""
 
-#: public/class-buddypress-share-public.php:893
+#: public/class-buddypress-share-public.php:921
 #. translators: used between list items, there is a space after the comma.
 msgctxt "list item separator"
 msgid ", "
