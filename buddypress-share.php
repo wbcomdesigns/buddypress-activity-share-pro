@@ -338,23 +338,25 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
  * This function handles sharing an activity URL on the compose message box in BuddyPress or BuddyBoss.
  */
 function bp_share_pro_share_activity_url_on_compose() {
-	$check_bb_bp = '';
 	if ( function_exists( 'buddypress' ) && isset( buddypress()->buddyboss ) ) {
 		$check_bb_bp = 'buddyboss';
 	} else {
 		$check_bb_bp = 'buddypress';
 	}
-	if ( isset( $_GET['activity_url'] ) ) {
+
+	if ( isset( $_GET['activity_url'] ) ) { // phpcs:ignore
+		$activity_url = esc_url( $_GET['activity_url'] ); // phpcs:ignore
 		?>
 		<script>
 			jQuery(document).ready(function(){
-				var url = "<?php echo $_GET['activity_url']; ?>";
-				var active_bb_bp = "<?php echo $check_bb_bp; ?>";
-				if( 'buddyboss' == active_bb_bp ){
-					jQuery( '#bp-message-content' ).addClass( 'focus-in--content' );
+				var url = "<?php echo esc_js( $activity_url ); ?>";
+				var active_bb_bp = "<?php echo esc_js( $check_bb_bp ); ?>";
+				
+				if( 'buddyboss' === active_bb_bp ){
+					jQuery('#bp-message-content').addClass('focus-in--content');
 					jQuery('#bp-message-content div #message_content').removeAttr("data-placeholder");
 					jQuery('#bp-message-content div #message_content').append(url);
-				}else if( 'buddypress' == active_bb_bp ){
+				} else if( 'buddypress' === active_bb_bp ){
 					jQuery('#message_content').val(url);
 				}
 			});
@@ -362,4 +364,5 @@ function bp_share_pro_share_activity_url_on_compose() {
 		<?php
 	}
 }
+
 add_action( 'wp_footer', 'bp_share_pro_share_activity_url_on_compose' );
