@@ -231,12 +231,20 @@ function bpshare_pro_required_plugin_admin_notice() {
  * @since  1.1.0
  */
 function bpshare_pro_youzify() {
-	if ( class_exists( 'Youzify' ) ) {
+	// Check if Youzify is active and the user has permissions to manage plugins.
+	if ( class_exists( 'Youzify' ) && current_user_can( 'activate_plugins' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
+
+		// Admin notice with a descriptive message.
 		add_action( 'admin_notices', 'bpshare_pro_youzify_plugin_admin_notice' );
-		unset( $_GET['activate'] ); //phpcs:ignore
+
+		// Safely unset the 'activate' query parameter to prevent confusion.
+		if ( isset( $_GET['activate'] ) ) { // phpcs:ignore
+            unset( $_GET['activate'] ); // phpcs:ignore
+		}
 	}
 }
+
 add_action( 'admin_init', 'bpshare_pro_youzify' );
 
 /**
