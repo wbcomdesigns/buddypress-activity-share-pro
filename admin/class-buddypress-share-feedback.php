@@ -131,128 +131,31 @@ if ( ! class_exists( 'BP_Share_Feedback' ) ) :
 		 */
 		public function display_admin_notice() {
 			$screen = get_current_screen();
-
 			if ( isset( $screen->base ) && 'plugins' === $screen->base ) {
-				$no_bug_url = wp_nonce_url( admin_url( '?' . $this->nobug_option . '=true' ), 'buddypress-share-feedback-nounce' );
-				$time       = $this->seconds_to_words( time() - get_site_option( $this->date_option ) );
+				$no_bug_url         = esc_url( wp_nonce_url( admin_url( '?' . $this->nobug_option . '=true' ), 'buddypress-share-feedback-nonce' ) );
+				$time_since_install = $this->seconds_to_words( time() - get_site_option( $this->date_option ) );
+
+				// Enqueue the external stylesheet.
+				wp_enqueue_style( 'buddypress-share-admin-notice', BP_ACTIVITY_SHARE_PLUGIN_URL . 'admin/css/buddypress-share-admin-notice.css', array(), BP_ACTIVITY_SHARE_PLUGIN_VERSION );
 				?>
-
-				<style>
-				.notice.buddypress-share-notice {
-					border-left-color: #008ec2 !important;
-					padding: 20px;
-				}
-
-				.rtl .notice.buddypress-share-notice {
-					border-right-color: #008ec2 !important;
-				}
-
-				.notice.notice.buddypress-share-notice .buddypress-share-notice-inner {
-					display: table;
-					width: 100%;
-				}
-
-				.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-notice-icon,
-				.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-notice-content,
-				.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-install-now {
-					display: table-cell;
-					vertical-align: middle;
-				}
-
-				.notice.buddypress-share-notice .buddypress-share-notice-icon {
-					color: #509ed2;
-					font-size: 50px;
-					width: 60px;
-				}
-
-				.notice.buddypress-share-notice .buddypress-share-notice-icon img {
-					width: 64px;
-				}
-
-				.notice.buddypress-share-notice .buddypress-share-notice-content {
-					padding: 0 40px 0 20px;
-				}
-
-				.notice.buddypress-share-notice p {
-					padding: 0;
-					margin: 0;
-				}
-
-				.notice.buddypress-share-notice h3 {
-					margin: 0 0 5px;
-				}
-
-				.notice.buddypress-share-notice .buddypress-share-install-now {
-					text-align: center;
-				}
-
-				.notice.buddypress-share-notice .buddypress-share-install-now .buddypress-share-install-button {
-					padding: 6px 50px;
-					height: auto;
-					line-height: 20px;
-				}
-
-				.notice.buddypress-share-notice a.no-thanks {
-					display: block;
-					margin-top: 10px;
-					color: #72777c;
-					text-decoration: none;
-				}
-
-				.notice.buddypress-share-notice a.no-thanks:hover {
-					color: #444;
-				}
-
-				@media (max-width: 767px) {
-
-					.notice.notice.buddypress-share-notice .buddypress-share-notice-inner {
-						display: block;
-					}
-
-					.notice.buddypress-share-notice {
-						padding: 20px !important;
-					}
-
-					.notice.buddypress-share-noticee .buddypress-share-notice-inner {
-						display: block;
-					}
-
-					.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-notice-content {
-						display: block;
-						padding: 0;
-					}
-
-					.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-notice-icon {
-						display: none;
-					}
-
-					.notice.buddypress-share-notice .buddypress-share-notice-inner .buddypress-share-install-now {
-						margin-top: 20px;
-						display: block;
-						text-align: left;
-					}
-
-					.notice.buddypress-share-notice .buddypress-share-notice-inner .no-thanks {
-						display: inline-block;
-						margin-left: 15px;
-					}
-				}
-				</style>
 				<div class="notice updated buddypress-share-notice">
 					<div class="buddypress-share-notice-inner">
 						<div class="buddypress-share-notice-icon">
-							<img src="<?php echo esc_url( BP_ACTIVITY_SHARE_PLUGIN_URL . 'admin/images/bp_social_share.png' ); ?>" alt="<?php echo esc_attr__( 'BuddyPress Activity Social Share', 'buddypress-share' ); ?>" />
+							<img src="<?php echo esc_url( BP_ACTIVITY_SHARE_PLUGIN_URL . 'admin/images/bp_social_share.png' ); ?>" alt="<?php esc_attr_e( 'BuddyPress Activity Social Share', 'buddypress-share' ); ?>" />
 						</div>
 						<div class="buddypress-share-notice-content">
-							<h3><?php echo esc_html__( 'Are you enjoying BuddyPress Activity Social Share?', 'buddypress-share' ); ?></h3>
+							<h3><?php esc_html_e( 'Are you enjoying BuddyPress Activity Social Share?', 'buddypress-share' ); ?></h3>
 							<p>
-								<?php /* translators: 1. Name, 2. Time */ ?>
-								<?php printf( esc_html__( 'We hope you\'re enjoying %1$s! Could you please do us a BIG favor and give it a 5-star rating on WordPress to help us spread the word and boost our motivation?', 'buddypress-share' ), esc_html( $this->name ) ); ?>
+								<?php esc_html_e( 'We hope you\'re enjoying the plugin ! Could you please leave us a review ? ', 'buddypress-share' ); ?>
 							</p>
 						</div>
 						<div class="buddypress-share-install-now">
-							<?php printf( '<a href="%1$s" class="button button-primary buddypress-share-install-button" target="_blank">%2$s</a>', esc_url( 'https://wordpress.org/support/plugin/bp-activity-social-share/reviews/' ), esc_html__( 'Leave a Review', 'buddypress-share' ) ); ?>
-							<a href="<?php echo esc_url( $no_bug_url ); ?>" class="no-thanks"><?php echo esc_html__( 'No thanks / I already have', 'buddypress-share' ); ?></a>
+							<a href="<?php echo esc_url( 'https : // wordpress.org/support/plugin/bp-activity-social-share/reviews/' ); ?>" class="button button-primary" target="_blank">
+								<?php esc_html_e( 'Leave a Review', 'buddypress-share' ); ?>
+							</a>
+							<a href="<?php echo esc_url( $no_bug_url ); ?>" class="no-thanks">
+								<?php esc_html_e( 'No thanks', 'buddypress-share' ); ?>
+							</a>
 						</div>
 					</div>
 				</div>

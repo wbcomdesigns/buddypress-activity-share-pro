@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-13 13:16:49+00:00\n"
+"POT-Creation-Date: 2024-09-13 13:39:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -72,29 +72,25 @@ msgstr ""
 msgid "zero seconds"
 msgstr ""
 
-#: admin/class-buddypress-share-feedback.php:244
-#: admin/class-buddypress-share-feedback.php:289 buddypress-share.php:212
+#: admin/class-buddypress-share-feedback.php:144
+#: admin/class-buddypress-share-feedback.php:192 buddypress-share.php:212
 msgid "BuddyPress Activity Social Share"
 msgstr ""
 
-#: admin/class-buddypress-share-feedback.php:247
+#: admin/class-buddypress-share-feedback.php:147
 msgid "Are you enjoying BuddyPress Activity Social Share?"
 msgstr ""
 
-#: admin/class-buddypress-share-feedback.php:250
-#. translators: 1. Name, 2. Time
-msgid ""
-"We hope you're enjoying %1$s! Could you please do us a BIG favor and give "
-"it a 5-star rating on WordPress to help us spread the word and boost our "
-"motivation?"
+#: admin/class-buddypress-share-feedback.php:149
+msgid "We hope you're enjoying the plugin ! Could you please leave us a review ? "
 msgstr ""
 
-#: admin/class-buddypress-share-feedback.php:254
+#: admin/class-buddypress-share-feedback.php:154
 msgid "Leave a Review"
 msgstr ""
 
-#: admin/class-buddypress-share-feedback.php:255
-msgid "No thanks / I already have"
+#: admin/class-buddypress-share-feedback.php:157
+msgid "No thanks"
 msgstr ""
 
 #: admin/templates/bpas-general-settings-page.php:10
