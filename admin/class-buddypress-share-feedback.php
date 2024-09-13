@@ -57,19 +57,21 @@ if ( ! class_exists( 'BP_Share_Feedback' ) ) :
 		 * @param string $args Arguments.
 		 */
 		public function __construct( $args ) {
-			$this->slug = $args['slug'];
-			$this->name = $args['name'];
+			$this->slug       = $args['slug'];
+			$this->name       = $args['name'];
+			$this->time_limit = isset( $args['time_limit'] ) ? $args['time_limit'] : WEEK_IN_SECONDS;
 
 			$this->date_option  = $this->slug . '_activation_date';
 			$this->nobug_option = $this->slug . '_no_bug';
 
-			if ( isset( $args['time_limit'] ) ) {
-				$this->time_limit = $args['time_limit'];
-			} else {
-				$this->time_limit = WEEK_IN_SECONDS;
-			}
+			// Initialize the hooks.
+			$this->init_hooks();
+		}
 
-			// Add actions.
+		/**
+		 * Initialize action hooks.
+		 */
+		private function init_hooks() {
 			add_action( 'admin_init', array( $this, 'check_installation_date' ) );
 			add_action( 'admin_init', array( $this, 'set_no_bug' ), 5 );
 		}
