@@ -75,8 +75,8 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bp_activity_s
  */
 function bp_activity_share_pro_plugin_actions( $links, $file ) {
 
-	if ( class_exists( 'BuddyPress' ) ) {
-		$settings_link = '<a href="' . admin_url( 'admin.php?page=buddypress-share' ) . '">' . esc_html__( 'Settings', 'buddypress-share' ) . '</a>';
+	if ( class_exists( 'BuddyPress' ) && current_user_can( 'manage_options' ) ) {
+		$settings_link = '<a href="' . esc_url( admin_url( 'admin.php?page=buddypress-share' ) ) . '">' . esc_html__( 'Settings', 'buddypress-share' ) . '</a>';
 		array_unshift( $links, $settings_link ); // before other links.
 	}
 	return $links;
