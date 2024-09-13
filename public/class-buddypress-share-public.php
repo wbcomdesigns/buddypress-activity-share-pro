@@ -783,6 +783,26 @@ class Buddypress_Share_Public {
 		return $where_conditions;
 	}
 
+	/**
+	 * Renders the shared activity or post content in the activity stream.
+	 *
+	 * This function checks if the current activity is a shared activity or post,
+	 * and then displays the appropriate content depending on the activity type.
+	 * It retrieves either the parent activity or post based on its secondary item ID.
+	 * The function also handles displaying reshares of activities and posts with avatars,
+	 * activity/post content, and relevant metadata such as comments and share counts.
+	 *
+	 * The function supports two types of shares:
+	 * 1. 'activity_share': Displays shared BuddyPress activities.
+	 * 2. 'post_share': Displays shared WordPress posts.
+	 *
+	 * Optionally, caching could be added to optimize performance for large-scale sites.
+	 *
+	 * @global object $activities_template Holds the activity template data.
+	 * @global array $bp_reshare_settings The settings for activity reshare functionality.
+	 *
+	 * @return void
+	 */
 	public function bp_activity_share_entry_content() {
 		global $activities_template, $bp_reshare_settings;
 
@@ -794,113 +814,120 @@ class Buddypress_Share_Public {
 		$activity_id   = $activities_template->activity->id;
 		$activity_type = $activities_template->activity->type;
 
-		if ( $activity_type == 'activity_share' && $activities_template->activity->secondary_item_id != 0 ) {
-			$secondary_item_id        = $activities_template->activity->secondary_item_id;
-			$temp_activities_template = $activities_template;
-			$args                     = array( 'in' => $secondary_item_id );
-			add_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
-			$_REQUEST['search_terms'] = $secondary_item_id;
-			if ( bp_has_activities( $args ) ) {
-				if ( $reshare_share_activity == 'parent' ) {
-					remove_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
-				}
-				while ( bp_activities() ) :
-					bp_the_activity();
-					?>
-					<div id="bp-reshare-activity-<?php echo bp_get_activity_id(); //phpcs:ignore ?>" class="activity-reshare-item-container"> 
-						<div class="activity-item"> 
-							<div class="activity-avatar item-avatar">
-								<a href="<?php bp_activity_user_link(); ?>">
-									<?php bp_activity_avatar( array( 'type' => 'full' ) ); ?>
-								</a>
-							</div>
-							<div class="activity-content">
-								<div class="activity-header">
-									<?php bp_activity_action(); ?>
+		// Check for cached content.
+		$cached_content = wp_cache_get( 'activity_content_' . $activity_id, 'buddypress' );
+
+		if ( false === $cached_content ) {
+			ob_start(); // Start output buffering.
+
+			// Handle activity shares.
+			if ( $activity_type == 'activity_share' && $activities_template->activity->secondary_item_id != 0 ) {
+				$secondary_item_id        = $activities_template->activity->secondary_item_id;
+				$temp_activities_template = $activities_template;
+				$args                     = array( 'in' => $secondary_item_id );
+
+				add_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
+				$_REQUEST['search_terms'] = $secondary_item_id;
+
+				if ( bp_has_activities( $args ) ) {
+					if ( $reshare_share_activity == 'parent' ) {
+						remove_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
+					}
+
+					while ( bp_activities() ) :
+						bp_the_activity();
+						?>
+						<div id="bp-reshare-activity-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="activity-reshare-item-container"> 
+							<div class="activity-item"> 
+								<div class="activity-avatar item-avatar">
+									<a href="<?php bp_activity_user_link(); ?>">
+										<?php bp_activity_avatar( array( 'type' => 'full' ) ); ?>
+									</a>
 								</div>
-								<?php if ( function_exists( 'bp_nouveau_activity_has_content' ) && bp_nouveau_activity_has_content() ) : ?>
-									<div class="activity-inner">
-										<?php
-										if ( function_exists( 'buddypress' ) && isset( buddypress()->buddyboss ) ) {
-											bp_nouveau_activity_content();
-										} else {
-											bp_get_template_part( 'activity/type-parts/content', bp_activity_type_part() );
-										}
-										?>
+								<div class="activity-content">
+									<div class="activity-header">
+										<?php bp_activity_action(); ?>
 									</div>
-								<?php endif; ?>
-
-							</div>
-							<!--div class="content-action">
-								<div class="meta-line">
-									<p class="meta-line-text"><?php // echo wbcom_get_comment_count( bp_get_activity_id() ) . ' ' . esc_html( 'Comments' ); ?></p>
-								</div>
-								<div class="meta-line">
-									<p class="meta-line-text"><?php // echo wbcom_get_share_count( bp_get_activity_id() ) . ' ' . esc_html( 'Share' ); ?></p>
-								</div>
-							</div-->
-						</div>
-					</div>					
-					<?php
-				endwhile;
-			}
-			remove_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
-			if ( $reshare_share_activity == 'parent' ) {
-				add_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
-			}
-
-			$activities_template = $temp_activities_template;
-		}
-
-		/* Post share activity type */
-		if ( $activity_type == 'post_share' && $activities_template->activity->secondary_item_id != 0 ) {
-			$post_id = $activities_template->activity->secondary_item_id;
-			$query   = new WP_Query(
-				array(
-					'p'         => $post_id,
-					'post_type' => get_post_type( $post_id ),
-				)
-			);
-			// The Loop
-			if ( $query->have_posts() ) {
-
-				while ( $query->have_posts() ) {
-					$query->the_post();
-					?>
-					<div id="bp-reshare-activity-<?php echo get_the_ID(); ?>" class="post-reshare-item-container activity-reshare-item-container"> 
-						<div class="post-preview animate-slide-down entry-wrapper ">
-							<?php if ( has_post_thumbnail() ) { ?>
-
-								<div class="entry-thumbnail">
-									<?php the_post_thumbnail( 'large' ); ?>
-								</div>
-
-							<?php } ?>
-							
-							<div class="post-preview-info fixed-height entry-content">
-								<div class="post-preview-info-top entry-header">
-									<p class="post-preview-timestamp">
-										<?php $this->bp_activity_post_meta(); ?>
-									</p>
-									<p class="post-preview-title entry-title">
-										<?php the_title( '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a>' ); ?>
-									</p>
-								</div>
-								<div class="post-preview-info-bottom post-open-body">
-									<p class="post-preview-text entry-excerpt">
-										<?php the_excerpt(); ?>
-									</p>
-									<a href="<?php echo esc_url( get_permalink() ); ?>" class="post-preview-link color-primary read-more"><?php echo esc_html__( 'Read More', 'buddypress-share' ) . '...'; ?></a>							
+									<?php if ( function_exists( 'bp_nouveau_activity_has_content' ) && bp_nouveau_activity_has_content() ) : ?>
+										<div class="activity-inner">
+											<?php
+											if ( function_exists( 'buddypress' ) && isset( buddypress()->buddyboss ) ) {
+												bp_nouveau_activity_content();
+											} else {
+												bp_get_template_part( 'activity/type-parts/content', bp_activity_type_part() );
+											}
+											?>
+										</div>
+									<?php endif; ?>
 								</div>
 							</div>
-						</div>
-					</div>
-					<?php
+						</div>                  
+						<?php
+					endwhile;
 				}
+
+				remove_filter( 'bp_activity_get_where_conditions', array( $this, 'bp_activity_share_get_where_conditions' ), 999, 1 );
+
+				if ( $reshare_share_activity == 'parent' ) {
+					add_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
+				}
+
+				$activities_template = $temp_activities_template;
 			}
-			/* Restore original Post Data */
-			wp_reset_postdata();
+
+			// Handle post shares.
+			if ( $activity_type == 'post_share' && $activities_template->activity->secondary_item_id != 0 ) {
+				$post_id = $activities_template->activity->secondary_item_id;
+				$query   = new WP_Query(
+					array(
+						'p'         => $post_id,
+						'post_type' => get_post_type( $post_id ),
+					)
+				);
+
+				if ( $query->have_posts() ) {
+					while ( $query->have_posts() ) {
+						$query->the_post();
+						?>
+						<div id="bp-reshare-activity-<?php echo get_the_ID(); ?>" class="post-reshare-item-container activity-reshare-item-container"> 
+							<div class="post-preview animate-slide-down entry-wrapper">
+								<?php if ( has_post_thumbnail() ) { ?>
+									<div class="entry-thumbnail">
+										<?php the_post_thumbnail( 'large' ); ?>
+									</div>
+								<?php } ?>
+								<div class="post-preview-info fixed-height entry-content">
+									<div class="post-preview-info-top entry-header">
+										<p class="post-preview-timestamp">
+											<?php $this->bp_activity_post_meta(); ?>
+										</p>
+										<p class="post-preview-title entry-title">
+											<?php the_title( '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a>' ); ?>
+										</p>
+									</div>
+									<div class="post-preview-info-bottom post-open-body">
+										<p class="post-preview-text entry-excerpt">
+											<?php the_excerpt(); ?>
+										</p>
+										<a href="<?php echo esc_url( get_permalink() ); ?>" class="post-preview-link color-primary read-more">
+											<?php echo esc_html__( 'Read More', 'buddypress-share' ) . '...'; ?>
+										</a>                           
+									</div>
+								</div>
+							</div>
+						</div>
+						<?php
+					}
+				}
+
+				wp_reset_postdata(); // Restore original Post Data.
+			}
+
+			$cached_content = ob_get_clean(); // Get the output buffer content.
+			wp_cache_set( 'activity_content_' . $activity_id, $cached_content, 'buddypress' ); // Cache the content.
 		}
+
+		echo wp_kses_post( $cached_content ); // Output the cached or generated content.
 	}
 
 	public function bp_activity_post_meta() {
