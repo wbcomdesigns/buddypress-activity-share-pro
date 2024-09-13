@@ -108,16 +108,21 @@ if ( ! class_exists( 'BP_Share_Feedback' ) ) :
 		 * Check date on admin initiation and add to admin notice if it was more than the time limit.
 		 */
 		public function check_installation_date() {
-			if ( ! get_site_option( $this->nobug_option ) || false === get_site_option( $this->nobug_option ) ) {
-				add_site_option( $this->date_option, time() );
+			// Retrieve the installation date option once.
+			$install_date = get_site_option( $this->date_option );
 
-				// Retrieve the activation date.
-				$install_date = get_site_option( $this->date_option );
+			// Set the installation date if it doesn't exist.
+			if ( false === $install_date ) {
+				$install_date = time();
+				add_site_option( $this->date_option, $install_date );
+			}
 
-				// If difference between install date and now is greater than time limit, then display notice.
-				if ( ( time() - $install_date ) > $this->time_limit ) {
-					add_action( 'admin_notices', array( $this, 'display_admin_notice' ) );
-				}
+			// Retrieve the nobug option once.
+			$nobug_option = get_site_option( $this->nobug_option );
+
+			// Check if the nobug option is not set and if the time since installation exceeds the limit.
+			if ( ! $nobug_option && ( time() - $install_date ) > $this->time_limit ) {
+				add_action( 'admin_notices', array( $this, 'display_admin_notice' ) );
 			}
 		}
 

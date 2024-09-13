@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-13 11:19:20+00:00\n"
+"POT-Creation-Date: 2024-09-13 13:16:49+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -72,16 +72,16 @@ msgstr ""
 msgid "zero seconds"
 msgstr ""
 
-#: admin/class-buddypress-share-feedback.php:239
-#: admin/class-buddypress-share-feedback.php:284 buddypress-share.php:212
+#: admin/class-buddypress-share-feedback.php:244
+#: admin/class-buddypress-share-feedback.php:289 buddypress-share.php:212
 msgid "BuddyPress Activity Social Share"
 msgstr ""
 
-#: admin/class-buddypress-share-feedback.php:242
+#: admin/class-buddypress-share-feedback.php:247
 msgid "Are you enjoying BuddyPress Activity Social Share?"
 msgstr ""
 
-#: admin/class-buddypress-share-feedback.php:245
+#: admin/class-buddypress-share-feedback.php:250
 #. translators: 1. Name, 2. Time
 msgid ""
 "We hope you're enjoying %1$s! Could you please do us a BIG favor and give "
@@ -89,11 +89,11 @@ msgid ""
 "motivation?"
 msgstr ""
 
-#: admin/class-buddypress-share-feedback.php:249
+#: admin/class-buddypress-share-feedback.php:254
 msgid "Leave a Review"
 msgstr ""
 
-#: admin/class-buddypress-share-feedback.php:250
+#: admin/class-buddypress-share-feedback.php:255
 msgid "No thanks / I already have"
 msgstr ""
 
