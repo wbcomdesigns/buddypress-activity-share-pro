@@ -270,20 +270,28 @@ add_action( 'activated_plugin', 'bpshare_pro_activation_redirect_settings' );
  * Redirect to plugin settings page after activated
  */
 function bpshare_pro_activation_redirect_settings( $plugin ) {
+
+	// If Youzify is active, no need to proceed further.
 	if ( class_exists( 'Youzify' ) ) {
 		return;
 	}
 
-	if ( class_exists( 'BuddyPress' ) && ! isset( $_GET['page'] ) ) { //phpcs:ignore
-		if ( $plugin === plugin_basename( __FILE__ ) ) {
-			if ( isset( $_REQUEST['action'] ) && $_REQUEST['action']  == 'activate' && isset( $_REQUEST['plugin'] ) && $_REQUEST['plugin'] == $plugin) { //phpcs:ignore
+	// Only proceed if BuddyPress is active and 'page' is not set in the URL.
+	if ( class_exists( 'BuddyPress' ) && ! isset( $_GET['page'] ) ) { // phpcs:ignore
+
+		// Sanitize input and check if the correct plugin is being activated.
+		if ( sanitize_text_field( $plugin ) === plugin_basename( __FILE__ ) ) {
+
+			// Check if action and plugin match the expected values, ensuring they are sanitized.
+			if ( isset( $_REQUEST['action'] ) && 'activate' === sanitize_text_field( $_REQUEST['action'] ) && isset( $_REQUEST['plugin'] ) && sanitize_text_field( $_REQUEST['plugin'] ) === $plugin ) { // phpcs:ignore
+
+				// Redirect to the settings page after plugin activation.
 				wp_redirect( admin_url( 'admin.php?page=buddypress-share' ) );
 				exit;
 			}
 		}
 	}
 }
-
 
 add_filter( 'bp_activity_reshare_post_type', 'bp_activity_reshare_post_disable' );
 function bp_activity_reshare_post_disable( $post_type ) {
