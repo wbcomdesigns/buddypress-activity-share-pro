@@ -1100,9 +1100,6 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     margin-bottom: 0;
 }
 
-.buddyboss-theme .post-preview.animate-slide-down.entry-wrapper{
-    padding-bottom: 0;
-}
 
 body.buddyboss-theme:not(.page-template-page-fullscreen,.elementor-page) .site {
     overflow-x: unset;
