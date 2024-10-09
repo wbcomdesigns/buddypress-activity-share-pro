@@ -1075,6 +1075,38 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     display: none;
 }
 
+.buddyboss-theme .activity-share-modal#activity-share-modal .modal-body,
+.buddyboss-theme .activity-share-modal#activity-share-modal form.form {
+    margin: 0 !important;
+}
+
+.buddyboss-theme .bp-activity-share-post-footer-actions p.button.small.void.bp-activity-share-close {
+    border: none;
+    background: #e400000a;
+    color: #e40000;
+}
+
+.buddyboss-theme .bp-activity-share-post-footer-actions .small.secondary.bp-activity-share-activity{
+    background-color: var(--bb-primary-button-background-regular);
+    color: var(--bb-primary-button-text-regular);
+}
+
+.buddyboss-theme.single.single-post .post.type-post a.button.item-button.bp-secondary-action.bp-activity-share-button {
+    border-radius: var(--bb-button-radius) !important;
+    width: 140px !important;
+}
+
+.buddyboss-theme .activity.post_share.activity-item div.post-reshare-item-container {
+    margin-bottom: 0;
+}
+
+.buddyboss-theme .post-preview.animate-slide-down.entry-wrapper{
+    padding-bottom: 0;
+}
+
+body.buddyboss-theme:not(.page-template-page-fullscreen,.elementor-page) .site {
+    overflow-x: unset;
+}
 
 /*--------------------------------------------------------------
 # RTL Fixes
