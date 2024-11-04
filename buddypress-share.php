@@ -63,8 +63,7 @@ register_activation_hook( __FILE__, 'activate_buddypress_share_pro' );
 if ( ! class_exists( 'Buddypress_Share' ) ) {
 	require plugin_dir_path( __FILE__ ) . 'includes/class-buddypress-share.php';
 }
-require_once __DIR__ . '/vendor/autoload.php';
-HardG\BuddyPress120URLPolyfills\Loader::init();
+
 /**
  * Adding setting link on plugin listing page
  */
