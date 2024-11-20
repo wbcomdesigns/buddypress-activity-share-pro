@@ -169,6 +169,7 @@ class Buddypress_Share_Public {
 		$activity_link  = site_url() . '/' . bp_get_members_slug() . '/' . $activities_template->activity->user_nicename . '/' . bp_get_activity_slug() . '/' . $activities_template->activity->id . '/';
 		$activity_title = bp_get_activity_feed_item_title(); // use for description : bp_get_activity_feed_item_description().
 		$plugin_path    = plugins_url();
+		$mail_subject 	= strip_tags( $activities_template->activity->action );
 		if ( ! is_user_logged_in() ) {
 			echo '<div class = "activity-meta" >';
 		}
@@ -298,12 +299,23 @@ class Buddypress_Share_Public {
 							echo '</div>';
 						}
 						if ( isset( $social_service ) && ! empty( $social_service['Whatsapp'] ) ) {
+							$whatsapp_share_link = 'https://wa.me/?text=' . rawurlencode( $activity_link );
 							echo '<div class="bp-share-wrapper">';
-							echo '<a class="button bp-share" id="bp_whatsapp_share" href="https://api.whatsapp.com/send?text=' . esc_url( $activity_link ) . '&image_sharer=1" target="_blank"><span class="dashicons dashicons-whatsapp"></span><span class="bp-share-label">' . esc_html__( 'WhatsApp', 'buddypress-share' ) . '</spna></a>';
+							echo '<a class="button bp-share" id="bp_whatsapp_share" href="' . esc_url( $whatsapp_share_link ) . '" target="_blank"><span class="dashicons dashicons-whatsapp"></span><span class="bp-share-label">' . esc_html__( 'WhatsApp', 'buddypress-share' ) . '</spna></a>';
 							echo '</div>';
 						}
 						if ( isset( $social_service ) && ! empty( $social_service['E-mail'] ) ) {
-							$email = 'mailto:?subject=' . esc_url( $activity_link ) . '&body=Check out this site: ' . esc_html( $activity_title ) . '" title="Share by Email';
+							// Get the site title and URL dynamically.
+							$site_title = get_bloginfo( 'name' ); // Fetch the site title.
+							$site_url   = home_url();            // Fetch the site URL.
+
+							// Customize the email subject and body.
+							$email_subject = 'New Activity on ' . esc_html( $site_title ) . ': ' . esc_html( $mail_subject ); // Dynamic subject.
+							$email_body = "Hi,\n\nI wanted to share this activity with you from " . esc_html( $site_title ) . ":\n\n" . esc_url( $activity_link ) . "\n\nYou can explore more activities here: " . esc_url( $site_url ) . "\n\nBest regards,\nThe " . esc_html( $site_title ) . " Team"; // Dynamic body.
+
+							// Create the mailto link.
+							$email = 'mailto:?subject=' . rawurlencode( $email_subject ) . '&body=' . rawurlencode( $email_body );
+
 							echo '<div class="bp-share-wrapper">';
 							echo '<a class="button bp-share" id="bp_email_share" href="' . esc_url( $email ) . '" target="_blank"><span class="dashicons dashicons-email"></span><span class="bp-share-label">' . esc_html__( 'E-mail', 'buddypress-share' ) . '</spna></a>';
 							echo '</div>';

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-13 13:39:07+00:00\n"
+"POT-Creation-Date: 2024-11-20 05:20:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -73,7 +73,7 @@ msgid "zero seconds"
 msgstr ""
 
 #: admin/class-buddypress-share-feedback.php:144
-#: admin/class-buddypress-share-feedback.php:192 buddypress-share.php:212
+#: admin/class-buddypress-share-feedback.php:192 buddypress-share.php:211
 msgid "BuddyPress Activity Social Share"
 msgstr ""
 
@@ -126,7 +126,7 @@ msgstr ""
 
 #: admin/templates/bpas-general-settings-page.php:55
 #: admin/templates/bpas-general-settings-page.php:80
-#: public/class-buddypress-share-public.php:260
+#: public/class-buddypress-share-public.php:261
 msgid "Facebook"
 msgstr ""
 
@@ -137,37 +137,37 @@ msgstr ""
 
 #: admin/templates/bpas-general-settings-page.php:59
 #: admin/templates/bpas-general-settings-page.php:84
-#: public/class-buddypress-share-public.php:273
+#: public/class-buddypress-share-public.php:274
 msgid "Pinterest"
 msgstr ""
 
 #: admin/templates/bpas-general-settings-page.php:61
 #: admin/templates/bpas-general-settings-page.php:86
-#: public/class-buddypress-share-public.php:297
+#: public/class-buddypress-share-public.php:298
 msgid "Linkedin"
 msgstr ""
 
 #: admin/templates/bpas-general-settings-page.php:63
 #: admin/templates/bpas-general-settings-page.php:88
-#: public/class-buddypress-share-public.php:278
+#: public/class-buddypress-share-public.php:279
 msgid "Reddit"
 msgstr ""
 
 #: admin/templates/bpas-general-settings-page.php:65
 #: admin/templates/bpas-general-settings-page.php:90
-#: public/class-buddypress-share-public.php:285
+#: public/class-buddypress-share-public.php:286
 msgid "WordPress"
 msgstr ""
 
 #: admin/templates/bpas-general-settings-page.php:67
 #: admin/templates/bpas-general-settings-page.php:92
-#: public/class-buddypress-share-public.php:292
+#: public/class-buddypress-share-public.php:293
 msgid "Pocket"
 msgstr ""
 
 #: admin/templates/bpas-general-settings-page.php:69
 #: admin/templates/bpas-general-settings-page.php:94
-#: public/class-buddypress-share-public.php:308
+#: public/class-buddypress-share-public.php:320
 msgid "E-mail"
 msgstr ""
 
@@ -878,171 +878,171 @@ msgstr ""
 msgid "Our Plugins"
 msgstr ""
 
-#: admin/wbcom/wbcom-admin-settings.php:263 buddypress-share.php:79
+#: admin/wbcom/wbcom-admin-settings.php:263 buddypress-share.php:78
 msgid "Settings"
 msgstr ""
 
-#: buddypress-share.php:156 buddypress-share.php:174
+#: buddypress-share.php:155 buddypress-share.php:173
 msgid ""
 "BuddyPress Activity Social Share requires to be activated on the blog where "
 "BuddyPress is activated."
 msgstr ""
 
-#: buddypress-share.php:160 buddypress-share.php:183
+#: buddypress-share.php:159 buddypress-share.php:182
 msgid ""
 "BuddyPress Activity Social Share and BuddyPress need to share the same "
 "network configuration."
 msgstr ""
 
-#: buddypress-share.php:213
+#: buddypress-share.php:212
 msgid "BuddyPress"
 msgstr ""
 
-#: buddypress-share.php:217
+#: buddypress-share.php:216
 #. translators: 1: Name of the plugin 2: Name of the dependent plugin
 msgid "%1$s is ineffective now as it requires %2$s to be installed and active."
 msgstr ""
 
-#: buddypress-share.php:257
+#: buddypress-share.php:256
 msgid "BuddyPress Activity Share Pro"
 msgstr ""
 
-#: buddypress-share.php:258
+#: buddypress-share.php:257
 msgid "Youzify"
 msgstr ""
 
-#: buddypress-share.php:261
+#: buddypress-share.php:260
 #. translators: %s:
 msgid "%1$s plugin can not be use with %2$s plugin."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:201
-#: public/class-buddypress-share-public.php:547
-#: public/class-buddypress-share-public.php:969
+#: public/class-buddypress-share-public.php:202
+#: public/class-buddypress-share-public.php:559
+#: public/class-buddypress-share-public.php:981
 msgid "Share"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:207
-#: public/class-buddypress-share-public.php:600
+#: public/class-buddypress-share-public.php:208
+#: public/class-buddypress-share-public.php:612
 msgid "My Profile"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:212
+#: public/class-buddypress-share-public.php:213
 msgid "Share to My Profile"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:217
-#: public/class-buddypress-share-public.php:601
+#: public/class-buddypress-share-public.php:218
+#: public/class-buddypress-share-public.php:613
 msgid "Message"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:222
+#: public/class-buddypress-share-public.php:223
 msgid "Share to Message"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:228
+#: public/class-buddypress-share-public.php:229
 msgid "Select Group"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:233
+#: public/class-buddypress-share-public.php:234
 msgid "Share to a group"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:240
+#: public/class-buddypress-share-public.php:241
 msgid "Select Friend"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:245
+#: public/class-buddypress-share-public.php:246
 msgid "Share now (Friends)"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:266
+#: public/class-buddypress-share-public.php:267
 msgid "X"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:302
+#: public/class-buddypress-share-public.php:304
 msgid "WhatsApp"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:312
+#: public/class-buddypress-share-public.php:324
 msgid "Copy Link"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:313
+#: public/class-buddypress-share-public.php:325
 msgid "Link Copied!"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:317
+#: public/class-buddypress-share-public.php:329
 msgid "Please enable share services!"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:465
-#: public/class-buddypress-share-public.php:474
-#: public/class-buddypress-share-public.php:484
-#: public/class-buddypress-share-public.php:493
+#: public/class-buddypress-share-public.php:477
+#: public/class-buddypress-share-public.php:486
+#: public/class-buddypress-share-public.php:496
+#: public/class-buddypress-share-public.php:505
 msgid "Shared an activity"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:467
-#: public/class-buddypress-share-public.php:486
+#: public/class-buddypress-share-public.php:479
+#: public/class-buddypress-share-public.php:498
 msgid "Activity Share"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:476
-#: public/class-buddypress-share-public.php:495
+#: public/class-buddypress-share-public.php:488
+#: public/class-buddypress-share-public.php:507
 msgid "Post Activity Share"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:506
+#: public/class-buddypress-share-public.php:518
 #. translators: 1: the user link. 2: the group link.
 msgid "%1$s Shared an activity"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:525
+#: public/class-buddypress-share-public.php:537
 #. translators: 1: the user link. 2: the group link.
 msgid "%1$s shared an activity in the group %2$s"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:593
+#: public/class-buddypress-share-public.php:605
 msgid "Status Update"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:598
+#: public/class-buddypress-share-public.php:610
 msgid "Post In"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:603
+#: public/class-buddypress-share-public.php:615
 msgid "Group lists"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:611
+#: public/class-buddypress-share-public.php:623
 msgid "Friend lists"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:630
+#: public/class-buddypress-share-public.php:642
 #. translators: Placeholder is for the username
 msgid "Hi %s! Write something here, use @ to mention someone..."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:656
+#: public/class-buddypress-share-public.php:668
 msgid "Discard"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:657
+#: public/class-buddypress-share-public.php:669
 msgid "Post"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:695
-#: public/class-buddypress-share-public.php:913
+#: public/class-buddypress-share-public.php:707
+#: public/class-buddypress-share-public.php:925
 msgid "Read More"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:941
+#: public/class-buddypress-share-public.php:953
 #. translators: used between list items, there is a space after the comma.
 msgid ", "
 msgstr ""
 
-#: public/class-buddypress-share-public.php:948
+#: public/class-buddypress-share-public.php:960
 #. translators: used between list items, there is a space after the comma.
 msgctxt "list item separator"
 msgid ", "
