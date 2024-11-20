@@ -106,7 +106,7 @@ add_action( 'bp_loaded', 'bpshare_pro_plugin_init' );
  * Plugin init
  */
 function bpshare_pro_plugin_init() {
-	if ( bp_activity_share_pro_check_config() ) {
+	if ( class_exists( 'BuddyPress' ) && bp_activity_share_pro_check_config() ) {
 		run_buddypress_share_pro();
 	}
 }
@@ -117,50 +117,43 @@ function bpshare_pro_plugin_init() {
 function bp_activity_share_pro_check_config() {
 	global $bp;
 
+	if ( ! isset( $bp ) || ! is_object( $bp ) ) {
+		return false;
+	}
+
 	$config = array(
 		'blog_status'    => false,
 		'network_active' => false,
 		'network_status' => true,
 	);
+
 	if ( get_current_blog_id() == bp_get_root_blog_id() ) {
 		$config['blog_status'] = true;
 	}
 
-	$network_plugins = get_site_option( 'active_sitewide_plugins', array() );
-	if ( ! is_array( $network_plugins ) ) {
-   		 $network_plugins = array();
-	}
-	// No Network plugins.
-	if ( empty( $network_plugins ) ) {
-		// Looking for BuddyPress and bp-activity plugin.
+	$network_plugins = (array) get_site_option( 'active_sitewide_plugins', array() );
+	$check           = array( BP_ACTIVITY_SHARE_PLUGIN_BASENAME );
+
+	if ( isset( $bp->basename ) ) {
 		$check[] = $bp->basename;
 	}
-	$check[] = BP_ACTIVITY_SHARE_PLUGIN_BASENAME;
-	// Are they active on the network ?
+
 	$network_active = array_diff( $check, array_keys( $network_plugins ) );
 
-	// If result is 1, your plugin is network activated.
-	// and not BuddyPress or vice & versa. Config is not ok.
-	if ( count( $network_active ) == 1 ) {
+	if ( count( $network_active ) === 1 ) {
 		$config['network_status'] = false;
 	}
-	// We need to know if the plugin is network activated to choose the right.
-	// notice ( admin or network_admin ) to display the warning message.
+
 	$config['network_active'] = isset( $network_plugins[ BP_ACTIVITY_SHARE_PLUGIN_BASENAME ] );
-	// if BuddyPress config is different than bp-activity plugin.
+
 	if ( ! $config['blog_status'] || ! $config['network_status'] ) {
-		$warnings = array();
 		if ( ! bp_core_do_network_admin() && ! $config['blog_status'] ) {
 			add_action( 'admin_notices', 'bpshare_pro_same_blog' );
-			$warnings[] = esc_html__( 'BuddyPress Activity Social Share requires to be activated on the blog where BuddyPress is activated.', 'buddypress-share' );
 		}
 		if ( bp_core_do_network_admin() && ! $config['network_status'] ) {
 			add_action( 'admin_notices', 'bpshare_pro_same_network_config' );
-			$warnings[] = esc_html__( 'BuddyPress Activity Social Share and BuddyPress need to share the same network configuration.', 'buddypress-share' );
 		}
-		if ( ! empty( $warnings ) ) :
-			return false;
-		endif;
+		return false;
 	}
 	return true;
 }
@@ -170,7 +163,7 @@ function bp_activity_share_pro_check_config() {
  */
 function bpshare_pro_same_blog() {
 	echo '<div class="error"><p>'
-	. esc_html__( 'BuddyPress Activity Social Share requires to be activated on the blog where BuddyPress is activated.', 'buddypress-share' )
+	. esc_html__( 'BuddyPress Activity Share Pro requires to be activated on the blog where BuddyPress is activated.', 'buddypress-share' )
 	. '</p></div>';
 }
 
@@ -179,7 +172,7 @@ function bpshare_pro_same_blog() {
  */
 function bpshare_pro_same_network_config() {
 	echo '<div class="error"><p>'
-	. esc_html__( 'BuddyPress Activity Social Share and BuddyPress need to share the same network configuration.', 'buddypress-share' )
+	. esc_html__( 'BuddyPress Activity Share Pro and BuddyPress need to share the same network configuration.', 'buddypress-share' )
 	. '</p></div>';
 }
 
@@ -208,7 +201,7 @@ add_action( 'admin_init', 'bpshare_pro_requires_buddypress' );
  * @since  2.2.2
  */
 function bpshare_pro_required_plugin_admin_notice() {
-	$bpquotes_plugin = esc_html__( 'BuddyPress Activity Social Share', 'buddypress-share' );
+	$bpquotes_plugin = esc_html__( 'BuddyPress Activity Share Pro', 'buddypress-share' );
 	$bp_plugin       = esc_html__( 'BuddyPress', 'buddypress-share' );
 	echo '<div class="error"><p>';
 	printf(

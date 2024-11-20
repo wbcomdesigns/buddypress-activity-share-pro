@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-20 05:20:24+00:00\n"
+"POT-Creation-Date: 2024-11-20 06:38:43+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -73,7 +73,7 @@ msgid "zero seconds"
 msgstr ""
 
 #: admin/class-buddypress-share-feedback.php:144
-#: admin/class-buddypress-share-feedback.php:192 buddypress-share.php:211
+#: admin/class-buddypress-share-feedback.php:192
 msgid "BuddyPress Activity Social Share"
 msgstr ""
 
@@ -882,36 +882,36 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: buddypress-share.php:155 buddypress-share.php:173
+#: buddypress-share.php:166
 msgid ""
-"BuddyPress Activity Social Share requires to be activated on the blog where "
+"BuddyPress Activity Share Pro requires to be activated on the blog where "
 "BuddyPress is activated."
 msgstr ""
 
-#: buddypress-share.php:159 buddypress-share.php:182
+#: buddypress-share.php:175
 msgid ""
-"BuddyPress Activity Social Share and BuddyPress need to share the same "
-"network configuration."
+"BuddyPress Activity Share Pro and BuddyPress need to share the same network "
+"configuration."
 msgstr ""
 
-#: buddypress-share.php:212
+#: buddypress-share.php:204 buddypress-share.php:249
+msgid "BuddyPress Activity Share Pro"
+msgstr ""
+
+#: buddypress-share.php:205
 msgid "BuddyPress"
 msgstr ""
 
-#: buddypress-share.php:216
+#: buddypress-share.php:209
 #. translators: 1: Name of the plugin 2: Name of the dependent plugin
 msgid "%1$s is ineffective now as it requires %2$s to be installed and active."
 msgstr ""
 
-#: buddypress-share.php:256
-msgid "BuddyPress Activity Share Pro"
-msgstr ""
-
-#: buddypress-share.php:257
+#: buddypress-share.php:250
 msgid "Youzify"
 msgstr ""
 
-#: buddypress-share.php:260
+#: buddypress-share.php:253
 #. translators: %s:
 msgid "%1$s plugin can not be use with %2$s plugin."
 msgstr ""
