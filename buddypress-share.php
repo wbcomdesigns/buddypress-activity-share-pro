@@ -297,27 +297,43 @@ function bp_activity_reshare_post_disable( $post_type ) {
 	return $post_type;
 }
 
-// add existing user option
-add_action( 'admin_init', 'bp_share_pro_default_option' );
-function bp_share_pro_default_option() {
-	$services = get_site_option( 'bp_share_services' );
+function bp_share_pro_set_default_option() {
+	// Retrieve current services and flag.
+	$services = get_site_option( 'bp_share_services', array() );
 	$get_flag = get_site_option( 'bp_share_flag' );
-	if ( '' !== $services && '' == $get_flag ) {
-		$flag_check                       = false;
-		$bp_share_social_pro_icon_default = array();
-		foreach ( $services as $get_key => $get_val ) {
-			if ( isset( $get_val['service_name'] ) && ! empty( $get_val['service_name'] ) ) {
-				$flag_check   = true;
-				$service_name = $get_val['service_name'];
-				$bp_share_social_pro_icon_default[ $get_val['service_name'] ] = $get_val['service_name'];
-			}
-		}
-		if ( $flag_check ) {
-			update_site_option( 'bp_share_services', $bp_share_social_pro_icon_default );
-			update_site_option( 'bp_share_flag', 1 );
-		}
+
+	// Correct default structure for services.
+	$default_services = array(
+		'facebook'  => array( 'chb_facebook' => 1 ),  // Enabled.
+		'twitter'   => array( 'chb_twitter' => 1 ),   // Enabled.
+		'linkedin'  => array( 'chb_linkedin' => 1 ),  // Enabled.
+		'email'     => array( 'chb_email' => 1 ),     // Enabled.
+		'whatsapp'  => array( 'chb_whatsapp' => 1 ),  // Enabled.
+		'pinterest' => array( 'chb_pinterest' => 0 ), // Disabled.
+		'Facebook'  => array( 'chb_Facebook' => 0 ),  // Disabled.
+		'Twitter'   => array( 'chb_Twitter' => 0 ),   // Disabled.
+		'Linkedin'  => array( 'chb_Linkedin' => 0 ),  // Disabled.
+		'Pinterest' => array( 'chb_Pinterest' => 0 ), // Disabled.
+		'E-mail'    => array( 'chb_E-mail' => 1 ),    // Disabled.
+		'Whatsapp'  => array( 'chb_Whatsapp' => 0 ),  // Disabled.
+	);
+
+	// Merge existing services with defaults only if flag is not set.
+	if ( is_array( $services ) && empty( $get_flag ) ) {
+		$services = array_merge( $default_services, $services );
+
+		// Save merged defaults.
+		update_site_option( 'bp_share_services', $services );
+		update_site_option( 'bp_share_flag', 1 );
+	}
+
+	// Initialize with defaults if services are empty.
+	if ( empty( $services ) ) {
+		update_site_option( 'bp_share_services', $default_services );
+		update_site_option( 'bp_share_flag', 1 );
 	}
 }
+add_action( 'admin_init', 'bp_share_pro_set_default_option' );
 
 require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
