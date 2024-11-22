@@ -1750,6 +1750,22 @@ td.bp-share-title {
     background-position: center;
 }
 
+.socialicon.icon_Telegram:before {
+    content: "";
+    background-image: url("../images/telegram-fill.svg");
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.socialicon.icon_Bluesky:before {
+    content: "";
+    background-image: url("../images/bluesky-fill.svg");
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .socialicon.icon_E-mail:before,
 .icon_Gmail:before {
     content: "\f465";

@@ -169,7 +169,7 @@ class Buddypress_Share_Public {
 		$activity_link  = site_url() . '/' . bp_get_members_slug() . '/' . $activities_template->activity->user_nicename . '/' . bp_get_activity_slug() . '/' . $activities_template->activity->id . '/';
 		$activity_title = bp_get_activity_feed_item_title(); // use for description : bp_get_activity_feed_item_description().
 		$plugin_path    = plugins_url();
-		$mail_subject 	= strip_tags( $activities_template->activity->action );
+		$mail_subject   = strip_tags( $activities_template->activity->action );
 		if ( ! is_user_logged_in() ) {
 			echo '<div class = "activity-meta" >';
 		}
@@ -258,41 +258,58 @@ class Buddypress_Share_Public {
 					if ( ! empty( $social_service ) ) {
 						if ( isset( $social_service ) && ! empty( $social_service['Facebook'] ) ) {
 							echo '<div class="bp-share-wrapper">';
-							echo '<a href="https://www.facebook.com/sharer.php?u=' . esc_url( $activity_link ) . '" class="button bp-share" id="bp_facebook_share" target="_blank"><span class="dashicons dashicons-facebook-alt"></span><span class="bp-share-label">' . esc_html__( 'Facebook', 'buddypress-share' ) . '</spna></a>';
+							echo '<a class="button bp-share" id="bp_facebook_share" href="https://www.facebook.com/sharer.php?u=' . esc_url( $activity_link ) . '" target="_blank"><span class="dashicons dashicons-facebook-alt"></span><span class="bp-share-label">' . esc_html__( 'Facebook', 'buddypress-share' ) . '</spna></a>';
 							echo '</div>';
 						}
 						if ( isset( $social_service ) && ! empty( $social_service['Twitter'] ) ) {
 							$twitter_title = urlencode( html_entity_decode( get_the_title(), ENT_COMPAT, 'UTF-8' ) );
 							echo '<div class="bp-share-wrapper">';
-							echo '<a class="button bp-share" id="bp_twitter_share"  href="https://twitter.com/share?url=' . esc_url( $activity_link ) . '&text=' . esc_html( $activity_title ) . '" target="_blank"><span class="dashicons dashicons-twitter"></span><span class="bp-share-label">' . esc_html__( 'X', 'buddypress-share' ) . '</spna></a>';
+							echo '<a class="button bp-share" id="bp_twitter_share" href="https://twitter.com/share?url=' . esc_url( $activity_link ) . '&text=' . esc_html( $activity_title ) . '" target="_blank"><span class="dashicons dashicons-twitter"></span><span class="bp-share-label">' . esc_html__( 'X', 'buddypress-share' ) . '</spna></a>';
 							echo '</div>';
 						}
 						if ( isset( $social_service ) && ! empty( $social_service['Pinterest'] ) ) {
 							$media = '';
 							$video = '';
 							echo '<div class="bp-share-wrapper">';
-							echo '<a class="button bp-share" id="bp_pinterest_share"  href="https://pinterest.com/pin/create/bookmarklet/?media=' . esc_url( $media ) . '&url=' . esc_url( $activity_link ) . '&is_video=' . esc_url( $video ) . '&description=' . esc_html( $activity_title ) . '" target="_blank"><span class="dashicons dashicons-pinterest"></span><span class="bp-share-label">' . esc_html__( 'Pinterest', 'buddypress-share' ) . '</spna></a>';
+							echo '<a class="button bp-share" id="bp_pinterest_share" href="https://pinterest.com/pin/create/bookmarklet/?media=' . esc_url( $media ) . '&url=' . esc_url( $activity_link ) . '&is_video=' . esc_url( $video ) . '&description=' . esc_html( $activity_title ) . '" target="_blank"><span class="dashicons dashicons-pinterest"></span><span class="bp-share-label">' . esc_html__( 'Pinterest', 'buddypress-share' ) . '</spna></a>';
 							echo '</div>';
 						}
 						if ( isset( $social_service ) && ! empty( $social_service['Reddit'] ) ) {
 							echo '<div class="bp-share-wrapper">';
-							echo '<a class="button bp-share" id="bp_reddit_share"  href="http://reddit.com/submit?url=' . esc_url( $activity_link ) . '&title=' . esc_html( $activity_title ) . '" target="_blank"><span class="dashicons dashicons-reddit"></span><span class="bp-share-label">' . esc_html__( 'Reddit', 'buddypress-share' ) . '</spna></a>';
+							echo '<a class="button bp-share" id="bp_reddit_share" href="http://reddit.com/submit?url=' . esc_url( $activity_link ) . '&title=' . esc_html( $activity_title ) . '" target="_blank"><span class="dashicons dashicons-reddit"></span><span class="bp-share-label">' . esc_html__( 'Reddit', 'buddypress-share' ) . '</spna></a>';
 							echo '</div>';
 						}
 						if ( isset( $social_service ) && ! empty( $social_service['WordPress'] ) ) {
 							$description = '';
 							$img         = '';
 							echo '<div class="bp-share-wrapper">';
-							echo '<a class="button bp-share" id="bp_wordpress_share"  href="https://wordpress.com/wp-admin/press-this.php?u=' . esc_url( $activity_link ) . '&t=' . esc_html( $activity_title ) . '&s=' . esc_url( $description ) . '&i= ' . esc_url( $img ) . ' " target="_blank"><span class="dashicons dashicons-wordpress"></span><span class="bp-share-label">' . esc_html__( 'WordPress', 'buddypress-share' ) . '</spna></a>';
+							echo '<a class="button bp-share" id="bp_wordpress_share" href="https://wordpress.com/wp-admin/press-this.php?u=' . esc_url( $activity_link ) . '&t=' . esc_html( $activity_title ) . '&s=' . esc_url( $description ) . '&i= ' . esc_url( $img ) . ' " target="_blank"><span class="dashicons dashicons-wordpress"></span><span class="bp-share-label">' . esc_html__( 'WordPress', 'buddypress-share' ) . '</spna></a>';
 							echo '</div>';
 						}
 						if ( isset( $social_service ) && ! empty( $social_service['Pocket'] ) ) {
 							$description = '';
 							$img         = '';
 							echo '<div class="bp-share-wrapper">';
-							echo '<a class="button bp-share" id="bp_pocket_share"  href="https://getpocket.com/save?url=' . esc_url( $activity_link ) . '&title=' . esc_html( $activity_title ) . '" target="_blank"><span class="dashicons dashicons-arrow-down-alt2"></span><span class="bp-share-label">' . esc_html__( 'Pocket', 'buddypress-share' ) . '</spna></a>';
+							echo '<a class="button bp-share" id="bp_pocket_share" href="https://getpocket.com/save?url=' . esc_url( $activity_link ) . '&title=' . esc_html( $activity_title ) . '" target="_blank"><span class="dashicons dashicons-arrow-down-alt2"></span><span class="bp-share-label">' . esc_html__( 'Pocket', 'buddypress-share' ) . '</spna></a>';
 							echo '</div>';
 						}
+
+						if ( isset( $social_service ) && ! empty( $social_service['Telegram'] ) ) {
+							$description = '';
+							$img         = '';
+							echo '<div class="bp-share-wrapper">';
+							echo '<a class="button bp-share" id="bp_telegram_share" href="https://t.me/share/url?url=' . esc_url( $activity_link ) . '&title=' . esc_html( $activity_title ) . '" target="_blank"><span class="dashicons dashicons-telegram"></span><span class="bp-share-label">' . esc_html__( 'Telegram', 'buddypress-share' ) . '</spna></a>';
+							echo '</div>';
+						}
+
+						if ( isset( $social_service ) && ! empty( $social_service['Bluesky'] ) ) {
+							$description = '';
+							$img         = '';
+							echo '<div class="bp-share-wrapper">';
+							echo '<a class="button bp-share" id="bp_bluesky_share" href="https://bsky.app/intent/compose?text=' . urlencode( 'Check this out! ' . $activity_title . ' ' . $activity_link ) . '" target="_blank"><span class="dashicons dashicons-bluesky"></span><span class="bp-share-label">' . esc_html__( 'Bluesky', 'buddypress-share' ) . '</spna></a>';
+							echo '</div>';
+						}
+
 						if ( isset( $social_service ) && ! empty( $social_service['Linkedin'] ) ) {
 							echo '<div class="bp-share-wrapper">';
 							echo '<a class="button bp-share" id="bp_linkedin_share" href="http://www.linkedin.com/shareArticle?mini=true&url=' . esc_url( $activity_link ) . '&text=' . esc_html( $activity_title ) . '" target="_blank"><span class="dashicons dashicons-linkedin"></span><span class="bp-share-label">' . esc_html__( 'Linkedin', 'buddypress-share' ) . '</spna></a>';
@@ -311,7 +328,7 @@ class Buddypress_Share_Public {
 
 							// Customize the email subject and body.
 							$email_subject = 'New Activity on ' . esc_html( $site_title ) . ': ' . esc_html( $mail_subject ); // Dynamic subject.
-							$email_body = "Hi,\n\nI wanted to share this activity with you from " . esc_html( $site_title ) . ":\n\n" . esc_url( $activity_link ) . "\n\nYou can explore more activities here: " . esc_url( $site_url ) . "\n\nBest regards,\nThe " . esc_html( $site_title ) . " Team"; // Dynamic body.
+							$email_body    = "Hi,\n\nI wanted to share this activity with you from " . esc_html( $site_title ) . ":\n\n" . esc_url( $activity_link ) . "\n\nYou can explore more activities here: " . esc_url( $site_url ) . "\n\nBest regards,\nThe " . esc_html( $site_title ) . ' Team'; // Dynamic body.
 
 							// Create the mailto link.
 							$email = 'mailto:?subject=' . rawurlencode( $email_subject ) . '&body=' . rawurlencode( $email_body );

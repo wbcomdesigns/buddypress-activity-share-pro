@@ -65,6 +65,10 @@ $extra_options                   = get_site_option( 'bp_share_services_extra' );
 										<li class="socialicon icon_WordPress" name="icon_wordpress"><?php esc_html_e( 'WordPress', 'buddypress-share' ); ?></li>
 									<?php } if ( empty( $get_social_value['Pocket'] ) ) { ?>
 										<li class="socialicon icon_Pocket" name="icon_pocket"><?php esc_html_e( 'Pocket', 'buddypress-share' ); ?></li>
+									<?php } if ( empty( $get_social_value['Telegram'] ) ) { ?>
+										<li class="socialicon icon_Telegram" name="icon_telegram"><?php esc_html_e( 'Telegram', 'buddypress-share' ); ?></li>
+									<?php } if ( empty( $get_social_value['Bluesky'] ) ) { ?>
+										<li class="socialicon icon_Bluesky" name="icon_bluesky"><?php esc_html_e( 'Bluesky', 'buddypress-share' ); ?></li>
 									<?php } if ( empty( $get_social_value['E-mail'] ) ) { ?>
 									<li class="socialicon icon_Gmail" name="icon_gmail"><?php esc_html_e( 'E-mail', 'buddypress-share' ); ?></li>
 									<?php } if ( empty( $get_social_value['Whatsapp'] ) ) { ?>
@@ -90,6 +94,10 @@ $extra_options                   = get_site_option( 'bp_share_services_extra' );
 									<li class="socialicon icon_WordPress" name="icon_wordpress"><?php esc_html_e( 'WordPress', 'buddypress-share' ); ?></li>
 								<?php } if ( ! empty( $get_social_value['Pocket'] ) ) { ?>
 									<li class="socialicon icon_Pocket" name="icon_pocket"><?php esc_html_e( 'Pocket', 'buddypress-share' ); ?></li>
+								<?php } if ( ! empty( $get_social_value['Telegram'] ) ) { ?>
+									<li class="socialicon icon_Telegram" name="icon_telegram"><?php esc_html_e( 'Telegram', 'buddypress-share' ); ?></li>
+								<?php } if ( ! empty( $get_social_value['Bluesky'] ) ) { ?>
+									<li class="socialicon icon_Bluesky" name="icon_bluesky"><?php esc_html_e( 'Bluesky', 'buddypress-share' ); ?></li>
 								<?php } if ( ! empty( $get_social_value['E-mail'] ) ) { ?>
 									<li class="socialicon icon_Gmail" name="icon_gmail"><?php esc_html_e( 'E-mail', 'buddypress-share' ); ?></li>
 								<?php } if ( ! empty( $get_social_value['Whatsapp'] ) ) { ?>

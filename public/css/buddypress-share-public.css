@@ -37,7 +37,11 @@
 }
 
 .activity ul li .activity-meta .service-buttons a.bp-share .dashicons-twitter,
-.activity ul li .groups-meta .service-buttons a.bp-share .dashicons-twitter {
+.activity ul li .groups-meta .service-buttons a.bp-share .dashicons-twitter,
+.activity ul li .activity-meta .service-buttons a.bp-share .dashicons-telegram,
+.activity ul li .groups-meta .service-buttons a.bp-share .dashicons-telegram,
+.activity ul li .activity-meta .service-buttons a.bp-share .dashicons-bluesky,
+.activity ul li .groups-meta .service-buttons a.bp-share .dashicons-bluesky {
     min-width: auto;
 }
 
@@ -45,6 +49,30 @@
 .activity ul li .groups-meta a.bp-share .dashicons-twitter:before {
     content: "";
     background-image: url("../images/twitter-x-line.svg");
+    background-size: 17px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.activity ul li .activity-meta a.bp-share .dashicons-telegram:before,
+.activity ul li .groups-meta a.bp-share .dashicons-telegram:before {
+    content: "";
+    background-image: url("../images/telegram-fill.svg");
+    background-size: 17px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.activity ul li .activity-meta a.bp-share .dashicons-bluesky:before,
+.activity ul li .groups-meta a.bp-share .dashicons-bluesky:before {
+    content: "";
+    background-image: url("../images/bluesky-fill.svg");
     background-size: 17px;
     background-repeat: no-repeat;
     background-position: center;
@@ -1152,14 +1180,43 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 }
 
 #buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons-twitter:before,
-#buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons-twitter:before {
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons-twitter:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons-telegram:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons-telegram:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons-bluesky:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons-bluesky:before {
     background-size: 12px;
     -webkit-filter: invert(1);
     filter: invert(1);
 }
 
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons-telegram:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons-telegram:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons-bluesky:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons-bluesky:before {
+    background-size: 16px;
+}
+
 #buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons {
     border-radius: 0 !important;
+}
+
+@media screen and (max-width: 750px) {
+    #buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons-twitter:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons-twitter:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons-telegram:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons-telegram:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons-bluesky:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons-bluesky:before {
+        background-size: 16px;
+    }
+
+    #buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons-telegram:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons-telegram:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons-bluesky:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.rec a .dashicons-bluesky:before {
+        background-size: 20px;
+    }
 }
 
 /*--------------------------------------------------------------
@@ -1192,10 +1249,44 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     background-size: 12px;
 }
 
-#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .dashicons-twitter:before {
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a .dashicons-telegram:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a .dashicons-bluesky:before {
+    background-size: 16px;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .dashicons-twitter:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .dashicons-telegram:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .dashicons-bluesky:before {
     background-size: 12px;
     -webkit-filter: invert(1);
     filter: invert(1);
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .dashicons-telegram:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .dashicons-bluesky:before {
+    background-size: 16px;
+}
+
+@media screen and (max-width: 750px) {
+    #buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a .dashicons-twitter:before {
+        background-size: 16px;
+    }
+    
+    #buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a .dashicons-telegram:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a .dashicons-bluesky:before {
+        background-size: 20px;
+    }
+    
+    #buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .dashicons-twitter:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .dashicons-telegram:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .dashicons-bluesky:before {
+        background-size: 16px;
+    }
+    
+    #buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .dashicons-telegram:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .dashicons-bluesky:before {
+        background-size: 20px;
+    }
 }
 
 /*--------------------------------------------------------------
@@ -1225,9 +1316,27 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     background-size: 12px;
 }
 
-#buddypress .activity-list .activity-share-dropdown-menu-container.baricon a:hover .dashicons-twitter:before {
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon a .dashicons-telegram:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon a .dashicons-bluesky:before {
+    background-size: 16px;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon a:hover .dashicons-twitter:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon a:hover .dashicons-telegram:before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon a:hover .dashicons-bluesky:before {
     -webkit-filter: invert(1);
     filter: invert(1);
+}
+
+@media screen and (max-width: 750px) {
+    #buddypress .activity-list .activity-share-dropdown-menu-container.baricon a .dashicons-twitter:before {
+        background-size: 16px;
+    }
+    
+    #buddypress .activity-list .activity-share-dropdown-menu-container.baricon a .dashicons-telegram:before,
+    #buddypress .activity-list .activity-share-dropdown-menu-container.baricon a .dashicons-bluesky:before {
+        background-size: 20px;
+    }
 }
 
 /* Styles */
@@ -1279,6 +1388,16 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 #buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_pocket_share .dashicons {
     color: #EF3E56 !important;
     border-color: #EF3E56 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_telegram_share .dashicons {
+    color: #0088cc !important;
+    border-color: #0088cc !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_bluesky_share .dashicons {
+    color: #1185fe !important;
+    border-color: #1185fe !important;
 }
 
 #buddypress .activity-list .activity-share-dropdown-menu-container.baricon .bp-cpoy .dashicons {
@@ -1374,6 +1493,24 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     background: #EF3E56 !important;
     color: #fff !important;
     border-color: #EF3E56 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_telegram_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_telegram_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_telegram_share:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_telegram_share:hover .dashicons {
+    background: #0088cc !important;
+    color: #fff !important;
+    border-color: #0088cc !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_bluesky_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_bluesky_share .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_bluesky_share:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_bluesky_share:hover .dashicons {
+    background: #1185fe !important;
+    color: #fff !important;
+    border-color: #1185fe !important;
 }
 
 #buddypress .activity-list .activity-share-dropdown-menu-container.circle .bp-cpoy .dashicons,
