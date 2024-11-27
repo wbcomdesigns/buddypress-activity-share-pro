@@ -936,7 +936,7 @@ class Buddypress_Share_Public {
 					while ( $query->have_posts() ) {
 						$query->the_post();
 						?>
-						<div id="bp-reshare-activity-<?php echo get_the_ID(); ?>" class="post-reshare-item-container activity-reshare-item-container"> 
+						<div id="bp-reshare-activity-<?php echo esc_attr( get_the_ID() ); ?>" class="post-reshare-item-container activity-reshare-item-container"> 
 							<div class="post-preview animate-slide-down entry-wrapper">
 								<?php if ( has_post_thumbnail() ) { ?>
 									<div class="entry-thumbnail">
