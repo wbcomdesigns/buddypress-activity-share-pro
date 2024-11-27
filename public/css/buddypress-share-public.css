@@ -1017,6 +1017,18 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     margin-bottom: 1rem;
 }
 
+.bpss-logout-enabled .site-wrapper .activity-list.bp-list .activity-item {
+    overflow: visible;
+}
+
+.bpss-logout-enabled .site-wrapper .activity-list .activity-item .activity-meta.action {
+    justify-content: space-around;
+}
+
+.bpss-logout-enabled.theme-buddyx-pro .site-wrapper .activity-list .activity-item .activity-meta.action {
+    padding: 6px 15px;
+}
+
 /*--------------------------------------------------------------
 ## Gwangi
 --------------------------------------------------------------*/

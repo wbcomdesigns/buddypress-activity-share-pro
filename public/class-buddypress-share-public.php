@@ -141,6 +141,24 @@ class Buddypress_Share_Public {
 	}
 
 	/**
+	 * Adds a custom body class based on the 'bp_share_services_logout_enable' setting.
+	 *
+	 * @param array $classes Existing array of body classes.
+	 * @return array Modified array of body classes.
+	 */
+	public function add_bp_share_services_logout_body_class( $classes ) {
+		if ( ! is_user_logged_in() ) {
+			$bp_share_services_logout_enable = get_site_option( 'bp_share_services_logout_enable' );
+
+			if ( $bp_share_services_logout_enable ) {
+				$classes[] = 'bpss-logout-enabled';
+			}
+		}
+
+		return $classes;
+	}
+
+	/**
 	 * Filter hook to modify BuddyPress inner activity content before sharing.
 	 *
 	 * This function serves as a callback for the 'bp_share_inner_activity_filter' filter hook

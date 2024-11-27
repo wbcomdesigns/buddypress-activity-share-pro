@@ -182,6 +182,7 @@ class Buddypress_Share {
 		$this->loader->add_filter( 'language_attributes', $plugin_public, 'bp_share_doctype_opengraph' );
 		$this->loader->add_action( 'wp_head', $plugin_public, 'bp_share_opengraph', 999 );
 		$this->loader->add_action( 'bp_init', $plugin_public, 'bp_activity_share_button_dis' );
+		$this->loader->add_action( 'body_class', $plugin_public, 'add_bp_share_services_logout_body_class' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'bp_activity_share_popup_box', 999 );
 		if ( ! in_array( $theme_name->template, $theme_support ) ) {
 			$this->loader->add_filter( 'the_content', $plugin_public, 'bp_activity_post_share_button_action', 999 );
