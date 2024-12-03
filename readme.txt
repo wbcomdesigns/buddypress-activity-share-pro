@@ -2,10 +2,10 @@
 
 Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com
-Tags: buddypress,activity,share
+Tags: buddypress, activity, share
 Requires at least: 4.0
-Tested up to: 6.6.1
-Stable tag: 1.3.0
+Tested up to: 6.7.1
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -48,6 +48,24 @@ If you need additional help you can contact us for [Custom Development](https://
 Yes, this plugin requires BuddyPress plugin.
 
 == Changelog ==
+
+== Changelog ==
+= 1.4.0 =
+* Fixed escaping functions for improved security.
+* Fixed issue with social dropdown not showing in logout mode with BuddyX Pro.
+* Added Telegram and Bluesky sharing functionality.
+* Fixed issue excluding WhatsApp and Email services from popup behavior.
+* Set default enabled services to Facebook, Twitter, LinkedIn, Email, and WhatsApp.
+* Fixed warnings and potential fatal errors in plugin functions.
+* Enhanced Email and WhatsApp sharing links with dynamic site title and URL.
+* Improved `display_admin_notice()` function.
+* Improved `check_installation_date()` function.
+* Simplified `seconds_to_words()` function.
+* Enabled minified CSS and JS file loading for better performance.
+* Removed unused functions and redundant code.
+* Added setting to show social share icons in logout mode.
+
+
 = 1.3.0 =
 * Fix: Hide share count when the count is 0 for a cleaner UI.
 * Fix: Managed the behavior of the share popup, now hidden upon clicking the BuddyPress share icon.
