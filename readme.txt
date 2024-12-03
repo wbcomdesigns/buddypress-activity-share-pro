@@ -9,21 +9,21 @@ Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Free WordPress plugin to allow anyone easily share BuddyPress Activites on major social media (Facebook, Twitter, Linkedin ).
+Free WordPress plugin allows anyone to easily share BuddyPress Activities on major social media (Facebook, Twitter, Linkedin ).
 
 == Description ==
 
-BuddyPress Activity Social Share allows users to share activities to their social networking profiles.
+BuddyPress Activity Social Share allows users to share activities on their social networking profiles.
 
-A perfect plugin to make your user activities on your website social-share-friendly, and increase your members social reach dramatically!
+A perfect plugin to make your user activities on your website social-share-friendly and dramatically increase your members' social reach!
 
 [Live demo >](https://bb-free.buddyxtheme.com/)
 [Additional Details >](https://wbcomdesigns.com/downloads/buddypress-activity-social-share/)
 
-**If you like the plugin functionality, please, leave a review to help the plugin grow!**
+**If you like the plugin functionality, please leave a review to help the plugin grow!**
 
 === THEME - WORDPRESS THEME WITH OUTSTANDING BUDDYPRESS SUPPORT ===
-* [FREE BuddyPress Theme: BuddyX](https://wordpress.org/themes/buddyx/) - Offers unique layouts with clean code and easy-to-customize options giving you a whole new way to visualize BuddyPress.
+* [FREE BuddyPress Theme: BuddyX](https://wordpress.org/themes/buddyx/) - Offers unique layouts with clean code and easy-to-customize options, giving you a whole new way to visualize BuddyPress.
 
 == Installation ==
 
