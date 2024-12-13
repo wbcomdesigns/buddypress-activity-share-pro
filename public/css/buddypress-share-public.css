@@ -17,6 +17,8 @@
     # Circle/Rec Style
     # Black/White Style
     # Baricon Style
+# Plugins
+    # BuddyPress Status
 --------------------------------------------------------------*/
 
 
@@ -597,6 +599,10 @@ a.bp-activity-share-button {
     margin: 0;
     padding: 0;
     overflow: visible;
+}
+
+.activity-list .activity-content .activity-inner .activity-reshare-item-container .activity-inner {
+    padding: 0;
 }
 
 #bp-activity-share-widget-box-status-header .activity-reshare-item-container:not(.post-reshare-item-container) {
@@ -1790,4 +1796,16 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 .activity-share-modal.select-group .select2-results>.select2-results__options>li:nth-child(2),
 .activity-share-modal.select-friend .select2-results>.select2-results__options>li:nth-child(2) {
     display: none;
+}
+
+/*--------------------------------------------------------------
+## BuddyPress Status
+--------------------------------------------------------------*/
+.activity-list .activity-content .activity-inner .activity-reshare-item-container .bpsts-reactions-list .reactions img,
+.activity-share-modal .activity-list .activity-content .activity-inner .bpsts-reactions-list .reactions img {
+    width: 25px;
+}
+
+.activity-list .activity-content .activity-inner .activity-reshare-item-container .bpsts-reactions-list {
+    margin-top: 15px;
 }
