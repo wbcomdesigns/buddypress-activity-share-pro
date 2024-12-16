@@ -883,6 +883,12 @@ class Buddypress_Share_Public {
 
 					while ( bp_activities() ) :
 						bp_the_activity();
+
+						if( function_exists( 'gamipress_bp_user_details_display' ) ) {
+							$user_id = $activities_template->activity->user_id;
+							gamipress_bp_user_details_display( $user_id, 'activity' );
+						}
+
 						?>
 						<div id="bp-reshare-activity-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="activity-reshare-item-container"> 
 							<div class="activity-item"> 
