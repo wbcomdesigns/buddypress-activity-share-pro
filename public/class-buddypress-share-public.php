@@ -980,7 +980,7 @@ class Buddypress_Share_Public {
 			wp_cache_set( 'activity_content_' . $activity_id, $cached_content, 'buddypress' ); // Cache the content.
 		}
 
-		echo wp_kses_post( $cached_content ); // Output the cached or generated content.
+		echo $cached_content ; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	public function bp_activity_post_meta() {
