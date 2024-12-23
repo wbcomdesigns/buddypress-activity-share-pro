@@ -71,7 +71,41 @@ module.exports = function(grunt) {
                     src: ['*.css', '!*.min.css'], // Minify all .css files except already minified ones
                     dest: 'public/css', // Destination directory for minified CSS
                     ext: '.min.css' // Output file extension
+                },
+                {
+                    expand: true,
+                    cwd: 'public/css-rtl', // Source directory for RTL CSS files
+                    src: ['*.css', '!*.min.css'], // Minify all .css files except already minified ones
+                    dest: 'public/css-rtl', // Destination directory for minified CSS
+                    ext: '.min.css' // Output file extension
                 }]
+            }
+        },
+        // rtlcss
+        rtlcss: {
+            myTask: {
+                // task options
+                options: {
+                    // generate source maps
+                    map: { inline: false },
+                    // rtlcss options
+                    opts: {
+                        clean: false
+                    },
+                    // rtlcss plugins
+                    plugins: [],
+                    // save unmodified files
+                    saveUnmodified: true
+                },
+                expand: true,
+                cwd: 'public/css',
+                dest: 'public/css-rtl',
+                src: [ 'buddypress-share-public.css' ]
+            }
+        },
+        shell: {
+            makepot_js: {
+                command: 'wp i18n make-pot . languages/buddypress-share-js.pot --include=public/js/*.js --domain="buddypress-share"',
             }
         },
         // JS minification (uglify)
@@ -89,5 +123,5 @@ module.exports = function(grunt) {
     });
 
     // register task  'checktextdomain', 'makepot',
-    grunt.registerTask('default', ['checktextdomain', 'makepot', 'cssmin', 'uglify']);
+    grunt.registerTask('default', ['checktextdomain', 'makepot', 'shell:makepot_js', 'rtlcss', 'cssmin', 'uglify']);
 };

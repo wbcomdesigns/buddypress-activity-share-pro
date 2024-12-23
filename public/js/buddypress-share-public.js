@@ -1,34 +1,7 @@
+const { __, _x, _n, sprintf } = wp.i18n;
+
 (function($) {
     'use strict';
-
-    /**
-     * All of the code for your public-facing JavaScript source
-     * should reside in this file.
-     *
-     * Note: It has been assumed you will write jQuery code here, so the
-     * $ function reference has been prepared for usage within the scope
-     * of this function.
-     *
-     * This enables you to define handlers, for when the DOM is ready:
-     *
-     * $(function() {
-     *
-     * });
-     *
-     * When the window is loaded:
-     *
-     * $( window ).load(function() {
-     *
-     * });
-     *
-     * ...and/or other possibilities.
-     *
-     * Ideally, it is not considered best practise to attach more than a
-     * single DOM-ready or window-load handler for a particular page.
-     * Although scripts in the WordPress core, Plugins and Themes may be
-     * practising this, we should strive to set a better example in our own work.
-     */
-
     $(document).ready(function() {
 
         $(document).on('click', ".bp-share-button", function(e) {
@@ -96,23 +69,6 @@
             window.open(meh, '', 'height=485,width=700,left=' + x + ',top=' + y);
         }
 
-        // $(document).on('click', ".bp-cpoy", function(e) {
-        //     e.preventDefault();
-        //     var copyText = $(this).data('href');
-
-        //     document.addEventListener('copy', function(e) {
-        //         e.clipboardData.setData('text/plain', copyText);
-        //         e.preventDefault();
-        //     }, true);
-
-        //     document.execCommand('copy');
-        //     var tooltip = $(this).next();
-        //     tooltip.removeClass('tooltip-hide');
-        //     setTimeout(function() {
-        //         tooltip.addClass('tooltip-hide');
-        //     }, 500);
-        // });
-
         $(document).on('click', ".bp-cpoy", function(e) {
             e.preventDefault();
         
@@ -128,10 +84,10 @@
             try {
                 // Copy the text to the clipboard
                 var successful = document.execCommand('copy');
-                var message = successful ? 'Copied!' : 'Copy failed';
+                var message = successful ? __('Copied!', 'buddypress-share') : __('Copy failed', 'buddypress-share');
                 console.log(message);
             } catch (err) {
-                console.error('Unable to copy', err);
+                console.error(__('Unable to copy', 'buddypress-share'), err);
             }
         
             // Remove the temporary textarea
@@ -145,8 +101,7 @@
             setTimeout(function() {
                 tooltip.addClass('tooltip-hide');
             }, 1000);
-        });
-        
+        });        
         
 		$("#activity-share-modal #post-in").select2({
 			dropdownParent: $('#activity-share-modal')
@@ -288,20 +243,6 @@
 
         });
 
-        // $(document).on('change', '#post-in', function() {
-        //     var activity_id = $('#activity-share-modal #bp-reshare-activity-id').val();
-        //     var member_msg_url = bp_activity_sjare_vars.member_profile_url;
-        //     var activity_url = member_msg_url +  'activity/' + activity_id + '/'; 
-        //     var parameter = '?activity_id=' + activity_url;
-        //     if( $(this).val() == 'message' ){
-        //         $('.bp-activity-share-activity').hide();
-        //         $("<a href= " + member_msg_url + parameter +"  class='button small secondary'>Post</a>").insertAfter(".bp-activity-share-activity");
-        //     }else{
-        //         $('.bp-activity-share-activity').show();
-        //         $('.bp-activity-share-post-footer-actions a').remove();
-        //     }
-        // });
-		
 		$( document ).on('click','.bp-activity-share-close', function(){
 			$('#activity-share-modal').modal('hide');
 		});

@@ -142,13 +142,13 @@ a.bp-share.has-popup {
     height: 12px;
     background: #444;
     position: absolute;
-    left: 0;
     right: 0;
+    left: 0;
     bottom: -5px;
     margin: auto;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
     z-index: -1;
     border-radius: 2px;
 }
@@ -183,12 +183,12 @@ body:not(.logged-in).bp-nouveau #buddypress .activity-list .activity-item .group
     content: "\f237" !important;
     font-family: 'dashicons' !important;
     font-size: initial;
-    margin-right: 3px;
+    margin-left: 3px;
 }
 
 .bp-nouveau #buddypress .activity-list .bp-activity-more-options-wrap .bp-share-button::before,
 .bp-nouveau #buddypress .activity-list .bb-activity-more-options-wrap .bp-share-button::before {
-    margin-right: 0;
+    margin-left: 0;
 }
 
 .bp-nouveau #buddypress .activity-list .bb-activity-more-options-wrap .bb-activity-more-options .bp-share-button::before {
@@ -239,7 +239,7 @@ body.bp-share-popup-active #masthead {
 .bb-activity-more-options-wrap .bp-share-service-popup-overlay {
     position: fixed;
     top: 0;
-    left: 0;
+    right: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
@@ -251,10 +251,10 @@ body.bp-share-popup-active #masthead {
 .bb-activity-more-options-wrap .bp-share-service-popup {
     position: fixed;
     top: 50%;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    transform: translateX(-50%);
+    right: 50%;
+    -webkit-transform: translateX(50%);
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
     z-index: 100;
     width: -webkit-calc(100% - 30px);
     width: calc(100% - 30px);
@@ -307,7 +307,7 @@ a.bp-activity-share-button {
 }
 
 .bp-activity-reshare-count {
-    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .activity-share-modal.modal .modal-content,
@@ -332,7 +332,7 @@ a.bp-activity-share-button {
 .activity-share-modal .bp-activity-share-avatar {
     font-weight: bold;
     text-transform: capitalize;
-    padding-left: 55px;
+    padding-right: 55px;
     line-height: 1.4;
     display: block;
     position: relative;
@@ -340,7 +340,7 @@ a.bp-activity-share-button {
 
 .activity-share-modal .bp-activity-share-avatar>a {
     position: absolute;
-    left: 0;
+    right: 0;
     top: -3px;
 }
 
@@ -350,7 +350,7 @@ a.bp-activity-share-button {
     -webkit-transform: unset;
     -ms-transform: unset;
     transform: unset;
-    margin-right: 5px;
+    margin-left: 5px;
     border-radius: 50%;
 }
 
@@ -368,8 +368,8 @@ a.bp-activity-share-button {
 
 @media (max-width: 576px) {
     .activity-share-modal .modal-dialog {
-        margin-left: 20px;
         margin-right: 20px;
+        margin-left: 20px;
     }
 }
 
@@ -403,7 +403,7 @@ a.bp-activity-share-button {
     font-size: 0.75rem;
     position: absolute;
     top: -5px;
-    left: 12px;
+    right: 12px;
     z-index: 1000000;
     line-height: 1;
     pointer-events: none;
@@ -459,7 +459,7 @@ a.bp-activity-share-button {
 .quick-post-header-filters-wrap .select2-container--default .select2-selection--single {
     width: 100%;
     height: 100%;
-    padding: 0 40px 0 20px;
+    padding: 0 20px 0 40px;
     font-size: 0.875rem;
     cursor: pointer;
 }
@@ -483,7 +483,7 @@ a.bp-activity-share-button {
     cursor: pointer;
     position: absolute;
     top: -20px;
-    right: -20px;
+    left: -20px;
     opacity: 1;
     border: 0;
     outline: none;
@@ -494,7 +494,7 @@ a.bp-activity-share-button {
 
 @media screen and (max-width: 767px) {
     #activity-share-modal button.activity-share-modal-close {
-        right: -15px;
+        left: -15px;
     }
 }
 
@@ -519,7 +519,7 @@ a.bp-activity-share-button {
 }
 
 .activity-share-modal .activity-list .activity-item .activity-header {
-    padding-right: 0;
+    padding-left: 0;
     height: auto;
     min-height: 50px;
     margin-bottom: 1rem;
@@ -547,7 +547,7 @@ a.bp-activity-share-button {
 .bp-activity-share-post-footer-actions .button {
     margin: 0;
     width: 80px;
-    margin-right: 6px;
+    margin-left: 6px;
     display: -ms-flexbox;
     display: -webkit-box;
     display: flex;
@@ -678,8 +678,8 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 0;
     right: 0;
+    left: 0;
     margin: auto;
     z-index: 0;
     min-height: 100%;
@@ -760,7 +760,7 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     -webkit-box-ordinal-group: 2;
     -ms-flex-order: 1;
     order: 1;
-    margin-right: 10px;
+    margin-left: 10px;
 }
 
 .activity-share-modal .post-preview .post-preview-info .post-preview-timestamp span.link.date-links,
@@ -774,7 +774,7 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.cat-links i,
 .activity-share-modal .post-preview .post-preview-info .post-preview-timestamp span.link.date-links i,
 .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.date-links i {
-    margin-right: 4px;
+    margin-left: 4px;
 }
 
 .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link a {
@@ -907,7 +907,7 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     font-size: 90%;
     font-weight: normal;
     display: inline;
-    margin-left: 10px;
+    margin-right: 10px;
     padding: 0;
     line-height: normal;
 }
@@ -1042,7 +1042,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 .grimlock #buddypress:not(.youzer) #activity-stream .activity-reshare-item-container .activity-avatar,
 .grimlock .activity-share-modal .activity-avatar {
     float: none;
-    margin: 0 0.75rem 0 0;
+    margin: 0 0 0 0.75rem;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1097,7 +1097,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     opacity: 1;
     position: static;
     font-size: 14px;
-    margin-right: 3px !important;
+    margin-left: 3px !important;
 }
 
 .activity-list .activity-item .activity-content .bp-generic-meta.action .bp-activity-share-button::after {
@@ -1112,7 +1112,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 }
 
 .activity-list .activity-item .activity-content .bp-generic-meta.action .bp-activity-share-button .reshare-count {
-    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .activity-share-modal .activity-list .bb-activity-more-options-wrap,
@@ -1126,36 +1126,36 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 --------------------------------------------------------------*/
 
 [dir='rtl'] .bp-activity-reshare-icon {
-    margin-right: 0;
-    margin-left: 2px;
-}
-
-[dir='rtl'] .bp-activity-reshare-count {
     margin-left: 0;
     margin-right: 2px;
 }
 
+[dir='rtl'] .bp-activity-reshare-count {
+    margin-right: 0;
+    margin-left: 2px;
+}
+
 [dir='rtl'] .activity-share-modal .bp-activity-share-avatar {
-    padding-left: 0;
-    padding-right: 55px;
+    padding-right: 0;
+    padding-left: 55px;
 }
 
 [dir='rtl'] .activity-share-modal .bp-activity-share-avatar>a {
-    left: auto;
-    right: 0;
+    right: auto;
+    left: 0;
 }
 
 [dir='rtl'] .bp-activity-post-share-btn .reshare-count {
-    margin-left: 0;
-    margin-right: 10px;
+    margin-right: 0;
+    margin-left: 10px;
 }
 
 [dir='rtl'] .activity-share-modal .post-preview .post-preview-info .post-preview-timestamp span.link.cat-links i,
 [dir='rtl'] .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.cat-links i,
 [dir='rtl'] .activity-share-modal .post-preview .post-preview-info .post-preview-timestamp span.link.date-links i,
 [dir='rtl'] .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.date-links i {
-    margin-right: 0;
-    margin-left: 4px;
+    margin-left: 0;
+    margin-right: 4px;
 }
 
 /*--------------------------------------------------------------
@@ -1172,8 +1172,8 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 .service-buttons .bp-cpoy-wrapper span.tooltiptext {
     position: absolute;
     top: -30px;
-    left: -18px;
-    right: 0;
+    right: -18px;
+    left: 0;
 }
 
 #buddypress .activity-list .activity-share-dropdown-menu-container.circle a .dashicons,
@@ -1543,9 +1543,9 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 /* New */
 .bp-activity-share-dropdown-menu {
     position: absolute;
-    right: 0;
+    left: 0;
     top: 35px;
-    text-align: left;
+    text-align: right;
     width: 250px;
     padding: 10px 0;
     border: 1px solid #e3e2ec;
@@ -1573,7 +1573,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 
 @media screen and (max-width: 300px) {
     .bp-activity-share-dropdown-menu {
-        right: -20px;
+        left: -20px;
     }
 }
 
@@ -1606,15 +1606,15 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 }
 
 .bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-btn .bp-share-button::before {
-    margin-right: 8px !important;
+    margin-left: 8px !important;
     font-size: 18px !important;
-    margin-left: 0.2em;
+    margin-right: 0.2em;
 }
 
 .bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-activity-share-btn a,
 .bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-btn a {
     width: 100%;
-    text-align: left;
+    text-align: right;
 }
 
 .bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-activity-share-btn a span.bp-share-text {
@@ -1660,7 +1660,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 .bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-activity-share-btn span.bp-share-label,
 .bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-wrapper span.bp-share-label {
     display: block;
-    margin-left: 10px !important;
+    margin-right: 10px !important;
     font-size: inherit;
     font-weight: 500;
 }
@@ -1689,13 +1689,13 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     height: 12px;
     background: #444;
     position: absolute;
-    left: 0;
     right: 0;
+    left: 0;
     bottom: -5px;
     margin: auto;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
     z-index: -1;
     border-radius: 2px;
 }
@@ -1705,8 +1705,8 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
         position: fixed;
         top: auto;
         bottom: 0;
-        right: 0;
         left: 0;
+        right: 0;
         margin: auto;
         width: 100%;
         border: 0;
@@ -1765,7 +1765,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     }
 
     .bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-activity-share-to-wrapper .bp-share-wrapper span.bp-share-label {
-        margin-left: 0 !important;
+        margin-right: 0 !important;
         display: block;
         width: 100%;
     }
@@ -1809,3 +1809,4 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 .activity-list .activity-content .activity-inner .activity-reshare-item-container .bpsts-reactions-list {
     margin-top: 15px;
 }
+/*# sourceMappingURL=buddypress-share-public.css.map */
