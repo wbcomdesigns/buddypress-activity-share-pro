@@ -630,8 +630,8 @@ a.bp-activity-share-button {
 body.activity-permalink.bp-nouveau .activity-list .activity-reshare-item-container .activity-content .activity-header .time-since {
     line-height: 2;
     font-size: 90%;
-    color: #767676;
     display: block;
+    text-decoration: none;
 }
 
 body.modal-open.modal-open .select2.select2-container .select2-selection .select2-selection__rendered {
@@ -1120,6 +1120,18 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     display: none;
 }
 
+.buddyboss-theme #buddypress .activity-reshare-item-container .view.activity-time-since {
+    display: block;
+}
+
+.buddyboss-theme #buddypress .activity-reshare-item-container .activity-time-since span.time-since {
+    display: inline-block;
+    line-height: inherit;
+}
+
+.buddyboss-theme #buddypress .activity-reshare-item-container .activity-time-since:before {
+    content: none;
+}
 
 /*--------------------------------------------------------------
 # RTL Fixes
