@@ -893,8 +893,8 @@ class Buddypress_Share_Public {
 						}
 
 						?>
-						<div id="bp-reshare-activity-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="activity-reshare-item-container"> 
-							<div class="activity-item"> 
+						<div id="bp-reshare-activity-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="activity-reshare-item-container" data-bp-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>"> 
+							<div class="activity-item" data-bp-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>"> 
 								<div class="activity-avatar item-avatar">
 									<a href="<?php bp_activity_user_link(); ?>">
 										<?php bp_activity_avatar( array( 'type' => 'full' ) ); ?>
@@ -945,7 +945,7 @@ class Buddypress_Share_Public {
 					while ( $query->have_posts() ) {
 						$query->the_post();
 						?>
-						<div id="bp-reshare-activity-<?php echo esc_attr( get_the_ID() ); ?>" class="post-reshare-item-container activity-reshare-item-container"> 
+						<div id="bp-reshare-activity-<?php echo esc_attr( get_the_ID() ); ?>" class="post-reshare-item-container activity-reshare-item-container" data-bp-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>"> 
 							<div class="post-preview animate-slide-down entry-wrapper">
 								<?php if ( has_post_thumbnail() ) { ?>
 									<div class="entry-thumbnail">

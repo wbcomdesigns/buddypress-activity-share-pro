@@ -344,8 +344,36 @@ const { __, _x, _n, sprintf } = wp.i18n;
             // Run on load
             toggleDropdownPosition();
         });
+		
+		$(document).on('click', ".activity-reshare-item-container .activity-read-more a", function( event ) {
+			var activity_id = $( this ).parents('.activity-reshare-item-container').data( 'bp-activity-id' );
+			var target = $( event.target );
+			var content = target.closest( 'div' ), readMore = target.closest( 'span' );
+			var item_id = activity_id;			
+			
+			event.preventDefault();
+			
+			$( readMore ).addClass( 'loading' );
+			bp.Nouveau.ajax( {
+					action : 'get_single_activity_content',
+					id     : item_id
+				}, 'activity' ).done( function( response ) {
+					$( readMore ).removeClass( 'loading' );
 
+					if ( content.parent().find( '.bp-feedback' ).length ) {
+						content.parent().find( '.bp-feedback' ).remove();
+					}
 
+					if ( false === response.success ) {
+						content.after( response.data.feedback );
+						content.parent().find( '.bp-feedback' ).hide().fadeIn( 300 );
+					} else {
+						$( content ).slideUp( 300 ).html( response.data.contents ).slideDown( 300 );
+					}
+				} );
+			
+		});
+		
     });
 
 })(jQuery);
