@@ -135,8 +135,16 @@ if ( ! class_exists( 'BP_Share_Feedback' ) ) :
 				$no_bug_url         = esc_url( wp_nonce_url( admin_url( '?' . $this->nobug_option . '=true' ), 'buddypress-share-feedback-nonce' ) );
 				$time_since_install = $this->seconds_to_words( time() - get_site_option( $this->date_option ) );
 
+				$rtl_css = is_rtl() ? '-rtl' : '';
+
+				if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+					$css_extension = '.css';
+				} else {
+					$css_extension = '.min.css';
+				}
+
 				// Enqueue the external stylesheet.
-				wp_enqueue_style( 'buddypress-share-admin-notice', BP_ACTIVITY_SHARE_PLUGIN_URL . 'admin/css/buddypress-share-admin-notice.css', array(), BP_ACTIVITY_SHARE_PLUGIN_VERSION );
+				wp_enqueue_style( 'buddypress-share-admin-notice', BP_ACTIVITY_SHARE_PLUGIN_URL . 'admin/css' . $rtl_css . '/buddypress-share-admin-notice' . $css_extension, array(), BP_ACTIVITY_SHARE_PLUGIN_VERSION );
 				?>
 				<div class="notice updated buddypress-share-notice">
 					<div class="buddypress-share-notice-inner">

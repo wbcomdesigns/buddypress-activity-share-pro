@@ -73,13 +73,19 @@ class Buddypress_Share_Public {
 		 */
 		$rtl_css = is_rtl() ? '-rtl' : '';
 
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			$css_extension = '.css';
+		} else {
+			$css_extension = '.min.css';
+		}
+
 		if ( ! wp_style_is( 'wb-font-awesome', 'enqueued' ) ) {
 			wp_enqueue_style( 'wb-font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), $this->version, 'all' );
 		}
-		wp_enqueue_style( 'bootstrap-css', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), $this->version, 'all' );
-		wp_enqueue_style( 'select2-css', plugin_dir_url( __FILE__ ) . 'css/select2.min.css', array(), $this->version, 'all' );
-		wp_enqueue_style( 'icons-css', plugin_dir_url( __FILE__ ) . 'css/as-icons.min.css', array(), $this->version, 'all' );
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css' . $rtl_css . '/buddypress-share-public.min.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'bootstrap-css', plugin_dir_url( __FILE__ ) . 'css/vendor/bootstrap.min.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'select2-css', plugin_dir_url( __FILE__ ) . 'css/vendor/select2.min.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'icons-css', plugin_dir_url( __FILE__ ) . 'css' . $rtl_css . '/as-icons' . $css_extension, array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css' . $rtl_css . '/buddypress-share-public' . $css_extension, array(), $this->version, 'all' );
 	}
 
 	/**
@@ -105,15 +111,21 @@ class Buddypress_Share_Public {
 		$bp_reshare_settings    = get_site_option( 'bp_reshare_settings' );
 		$reshare_share_activity = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
 
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			$js_extension = '.js';
+		} else {
+			$js_extension = '.min.js';
+		}
+
 		wp_enqueue_script( 'jquery-ui-tooltip' );
-		wp_register_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, false );
+		wp_register_script( 'bootstrap-js', plugin_dir_url( __FILE__ ) . 'js/vendor/bootstrap.min.js', array( 'jquery' ), $this->version, false );
 		if ( class_exists( 'WeDevs_Dokan' ) && dokan_is_seller_dashboard() ) {
 			wp_dequeue_script( 'bootstrap-js' );
 		} else {
 			wp_enqueue_script( 'bootstrap-js' );
 		}
-		wp_enqueue_script( 'select2-js', plugin_dir_url( __FILE__ ) . 'js/select2.min.js', array( 'jquery' ), $this->version, false );
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/buddypress-share-public.min.js', array( 'jquery', 'wp-i18n' ), $this->version, false );
+		wp_enqueue_script( 'select2-js', plugin_dir_url( __FILE__ ) . 'js/vendor/select2.min.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/buddypress-share-public' . $js_extension, array( 'jquery', 'wp-i18n' ), $this->version, false );
 		wp_set_script_translations( $this->plugin_name, 'buddypress-share', BP_ACTIVITY_SHARE_PLUGIN_PATH . 'languages/' );
 
 		wp_localize_script(

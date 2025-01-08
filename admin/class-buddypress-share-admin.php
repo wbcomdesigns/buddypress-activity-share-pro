@@ -62,6 +62,15 @@ class Buddypress_Share_Admin {
 		// if ( 'wb-plugins_page_buddypress-share' !== $hook ) {
 		// return;
 		// }
+
+		$rtl_css = is_rtl() ? '-rtl' : '';
+
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			$css_extension = '.css';
+		} else {
+			$css_extension = '.min.css';
+		}
+
 		if ( ! wp_style_is( 'font-awesome', 'enqueued' ) ) {
 			wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), $this->version, 'all' );
 		}
@@ -71,7 +80,7 @@ class Buddypress_Share_Admin {
 		}
 		if ( isset( $_GET['page'] ) && 'wbcom-support-page' == $_GET['page'] || 'wb-plugins_page_buddypress-share' === $hook || 'wbcomplugins' === $_GET['page'] || 'wbcom-plugins-page' === $_GET['page'] || 'buddypress-share' === $_GET['page'] ) { //phpcs:ignore
 
-			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/buddypress-share-admin.css', array(), $this->version, 'all' );
+			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css' . $rtl_css . '/buddypress-share-admin' . $css_extension, array(), $this->version, 'all' );
 
 		}
 	}
@@ -89,7 +98,14 @@ class Buddypress_Share_Admin {
 			return;
 		}
 		wp_enqueue_script( 'wp-color-picker' );
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/buddypress-share-admin.js', array( 'jquery' ), $this->version, true );
+
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			$js_extension = '.js';
+		} else {
+			$js_extension = '.min.js';
+		}
+
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/buddypress-share-admin' . $js_extension, array( 'jquery' ), $this->version, true );
 		wp_localize_script(
 			$this->plugin_name,
 			'my_ajax_object',
