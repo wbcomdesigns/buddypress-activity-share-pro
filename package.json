@@ -9,9 +9,11 @@
         "grunt-checktextdomain": "^1.0.1",
         "grunt-contrib-cssmin": "^5.0.0",
         "grunt-contrib-uglify": "^5.2.2",
+        "grunt-contrib-watch": "^1.1.0",
         "grunt-rtlcss": "^2.0.2",
         "grunt-shell": "^4.0.0",
-        "grunt-wp-i18n": "^1.0.3"
+        "grunt-wp-i18n": "^1.0.3",
+        "load-grunt-tasks": "^5.1.0"
     },
     "engines": {
         "node": ">=6.9.1"
@@ -19,9 +21,5 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/wbcomdesigns/buddypress-activity-share-pro/"
-    },
-    "dependencies": {
-        "fix": "0.0.6",
-        "load-grunt-tasks": "^3.5.2"
     }
 }

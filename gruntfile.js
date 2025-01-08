@@ -197,8 +197,23 @@ module.exports = function(grunt) {
                 }],
             },
         },
+        // Task for watching file changes
+        watch: {
+            css: {
+                files: ['public/css/*.css', '!public/css/*.min.css'], // Watch for changes in frontend CSS files
+                tasks: ['cssmin:public'], // Run frontend CSS minification task
+            },
+            js: {
+                files: ['public/js/*.js', '!public/js/*.min.js'], // Watch for changes in frontend JS files
+                tasks: ['uglify:public'], // Run frontend JS minification task
+            },
+            php: {
+                files: ['**/*.php'], // Watch for changes in PHP files
+                tasks: ['checktextdomain'], // Run text domain check
+            },
+        },
     });
 
     // register task  'checktextdomain', 'makepot',
-    grunt.registerTask('default', ['checktextdomain', 'makepot', 'shell:makepot_js', 'rtlcss', 'cssmin', 'uglify']);
+    grunt.registerTask('default', ['checktextdomain', 'makepot', 'shell:makepot_js', 'rtlcss', 'cssmin', 'uglify', 'watch']);
 };
