@@ -955,6 +955,13 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 /*--------------------------------------------------------------
 ## BuddyBoss
 --------------------------------------------------------------*/
+.buddyboss-theme .modal.activity-share-modal {
+    z-index: 9999999;
+}
+
+.buddyboss-theme .modal-backdrop {
+    z-index: 999999;
+}
 
 .bp-nouveau.buddyboss-theme .activity-list .activity-item .bp-share-button::before {
     content: '\e927';
