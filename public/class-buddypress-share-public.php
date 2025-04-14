@@ -700,7 +700,7 @@ class Buddypress_Share_Public {
 								<input type="hidden" id="bp-reshare-activity-user-id" name="user-id" value="<?php echo bp_loggedin_user_id(); //phpcs:ignore ?>" />
 								
 								
-								<?php if ( is_buddypress() ) : ?>
+								<?php if ( is_buddypress() || apply_filters( 'bp_activity_reshare_action', false ) ) : ?>
 									<input type="hidden" id="bp-reshare-activity-current-component" name="current_component" value="<?php echo bp_current_component(); //phpcs:ignore ?>" />
 									<input type="hidden" id="bp-reshare-type" name="bp-reshare-type" value="activity_share" />
 								<?php else : ?>
