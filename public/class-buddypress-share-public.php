@@ -765,78 +765,83 @@ class Buddypress_Share_Public {
 	/**
 	 * Handles the AJAX request for resharing an activity or post in BuddyPress.
 	 *
-	 * This function processes the resharing of a BuddyPress activity or a post.
-	 * It validates the request, prepares the activity content, creates a new activity entry,
-	 * and updates the share count for the original activity or post. It ensures that the user is logged in
-	 * and the required parameters are present and sanitized. In case of invalid data or errors, a JSON error
-	 * response is returned. On success, it returns the updated share count via JSON.
+	 * This function processes resharing, validates requests, and updates share counts.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @return void Outputs a JSON success or error response and terminates the script.
-	 *
-	 * @see bp_activity_add() Adds a new activity.
-	 * @see bp_activity_update_meta() Updates activity metadata.
-	 * @see wp_send_json_success() Sends a JSON success response.
-	 * @see wp_send_json_error() Sends a JSON error response.
+	 * @return void Outputs JSON response and terminates the script.
 	 */
 	public function bp_activity_create_reshare_ajax() {
+		// Verify nonce for security
 		check_ajax_referer( 'bp-activity-share-nonce', '_ajax_nonce' );
 
-		// Validate and sanitize input.
+		// Bail early if user is not logged in
+		if ( ! is_user_logged_in() ) {
+			wp_send_json_error( array( 'message' => 'User not logged in' ) );
+		}
+
+		// Validate and sanitize required parameters
 		$user_id       = get_current_user_id();
-		$activity_id   = isset( $_POST['activity_id'] ) ? intval( $_POST['activity_id'] ) : 0;
+		$activity_id   = isset( $_POST['activity_id'] ) ? absint( $_POST['activity_id'] ) : 0;
 		$activity_type = isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
 
-		// Validate input and ensure user is logged in.
-		if ( empty( $activity_id ) || ! is_user_logged_in() || empty( $activity_type ) ) {
-			wp_send_json_error( 'Invalid request: Missing or invalid data.' );
+		if ( empty( $activity_id ) || empty( $activity_type ) ) {
+			wp_send_json_error( array( 'message' => 'Missing required parameters' ) );
 		}
 
-		// Prepare activity content for user mentions.
-		if ( isset( $_POST['activity_in_type'] ) && $_POST['activity_in_type'] == 'user' ) {
-			$username = ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) ?
-				bp_members_get_user_slug( intval( $_POST['activity_in'] ) ) :
-				bp_core_get_username( intval( $_POST['activity_in'] ) );
-
-			$_POST['activity_content'] = "@$username \r\n" . sanitize_textarea_field( $_POST['activity_content'] );
-			$_POST['activity_in']      = 0;
+		// Handle user mentions in activity content
+		$activity_content = sanitize_textarea_field( $_POST['activity_content'] ?? '' );
+		$activity_in      = isset( $_POST['activity_in'] ) ? absint( $_POST['activity_in'] ) : 0;
+		
+		if ( isset( $_POST['activity_in_type'] ) && 'user' === $_POST['activity_in_type'] ) {
+			// Get username using appropriate function based on BP version
+			$username = function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) 
+				? bp_members_get_user_slug( $activity_in ) 
+				: bp_core_get_username( $activity_in );
+			
+			$activity_content = "@{$username} \r\n{$activity_content}";
+			$activity_in = 0;
 		}
 
-		// Add the activity.
+		// Prepare activity arguments
 		$activity_args = array(
 			'user_id'           => $user_id,
-			'component'         => ( isset( $_POST['activity_in'] ) && intval( $_POST['activity_in'] ) != 0 ) ? 'groups' : 'activity',
+			'component'         => ( $activity_in > 0 ) ? 'groups' : 'activity',
 			'type'              => $activity_type,
-			'content'           => sanitize_textarea_field( $_POST['activity_content'] ),
+			'content'           => $activity_content,
 			'secondary_item_id' => $activity_id,
-			'item_id'           => intval( $_POST['activity_in'] ),
+			'item_id'           => $activity_in,
 		);
 
+		// Add the activity
 		$new_activity_id = bp_activity_add( $activity_args );
 
-		// Update share count for 'activity_share' or 'post_share' types.
-		if ( $new_activity_id && in_array( $activity_type, array( 'activity_share', 'post_share' ) ) ) {
-			$meta_key    = 'share_count';  // Using a common meta key.
-			$share_count = ( $activity_type == 'activity_share' ) ?
-				(int) bp_activity_get_meta( $activity_id, $meta_key, true ) :
-				(int) get_post_meta( $activity_id, $meta_key, true );
-
-			// Batch update meta to reduce database queries.
-			$share_count = ( $share_count ) ? $share_count + 1 : 1;
-
-			if ( $activity_type == 'activity_share' ) {
-				bp_activity_update_meta( $activity_id, $meta_key, $share_count );
-			} else {
-				update_post_meta( $activity_id, $meta_key, $share_count );
-			}
-
-			wp_send_json_success( array( 'share_count' => $share_count ) );
-		} else {
-			wp_send_json_error( 'Failed to create reshare activity' );
+		if ( ! $new_activity_id ) {
+			wp_send_json_error( array( 'message' => 'Failed to create activity' ) );
 		}
 
-		die();
+		// Only update share count for activity_share or post_share types
+		if ( ! in_array( $activity_type, array( 'activity_share', 'post_share' ), true ) ) {
+			wp_send_json_success();
+		}
+
+		// Update share count
+		$meta_key    = 'share_count';
+		$is_post     = ( 'post_share' === $activity_type );
+		$share_count = $is_post 
+			? (int) get_post_meta( $activity_id, $meta_key, true ) 
+			: (int) bp_activity_get_meta( $activity_id, $meta_key, true );
+
+		// Increment share count
+		$share_count++;
+
+		// Update meta based on type
+		if ( $is_post ) {
+			update_post_meta( $activity_id, $meta_key, $share_count );
+		} else {
+			bp_activity_update_meta( $activity_id, $meta_key, $share_count );
+		}
+
+		wp_send_json_success( array( 'share_count' => $share_count ) );
 	}
 
 	public function bp_activity_share_get_where_conditions( $where_conditions ) {
