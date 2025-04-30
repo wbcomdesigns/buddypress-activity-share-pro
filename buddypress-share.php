@@ -337,12 +337,13 @@ add_action( 'admin_init', 'bp_share_pro_set_default_option' );
 
 require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';
 
-$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-    'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-activity-share-pro.json',
-    __FILE__, 
-    'buddypress-activity-share-pro'
-);
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
+$myUpdateChecker = PucFactory::buildUpdateChecker(
+	'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-activity-share-pro.json',
+	__FILE__,
+	'buddypress-activity-share-pro'
+);
 
 /**
  * This function handles sharing an activity URL on the compose message box in BuddyPress or BuddyBoss.
