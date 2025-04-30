@@ -4,8 +4,8 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com
 Tags: buddypress, activity, share
 Requires at least: 4.0
-Tested up to: 6.7.1
-Stable tag: 1.4.0
+Tested up to: 6.8.2
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,21 +35,31 @@ This section describes how to install the plugin and get it working.
 
 3. Activate the plugin through the \'Plugins\' menu.
 
-4. Alternatively you can use WordPress Plugin installer from Dashboard->Plugins->Add New to add this plugin
+4. Alternatively, you can use the WordPress Plugin installer from Dashboard->Plugins->Add New to add this plugin
 
 5. Enjoy
 
-If you need additional help you can contact us for [Custom Development](https://wbcomdesigns.com/hire-us/).
+If you need additional help, contact us for [Custom Development](https://wbcomdesigns.com/hire-us/).
 
 
 == Frequently Asked Questions ==
 
-= Is this plugin requires another plugin? =
-Yes, this plugin requires BuddyPress plugin.
+= Does this plugin require another plugin? =
+Yes, this plugin requires the  BuddyPress plugin.
 
 == Changelog ==
 
 == Changelog ==
+= 1.5.0 =
+* Updated: Plugin Update Checker to v5 (PucFactory) with modern initialization for better reliability.  
+* Optimized: `bp_activity_create_reshare_ajax` function for enhanced **security**, **performance**, and **readability**.  
+* Added: Filter support for **shortcode compatibility**.  
+* Improved: Activity share popup now appears correctly on media modals when using the BuddyBoss theme.  
+* Enhanced: Display of “time since” on reshared posts with BuddyBoss integration.  
+* Updated: Dependencies, and improved handling of “Read More” in reshared activity content.  
+* Fixed: GamiPress compatibility – user earnings are now properly awarded on shared activities.  
+* Cleaned: RTL CSS and JS file translation logic, and removed unused/commented code.
+
 = 1.4.0 =
 * Fixed escaping functions for improved security.
 * Fixed issue with social dropdown not showing in logout mode with BuddyX Pro.
