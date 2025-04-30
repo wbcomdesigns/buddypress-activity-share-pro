@@ -1805,8 +1805,8 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 /* Share popup */
 .activity-share-modal.my-profile .select2-dropdown,
 .activity-share-modal.message .select2-dropdown,
-.activity-share-modal.select-group [aria-label="Friend lists"],
-.activity-share-modal.select-friend [aria-label="Group lists"] {
+.activity-share-modal.select-group [aria-label="Friend list"],
+.activity-share-modal.select-friend [aria-label="Group list"] {
     display: none;
 }
 

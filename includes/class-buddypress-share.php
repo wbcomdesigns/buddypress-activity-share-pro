@@ -173,7 +173,7 @@ class Buddypress_Share {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-		$theme_support = apply_filters( 'buddyPress_reactions_theme_suuport', array( 'reign-theme', 'buddyx-pro' ) );
+		$theme_support = apply_filters( 'buddypress_reactions_theme_support', array( 'reign-theme', 'buddyx-pro' ) );
 		$theme_name    = wp_get_theme();
 
 		$plugin_public = new Buddypress_Share_Public( $this->get_plugin_name(), $this->get_version() );

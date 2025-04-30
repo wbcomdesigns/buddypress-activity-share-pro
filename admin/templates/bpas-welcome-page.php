@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="wbcom-welcome-content">
 			<div class="wbcom-welcome-support-info">
 				<h3><?php esc_html_e( 'Help &amp; Support Resources', 'buddypress-share' ); ?></h3>
-				<p><?php esc_html_e( 'Here are all the resources you may need to get help from us. Documentation is usually the best place to start. Should you require help anytime, our customer care team is available to assist you at the support center.', 'buddypress-share' ); ?></p>
+				<p><?php esc_html_e( 'Here are resources to help you get started. Documentation is usually the best place to start. Should you require help anytime, our customer care team is available to assist you at the support center.', 'buddypress-share' ); ?></p>
 
 				<div class="wbcom-support-info-wrap">
 					<div class="wbcom-support-info-widgets">

@@ -28,7 +28,7 @@ $extra_options                   = get_site_option( 'bp_share_services_extra' );
 
 					<div id="social_share_logout_wrap" class="wbcom-settings-section-wrap">
 						<div class="wbcom-settings-section-options-heading">
-							<label for="bp_share_services_logout_enable"><strong><?php esc_html_e( 'Social Share In Logout Mode', 'buddypress-share' ); ?></strong></label>
+							<label for="bp_share_services_logout_enable"><strong><?php esc_html_e( 'Social Share in Logout Mode', 'buddypress-share' ); ?></strong></label>
 							<p class="description"><?php esc_html_e( 'Enable this option to display social share icons when the user is logged out.', 'buddypress-share' ); ?></p>
 						</div>
 						<div id="bp_share_chb" class="wbcom-settings-section-options">
@@ -72,7 +72,7 @@ $extra_options                   = get_site_option( 'bp_share_services_extra' );
 									<?php } if ( empty( $get_social_value['E-mail'] ) ) { ?>
 									<li class="socialicon icon_Gmail" name="icon_gmail"><?php esc_html_e( 'E-mail', 'buddypress-share' ); ?></li>
 									<?php } if ( empty( $get_social_value['Whatsapp'] ) ) { ?>
-									<li class="socialicon icon_WhatAapp" name="icon_whatsapp"><?php esc_html_e( 'Whatsapp', 'buddypress-share' ); ?></li>
+									<li class="socialicon icon_WhatAapp" name="icon_whatsapp"><?php esc_html_e( 'WhatsApp', 'buddypress-share' ); ?></li>
 								<?php } ?>
 							</ul>
 							<ul id="drag_icon_ul">
@@ -101,7 +101,7 @@ $extra_options                   = get_site_option( 'bp_share_services_extra' );
 								<?php } if ( ! empty( $get_social_value['E-mail'] ) ) { ?>
 									<li class="socialicon icon_Gmail" name="icon_gmail"><?php esc_html_e( 'E-mail', 'buddypress-share' ); ?></li>
 								<?php } if ( ! empty( $get_social_value['Whatsapp'] ) ) { ?>
-									<li class="socialicon icon_WhatsApp" name="icon_whatsapp"><?php esc_html_e( 'Whatsapp', 'buddypress-share' ); ?></li>
+									<li class="socialicon icon_WhatsApp" name="icon_whatsapp"><?php esc_html_e( 'WhatsApp', 'buddypress-share' ); ?></li>
 								<?php } ?>
 							</ul>
 						</section>
@@ -110,9 +110,9 @@ $extra_options                   = get_site_option( 'bp_share_services_extra' );
 				<div class="wbcom-settings-section-wrap form-table">
 					<div class="wbcom-settings-section-options-heading">
 						<label>
-							<?php esc_html_e( 'Open as popup window', 'buddypress-share' ); ?>
+							<?php esc_html_e( 'Open as a popup window', 'buddypress-share' ); ?>
 						</label>
-						<p class="decription"><?php esc_html_e( 'Default is set to open window in popup. If this option is disabled then services open in new tab instead popup.', 'buddypress-share' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Default is set to open windows in a popup. If this option is disabled, services will open in a new tab instead of a popup.', 'buddypress-share' ); ?></p>
 					</div>
 
 					<div class="wbcom-settings-section-options">
@@ -146,7 +146,7 @@ $extra_options                   = get_site_option( 'bp_share_services_extra' );
 				</p>
 			</form>
 
-			<?php do_action( 'bp_share_add_services_options', $arg1 = '', $arg2 = '' ); ?>
+			<?php do_action( 'bp_share_add_services_options' ); ?>
 		</div>
 	</div>
 </div>

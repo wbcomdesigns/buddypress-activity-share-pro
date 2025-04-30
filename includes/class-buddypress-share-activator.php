@@ -19,7 +19,7 @@
  */
 class Buddypress_Share_Activator {
 	/**
-	 * Short Description. (use period)
+	 * Short Description.
 	 * Long Description.
 	 *
 	 * @since    1.0.0

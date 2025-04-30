@@ -111,7 +111,7 @@ const { __, _x, _n, sprintf } = wp.i18n;
 			e.preventDefault();
 			var activity_id = '';
 			var activity_html = '';
-			var reshare_share_activity = bp_activity_sjare_vars.reshare_share_activity;			
+			var reshare_share_activity = bp_activity_share_vars.reshare_share_activity;			
 			
 			if ( $(this).parents('.bp-generic-meta.action').hasClass( 'photos-meta' ) 
 					|| $(this).parents('.bp-generic-meta.action').hasClass( 'videos-meta' )
@@ -120,12 +120,12 @@ const { __, _x, _n, sprintf } = wp.i18n;
 				) {
 				activity_id = $(this).data('activity-id');
 				$.ajax({
-					url: bp_activity_sjare_vars.ajax_url,
+					url: bp_activity_share_vars.ajax_url,
 					method: 'POST',
 					data: {
 						action: 'bp_share_get_activity_content',						
 						activity_id: activity_id,												
-						_ajax_nonce: bp_activity_sjare_vars.ajax_nonce
+						_ajax_nonce: bp_activity_share_vars.ajax_nonce
 					},
 					dataType: 'json',
 					success: function(response) {
@@ -214,7 +214,7 @@ const { __, _x, _n, sprintf } = wp.i18n;
             var activity_in_type = $('#activity-share-modal #post-in option:selected').data( 'type' );
 
             jQuery.ajax({
-                url: bp_activity_sjare_vars.ajax_url,
+                url: bp_activity_share_vars.ajax_url,
                 method: 'POST',
                 data: {
                     action: 'bp_activity_create_reshare_ajax',
@@ -225,7 +225,7 @@ const { __, _x, _n, sprintf } = wp.i18n;
                     activity_in: activity_in,
                     activity_in_type: activity_in_type,
                     type: type,
-                    _ajax_nonce: bp_activity_sjare_vars.ajax_nonce
+                    _ajax_nonce: bp_activity_share_vars.ajax_nonce
                 },
                 dataType: 'text',
                 success: function(data) {

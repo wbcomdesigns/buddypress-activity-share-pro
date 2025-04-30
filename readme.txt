@@ -109,8 +109,8 @@ Yes, this plugin requires the  BuddyPress plugin.
 = 1.2.2 =
 * Updated: Share activity URL
 * Updated: (#135) Labels
-* Updated: (#135) Lable, content, top banner, and doc link
-* Updated: (#135) Lable, content, top banner, and doc link
+* Updated: (#135) Label, content, top banner, and doc link
+* Updated: (#135) Label, content, top banner, and doc link
 * Updated: (#135) Tooltip text position
 * Updated: (#135) Copy bottom tooltip position
 * Fix: Bp v12 fixes

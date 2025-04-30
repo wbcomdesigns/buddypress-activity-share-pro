@@ -79,7 +79,7 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 					</div>
 					<div class="wbcom-settings-section-wrap">
 						<div class="wbcom-settings-section-options-heading">
-							<label><?php esc_html_e( 'Reshare share Activity', 'buddypress-share' ); ?></label>
+							<label><?php esc_html_e( 'Reshare Activity', 'buddypress-share' ); ?></label>
 						</div>
 						<div class="wbcom-settings-section-options">
 							<ul>
