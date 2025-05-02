@@ -781,10 +781,12 @@ class Buddypress_Share_Public {
 
 		// Validate and sanitize required parameters
 		$user_id       = get_current_user_id();
-		$activity_id   = isset( $_POST['activity_id'] ) ? absint( $_POST['activity_id'] ) : 0;
-		$activity_type = isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
+		// $activity_id   = isset( $_POST['activity_id'] ) ? absint( $_POST['activity_id'] ) : 0;
+		$activity_id   = absint( $_POST['activity_id'] ?? 0 );
+		// $activity_type = isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : '';
+		$activity_type = sanitize_key( $_POST['type'] ?? '' );
 
-		if ( empty( $activity_id ) || empty( $activity_type ) ) {
+		if ( ! $activity_id || ! $activity_type ) {
 			wp_send_json_error( array( 'message' => 'Missing required parameters' ) );
 		}
 
