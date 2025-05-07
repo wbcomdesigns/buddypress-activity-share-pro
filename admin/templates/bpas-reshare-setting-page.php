@@ -2,6 +2,13 @@
 
 $bp_reshare_settings          = get_site_option( 'bp_reshare_settings' );
 $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
+
+$bp_reshare_settings_save_notice   = "display:none";
+
+if( isset( $_GET['settings-updated'] ) && ( 'true' == $_GET['settings-updated'] ) ){
+	$bp_reshare_settings_save_notice = '';
+}
+
 ?>
 <div class="wbcom-tab-content">
 	<div class="wbcom-wrapper-admin">
@@ -9,7 +16,11 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 			<h3><?php esc_html_e( 'Share Settings', 'buddypress-share' ); ?></h3>
 		</div>
 		<div class="wbcom-admin-option-wrap wbcom-admin-option-wrap-view">
-			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
+			<div class="bpas-save-option-message" style=<?php echo esc_attr( $bp_reshare_settings_save_notice ); ?>>
+				<p><strong><?php esc_html_e( 'Settings saved successfully.', 'buddypress-share' ); ?></strong></p>
+				<button type="button" class="notice-dismiss"></button>
+			</div>	
+		<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_reshare_form">
 				<?php wp_nonce_field( 'update-options' ); ?>
 				<div class="form-table">
 					<div class="wbcom-settings-section-wrap">
@@ -95,10 +106,10 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 								</li>									
 							</ul>	
 						</div>
-					</div>
-					<p class="submit">
-						<input type="submit" class="button button-primary" name="bpas_submit_reshare_options"  value="<?php esc_html_e( 'Save Changes', 'buddypress-share' ); ?>" />
-					</p>
+				</div>
+				<p class="submit">
+					<input type="submit" class="button button-primary" name="bpas_submit_reshare_options"  value="<?php esc_html_e( 'Save Changes', 'buddypress-share' ); ?>" />
+				</p>
 				</div>
 			</form>
 		</div>

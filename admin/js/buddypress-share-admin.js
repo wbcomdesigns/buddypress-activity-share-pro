@@ -111,5 +111,15 @@ jQuery(function () {
 		$('#bp_share_services_enable').on('change', function() {
 			toggleLogoutOption();
 		});
+
+		// Make notices dismissible
+		$(document).on('click', '.notice-dismiss', function () {
+			$('.bpas-save-option-message').fadeOut(300, function () {
+				$(this).remove();
+			});
+		});
+
 	});
+
+	
 });

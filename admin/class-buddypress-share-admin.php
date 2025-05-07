@@ -290,7 +290,7 @@ class Buddypress_Share_Admin {
 	public function bp_share_settings_init() {
 
 		if ( isset( $_POST['bpas_submit_general_options'] ) && ! defined( 'DOING_AJAX' ) ) {
-
+			
 			$service_enable = isset( $_POST['bp_share_services_enable'] ) ? sanitize_text_field( $_POST['bp_share_services_enable'] ) : '';
 			update_site_option( 'bp_share_services_enable', $service_enable );
 
@@ -308,7 +308,7 @@ class Buddypress_Share_Admin {
 		if ( isset( $_POST['bpas_submit_reshare_options'] ) && ! defined( 'DOING_AJAX' ) ) {
 			$share_options = isset( $_POST['bp_reshare_settings'] ) ? $_POST['bp_reshare_settings'] : '';
 			update_site_option( 'bp_reshare_settings', $share_options );
-			wp_redirect( $_POST['_wp_http_referer'] ); //phpcs:ignore
+			wp_redirect( $_POST['_wp_http_referer'].'&settings-updated=true' ); //phpcs:ignore
 			exit();
 
 		}

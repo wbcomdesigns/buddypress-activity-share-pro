@@ -2,6 +2,13 @@
 $bp_share_services_enable        = get_site_option( 'bp_share_services_enable' );
 $bp_share_services_logout_enable = get_site_option( 'bp_share_services_logout_enable' );
 $extra_options                   = get_site_option( 'bp_share_services_extra' );
+
+$bp_share_settings_save_notice   = "display:none";
+
+if( isset( $_GET['settings-updated'] ) && ( 'true' == $_GET['settings-updated'] ) ){
+	$bp_share_settings_save_notice = '';
+}
+
 ?>
 <div class="wbcom-tab-content">
 	<div class="wbcom-wrapper-admin">
@@ -11,7 +18,12 @@ $extra_options                   = get_site_option( 'bp_share_services_extra' );
 		</div>
 
 		<div class="wbcom-admin-option-wrap wbcom-admin-option-wrap-view">
-			<div class="save-option-message"></div>
+			
+			<div class="bpas-save-option-message" style=<?php echo esc_attr( $bp_share_settings_save_notice ); ?>>
+				<p><strong><?php esc_html_e( 'Settings saved successfully.', 'buddypress-share' ); ?></strong></p>
+				<button type="button" class="notice-dismiss"></button>
+			</div>
+			
 			<div class="option-not-save-message"></div>
 			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_share_form">
 				<?php wp_nonce_field( 'update-options' ); ?>

@@ -1897,3 +1897,39 @@ ul.wb-social-icon-color-option {
 .wbcom-social-icon-style input[type=radio]:checked+img {
   border-color: #334fff;
 }
+
+.bpas-save-option-message {
+    position: absolute;
+    right: 50px;
+    z-index: 99;
+    margin-top: -40px;
+    border-radius: 10px;
+    line-height: normal;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: #10AB00;
+}
+
+@media screen and (min-width: 1190px) {
+    [dir='rtl'] .bpas-save-option-message {
+        left: 50px;
+        right: auto;
+    }
+}
+
+@media screen and (max-width: 1189px) {
+    .bpas-save-option-message {
+        margin: 0;
+        position: relative;
+        right: auto;
+        left: auto;
+    }
+}
+.notice-dismiss {
+    cursor: pointer;
+}
+
+.bpas-save-option-message button.notice-dismiss:before {
+    color: red !important;
+}
