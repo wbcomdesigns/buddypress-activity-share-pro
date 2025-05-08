@@ -212,7 +212,11 @@ const { __, _x, _n, sprintf } = wp.i18n;
             var activity_in = $('#activity-share-modal #post-in').val();
             var type = $('#activity-share-modal #bp-reshare-type').val();
             var activity_in_type = $('#activity-share-modal #post-in option:selected').data( 'type' );
-
+            var post_in  = $( '#post-in' ).val();
+            if( null === post_in ){
+                $('.bp_activity_share_modal_error_message').show();
+                return false;
+            }
             jQuery.ajax({
                 url: bp_activity_share_vars.ajax_url,
                 method: 'POST',
