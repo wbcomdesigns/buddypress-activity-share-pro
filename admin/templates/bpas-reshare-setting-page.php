@@ -15,12 +15,12 @@ if( isset( $_GET['settings-updated'] ) && ( 'true' == $_GET['settings-updated'] 
 		<div class="wbcom-admin-title-section">
 			<h3><?php esc_html_e( 'Share Settings', 'buddypress-share' ); ?></h3>
 		</div>
+		<div class="bpas-save-option-message" style=<?php echo esc_attr( $bp_reshare_settings_save_notice ); ?>>
+			<p><strong><?php esc_html_e( 'Settings saved successfully.', 'buddypress-share' ); ?></strong></p>
+			<button type="button" class="notice-dismiss"></button>
+		</div>	
 		<div class="wbcom-admin-option-wrap wbcom-admin-option-wrap-view">
-			<div class="bpas-save-option-message" style=<?php echo esc_attr( $bp_reshare_settings_save_notice ); ?>>
-				<p><strong><?php esc_html_e( 'Settings saved successfully.', 'buddypress-share' ); ?></strong></p>
-				<button type="button" class="notice-dismiss"></button>
-			</div>	
-		<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_reshare_form">
+			<form method="post" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" id="bp_reshare_form">
 				<?php wp_nonce_field( 'update-options' ); ?>
 				<div class="form-table">
 					<div class="wbcom-settings-section-wrap">

@@ -1890,11 +1890,60 @@ ul.wb-social-icon-color-option {
     flex-wrap: wrap;
     justify-content: space-between;
 }
+
 .wbcom-social-icon-style .wbcom-settings-section-options label {
     width: 25%;
 }
 
 .wbcom-social-icon-style input[type=radio]:checked+img {
   border-color: #334fff;
+}
+
+.bpas-save-option-message {
+    position: absolute;
+    left: 50px;
+    z-index: 99;
+    margin-top: -40px;
+    border-radius: 10px;
+    line-height: normal;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: #10AB00;
+    display: flex;
+    align-items: center;
+}
+
+.bpas-save-option-message .notice-dismiss {
+    position: static;
+}
+
+@media screen and (max-width: 1189px) {
+    .bpas-save-option-message {
+        margin: 0;
+        position: relative;
+        left: auto;
+        right: auto;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .wbcom-social-icon-style .wbcom-settings-section-options label {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .wbcom-social-icon-style .wbcom-settings-section-options label {
+        width: 100%;
+    }
+}
+
+.notice-dismiss {
+    cursor: pointer;
+}
+
+.bpas-save-option-message button.notice-dismiss:before {
+    color: red !important;
 }
 /*# sourceMappingURL=buddypress-share-admin.css.map */

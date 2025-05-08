@@ -11,11 +11,11 @@ if( isset( $_GET['settings-updated'] ) && ( 'true' == $_GET['settings-updated'] 
 	<div class="wbcom-admin-title-section">
 		<h3><?php esc_html_e( 'Icon Settings', 'buddypress-share' ); ?></h3>
 	</div>
+	<div class="bpas-save-option-message" style=<?php echo esc_attr( $bp_share_icon_settings_save_notice ); ?>>
+		<p><strong><?php esc_html_e( 'Settings saved successfully.', 'buddypress-share' ); ?></strong></p>
+		<button type="button" class="notice-dismiss"></button>
+	</div>	
 	<div class="wbcom-admin-option-wrap wb-activity-share-color-icons wbcom-admin-option-wrap-view">
-		<div class="bpas-save-option-message" style=<?php echo esc_attr( $bp_share_icon_settings_save_notice ); ?>>
-			<p><strong><?php esc_html_e( 'Settings saved successfully.', 'buddypress-share' ); ?></strong></p>
-			<button type="button" class="notice-dismiss"></button>
-		</div>	
 		<div class="option-not-save-message"></div>
 		<form method="post" action="options.php">
 			<?php

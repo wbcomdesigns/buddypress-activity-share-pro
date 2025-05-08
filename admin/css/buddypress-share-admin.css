@@ -1890,6 +1890,7 @@ ul.wb-social-icon-color-option {
     flex-wrap: wrap;
     justify-content: space-between;
 }
+
 .wbcom-social-icon-style .wbcom-settings-section-options label {
     width: 25%;
 }
@@ -1909,13 +1910,12 @@ ul.wb-social-icon-color-option {
     border: none;
     box-shadow: none;
     color: #10AB00;
+    display: flex;
+    align-items: center;
 }
 
-@media screen and (min-width: 1190px) {
-    [dir='rtl'] .bpas-save-option-message {
-        left: 50px;
-        right: auto;
-    }
+.bpas-save-option-message .notice-dismiss {
+    position: static;
 }
 
 @media screen and (max-width: 1189px) {
@@ -1926,6 +1926,19 @@ ul.wb-social-icon-color-option {
         left: auto;
     }
 }
+
+@media screen and (max-width: 767px) {
+    .wbcom-social-icon-style .wbcom-settings-section-options label {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .wbcom-social-icon-style .wbcom-settings-section-options label {
+        width: 100%;
+    }
+}
+
 .notice-dismiss {
     cursor: pointer;
 }
