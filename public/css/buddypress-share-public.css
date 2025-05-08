@@ -12,7 +12,6 @@
     # BuddyX
     # Gwangi
 # BB Platform
-# RTL Fixes
 # Icons Styles
     # Circle/Rec Style
     # Black/White Style
@@ -1138,43 +1137,6 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 
 .buddyboss-theme #buddypress .activity-reshare-item-container .activity-time-since:before {
     content: none;
-}
-
-/*--------------------------------------------------------------
-# RTL Fixes
---------------------------------------------------------------*/
-
-[dir='rtl'] .bp-activity-reshare-icon {
-    margin-right: 0;
-    margin-left: 2px;
-}
-
-[dir='rtl'] .bp-activity-reshare-count {
-    margin-left: 0;
-    margin-right: 2px;
-}
-
-[dir='rtl'] .activity-share-modal .bp-activity-share-avatar {
-    padding-left: 0;
-    padding-right: 55px;
-}
-
-[dir='rtl'] .activity-share-modal .bp-activity-share-avatar>a {
-    left: auto;
-    right: 0;
-}
-
-[dir='rtl'] .bp-activity-post-share-btn .reshare-count {
-    margin-left: 0;
-    margin-right: 10px;
-}
-
-[dir='rtl'] .activity-share-modal .post-preview .post-preview-info .post-preview-timestamp span.link.cat-links i,
-[dir='rtl'] .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.cat-links i,
-[dir='rtl'] .activity-share-modal .post-preview .post-preview-info .post-preview-timestamp span.link.date-links i,
-[dir='rtl'] .post-reshare-item-container .post-preview .post-preview-info .post-preview-timestamp span.link.date-links i {
-    margin-right: 0;
-    margin-left: 4px;
 }
 
 /*--------------------------------------------------------------
