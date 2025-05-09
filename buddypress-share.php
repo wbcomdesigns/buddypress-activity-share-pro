@@ -100,7 +100,7 @@ function run_buddypress_share_pro() {
  * Check plugin requirements on plugins loaded
  * This plugin requires BuddyPress to be installed and active
  */
-add_action( 'bp_loaded', 'bpshare_pro_plugin_init' );
+add_action( 'init', 'bpshare_pro_plugin_init' );
 
 /**
  * Plugin init
