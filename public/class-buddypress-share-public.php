@@ -653,7 +653,7 @@ class Buddypress_Share_Public {
 									</a>
 									<span class="user-name"><?php echo esc_html( $user_name ); ?></span>
 									<small class="user-status-text"><?php esc_html_e( 'Status Update', 'buddypress-share' ); ?></small>
-									<small class="bp_activity_share_modal_error_message" hidden><?php esc_html_e( 'Please select the group to post activity.', 'buddypress-share' );?></small>
+									<small class="bp_activity_share_modal_error_message" hidden><?php esc_html_e( 'Please select post in field to post activity.', 'buddypress-share' );?></small>
 								</div>
 								<div class="bp-activity-share-filter">
 									<div class="form-item">
