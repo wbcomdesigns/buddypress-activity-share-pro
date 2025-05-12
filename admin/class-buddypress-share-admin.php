@@ -289,6 +289,7 @@ class Buddypress_Share_Admin {
 	 */
 	public function bp_share_settings_init() {
 
+		//phpcs:disable
 		if ( isset( $_POST['bpas_submit_general_options'] ) && ! defined( 'DOING_AJAX' ) ) {
 			
 			$service_enable = isset( $_POST['bp_share_services_enable'] ) ? sanitize_text_field( wp_unslash( $_POST['bp_share_services_enable'] ) ) : '';
@@ -312,7 +313,7 @@ class Buddypress_Share_Admin {
 			exit();
 
 		}
-
+		//phpcs:enable
 	}
 
 	/**

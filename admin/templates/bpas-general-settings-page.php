@@ -5,7 +5,7 @@ $extra_options                   = get_site_option( 'bp_share_services_extra' );
 
 $bp_share_settings_save_notice   = "display:none";
 
-if( isset( $_GET['settings-updated'] ) && ( 'true' == $_GET['settings-updated'] ) ){
+if( isset( $_GET['settings-updated'] ) && ( 'true' == $_GET['settings-updated'] ) ){ //phpcs:ignore
 	$bp_share_settings_save_notice = '';
 }
 

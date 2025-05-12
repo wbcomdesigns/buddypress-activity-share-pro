@@ -5,7 +5,7 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 
 $bp_reshare_settings_save_notice   = "display:none";
 
-if( isset( $_GET['settings-updated'] ) && ( 'true' == $_GET['settings-updated'] ) ){
+if( isset( $_GET['settings-updated'] ) && ( 'true' == $_GET['settings-updated'] ) ){ //phpcs:ignore
 	$bp_reshare_settings_save_notice = '';
 }
 

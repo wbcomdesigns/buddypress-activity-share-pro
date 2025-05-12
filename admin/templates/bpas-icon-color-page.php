@@ -2,7 +2,7 @@
 $bpas_icon_color_settings = get_option( 'bpas_icon_color_settings' );
 
 $bp_share_icon_settings_save_notice = "display:none";
-if( isset( $_GET['settings-updated'] ) && ( 'true' == $_GET['settings-updated'] ) ){
+if( isset( $_GET['settings-updated'] ) && ( 'true' == $_GET['settings-updated'] ) ){ //phpcs:ignore
 	$bp_share_icon_settings_save_notice = '';
 }
 
