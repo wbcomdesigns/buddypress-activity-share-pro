@@ -291,22 +291,22 @@ class Buddypress_Share_Admin {
 
 		if ( isset( $_POST['bpas_submit_general_options'] ) && ! defined( 'DOING_AJAX' ) ) {
 			
-			$service_enable = isset( $_POST['bp_share_services_enable'] ) ? sanitize_text_field( $_POST['bp_share_services_enable'] ) : '';
+			$service_enable = isset( $_POST['bp_share_services_enable'] ) ? sanitize_text_field( wp_unslash( $_POST['bp_share_services_enable'] ) ) : '';
 			update_site_option( 'bp_share_services_enable', $service_enable );
 
-			$service_enable_logout = isset( $_POST['bp_share_services_logout_enable'] ) ? sanitize_text_field( $_POST['bp_share_services_logout_enable'] ) : '';
+			$service_enable_logout = isset( $_POST['bp_share_services_logout_enable'] ) ? sanitize_text_field( wp_unslash( $_POST['bp_share_services_logout_enable'] ) ) : '';
 			update_site_option( 'bp_share_services_logout_enable', $service_enable_logout );
 
 			/**
 			 * We are saving the popup option as array again as it was previously saved in a similar manner.
 			 */
-			$popup_option['bp_share_services_open'] = isset( $_POST['bp_share_services_open'] ) ? sanitize_text_field( $_POST['bp_share_services_open'] ) : '';
+			$popup_option['bp_share_services_open'] = isset( $_POST['bp_share_services_open'] ) ? sanitize_text_field( wp_unslash( $_POST['bp_share_services_open'] ) ) : '';
 			update_site_option( 'bp_share_services_extra', $popup_option );
 
 		}
 
 		if ( isset( $_POST['bpas_submit_reshare_options'] ) && ! defined( 'DOING_AJAX' ) ) {
-			$share_options = isset( $_POST['bp_reshare_settings'] ) ? $_POST['bp_reshare_settings'] : '';
+			$share_options = isset( $_POST['bp_reshare_settings'] ) ? $_POST['bp_reshare_settings'] : ''; //phpcs:ignore
 			update_site_option( 'bp_reshare_settings', $share_options );
 			wp_redirect( $_POST['_wp_http_referer'].'&settings-updated=true' ); //phpcs:ignore
 			exit();

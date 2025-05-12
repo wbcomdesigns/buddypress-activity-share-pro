@@ -202,7 +202,7 @@ class Buddypress_Share_Public {
 		$activity_link  = site_url() . '/' . bp_get_members_slug() . '/' . $activities_template->activity->user_nicename . '/' . bp_get_activity_slug() . '/' . $activities_template->activity->id . '/';
 		$activity_title = bp_get_activity_feed_item_title(); // use for description : bp_get_activity_feed_item_description().
 		$plugin_path    = plugins_url();
-		$mail_subject   = strip_tags( $activities_template->activity->action );
+		$mail_subject   = wp_strip_all_tags( $activities_template->activity->action );
 		if ( ! is_user_logged_in() ) {
 			echo '<div class = "activity-meta" >';
 		}
@@ -792,7 +792,7 @@ class Buddypress_Share_Public {
 		}
 
 		// Handle user mentions in activity content
-		$activity_content = sanitize_textarea_field( $_POST['activity_content'] ?? '' );
+		$activity_content = sanitize_textarea_field( wp_unslash( $_POST['activity_content'] ) ?? '' ); //phpcs:ignore
 		$activity_in      = isset( $_POST['activity_in'] ) ? absint( $_POST['activity_in'] ) : 0;
 		
 		if ( isset( $_POST['activity_in_type'] ) && 'user' === $_POST['activity_in_type'] ) {
@@ -1074,8 +1074,8 @@ class Buddypress_Share_Public {
 	public function bp_share_get_activity_content() {
 		check_ajax_referer( 'bp-activity-share-nonce', '_ajax_nonce' );
 
-		$activity_id = sanitize_text_field( $_POST['activity_id'] );
-
+		$activity_id = !empty( $_POST['activity_id'] ) ? sanitize_text_field( wp_unslash( $_POST['activity_id'] ) ) : 0;
+		
 		ob_start();
 		if ( bp_has_activities( 'include=' . $activity_id ) ) {
 			while ( bp_activities() ) {
