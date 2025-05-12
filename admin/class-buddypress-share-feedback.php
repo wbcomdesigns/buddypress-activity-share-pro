@@ -178,7 +178,7 @@ if ( ! class_exists( 'BP_Share_Feedback' ) ) :
 			// Bail out if nonce is not set, verification fails, or user doesn't have proper capabilities.
 			if (
 				! isset( $_GET['_wpnonce'] ) ||
-				! wp_verify_nonce( sanitize_text_field( wp_unslashed( $_GET['_wpnonce'] ) ), 'buddypress-share-feedback-nonce' ) ||
+				! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'buddypress-share-feedback-nonce' ) ||
 				! current_user_can( 'manage_options' ) ||
 				! isset( $_GET[ $this->nobug_option ] )
 			) {
