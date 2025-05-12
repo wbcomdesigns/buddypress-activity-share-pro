@@ -347,6 +347,8 @@ class Buddypress_Share_Admin {
 	 **/
 	public function wss_social_remove_icons() {
 		$nonce = ! empty( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+		$update_drag_value = '';
+		
 		if ( ! wp_verify_nonce( $nonce, 'bp_share_nonce' ) && ! current_user_can( 'manage_options' ) ) {
 			$error = new WP_Error( '001', 'Sorry, your nonce did not verify.', 'Some information' );
 			wp_send_json_error( $error );
