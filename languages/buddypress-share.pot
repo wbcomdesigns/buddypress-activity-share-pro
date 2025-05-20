@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-08T07:56:17+00:00\n"
+"POT-Creation-Date: 2025-05-20T13:39:33+05:30\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: buddypress-share\n"
@@ -44,7 +44,7 @@ msgid "General"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:141
-msgid "BuddyPress Share"
+msgid "Activity Share Pro"
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:155
@@ -1142,7 +1142,7 @@ msgid "Status Update"
 msgstr ""
 
 #: public/class-buddypress-share-public.php:656
-msgid "Please select the group to post activity."
+msgid "Please select post in field to post activity."
 msgstr ""
 
 #: public/class-buddypress-share-public.php:661
@@ -1185,14 +1185,26 @@ msgctxt "list item separator"
 msgid ", "
 msgstr ""
 
-#: public/js/buddypress-share-public.js:87
+#: public/js/buddypress-share-public.js:195
+msgid "Failed to fetch activity content"
+msgstr ""
+
+#: public/js/buddypress-share-public.js:279
+msgid "Failed to share activity"
+msgstr ""
+
+#: public/js/buddypress-share-public.js:283
+msgid "AJAX request failed"
+msgstr ""
+
+#: public/js/buddypress-share-public.js:339
 msgid "Copied!"
 msgstr ""
 
-#: public/js/buddypress-share-public.js:87
+#: public/js/buddypress-share-public.js:340
 msgid "Copy failed"
 msgstr ""
 
-#: public/js/buddypress-share-public.js:90
+#: public/js/buddypress-share-public.js:342
 msgid "Unable to copy"
 msgstr ""

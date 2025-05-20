@@ -1146,11 +1146,11 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 /*--------------------------------------------------------------
 ## Circle/Rec Style
 --------------------------------------------------------------*/
-.service-buttons .bp-cpoy-wrapper {
+.service-buttons .bp-copy-wrapper {
     position: relative;
 }
 
-.service-buttons .bp-cpoy-wrapper span.tooltiptext {
+.service-buttons .bp-copy-wrapper span.tooltiptext {
     position: absolute;
     top: -30px;
     right: -18px;
@@ -1399,7 +1399,7 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     border-color: #1185fe !important;
 }
 
-#buddypress .activity-list .activity-share-dropdown-menu-container.baricon .bp-cpoy .dashicons {
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon .bp-copy .dashicons {
     color: #696f75 !important;
     border-color: #696f75 !important;
 }
@@ -1512,10 +1512,10 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     border-color: #1185fe !important;
 }
 
-#buddypress .activity-list .activity-share-dropdown-menu-container.circle .bp-cpoy .dashicons,
-#buddypress .activity-list .activity-share-dropdown-menu-container.rec .bp-cpoy .dashicons,
-#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite .bp-cpoy:hover .dashicons,
-#buddypress .activity-list .activity-share-dropdown-menu-container.baricon .bp-cpoy:hover .dashicons {
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle .bp-copy .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec .bp-copy .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite .bp-copy:hover .dashicons,
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon .bp-copy:hover .dashicons {
     background: #696f75 !important;
     color: #fff !important;
     border-color: #696f75 !important;
