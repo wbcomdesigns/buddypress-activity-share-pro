@@ -286,6 +286,14 @@ function bpshare_pro_activation_redirect_settings( $plugin ) {
 }
 
 add_filter( 'bp_activity_reshare_post_type', 'bp_activity_reshare_post_disable' );
+
+/**
+ * Function to disable post sharing if the respective option is disabled
+ * @param $post_type array Array of post types.
+ * 
+ * @since 1.0.0
+ * @return $post_type array Modified array of post types.
+ */
 function bp_activity_reshare_post_disable( $post_type ) {
 	$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
 	if ( isset( $bp_reshare_settings['disable_post_reshare_activity'] ) && $bp_reshare_settings['disable_post_reshare_activity'] == 1 ) {
@@ -297,6 +305,11 @@ function bp_activity_reshare_post_disable( $post_type ) {
 	return $post_type;
 }
 
+/** 
+ * Function to enable default social sharing services.
+ * @since 1.0.0
+ * @return void
+ */
 function bp_share_pro_set_default_option() {
 	// Retrieve current services and flag.
 	$services = get_site_option( 'bp_share_services', array() );

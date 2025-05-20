@@ -59,10 +59,7 @@ class Buddypress_Share_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles( $hook ) {
-		// if ( 'wb-plugins_page_buddypress-share' !== $hook ) {
-		// return;
-		// }
-
+		
 		$rtl_css = is_rtl() ? '-rtl' : '';
 
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
@@ -116,6 +113,12 @@ class Buddypress_Share_Admin {
 		);
 	}
 
+	/**
+	 * Function to hide all the admin notices from plugin settings page.
+	 * 
+	 * @since 1.0.0
+	 * @return void
+	 */
 	public function wbcom_hide_all_admin_notices_from_setting_page() {
 		$wbcom_pages_array  = array( 'wbcomplugins', 'wbcom-plugins-page', 'wbcom-support-page', 'buddypress-share' );
 		$wbcom_setting_page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : '';
@@ -275,7 +278,13 @@ class Buddypress_Share_Admin {
 			require_once BP_ACTIVITY_SHARE_PLUGIN_PATH . 'admin/templates/bpas-icon-color-page.php';
 		}
 	}
-
+	
+	/**
+	 * Function to register icon color settings.
+	 * 
+	 * @since 1.0.0
+	 * 
+	 */
 	public function bpas_register_setting() {
 		register_setting( 'bpas_icon_color_settings', 'bpas_icon_color_settings' );
 	}

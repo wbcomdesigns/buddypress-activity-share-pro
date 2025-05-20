@@ -532,6 +532,11 @@ class Buddypress_Share_Public {
 		}
 	}
 
+	/**
+	 * Function to register custom actions for the custom activity types.
+	 * 
+	 * @since 1.0.0
+	 */
 	public function bp_share_register_activity_actions() {
 		$bp = buddypress();
 		bp_activity_set_action(
@@ -573,6 +578,15 @@ class Buddypress_Share_Public {
 		}
 	}
 
+	/**
+	 * Function formats the action of the reshared activity.
+	 * @param $action string Registerd action.
+	 * @param $activity object Activity object.
+	 * 
+	 * @return $action string Activity action.
+	 * @since 1.0.0
+	 * 
+	 */
 	public function bp_share_activity_format_action_activity_reshare( $action, $activity ) {
 		$user_link = bp_core_get_userlink( $activity->user_id );
 		// Set the Activity update posted in a Group action.
@@ -585,6 +599,15 @@ class Buddypress_Share_Public {
 		return $action;
 	}
 
+	/**
+	 * Function formats the action of the activity shared in the group.
+	 * @param $action string Registerd action.
+	 * @param $activity object Activity object.
+	 * 
+	 * @return $action string Activity action.
+	 * @since 1.0.0
+	 * 
+	 */
 	public function bp_share_activity_format_action_group_reshare( $action, $activity ) {
 		$user_link = bp_core_get_userlink( $activity->user_id );
 		$group     = bp_groups_get_activity_group( $activity->item_id );
@@ -605,6 +628,14 @@ class Buddypress_Share_Public {
 		return $action;
 	}
 
+	/**
+	 * Function formats the activity of the post shared by the member.
+	 * @param $content string Activity content.
+	 * 
+	 * @return $content string Activity content.
+	 * @since 1.0.0
+	 * 
+	 */
 	public function bp_activity_post_share_button_action( $content ) {
 		$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
 
@@ -631,6 +662,11 @@ class Buddypress_Share_Public {
 		return $content;
 	}
 
+	/**
+	 * Function used to create a popup box holding the details of the activity/post being shared.
+	 * 
+	 * @since 1.0.0
+	 */
 	public function bp_activity_share_popup_box() {
 
 		/*  Activity Share Popup */
@@ -741,6 +777,11 @@ class Buddypress_Share_Public {
 		}
 	}
 
+	/**
+	 * Function used to format the post inside the popup box at the time of resharing activity/post.
+	 * 
+	 * @since 1.0.0
+	 */
 	public function bp_activity_share_single_post_formate() {
 		$reshare_post_type = apply_filters( 'bp_activity_reshare_post_type', array( 'post' ) );
 
@@ -1087,6 +1128,16 @@ class Buddypress_Share_Public {
 		do_action( 'bp_activity_share_after_post_meta' );
 	}
 
+	/**
+	 * Function to render the share count in the post/activity shared.
+	 * 
+	 * @param $atts Array Shortcode attributes.
+	 * @param $content string Activity content.
+	 * 
+	 * @return $share_count string Activity share count.
+	 * @since 1.0.0
+	 * 
+	 */
 	public function bp_activity_post_reshare( $atts, $content = null ) {
 		ob_start();
 
