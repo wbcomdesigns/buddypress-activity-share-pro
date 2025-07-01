@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -14,7 +13,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * FIXED: All saving issues resolved with proper WordPress Settings API integration
+ * UPDATED: Modern CDN integration with Font Awesome 5.15.4 and optimized asset loading.
  *
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/admin
@@ -42,6 +41,17 @@ class Buddypress_Share_Admin {
 	private $version;
 
 	/**
+	 * Admin CDN assets (lighter than frontend).
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 * @var      array    CDN asset URLs for admin.
+	 */
+	const ADMIN_CDN_ASSETS = [
+		'font_awesome' => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
+	];
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -55,7 +65,6 @@ class Buddypress_Share_Admin {
 
 	/**
 	 * Register the stylesheets for the admin area.
-	 * Use only buddypress-share-admin.css
 	 *
 	 * @since    1.0.0
 	 * @access   public
@@ -67,27 +76,36 @@ class Buddypress_Share_Admin {
 			return;
 		}
 
-		$rtl_css = is_rtl() ? '-rtl' : '';
-		$css_extension = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.css' : '.min.css';
+		$plugin_url = $this->get_plugin_url();
 
-		// Load main admin stylesheet only
+		// Font Awesome 5.15.4 - Only if not already loaded
+		if ( ! $this->is_fontawesome_loaded() ) {
+			wp_enqueue_style( 
+				'bp-share-admin-fontawesome', 
+				self::ADMIN_CDN_ASSETS['font_awesome'],
+				array(), 
+				'5.15.4', 
+				'all' 
+			);
+		}
+		
+		// WordPress Color Picker for icon settings
+		if ( isset( $_GET['section'] ) && 'icons' === $_GET['section'] ) {
+			wp_enqueue_style( 'wp-color-picker' );
+		}
+
+		// Main admin stylesheet
 		wp_enqueue_style( 
 			$this->plugin_name, 
-			plugin_dir_url( __FILE__ ) . 'css' . $rtl_css . '/buddypress-share-admin' . $css_extension, 
+			$plugin_url . 'admin/css/buddypress-share-admin.css', 
 			array(), 
 			$this->version, 
 			'all' 
 		);
-		
-		// Load color picker for icon settings
-		if ( isset( $_GET['section'] ) && 'icons' === $_GET['section'] ) {
-			wp_enqueue_style( 'wp-color-picker' );
-		}
 	}
 
 	/**
 	 * Register the JavaScript for the admin area.
-	 * Use only buddypress-share-admin.js
 	 *
 	 * @since    1.0.0
 	 * @access   public
@@ -99,14 +117,14 @@ class Buddypress_Share_Admin {
 			return;
 		}
 
-		$js_extension = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.js' : '.min.js';
+		$plugin_url = $this->get_plugin_url();
 
-		// Load jQuery UI components for drag/drop
+		// jQuery UI components for drag/drop
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		wp_enqueue_script( 'jquery-ui-draggable' );
 		wp_enqueue_script( 'jquery-ui-droppable' );
 		
-		// Load color picker for icon settings
+		// WordPress Color Picker for icon settings
 		if ( isset( $_GET['section'] ) && 'icons' === $_GET['section'] ) {
 			wp_enqueue_script( 'wp-color-picker' );
 		}
@@ -114,7 +132,7 @@ class Buddypress_Share_Admin {
 		// Main admin script
 		wp_enqueue_script( 
 			$this->plugin_name, 
-			plugin_dir_url( __FILE__ ) . 'js/buddypress-share-admin' . $js_extension, 
+			$plugin_url . 'admin/js/buddypress-share-admin.js', 
 			array( 'jquery', 'jquery-ui-sortable' ), 
 			$this->version, 
 			true 
@@ -135,6 +153,53 @@ class Buddypress_Share_Admin {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Check if Font Awesome is already loaded by other plugins/themes.
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 * @return   bool True if Font Awesome is already loaded, false otherwise.
+	 */
+	private function is_fontawesome_loaded() {
+		global $wp_styles;
+		
+		if ( ! $wp_styles ) {
+			return false;
+		}
+
+		// Check for various Font Awesome handles
+		$fa_handles = [
+			'font-awesome',
+			'fontawesome', 
+			'fa',
+			'font-awesome-5',
+			'fontawesome-5',
+			'wp-fontawesome',
+			'elementor-icons-fa-solid',
+			'elementor-icons-fa-brands'
+		];
+
+		foreach ( $fa_handles as $handle ) {
+			if ( wp_style_is( $handle, 'enqueued' ) || wp_style_is( $handle, 'registered' ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get plugin URL dynamically.
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 * @return   string Plugin URL.
+	 */
+	private function get_plugin_url() {
+		$plugin_folder = basename( dirname( dirname( __FILE__ ) ) );
+		return plugins_url( $plugin_folder ) . '/';
 	}
 
 	/**
@@ -234,19 +299,18 @@ class Buddypress_Share_Admin {
 
 	/**
 	 * Render general settings section.
-	 * FIXED: Proper form structure and field names
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
 	private function render_general_settings() {
-		// Get current settings - FIXED: Use consistent option storage
+		// Get current settings
 		$bp_share_services_enable = get_site_option( 'bp_share_services_enable', 1 );
 		$bp_share_services_logout_enable = get_site_option( 'bp_share_services_logout_enable', 1 );
 		$bp_share_services_extra = get_site_option( 'bp_share_services_extra', array( 'bp_share_services_open' => 'on' ) );
 		$bp_share_services_open = isset( $bp_share_services_extra['bp_share_services_open'] ) ? $bp_share_services_extra['bp_share_services_open'] : 'on';
 		
-		// Get enabled services - FIXED: Ensure it's always an array
+		// Get enabled services
 		$enabled_services = get_site_option( 'bp_share_services', array() );
 		if ( ! is_array( $enabled_services ) ) {
 			$enabled_services = array();
@@ -270,7 +334,6 @@ class Buddypress_Share_Admin {
 		
 		<form method="post" action="options.php">
 			<?php
-			// FIXED: Use proper settings group and generate nonces
 			settings_fields( 'bp_share_general_settings' );
 			do_settings_sections( 'bp_share_general_settings' );
 			?>
@@ -309,7 +372,6 @@ class Buddypress_Share_Admin {
 						<th scope="row"><?php esc_html_e( 'Popup Windows', 'buddypress-share' ); ?></th>
 						<td>
 							<label for="bp_share_services_open">
-								<!-- FIXED: Proper field naming for nested array -->
 								<input type="checkbox" 
 								       name="bp_share_services_extra[bp_share_services_open]" 
 								       id="bp_share_services_open"
@@ -325,7 +387,6 @@ class Buddypress_Share_Admin {
 			<h2><?php esc_html_e( 'Social Services', 'buddypress-share' ); ?></h2>
 			<p><?php esc_html_e( 'Drag social services between the lists to enable or disable them. Changes are saved automatically via AJAX.', 'buddypress-share' ); ?></p>
 			
-			<!-- FIXED: Add hidden field to maintain services state for form submission -->
 			<input type="hidden" name="bp_share_services_serialized" id="bp_share_services_serialized" value="<?php echo esc_attr( serialize( $enabled_services ) ); ?>" />
 			
 			<div class="social_icon_section">
@@ -335,9 +396,8 @@ class Buddypress_Share_Admin {
 						<?php if ( ! empty( $enabled_services ) ) : ?>
 							<?php foreach ( $enabled_services as $service_key => $service_name ) : ?>
 								<?php 
-								// FIXED: Ensure service_name is a string
 								if ( is_array( $service_name ) ) {
-									$service_name = $service_key; // Use key as fallback
+									$service_name = $service_key;
 								}
 								?>
 								<li class="socialicon icon_<?php echo esc_attr( sanitize_title( $service_key ) ); ?>" data-service="<?php echo esc_attr( $service_key ); ?>">
@@ -358,9 +418,8 @@ class Buddypress_Share_Admin {
 						<?php if ( ! empty( $disabled_services ) ) : ?>
 							<?php foreach ( $disabled_services as $service_key => $service_name ) : ?>
 								<?php 
-								// FIXED: Ensure service_name is a string
 								if ( is_array( $service_name ) ) {
-									$service_name = $service_key; // Use key as fallback
+									$service_name = $service_key;
 								}
 								?>
 								<li class="socialicon icon_<?php echo esc_attr( sanitize_title( $service_key ) ); ?>" data-service="<?php echo esc_attr( $service_key ); ?>">
@@ -380,7 +439,6 @@ class Buddypress_Share_Admin {
 		</form>
 		
 		<script type="text/javascript">
-		// FIXED: Enhanced JavaScript for proper drag/drop and AJAX integration
 		jQuery(document).ready(function($) {
 			function updateServicesHiddenField() {
 				var enabledServices = {};
@@ -394,16 +452,13 @@ class Buddypress_Share_Admin {
 				$('#bp_share_services_serialized').val(JSON.stringify(enabledServices));
 			}
 			
-			// Enhanced drag/drop with AJAX calls
 			$('#drag_icon_ul, #drag_social_icon').on('sortstop', function(event, ui) {
 				updateServicesHiddenField();
 				
-				// Determine if service was enabled or disabled
 				var $item = ui.item;
 				var serviceName = $item.data('service') || $item.text().trim();
 				var isInEnabledList = $item.closest('#drag_icon_ul').length > 0;
 				
-				// Make AJAX call to update the service
 				var ajaxAction = isInEnabledList ? 'wss_social_icons' : 'wss_social_remove_icons';
 				var dataField = isInEnabledList ? 'term_name' : 'icon_name';
 				
@@ -418,24 +473,19 @@ class Buddypress_Share_Admin {
 					success: function(response) {
 						if (response.success) {
 							console.log('Service updated successfully:', serviceName);
-							// Update the "no services" messages
 							updateNoServicesMessages();
 						} else {
 							console.error('AJAX Success but failed:', response);
-							// Optionally revert the drag operation
 						}
 					},
 					error: function(xhr, status, error) {
 						console.error('AJAX Error:', error);
 						console.error('Response:', xhr.responseText);
-						// Optionally revert the drag operation
 					}
 				});
 			});
 			
-			// Function to update "no services" messages
 			function updateNoServicesMessages() {
-				// Check enabled services list
 				var $enabledList = $('#drag_icon_ul');
 				var $enabledItems = $enabledList.find('.socialicon[data-service]');
 				var $enabledMessage = $enabledList.find('.no-services-message');
@@ -448,7 +498,6 @@ class Buddypress_Share_Admin {
 					$enabledMessage.remove();
 				}
 
-				// Check available services list
 				var $availableList = $('#drag_social_icon');
 				var $availableItems = $availableList.find('.socialicon[data-service]');
 				var $availableMessage = $availableList.find('.no-services-message');
@@ -462,7 +511,6 @@ class Buddypress_Share_Admin {
 				}
 			}
 			
-			// Initialize messages on page load
 			updateNoServicesMessages();
 		});
 		</script>
@@ -583,7 +631,7 @@ class Buddypress_Share_Admin {
 	 * @access   private
 	 */
 	private function render_icon_settings() {
-		// Get current icon settings - FIXED: Use regular option for icon settings
+		// Get current icon settings
 		$bpas_icon_color_settings = get_option( 'bpas_icon_color_settings', array() );
 		$current_style = isset( $bpas_icon_color_settings['icon_style'] ) ? $bpas_icon_color_settings['icon_style'] : 'circle';
 		
@@ -667,25 +715,19 @@ class Buddypress_Share_Admin {
 
 	/**
 	 * Register plugin settings.
-	 * FIXED: Simplified settings registration to prevent memory leaks
 	 * 
 	 * @since    1.0.0
 	 * @access   public
 	 */
 	public function bpas_register_setting() {
-		// FIXED: Use simple sanitization without recursive site_option calls
 		register_setting( 'bp_share_general_settings', 'bp_share_services_enable', 'absint' );
 		register_setting( 'bp_share_general_settings', 'bp_share_services_logout_enable', 'absint' );
 		register_setting( 'bp_share_general_settings', 'bp_share_services_extra', array( $this, 'sanitize_extra_settings' ) );
 		register_setting( 'bp_share_general_settings', 'bp_share_services_serialized', 'sanitize_text_field' );
 		
-		// Reshare settings
 		register_setting( 'bp_reshare_settings', 'bp_reshare_settings', array( $this, 'sanitize_reshare_settings' ) );
-		
-		// Icon settings
 		register_setting( 'bpas_icon_color_settings', 'bpas_icon_color_settings', array( $this, 'sanitize_icon_settings' ) );
 		
-		// Add custom hook to handle site option saving after WordPress handles the regular options
 		add_action( 'update_option_bp_share_services_enable', array( $this, 'sync_to_site_option' ), 10, 3 );
 		add_action( 'update_option_bp_share_services_logout_enable', array( $this, 'sync_to_site_option' ), 10, 3 );
 		add_action( 'update_option_bp_share_services_extra', array( $this, 'sync_extra_to_site_option' ), 10, 3 );
@@ -695,13 +737,11 @@ class Buddypress_Share_Admin {
 
 	/**
 	 * AJAX handler for adding social icons.
-	 * FIXED: Enhanced error handling and validation
 	 *
 	 * @since    1.0.0
 	 * @access   public
 	 */
 	public function wss_social_icons() {
-		// Enhanced security and error checking
 		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'bp_share_admin_nonce' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Security nonce check failed.', 'buddypress-share' ) ) );
 		}
@@ -716,7 +756,6 @@ class Buddypress_Share_Admin {
 			wp_send_json_error( array( 'message' => __( 'Service name is required.', 'buddypress-share' ) ) );
 		}
 		
-		// Validate service name against allowed services
 		$allowed_services = $this->get_all_available_services();
 		if ( ! array_key_exists( $service_name, $allowed_services ) ) {
 			wp_send_json_error( array( 
@@ -731,7 +770,6 @@ class Buddypress_Share_Admin {
 			$current_services = array();
 		}
 		
-		// Add the service
 		$current_services[ $service_name ] = $allowed_services[ $service_name ];
 		$updated = update_site_option( 'bp_share_services', $current_services );
 		
@@ -748,13 +786,11 @@ class Buddypress_Share_Admin {
 
 	/**
 	 * AJAX handler for removing social icons.
-	 * FIXED: Enhanced error handling and validation
 	 *
 	 * @since    1.0.0
 	 * @access   public
 	 */
 	public function wss_social_remove_icons() {
-		// Enhanced security and error checking
 		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'bp_share_admin_nonce' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Security nonce check failed.', 'buddypress-share' ) ) );
 		}
@@ -797,7 +833,6 @@ class Buddypress_Share_Admin {
 
 	/**
 	 * Get all available social services.
-	 * FIXED: Clean list with X (Twitter) for clarity
 	 *
 	 * @since    1.0.0
 	 * @access   private
@@ -845,13 +880,12 @@ class Buddypress_Share_Admin {
 	}
 
 	/**
-	 * FIXED: Simple sync methods that don't cause recursion
+	 * Sync methods that don't cause recursion.
 	 *
 	 * @since    1.5.2
 	 * @access   public
 	 */
 	public function sync_to_site_option( $old_value, $value, $option ) {
-		// Directly update site option without triggering more hooks
 		update_site_option( $option, $value );
 	}
 
@@ -860,7 +894,6 @@ class Buddypress_Share_Admin {
 	}
 
 	public function sync_services_to_site_option( $old_value, $value, $option ) {
-		// Decode the serialized services and save to site option
 		$services = json_decode( $value, true );
 		if ( ! is_array( $services ) ) {
 			$services = @unserialize( $value );
@@ -877,12 +910,10 @@ class Buddypress_Share_Admin {
 	}
 
 	/**
-	 * FIXED: Simple sanitization for extra settings
+	 * Sanitization methods.
 	 *
 	 * @since    1.5.2
 	 * @access   public
-	 * @param    array $input Input array.
-	 * @return   array Sanitized array.
 	 */
 	public function sanitize_extra_settings( $input ) {
 		if ( ! is_array( $input ) ) {
@@ -899,15 +930,6 @@ class Buddypress_Share_Admin {
 		return $sanitized;
 	}
 
-	/**
-	 * Sanitize services array.
-	 * FIXED: Improved validation and data consistency
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 * @param    array $services Raw services array.
-	 * @return   array Sanitized services array.
-	 */
 	public function sanitize_services_array( $services ) {
 		if ( ! is_array( $services ) ) {
 			return array();
@@ -919,12 +941,10 @@ class Buddypress_Share_Admin {
 		foreach ( $services as $key => $value ) {
 			$sanitized_key = sanitize_text_field( $key );
 			
-			// Only allow valid services from our approved list
 			if ( ! array_key_exists( $sanitized_key, $allowed_services ) ) {
 				continue;
 			}
 			
-			// Always use the standardized name from our allowed list
 			$sanitized_value = $allowed_services[ $sanitized_key ];
 			
 			if ( ! empty( $sanitized_key ) && ! empty( $sanitized_value ) ) {
@@ -935,14 +955,6 @@ class Buddypress_Share_Admin {
 		return $sanitized;
 	}
 
-	/**
-	 * Sanitize icon settings.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 * @param    array $settings Raw icon settings.
-	 * @return   array Sanitized icon settings.
-	 */
 	public function sanitize_icon_settings( $settings ) {
 		if ( ! is_array( $settings ) ) {
 			return array( 'icon_style' => 'circle' );
@@ -951,12 +963,10 @@ class Buddypress_Share_Admin {
 		$sanitized = array();
 		$allowed_styles = array( 'circle', 'rec', 'blackwhite', 'baricon' );
 		
-		// Sanitize icon style
 		$sanitized['icon_style'] = isset( $settings['icon_style'] ) && 
 			in_array( $settings['icon_style'], $allowed_styles, true ) ? 
 			$settings['icon_style'] : 'circle';
 		
-		// Sanitize colors
 		$color_fields = array( 'bg_color', 'text_color', 'hover_color', 'border_color' );
 		foreach ( $color_fields as $field ) {
 			if ( isset( $settings[ $field ] ) ) {
@@ -970,14 +980,6 @@ class Buddypress_Share_Admin {
 		return $sanitized;
 	}
 
-	/**
-	 * Sanitize reshare settings.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 * @param    array $settings Raw reshare settings.
-	 * @return   array Sanitized reshare settings.
-	 */
 	public function sanitize_reshare_settings( $settings ) {
 		if ( ! is_array( $settings ) ) {
 			return array( 'reshare_share_activity' => 'parent' );
@@ -985,7 +987,6 @@ class Buddypress_Share_Admin {
 		
 		$sanitized = array();
 		
-		// Boolean settings
 		$boolean_fields = array(
 			'disable_post_reshare_activity',
 			'disable_my_profile_reshare_activity',
@@ -1000,16 +1001,10 @@ class Buddypress_Share_Admin {
 			}
 		}
 		
-		// Reshare activity display mode
 		$allowed_modes = array( 'parent', 'child' );
 		$reshare_mode = isset( $settings['reshare_share_activity'] ) ? $settings['reshare_share_activity'] : 'parent';
 		$sanitized['reshare_share_activity'] = in_array( $reshare_mode, $allowed_modes, true ) ? $reshare_mode : 'parent';
 		
 		return $sanitized;
 	}
-
-	/**
-	 * REMOVED: All complex sanitization methods that were causing memory leaks
-	 * The WordPress Settings API handles everything now with simple sync hooks
-	 */
 }

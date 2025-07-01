@@ -2,8 +2,9 @@
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
 # Global
-# Activity Share Popup
+# Activity Share Popup  
 # Activity Reshare
+# Modal Styling & Fixes
 # Themes Specific
     # BuddyBoss
     # Kleo
@@ -11,6 +12,7 @@
     # Rehub
     # BuddyX
     # Gwangi
+    # Reign Theme
 # BB Platform
 # Icons Styles
     # Circle/Rec Style
@@ -19,7 +21,6 @@
 # Plugins
     # BuddyPress Status
 --------------------------------------------------------------*/
-
 
 /*--------------------------------------------------------------
 # Global
@@ -211,6 +212,617 @@ body.bp-share-popup-active #masthead {
     z-index: 1;
 }
 
+/* ===================================================================
+   MODAL GENERAL STYLING
+   =================================================================== */
+
+.activity-share-modal .modal-dialog {
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+.activity-share-modal .modal-content {
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: none;
+    width: 100%;
+    border: 0;
+    border-radius: 12px;
+}
+
+.activity-share-modal .modal-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem 1.5rem;
+    border-radius: 8px 8px 0 0;
+}
+
+.activity-share-modal .modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #495057;
+    margin: 0;
+}
+
+/* ===================================================================
+   CLOSE BUTTON STYLING
+   =================================================================== */
+
+.activity-share-modal .close,
+.activity-share-modal .activity-share-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: #6c757d;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    opacity: 1;
+    z-index: 1;
+}
+
+.activity-share-modal .close:hover,
+.activity-share-modal .activity-share-modal-close:hover {
+    background: #dc3545;
+    transform: scale(1.1);
+}
+
+.activity-share-modal .close span,
+.activity-share-modal .close i {
+    font-size: 12px;
+    line-height: 1;
+}
+
+#activity-share-modal button.activity-share-modal-close {
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-pack: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    border-radius: 10px;
+    background-color: #333;
+    cursor: pointer;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    opacity: 1;
+    border: 0;
+    outline: none;
+    z-index: 2;
+    -webkit-transition: background-color .2s ease-in-out;
+    transition: background-color .2s ease-in-out;
+}
+
+@media screen and (max-width: 767px) {
+    #activity-share-modal button.activity-share-modal-close {
+        right: -15px;
+    }
+}
+
+#activity-share-modal button.activity-share-modal-close:hover {
+    background-color: #800;
+}
+
+#activity-share-modal button.activity-share-modal-close .as-icon {
+    font-size: 22px;
+    color: #fff;
+}
+
+/* ===================================================================
+   USER AVATAR & INFO SECTION
+   =================================================================== */
+
+.quick-post-header-filters-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e9ecef;
+    width: 100%;
+    min-height: 80px;
+    padding: 0 28px;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-pack: justify;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -ms-flex-align: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.bp-activity-share-avatar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    font-weight: bold;
+    text-transform: capitalize;
+    padding-left: 55px;
+    line-height: 1.4;
+    display: block;
+    position: relative;
+}
+
+.bp-activity-share-avatar>a {
+    position: absolute;
+    left: 0;
+    top: -3px;
+}
+
+.bp-activity-share-avatar img {
+    border-radius: 50%;
+    border: 2px solid #e9ecef;
+    width: 44px;
+    height: 44px;
+    -webkit-transform: unset;
+    -ms-transform: unset;
+    transform: unset;
+    margin-right: 5px;
+    border-radius: 50%;
+}
+
+.bp-activity-share-avatar .user-name {
+    font-weight: 600;
+    color: #495057;
+    font-size: 16px;
+}
+
+.bp-activity-share-avatar .user-status-text {
+    display: block;
+    color: #6c757d;
+    font-size: 12px;
+    margin-top: 2px;
+    font-weight: normal;
+}
+
+@media screen and (max-width: 680px) {
+    .activity-share-modal .quick-post-header-filters-wrap {
+        -ms-flex-direction: column;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        flex-direction: column;
+        padding: 28px 0;
+    }
+
+    .activity-share-modal .bp-activity-share-filter {
+        margin-top: 28px;
+        padding: 0 16px;
+    }
+}
+
+/* ===================================================================
+   POST IN SECTION & LABEL STYLING
+   =================================================================== */
+
+.bp-activity-share-filter {
+    min-width: 200px;
+}
+
+.bp-activity-share-filter .form-item {
+    margin: 0;
+}
+
+.bp-activity-share-filter .form-select {
+    position: relative;
+}
+
+.bp-activity-share-filter label,
+.activity-share-modal label[for=post-in] {
+    display: block;
+    font-weight: 600;
+    color: #495057;
+    font-size: 13px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 5px;
+    background-color: #fff;
+    color: #767676;
+    font-size: 0.75rem;
+    position: absolute;
+    top: -5px;
+    left: 12px;
+    z-index: 1000000;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.bp-activity-share-filter select,
+.bp-activity-share-filter #post-in {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background: white;
+    font-size: 14px;
+    color: #495057;
+    height: 45px;
+    border-radius: 12px;
+}
+
+.bp-activity-share-filter select:focus,
+.bp-activity-share-filter #post-in:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+/* ===================================================================
+   SELECT2 DROPDOWN STYLING
+   =================================================================== */
+
+.activity-share-modal .select2-container {
+    width: 100% !important;
+}
+
+.activity-share-modal .select2-selection {
+    border: 1px solid #ced4da !important;
+    border-radius: 4px !important;
+    height: 38px !important;
+    padding: 6px 12px !important;
+}
+
+.activity-share-modal .select2-selection__rendered {
+    padding: 0 !important;
+    line-height: 24px !important;
+    color: #495057 !important;
+}
+
+.activity-share-modal .select2-selection__arrow {
+    height: 36px !important;
+    right: 8px !important;
+}
+
+.activity-share-modal .select2-dropdown {
+    border: 1px solid #ced4da !important;
+    border-radius: 4px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+.quick-post-header-filters-wrap .select2-container--default .select2-selection--single {
+    width: 100%;
+    height: 100%;
+    padding: 0 40px 0 20px;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+body.modal-open.modal-open .select2.select2-container .select2-selection .select2-selection__rendered {
+    padding: 0.4rem 0.8rem;
+    line-height: 28px;
+    height: 40px;
+}
+
+body.modal-open.modal-open .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 40px;
+}
+
+body.modal-open.modal-open .select2-dropdown {
+    margin: 0;
+    z-index: 100000;
+    border: 1px solid #aaa;
+}
+
+body.modal-open.modal-open .select2-container--open .select2-dropdown--below {
+    border-top: none;
+}
+
+body.modal-open.modal-open .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable,
+body.modal-open.modal-open .select2-container--default .select2-results__option--highlighted[aria-selected] {
+    color: #fff;
+}
+
+body.modal-open.modal-open .bp-activity-share-filter .select2-container--default .select2-selection--single {
+    width: 200px;
+    padding: 0;
+}
+
+/* ===================================================================
+   MODAL BODY STYLING
+   =================================================================== */
+
+.activity-share-modal .modal-body {
+    padding: 1.5rem;
+    background-color: #fdfdfd;
+    border-radius: 0;
+    border: none;
+    padding-bottom: 28px;
+    margin-top: 0;
+}
+
+.activity-share-modal .form {
+    width: 100%;
+    padding-bottom: 28px;
+}
+
+.activity-share-modal .form-textarea {
+    margin-bottom: 1rem;
+}
+
+.activity-share-modal .form-textarea textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    font-family: inherit;
+    background-color: #fdfdfd;
+    border: 0;
+    border-radius: 0;
+    font-size: 0.875rem;
+    padding: 26px 28px 0;
+    overflow: hidden;
+    min-height: 120px;
+    resize: none;
+}
+
+.activity-share-modal .form-textarea textarea:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    outline: none;
+    border-color: transparent !important;
+}
+
+.activity-share-modal .form-textarea textarea::placeholder {
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* ===================================================================
+   ACTIVITY PREVIEW STYLING
+   =================================================================== */
+
+#bp-activity-share-widget-box-status-header {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 1rem;
+    width: -webkit-calc(100% - 56px);
+    width: calc(100% - 56px);
+    background-color: #fff;
+    margin: 0 28px;
+    padding: 22px;
+    box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
+    border: 0;
+    border-radius: 12px;
+}
+
+#bp-activity-share-widget-box-status-header .activity-content {
+    background: white;
+    padding: 1rem;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+#bp-activity-share-widget-box-status-header .activity-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+#bp-activity-share-widget-box-status-header .activity-inner p {
+    margin: 0.5rem 0 0 0;
+    font-size: 15px;
+    line-height: 1.4;
+    color: #495057;
+}
+
+.activity-share-modal .activity-list .activity-item .activity-header {
+    padding-right: 0;
+    height: auto;
+    min-height: 50px;
+    margin-bottom: 1rem;
+}
+
+.activity-share-modal .activity-list .activity-item>div.item-avatar img {
+    width: 40px !important;
+    height: auto;
+}
+
+.activity-share-modal .bpsp-pinned-post-tag {
+    display: none;
+}
+
+/* ===================================================================
+   FOOTER BUTTONS STYLING
+   =================================================================== */
+
+.activity-share-modal .modal-footer {
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    padding: 1rem 1.5rem;
+    border-radius: 0 0 8px 8px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.bp-activity-share-post-footer-actions {
+    display: -webkit-box;
+    display: flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -ms-flex-align: center;
+    -webkit-box-align: center;
+    align-items: center;
+    min-height: 43px;
+    gap: 10px;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+/* FIXED: Button Styling */
+.bp-activity-share-close,
+.bp-activity-share-activity {
+    padding: 8px 20px !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    border: 1px solid !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    width: 80px;
+    margin-right: 6px;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-pack: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    -webkit-box-align: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #333;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    -webkit-transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out, box-shadow .2s ease-in-out;
+    transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out, box-shadow .2s ease-in-out;
+    box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
+    height: 40px;
+    font-size: 0.75rem;
+    line-height: 40px;
+}
+
+/* Discard Button */
+.bp-activity-share-close {
+    background: #6c757d !important;
+    border-color: #6c757d !important;
+    color: white !important;
+}
+
+.bp-activity-share-close:hover {
+    background: #5a6268 !important;
+    border-color: #545b62 !important;
+    color: white !important;
+    transform: translateY(-1px);
+    background-color: #111;
+}
+
+/* Post Button */
+.bp-activity-share-activity {
+    background: #007bff !important;
+    border-color: #007bff !important;
+    color: white !important;
+}
+
+.bp-activity-share-activity:hover {
+    background: #0056b3 !important;
+    border-color: #004085 !important;
+    color: white !important;
+    transform: translateY(-1px);
+}
+
+.bp-activity-share-activity:disabled {
+    background: #6c757d !important;
+    border-color: #6c757d !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+.bp-activity-share-post-footer-actions .button.void {
+    background-color: transparent;
+    color: #767676;
+    box-shadow: none;
+}
+
+.bp-activity-share-post-footer-actions .button.void:hover {
+    color: #fff;
+    background-color: #800;
+}
+
+/* ===================================================================
+   ERROR MESSAGE STYLING
+   =================================================================== */
+
+.bp_activity_share_modal_error_message {
+    color: #dc3545 !important;
+    font-size: 12px !important;
+    margin-top: 4px !important;
+    display: block !important;
+    font-weight: 500 !important;
+}
+
+.bp-share-error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #f5c6cb;
+    margin-bottom: 1rem;
+    font-size: 14px;
+}
+
+.bp-share-success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #c3e6cb;
+    margin-bottom: 1rem;
+    font-size: 14px;
+}
+
+/* ===================================================================
+   LOADING STATES
+   =================================================================== */
+
+.bp-share-loading {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+}
+
+.bp-share-loading::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e9ecef;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 /*--------------------------------------------------------------
 # Reign Theme
 --------------------------------------------------------------*/
@@ -283,7 +895,6 @@ body.bp-share-popup-active #masthead {
     opacity: 0;
 }
 
-
 /*--------------------------------------------------------------
 # Activity Reshare
 --------------------------------------------------------------*/
@@ -315,50 +926,6 @@ a.bp-activity-share-button {
     padding: 0;
 }
 
-.activity-share-modal.modal .modal-content {
-    width: 100%;
-    border: 0;
-    border-radius: 12px;
-}
-
-.activity-share-modal .modal-body {
-    background-color: #fdfdfd;
-    border-radius: 0;
-    border: none;
-    padding-bottom: 28px;
-}
-
-.activity-share-modal .bp-activity-share-avatar {
-    font-weight: bold;
-    text-transform: capitalize;
-    padding-left: 55px;
-    line-height: 1.4;
-    display: block;
-    position: relative;
-}
-
-.activity-share-modal .bp-activity-share-avatar>a {
-    position: absolute;
-    left: 0;
-    top: -3px;
-}
-
-.activity-share-modal .bp-activity-share-avatar img.avatar {
-    width: 44px;
-    height: 44px;
-    -webkit-transform: unset;
-    -ms-transform: unset;
-    transform: unset;
-    margin-right: 5px;
-    border-radius: 50%;
-}
-
-.activity-share-modal .bp-activity-share-avatar small.user-status-text {
-    display: block;
-    font-weight: normal;
-    color: #767676;
-}
-
 @media (min-width: 576px) {
     .activity-share-modal .modal-dialog {
         max-width: 584px;
@@ -370,219 +937,6 @@ a.bp-activity-share-button {
         margin-left: 20px;
         margin-right: 20px;
     }
-}
-
-.activity-share-modal .form {
-    width: 100%;
-    padding-bottom: 28px;
-}
-
-.activity-share-modal .form-select {
-    position: relative;
-}
-
-.activity-share-modal .form-select select {
-    height: 45px;
-    border-radius: 12px;
-}
-
-.activity-share-modal .bpsp-pinned-post-tag {
-    display: none;
-}
-
-.activity-share-modal .bp-activity-share-filter .form-item {
-    margin: 0;
-}
-
-.activity-share-modal label[for=post-in],
-.activity-share-modal .bp-activity-share-filter label {
-    padding: 0 5px;
-    background-color: #fff;
-    color: #767676;
-    font-size: 0.75rem;
-    position: absolute;
-    top: -5px;
-    left: 12px;
-    z-index: 1000000;
-    line-height: 1;
-    pointer-events: none;
-}
-
-.activity-share-modal .form-textarea textarea {
-    width: 100%;
-    background-color: #fdfdfd;
-    border: 0;
-    border-radius: 0;
-    font-size: 0.875rem;
-    padding: 26px 28px 0;
-    overflow: hidden;
-    min-height: 120px;
-    resize: none;
-}
-
-.activity-share-modal .form-textarea textarea:focus {
-    outline: none;
-    border-color: transparent !important;
-}
-
-.activity-share-modal .quick-post-header-filters-wrap {
-    width: 100%;
-    min-height: 80px;
-    padding: 0 28px;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: flex;
-    -ms-flex-pack: justify;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    -ms-flex-align: center;
-    -webkit-box-align: center;
-    align-items: center;
-}
-
-@media screen and (max-width: 680px) {
-    .activity-share-modal .quick-post-header-filters-wrap {
-        -ms-flex-direction: column;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        flex-direction: column;
-        padding: 28px 0;
-    }
-
-    .activity-share-modal .bp-activity-share-filter {
-        margin-top: 28px;
-        padding: 0 16px;
-    }
-}
-
-.quick-post-header-filters-wrap .select2-container--default .select2-selection--single {
-    width: 100%;
-    height: 100%;
-    padding: 0 40px 0 20px;
-    font-size: 0.875rem;
-    cursor: pointer;
-}
-
-#activity-share-modal button.activity-share-modal-close {
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: flex;
-    -ms-flex-pack: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    -ms-flex-align: center;
-    -webkit-box-align: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    margin: 0;
-    padding: 0;
-    border-radius: 10px;
-    background-color: #333;
-    cursor: pointer;
-    position: absolute;
-    top: -20px;
-    right: -20px;
-    opacity: 1;
-    border: 0;
-    outline: none;
-    z-index: 2;
-    -webkit-transition: background-color .2s ease-in-out;
-    transition: background-color .2s ease-in-out;
-}
-
-@media screen and (max-width: 767px) {
-    #activity-share-modal button.activity-share-modal-close {
-        right: -15px;
-    }
-}
-
-#activity-share-modal button.activity-share-modal-close:hover {
-    background-color: #800;
-}
-
-#activity-share-modal button.activity-share-modal-close .as-icon {
-    font-size: 22px;
-    color: #fff;
-}
-
-.activity-share-modal #bp-activity-share-widget-box-status-header {
-    width: -webkit-calc(100% - 56px);
-    width: calc(100% - 56px);
-    background-color: #fff;
-    margin: 0 28px;
-    padding: 22px;
-    box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
-    border: 0;
-    border-radius: 12px;
-}
-
-.activity-share-modal .activity-list .activity-item .activity-header {
-    padding-right: 0;
-    height: auto;
-    min-height: 50px;
-    margin-bottom: 1rem;
-}
-
-.activity-share-modal .activity-list .activity-item>div.item-avatar img {
-    width: 40px !important;
-    height: auto;
-}
-
-.bp-activity-share-post-footer-actions {
-    display: -webkit-box;
-    display: flex;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-pack: justify;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    -ms-flex-align: center;
-    -webkit-box-align: center;
-    align-items: center;
-    min-height: 43px;
-}
-
-.bp-activity-share-post-footer-actions .button {
-    margin: 0;
-    width: 80px;
-    margin-right: 6px;
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: flex;
-    -ms-flex-pack: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    -ms-flex-align: center;
-    -webkit-box-align: center;
-    align-items: center;
-    border-radius: 10px;
-    background-color: #333;
-    color: #fff;
-    font-weight: 700;
-    text-align: center;
-    cursor: pointer;
-    -webkit-transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out, box-shadow .2s ease-in-out;
-    transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out, box-shadow .2s ease-in-out;
-    box-shadow: 0 0 40px 0 rgba(94, 92, 154, .06);
-    height: 40px;
-    font-size: 0.75rem;
-    line-height: 40px;
-}
-
-.bp-activity-share-post-footer-actions .button:hover {
-    background-color: #111;
-}
-
-.bp-activity-share-post-footer-actions .button.void {
-    background-color: transparent;
-    color: #767676;
-    box-shadow: none;
-}
-
-.bp-activity-share-post-footer-actions .button.void:hover {
-    color: #fff;
-    background-color: #800;
 }
 
 .bp-nouveau #bp-activity-share-widget-box-status-header.activity-list.bp-list .activity-item,
@@ -631,36 +985,6 @@ body.activity-permalink.bp-nouveau .activity-list .activity-reshare-item-contain
     font-size: 90%;
     display: block;
     text-decoration: none;
-}
-
-body.modal-open.modal-open .select2.select2-container .select2-selection .select2-selection__rendered {
-    padding: 0.4rem 0.8rem;
-    line-height: 28px;
-    height: 40px;
-}
-
-body.modal-open.modal-open .select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 40px;
-}
-
-body.modal-open.modal-open .select2-dropdown {
-    margin: 0;
-    z-index: 100000;
-    border: 1px solid #aaa;
-}
-
-body.modal-open.modal-open .select2-container--open .select2-dropdown--below {
-    border-top: none;
-}
-
-body.modal-open.modal-open .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable,
-body.modal-open.modal-open .select2-container--default .select2-results__option--highlighted[aria-selected] {
-    color: #fff;
-}
-
-body.modal-open.modal-open .bp-activity-share-filter .select2-container--default .select2-selection--single {
-    width: 200px;
-    padding: 0;
 }
 
 .activity-share-modal .entry-thumbnail,
@@ -839,10 +1163,6 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
 .post-reshare-item-container .post-preview .post-preview-info.fixed-height .post-preview-info-bottom p {
     margin: 0;
     padding: 0;
-}
-
-.activity-share-modal .post-preview .post-preview-info.fixed-height .post-preview-info-bottom p,
-.post-reshare-item-container .post-preview .post-preview-info.fixed-height .post-preview-info-bottom p {
     margin-bottom: 0;
     font-size: 0.875rem;
     line-height: 1.7142857143em;
@@ -950,6 +1270,36 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     }
 }
 
+/* ===================================================================
+   RESPONSIVE DESIGN
+   =================================================================== */
+
+@media (max-width: 768px) {
+    .activity-share-modal .modal-dialog {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    .quick-post-header-filters-wrap {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .bp-activity-share-filter {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .bp-activity-share-post-footer-actions {
+        flex-direction: column-reverse;
+    }
+    
+    .bp-activity-share-close,
+    .bp-activity-share-activity {
+        width: 100%;
+        text-align: center;
+    }
+}
 
 /*--------------------------------------------------------------
 ## BuddyBoss
@@ -972,6 +1322,28 @@ body.modal-open.modal-open .bp-activity-share-filter .select2-container--default
     font-size: 15px;
 }
 
+.buddyboss-theme #buddypress .activity-reshare-item-container .view.activity-time-since {
+    display: block;
+}
+
+.buddyboss-theme #buddypress .activity-reshare-item-container .activity-time-since span.time-since {
+    display: inline-block;
+    line-height: inherit;
+}
+
+.buddyboss-theme #buddypress .activity-reshare-item-container .activity-time-since:before {
+    content: none;
+}
+
+#bp-activity-share-widget-box-status-header .activity-card-head {
+    margin: -22px;
+    margin-bottom: 22px;
+}
+
+#bp-activity-share-widget-box-status-header .activity-item-head {
+    padding: 0;
+    margin-bottom: 1rem;
+}
 
 /*--------------------------------------------------------------
 ## Kleo
@@ -985,7 +1357,6 @@ body.kleo #buddypress .activity-meta a.button.bp-share-button {
 .kleo-page #buddypress .activity-meta a.button.bp-activity-share-button {
     display: inline;
 }
-
 
 /*--------------------------------------------------------------
 ## OneCommunity
@@ -1005,7 +1376,6 @@ body.onecommunity.bp-nouveau .activity-list .activity-item .activity-meta .bp-sh
     content: none;
 }
 
-
 /*--------------------------------------------------------------
 ## Rehub
 --------------------------------------------------------------*/
@@ -1014,20 +1384,9 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     background: none;
 }
 
-
 /*--------------------------------------------------------------
 ## BuddyX
 --------------------------------------------------------------*/
-
-#bp-activity-share-widget-box-status-header .activity-card-head {
-    margin: -22px;
-    margin-bottom: 22px;
-}
-
-#bp-activity-share-widget-box-status-header .activity-item-head {
-    padding: 0;
-    margin-bottom: 1rem;
-}
 
 .bpss-logout-enabled .site-wrapper .activity-list.bp-list .activity-item {
     overflow: visible;
@@ -1083,14 +1442,9 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     }
 }
 
-
 /*--------------------------------------------------------------
 # BB Platform
 --------------------------------------------------------------*/
-
-.activity-share-modal .modal-body {
-    margin-top: 0;
-}
 
 .activity-list .activity-item .activity-content .bp-generic-meta.action .bp-activity-share-button {
     line-height: 1.6 !important;
@@ -1124,19 +1478,6 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 .activity-share-modal .activity-list .bb-activity-more-options-wrap,
 .activity-share-modal .activity-list .bb-media-privacy-wrap {
     display: none;
-}
-
-.buddyboss-theme #buddypress .activity-reshare-item-container .view.activity-time-since {
-    display: block;
-}
-
-.buddyboss-theme #buddypress .activity-reshare-item-container .activity-time-since span.time-since {
-    display: inline-block;
-    line-height: inherit;
-}
-
-.buddyboss-theme #buddypress .activity-reshare-item-container .activity-time-since:before {
-    content: none;
 }
 
 /*--------------------------------------------------------------
@@ -1551,7 +1892,6 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
     }
 }
 
-
 @media screen and (max-width: 300px) {
     .bp-activity-share-dropdown-menu {
         right: -20px;
@@ -1789,4 +2129,77 @@ body.rehub-theme #buddypress div.activity-meta a.bp-share-button:hover span {
 
 .activity-list .activity-content .activity-inner .activity-reshare-item-container .bpsts-reactions-list {
     margin-top: 15px;
+}
+
+/* ===================================================================
+   ACCESSIBILITY IMPROVEMENTS
+   =================================================================== */
+
+.activity-share-modal .close:focus,
+.activity-share-modal .activity-share-modal-close:focus,
+.bp-activity-share-close:focus,
+.bp-activity-share-activity:focus {
+    outline: 2px solid #80bdff;
+    outline-offset: 2px;
+}
+
+.activity-share-modal [aria-hidden="true"] {
+    display: none;
+}
+
+/* ===================================================================
+   DARK MODE SUPPORT (Optional)
+   =================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    .activity-share-modal .modal-content {
+        background: #2c3e50;
+        color: #ecf0f1;
+    }
+    
+    .activity-share-modal .modal-header,
+    .activity-share-modal .modal-footer {
+        background: #34495e;
+        border-color: #4a5f7a;
+    }
+    
+    .activity-share-modal .form-textarea textarea,
+    .bp-activity-share-filter select {
+        background: #34495e;
+        color: #ecf0f1;
+        border-color: #4a5f7a;
+    }
+    
+    #bp-activity-share-widget-box-status-header {
+        background: #34495e;
+        border-color: #4a5f7a;
+    }
+}
+
+/* ===================================================================
+   CUSTOM THEME COMPATIBILITY
+   =================================================================== */
+
+/* Override any theme button styles that might conflict */
+.activity-share-modal .button,
+.activity-share-modal button {
+    font-family: inherit;
+    text-transform: none;
+    letter-spacing: normal;
+    box-shadow: none;
+    border-radius: 4px;
+}
+
+/* Ensure proper z-index stacking */
+.activity-share-modal {
+    z-index: 1050;
+}
+
+.activity-share-modal .modal-backdrop {
+    z-index: 1040;
+}
+
+/* Fix any potential conflicts with other modals */
+body.modal-open .activity-share-modal {
+    padding-right: 0;
 }

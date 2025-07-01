@@ -1,8 +1,8 @@
 /**
- * BuddyPress Activity Share - Main JavaScript (Cleaned)
+ * BuddyPress Activity Share - Main JavaScript (Fixed & Complete)
  * 
  * Handles all client-side functionality for the sharing interface.
- * Clean, optimized code with better error handling and performance.
+ * FIXED: Modal close button and Select2 dropdown issues
  * 
  * @since      1.0.0
  * @package    Buddypress_Share
@@ -146,29 +146,95 @@
         },
 
         /**
-         * Setup modal handling
+         * FIXED: Setup modal handling with proper Bootstrap 4 support
          */
         setupModalHandling: function() {
+            // Initialize Select2 properly
             this.initializeSelect2();
+            
+            // Modal event handlers
             $(document).on('click', SELECTORS.activityShareButton, this.handleShareButtonOpen.bind(this));
             $(document).on('click', '.bp-activity-share-activity', this.submitShareActivity.bind(this));
-            $(document).on('click', '.bp-activity-share-close', this.closeModal.bind(this));
+            $(document).on('click', '.bp-activity-share-close, .activity-share-modal-close', this.closeModal.bind(this));
             
+            // Bootstrap modal events (both Bootstrap 4 and 5 compatibility)
             if (typeof $.fn.modal !== 'undefined') {
-                $(SELECTORS.shareModal).on('show.bs.modal', this.onModalShow.bind(this));
-                $(SELECTORS.shareModal).on('hidden.bs.modal', this.onModalHidden.bind(this));
+                $(SELECTORS.shareModal).on('show.bs.modal shown.bs.modal', this.onModalShow.bind(this));
+                $(SELECTORS.shareModal).on('hide.bs.modal hidden.bs.modal', this.onModalHidden.bind(this));
             }
+            
+            // Backdrop and ESC key handling
+            this.setupModalBackdropHandling();
         },
 
+        /**
+         * FIXED: Initialize Select2 with proper modal support
+         */
         initializeSelect2: function() {
-            if ($(SELECTORS.postInSelect).length && typeof $.fn.select2 !== 'undefined') {
-                $(SELECTORS.postInSelect).select2({
+            if (typeof $.fn.select2 === 'undefined') {
+                console.warn('Select2 not loaded, falling back to regular select');
+                return;
+            }
+
+            // Initialize Select2 when modal is shown
+            $(document).on('shown.bs.modal', SELECTORS.shareModal, function() {
+                const $select = $(SELECTORS.postInSelect);
+                
+                // Destroy existing Select2 if it exists
+                if ($select.hasClass('select2-hidden-accessible')) {
+                    $select.select2('destroy');
+                }
+                
+                // Initialize with proper configuration
+                $select.select2({
                     dropdownParent: $(SELECTORS.shareModal),
                     placeholder: 'Select where to share...',
                     allowClear: false,
-                    minimumResultsForSearch: 10
+                    minimumResultsForSearch: 10,
+                    width: '100%',
+                    escapeMarkup: function(markup) {
+                        return markup;
+                    }
                 });
-            }
+            });
+
+            // Fallback initialization for when modal is already visible
+            $(document).ready(function() {
+                setTimeout(function() {
+                    const $select = $(SELECTORS.postInSelect);
+                    if ($select.length && !$select.hasClass('select2-hidden-accessible')) {
+                        $select.select2({
+                            dropdownParent: $(SELECTORS.shareModal),
+                            placeholder: 'Select where to share...',
+                            allowClear: false,
+                            minimumResultsForSearch: 10,
+                            width: '100%'
+                        });
+                    }
+                }, 100);
+            });
+        },
+
+        /**
+         * FIXED: Setup backdrop and ESC key handling
+         */
+        setupModalBackdropHandling: function() {
+            // Handle backdrop clicks
+            $(document).on('click', SELECTORS.shareModal, function(e) {
+                if (e.target === this) {
+                    $(this).modal('hide');
+                }
+            });
+            
+            // Handle ESC key
+            $(document).on('keydown', function(e) {
+                if (e.keyCode === 27) { // ESC key
+                    const $modal = $(SELECTORS.shareModal);
+                    if ($modal.hasClass('show') || $modal.hasClass('in')) {
+                        ActivityShare.closeModal();
+                    }
+                }
+            });
         },
 
         onModalShow: function() {
@@ -205,8 +271,14 @@
             $select.parent().removeClass('loading');
         },
 
+        /**
+         * FIXED: Populate share options with proper Select2 handling
+         */
         populateShareOptions: function(data) {
             const $select = $(SELECTORS.postInSelect);
+            
+            // Clear existing optgroups
+            $select.find('optgroup').remove();
             
             // Add groups
             if (data.groups && data.groups.length > 0) {
@@ -240,14 +312,15 @@
                 $select.append($friendOptgroup);
             }
             
-            // Refresh Select2
-            $select.trigger('change');
+            // Refresh Select2 if it's initialized
             if ($select.hasClass('select2-hidden-accessible')) {
+                $select.trigger('change');
                 $select.select2('destroy').select2({
                     dropdownParent: $(SELECTORS.shareModal),
                     placeholder: 'Select where to share...',
                     allowClear: false,
-                    minimumResultsForSearch: 10
+                    minimumResultsForSearch: 10,
+                    width: '100%'
                 });
             }
         },
@@ -266,8 +339,12 @@
             }, 5000);
         },
 
+        /**
+         * FIXED: Handle share button open with proper modal showing
+         */
         handleShareButtonOpen: function(e) {
             e.preventDefault();
+            e.stopPropagation();
 
             let activityId = '';
             let activityHtml = '';
@@ -309,8 +386,26 @@
             }
 
             $('#bp-reshare-activity-id').val(activityId);
+            
+            // Show modal with proper method (Bootstrap 4 and 5 compatibility)
+            this.showModal();
+        },
+
+        /**
+         * FIXED: Show modal with proper Bootstrap compatibility
+         */
+        showModal: function() {
+            const $modal = $(SELECTORS.shareModal);
+            
             if (typeof $.fn.modal !== 'undefined') {
-                $(SELECTORS.shareModal).modal('show');
+                $modal.modal('show');
+            } else {
+                // Fallback for manual modal handling
+                $modal.addClass('show').removeClass('fade');
+                $('body').addClass('modal-open');
+                if (!$('.modal-backdrop').length) {
+                    $('body').append('<div class="modal-backdrop fade show"></div>');
+                }
             }
         },
 
@@ -449,9 +544,7 @@
         },
 
         handleShareSuccess: function(activityId, data) {
-            if (typeof $.fn.modal !== 'undefined') {
-                $(SELECTORS.shareModal).modal('hide');
-            }
+            this.closeModal();
             
             // Update share count
             const $shareCount = $('#bp-activity-reshare-count-' + activityId);
@@ -501,18 +594,52 @@
             }, 5000);
         },
 
-        closeModal: function() {
+        /**
+         * FIXED: Close modal with proper Bootstrap compatibility
+         */
+        closeModal: function(e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            const $modal = $(SELECTORS.shareModal);
+            
             if (typeof $.fn.modal !== 'undefined') {
-                $(SELECTORS.shareModal).modal('hide');
+                $modal.modal('hide');
+            } else {
+                // Fallback for manual modal handling
+                $modal.removeClass('show').addClass('fade');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
             }
         },
 
+        /**
+         * FIXED: Reset modal with proper Select2 handling
+         */
         resetModal: function() {
-            $(SELECTORS.shareModal + ' #bp-activity-share-text').val('');
+            // Clear form fields
+            $('#bp-activity-share-text').val('');
             $('.bp_activity_share_modal_error_message').hide();
             $('.bp-share-error-message').remove();
-            $(SELECTORS.postInSelect).val('0').trigger('change');
-            $(SELECTORS.shareModal + ' #bp-activity-share-widget-box-status-header').empty();
+            
+            // Reset select to default value
+            const $select = $(SELECTORS.postInSelect);
+            $select.val('0');
+            
+            // Trigger change for Select2
+            if ($select.hasClass('select2-hidden-accessible')) {
+                $select.trigger('change');
+            }
+            
+            // Clear activity content
+            $('#bp-activity-share-widget-box-status-header').empty();
+            
+            // Remove modal classes
+            $('.activity-share-modal').removeClass(function(index, className) {
+                return (className.match(/(^|\s)\S+-\S+/g) || []).join(' ');
+            });
         },
 
         /**
@@ -686,6 +813,15 @@
     $(document).ready(function() {
         try {
             ActivityShare.init();
+            
+            // Additional Bootstrap modal initialization for safety
+            if (typeof $.fn.modal !== 'undefined' && $(SELECTORS.shareModal).length) {
+                $(SELECTORS.shareModal).modal({
+                    show: false,
+                    backdrop: true,
+                    keyboard: true
+                });
+            }
         } catch (error) {
             console.error('Failed to initialize BuddyPress Activity Share:', error);
         }
