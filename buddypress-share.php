@@ -14,7 +14,7 @@
  * Plugin Name:       Wbcom Designs - BuddyPress Activity Share Pro
  * Plugin URI:        https://www.wbcomdesigns.com
  * Description:       This plugin adds an extended feature to BuddyPress, allowing users to share Activity 'Post Updates' on social sites.
- * Version:           1.5.0
+ * Version:           1.5.1
  * Author:            Wbcom Designs<admin@wbcomdesigns.com>
  * Author URI:        https://www.wbcomdesigns.com
  * License:           GPL-2.0+

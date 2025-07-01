@@ -5,7 +5,7 @@ Donate link: https://wbcomdesigns.com
 Tags: buddypress, activity, share
 Requires at least: 4.0
 Tested up to: 6.8.2
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,18 @@ Yes, this plugin requires the  BuddyPress plugin.
 == Changelog ==
 
 == Changelog ==
+= 1.5.1 =
+* Fixed: Fatal error on plugin activation and several PHP warnings.
+* Fixed: Issues with translation loading and incorrect text domains.
+* Fixed: Console warnings when disabling sharing options.
+* Improved: Sharing message layout and group selection UI.
+* Improved: Confirmation notice when settings are saved.
+* Improved: RTL compatibility and overall wording for better clarity.
+* Updated: Plugin update checker for smoother version management.
+* Cleaned: Removed unused files and optimized code for better performance.
+* Enhanced: JavaScript and PHP logic for sharing activities.
+* Added: Inline documentation for improved developer experience.
+
 = 1.5.0 =
 * Updated: Plugin Update Checker to v5 (PucFactory) with modern initialization for better reliability.  
 * Optimized: `bp_activity_create_reshare_ajax` function for enhanced **security**, **performance**, and **readability**.  
