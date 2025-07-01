@@ -305,49 +305,6 @@ function bp_activity_reshare_post_disable( $post_type ) {
 	return $post_type;
 }
 
-/** 
- * Function to enable default social sharing services.
- * @since 1.0.0
- * @return void
- */
-function bp_share_pro_set_default_option() {
-	// Retrieve current services and flag.
-	$services = get_site_option( 'bp_share_services', array() );
-	$get_flag = get_site_option( 'bp_share_flag' );
-
-	// Correct default structure for services.
-	$default_services = array(
-		'facebook'  => array( 'chb_facebook' => 1 ),  // Enabled.
-		'twitter'   => array( 'chb_twitter' => 1 ),   // Enabled.
-		'linkedin'  => array( 'chb_linkedin' => 1 ),  // Enabled.
-		'email'     => array( 'chb_email' => 1 ),     // Enabled.
-		'whatsapp'  => array( 'chb_whatsapp' => 1 ),  // Enabled.
-		'pinterest' => array( 'chb_pinterest' => 0 ), // Disabled.
-		'Facebook'  => array( 'chb_Facebook' => 0 ),  // Disabled.
-		'Twitter'   => array( 'chb_Twitter' => 0 ),   // Disabled.
-		'Linkedin'  => array( 'chb_Linkedin' => 0 ),  // Disabled.
-		'Pinterest' => array( 'chb_Pinterest' => 0 ), // Disabled.
-		'E-mail'    => array( 'chb_E-mail' => 1 ),    // Disabled.
-		'Whatsapp'  => array( 'chb_Whatsapp' => 0 ),  // Disabled.
-	);
-
-	// Merge existing services with defaults only if flag is not set.
-	if ( is_array( $services ) && empty( $get_flag ) ) {
-		$services = array_merge( $default_services, $services );
-
-		// Save merged defaults.
-		update_site_option( 'bp_share_services', $services );
-		update_site_option( 'bp_share_flag', 1 );
-	}
-
-	// Initialize with defaults if services are empty.
-	if ( empty( $services ) ) {
-		update_site_option( 'bp_share_services', $default_services );
-		update_site_option( 'bp_share_flag', 1 );
-	}
-}
-add_action( 'admin_init', 'bp_share_pro_set_default_option' );
-
 /**
  * This function handles sharing an activity URL on the compose message box in BuddyPress or BuddyBoss.
  */
@@ -380,3 +337,114 @@ function bp_share_pro_share_activity_url_on_compose() {
 }
 
 add_action( 'wp_footer', 'bp_share_pro_share_activity_url_on_compose' );
+
+/**
+ * REMOVED: Old default options function that created inconsistent defaults.
+ * Replaced with proper defaults in the activator class.
+ * 
+ * The old bp_share_pro_set_default_option() function has been removed to prevent
+ * conflicts with the new, improved default setup in the activator class.
+ */
+
+/**
+ * Initialize default options for new installations only.
+ * This runs on admin_init to ensure proper initialization without conflicts.
+ *
+ * @since 1.5.1
+ */
+function bp_share_pro_init_defaults() {
+	// Only run for administrators
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	// Check if this is a fresh installation (no version set yet)
+	$installed_version = get_site_option( 'bp_share_plugin_version' );
+	
+	if ( false === $installed_version ) {
+		// This might be a fresh installation, ensure defaults are set
+		bp_share_pro_ensure_defaults();
+	}
+}
+add_action( 'admin_init', 'bp_share_pro_init_defaults' );
+
+/**
+ * Ensure default options are set for fresh installations.
+ * This function is safe to run multiple times.
+ *
+ * @since 1.5.1
+ */
+function bp_share_pro_ensure_defaults() {
+	// Set plugin version if not set
+	if ( false === get_site_option( 'bp_share_plugin_version' ) ) {
+		update_site_option( 'bp_share_plugin_version', BP_ACTIVITY_SHARE_PLUGIN_VERSION );
+	}
+
+	// Ensure core services are set with improved defaults
+	$current_services = get_site_option( 'bp_share_services' );
+	if ( empty( $current_services ) || ! is_array( $current_services ) ) {
+		$default_services = array(
+			'Facebook'  => 'Facebook',
+			'Twitter'   => 'Twitter',
+			'LinkedIn'  => 'LinkedIn',
+			'E-mail'    => 'E-mail',
+			'WhatsApp'  => 'WhatsApp',
+			'Pinterest' => 'Pinterest',
+		);
+		update_site_option( 'bp_share_services', $default_services );
+	}
+
+	// Ensure main settings are enabled by default
+	if ( false === get_site_option( 'bp_share_services_enable' ) ) {
+		update_site_option( 'bp_share_services_enable', 1 );
+	}
+
+	if ( false === get_site_option( 'bp_share_services_logout_enable' ) ) {
+		update_site_option( 'bp_share_services_logout_enable', 1 );
+	}
+
+	// Ensure extra options are set
+	$extra_options = get_site_option( 'bp_share_services_extra' );
+	if ( empty( $extra_options ) || ! is_array( $extra_options ) ) {
+		$extra_options = array(
+			'bp_share_services_open' => 'on',
+		);
+		update_site_option( 'bp_share_services_extra', $extra_options );
+	}
+
+	// Ensure reshare settings have good defaults
+	$reshare_settings = get_site_option( 'bp_reshare_settings' );
+	if ( empty( $reshare_settings ) || ! is_array( $reshare_settings ) ) {
+		$reshare_settings = array(
+			'reshare_share_activity'               => 'parent',
+			'enable_share_count'                   => 1,
+			'prevent_self_share'                   => 0,
+			'respect_privacy'                      => 1,
+			'max_share_depth'                      => 3,
+			'require_permission'                   => 0,
+			// All content types enabled by default
+			'disable_post_reshare_activity'        => 0,
+			'disable_my_profile_reshare_activity'  => 0,
+			'disable_message_reshare_activity'     => 0,
+			'disable_group_reshare_activity'       => 0,
+			'disable_friends_reshare_activity'     => 0,
+		);
+		update_site_option( 'bp_reshare_settings', $reshare_settings );
+	}
+
+	// Ensure icon settings have good defaults
+	$icon_settings = get_site_option( 'bpas_icon_color_settings' );
+	if ( empty( $icon_settings ) || ! is_array( $icon_settings ) ) {
+		$icon_settings = array(
+			'icon_style'    => 'circle',
+			'show_labels'   => 1,
+			'animate_icons' => 1,
+			'icon_size'     => 'medium',
+			'bg_color'      => '#667eea',
+			'text_color'    => '#ffffff',
+			'hover_color'   => '#5a6fd8',
+			'border_color'  => '#e1e5e9',
+		);
+		update_site_option( 'bpas_icon_color_settings', $icon_settings );
+	}
+}

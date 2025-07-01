@@ -42,9 +42,6 @@ class Buddypress_Share_Activator {
 		
 		// Schedule cleanup tasks
 		self::schedule_cleanup_tasks();
-		
-		// Log activation for debugging
-		self::log_activation();
 	}
 
 	/**
@@ -59,13 +56,15 @@ class Buddypress_Share_Activator {
 	private static function setup_default_options() {
 		// Set default social services if not already configured
 		if ( false === get_site_option( 'bp_share_services' ) ) {
-			$bp_share_pro_icon_default = array(
-				'Facebook' => 'Facebook',
-				'Twitter'  => 'Twitter',
-				'Linkedin' => 'Linkedin',
-				'Whatsapp' => 'Whatsapp',
+			$default_services = array(
+				'Facebook'  => 'Facebook',
+				'Twitter'   => 'Twitter',
+				'LinkedIn'  => 'LinkedIn',
+				'E-mail'    => 'E-mail',
+				'WhatsApp'  => 'WhatsApp',
+				'Pinterest' => 'Pinterest',
 			);
-			update_site_option( 'bp_share_services', $bp_share_pro_icon_default );
+			update_site_option( 'bp_share_services', $default_services );
 		}
 
 		// Set default service state if not configured
@@ -85,10 +84,10 @@ class Buddypress_Share_Activator {
 
 		// Set default icon settings if not configured
 		if ( false === get_site_option( 'bpas_icon_color_settings' ) ) {
-			$bpas_icon_color_settings = array(
+			$icon_settings = array(
 				'icon_style' => 'circle',
 			);
-			update_site_option( 'bpas_icon_color_settings', $bpas_icon_color_settings );
+			update_site_option( 'bpas_icon_color_settings', $icon_settings );
 		}
 
 		// Set default extra options if not configured
@@ -139,7 +138,6 @@ class Buddypress_Share_Activator {
 		$table_exists = $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $activity_meta_table ) );
 		
 		if ( ! $table_exists ) {
-			self::log_error( 'Activity meta table does not exist: ' . $activity_meta_table );
 			return;
 		}
 
@@ -150,28 +148,7 @@ class Buddypress_Share_Activator {
 			
 			if ( ! $index_exists ) {
 				$sql = "ALTER TABLE `{$activity_meta_table}` ADD INDEX `{$index_name}` (`meta_key`(20), `activity_id`)";
-				$result = $wpdb->query( $sql );
-				
-				if ( false === $result ) {
-					self::log_error( 'Failed to create share_count index: ' . $wpdb->last_error );
-				} else {
-					self::log_success( 'Created share_count index successfully' );
-				}
-			}
-
-			// Create index for activity_id + meta_key combination (if not exists)
-			$combined_index = 'idx_bp_activity_meta_combo';
-			$combined_exists = self::index_exists( $activity_meta_table, $combined_index );
-			
-			if ( ! $combined_exists ) {
-				$sql = "ALTER TABLE `{$activity_meta_table}` ADD INDEX `{$combined_index}` (`activity_id`, `meta_key`(50))";
-				$result = $wpdb->query( $sql );
-				
-				if ( false === $result ) {
-					self::log_error( 'Failed to create combined index: ' . $wpdb->last_error );
-				} else {
-					self::log_success( 'Created combined activity meta index successfully' );
-				}
+				$wpdb->query( $sql );
 			}
 
 			// Create index for post meta share_count (if not exists)
@@ -181,17 +158,11 @@ class Buddypress_Share_Activator {
 			
 			if ( ! $post_index_exists ) {
 				$sql = "ALTER TABLE `{$post_meta_table}` ADD INDEX `{$post_index_name}` (`meta_key`(20), `post_id`) ";
-				$result = $wpdb->query( $sql );
-				
-				if ( false === $result ) {
-					self::log_error( 'Failed to create post share_count index: ' . $wpdb->last_error );
-				} else {
-					self::log_success( 'Created post share_count index successfully' );
-				}
+				$wpdb->query( $sql );
 			}
 
 		} catch ( Exception $e ) {
-			self::log_error( 'Exception while creating indexes: ' . $e->getMessage() );
+			// Silently fail if indexes can't be created
 		}
 	}
 
@@ -232,12 +203,10 @@ class Buddypress_Share_Activator {
 			// Fresh installation
 			update_site_option( 'bp_share_plugin_version', $current_version );
 			update_site_option( 'bp_share_install_date', time() );
-			self::log_success( 'Fresh installation detected, version: ' . $current_version );
 		} elseif ( version_compare( $installed_version, $current_version, '<' ) ) {
 			// Upgrade detected
 			self::handle_plugin_upgrade( $installed_version, $current_version );
 			update_site_option( 'bp_share_plugin_version', $current_version );
-			self::log_success( 'Plugin upgraded from ' . $installed_version . ' to ' . $current_version );
 		}
 	}
 
@@ -258,14 +227,6 @@ class Buddypress_Share_Activator {
 			// Upgrade tasks for versions before 1.5.0
 			self::upgrade_to_150();
 		}
-		
-		// Future upgrade tasks can be added here
-		// if ( version_compare( $old_version, '2.0.0', '<' ) ) {
-		//     self::upgrade_to_200();
-		// }
-		
-		// Set upgrade flag for one-time tasks
-		update_site_option( 'bp_share_needs_upgrade_tasks', true );
 	}
 
 	/**
@@ -275,22 +236,8 @@ class Buddypress_Share_Activator {
 	 * @access   private
 	 */
 	private static function upgrade_to_150() {
-		// Migrate old settings format if needed
-		$old_services = get_site_option( 'bp_share_services_old_format' );
-		if ( ! empty( $old_services ) && is_array( $old_services ) ) {
-			// Convert old format to new format if needed
-			$new_services = array();
-			foreach ( $old_services as $service ) {
-				$new_services[ $service ] = $service;
-			}
-			update_site_option( 'bp_share_services', $new_services );
-			delete_site_option( 'bp_share_services_old_format' );
-		}
-
 		// Clear any legacy caches
 		wp_cache_delete( 'bp_share_legacy_cache', 'buddypress_share' );
-		
-		self::log_success( 'Completed upgrade to version 1.5.0' );
 	}
 
 	/**
@@ -304,160 +251,6 @@ class Buddypress_Share_Activator {
 		if ( ! wp_next_scheduled( 'bp_share_weekly_cleanup' ) ) {
 			wp_schedule_event( time(), 'weekly', 'bp_share_weekly_cleanup' );
 		}
-
-		// Schedule daily cache cleanup
-		if ( ! wp_next_scheduled( 'bp_share_daily_cache_cleanup' ) ) {
-			wp_schedule_event( time(), 'daily', 'bp_share_daily_cache_cleanup' );
-		}
-	}
-
-	/**
-	 * Log successful activation.
-	 *
-	 * @since    1.5.1
-	 * @access   private
-	 */
-	private static function log_activation() {
-		$activation_data = array(
-			'version' => defined( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION' ) ? BP_ACTIVITY_SHARE_PLUGIN_VERSION : 'unknown',
-			'timestamp' => current_time( 'mysql' ),
-			'bp_version' => function_exists( 'bp_get_version' ) ? bp_get_version() : 'not_active',
-			'wp_version' => get_bloginfo( 'version' ),
-			'php_version' => PHP_VERSION,
-			'multisite' => is_multisite() ? 'yes' : 'no',
-		);
-
-		self::log_success( 'Plugin activated successfully', $activation_data );
-	}
-
-	/**
-	 * Log success messages for debugging.
-	 *
-	 * @since    1.5.1
-	 * @access   private
-	 * @param    string $message Success message.
-	 * @param    array  $data    Additional data to log.
-	 */
-	private static function log_success( $message, $data = array() ) {
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			$log_message = '[BP Activity Share Pro Activator] SUCCESS: ' . $message;
-			if ( ! empty( $data ) ) {
-				$log_message .= ' Data: ' . wp_json_encode( $data );
-			}
-			error_log( $log_message );
-		}
-	}
-
-	/**
-	 * Log error messages for debugging.
-	 *
-	 * @since    1.5.1
-	 * @access   private
-	 * @param    string $message Error message.
-	 * @param    array  $data    Additional error data.
-	 */
-	private static function log_error( $message, $data = array() ) {
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			$log_message = '[BP Activity Share Pro Activator] ERROR: ' . $message;
-			if ( ! empty( $data ) ) {
-				$log_message .= ' Data: ' . wp_json_encode( $data );
-			}
-			error_log( $log_message );
-		}
-	}
-
-	/**
-	 * Check system requirements before activation.
-	 *
-	 * @since    1.5.1
-	 * @access   public
-	 * @return   bool True if requirements are met, false otherwise.
-	 */
-	public static function check_requirements() {
-		$requirements_met = true;
-		$errors = array();
-
-		// Check PHP version
-		if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
-			$errors[] = sprintf( 
-				__( 'PHP version 7.4 or higher is required. You are running version %s.', 'buddypress-share' ), 
-				PHP_VERSION 
-			);
-			$requirements_met = false;
-		}
-
-		// Check WordPress version
-		if ( version_compare( get_bloginfo( 'version' ), '5.0', '<' ) ) {
-			$errors[] = sprintf( 
-				__( 'WordPress version 5.0 or higher is required. You are running version %s.', 'buddypress-share' ), 
-				get_bloginfo( 'version' ) 
-			);
-			$requirements_met = false;
-		}
-
-		// Check if BuddyPress is active
-		if ( ! function_exists( 'buddypress' ) ) {
-			$errors[] = __( 'BuddyPress plugin must be installed and activated.', 'buddypress-share' );
-			$requirements_met = false;
-		}
-
-		// Check BuddyPress version if active
-		if ( function_exists( 'bp_get_version' ) ) {
-			if ( version_compare( bp_get_version(), '8.0', '<' ) ) {
-				$errors[] = sprintf( 
-					__( 'BuddyPress version 8.0 or higher is recommended. You are running version %s.', 'buddypress-share' ), 
-					bp_get_version() 
-				);
-				// This is a warning, not a hard requirement
-			}
-		}
-
-		// Log requirements check
-		if ( ! $requirements_met ) {
-			self::log_error( 'System requirements not met', $errors );
-		} else {
-			self::log_success( 'System requirements check passed' );
-		}
-
-		return $requirements_met;
-	}
-
-	/**
-	 * Get plugin activation status and information.
-	 *
-	 * @since    1.5.1
-	 * @access   public
-	 * @return   array Plugin status information.
-	 */
-	public static function get_activation_status() {
-		return array(
-			'version' => get_site_option( 'bp_share_plugin_version', 'unknown' ),
-			'install_date' => get_site_option( 'bp_share_install_date', 0 ),
-			'last_activation' => get_site_option( 'bp_share_last_activation', 0 ),
-			'database_version' => get_site_option( 'bp_share_db_version', '1.0' ),
-			'indexes_created' => self::check_indexes_exist(),
-		);
-	}
-
-	/**
-	 * Check if database indexes exist.
-	 *
-	 * @since    1.5.1
-	 * @access   private
-	 * @return   bool True if indexes exist, false otherwise.
-	 */
-	private static function check_indexes_exist() {
-		if ( ! function_exists( 'buddypress' ) || ! bp_is_active( 'activity' ) ) {
-			return false;
-		}
-
-		$bp = buddypress();
-		$activity_meta_table = $bp->activity->table_name_meta;
-		
-		$share_count_index = self::index_exists( $activity_meta_table, 'idx_bp_share_count' );
-		$combo_index = self::index_exists( $activity_meta_table, 'idx_bp_activity_meta_combo' );
-		
-		return $share_count_index && $combo_index;
 	}
 
 	/**
@@ -479,29 +272,21 @@ class Buddypress_Share_Activator {
 
 		try {
 			// Clean up share_count meta for deleted activities
-			$orphaned_meta = $wpdb->query( 
+			$wpdb->query( 
 				"DELETE am FROM {$activity_meta_table} am 
 				 LEFT JOIN {$activity_table} a ON am.activity_id = a.id 
 				 WHERE a.id IS NULL AND am.meta_key = 'share_count'"
 			);
 
-			if ( $orphaned_meta > 0 ) {
-				self::log_success( "Cleaned up {$orphaned_meta} orphaned share_count records" );
-			}
-
 			// Clean up share_count meta for deleted posts
-			$orphaned_post_meta = $wpdb->query(
+			$wpdb->query(
 				"DELETE pm FROM {$wpdb->postmeta} pm 
 				 LEFT JOIN {$wpdb->posts} p ON pm.post_id = p.ID 
 				 WHERE p.ID IS NULL AND pm.meta_key = 'share_count'"
 			);
 
-			if ( $orphaned_post_meta > 0 ) {
-				self::log_success( "Cleaned up {$orphaned_post_meta} orphaned post share_count records" );
-			}
-
 		} catch ( Exception $e ) {
-			self::log_error( 'Error during cleanup: ' . $e->getMessage() );
+			// Silently fail
 		}
 	}
 
@@ -514,51 +299,8 @@ class Buddypress_Share_Activator {
 	public static function deactivate() {
 		// Clear scheduled tasks
 		wp_clear_scheduled_hook( 'bp_share_weekly_cleanup' );
-		wp_clear_scheduled_hook( 'bp_share_daily_cache_cleanup' );
 
 		// Clear caches
 		wp_cache_flush();
-
-		// Log deactivation
-		self::log_success( 'Plugin deactivated and cleanup completed' );
-	}
-
-	/**
-	 * Emergency rollback method for problematic upgrades.
-	 *
-	 * @since    1.5.1
-	 * @access   public
-	 */
-	public static function emergency_rollback() {
-		// Remove problematic indexes if they cause issues
-		global $wpdb;
-
-		if ( ! function_exists( 'buddypress' ) || ! bp_is_active( 'activity' ) ) {
-			return;
-		}
-
-		$bp = buddypress();
-		$activity_meta_table = $bp->activity->table_name_meta;
-
-		try {
-			// Drop our custom indexes if they exist
-			$indexes_to_remove = array( 'idx_bp_share_count', 'idx_bp_activity_meta_combo' );
-			
-			foreach ( $indexes_to_remove as $index_name ) {
-				if ( self::index_exists( $activity_meta_table, $index_name ) ) {
-					$wpdb->query( "ALTER TABLE `{$activity_meta_table}` DROP INDEX `{$index_name}`" );
-					self::log_success( "Removed index: {$index_name}" );
-				}
-			}
-
-			// Remove post meta index
-			if ( self::index_exists( $wpdb->postmeta, 'idx_bp_post_share_count' ) ) {
-				$wpdb->query( "ALTER TABLE `{$wpdb->postmeta}` DROP INDEX `idx_bp_post_share_count`" );
-				self::log_success( 'Removed post meta index' );
-			}
-
-		} catch ( Exception $e ) {
-			self::log_error( 'Error during rollback: ' . $e->getMessage() );
-		}
 	}
 }
