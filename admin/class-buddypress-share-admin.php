@@ -14,6 +14,7 @@
  * The admin-specific functionality of the plugin.
  *
  * UPDATED: Modern CDN integration with Font Awesome 5.15.4 and optimized asset loading.
+ * UPDATED: Added license management system integration.
  *
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/admin
@@ -260,6 +261,33 @@ class Buddypress_Share_Admin {
 				</div>
 				<?php
 			}
+			
+			// Show license activation success message
+			if ( isset( $_GET['sl_activation'] ) && 'true' === $_GET['sl_activation'] ) {
+				?>
+				<div class="notice notice-success is-dismissible">
+					<p><?php esc_html_e( 'License activated successfully!', 'buddypress-share' ); ?></p>
+				</div>
+				<?php
+			}
+			
+			// Show license deactivation success message
+			if ( isset( $_GET['sl_deactivation'] ) && 'true' === $_GET['sl_deactivation'] ) {
+				?>
+				<div class="notice notice-success is-dismissible">
+					<p><?php esc_html_e( 'License deactivated successfully!', 'buddypress-share' ); ?></p>
+				</div>
+				<?php
+			}
+			
+			// Show license error message
+			if ( isset( $_GET['sl_activation'] ) && 'false' === $_GET['sl_activation'] && isset( $_GET['message'] ) ) {
+				?>
+				<div class="notice notice-error is-dismissible">
+					<p><?php echo esc_html( rawurldecode( $_GET['message'] ) ); ?></p>
+				</div>
+				<?php
+			}
 			?>
 
 			<!-- Native WordPress Navigation Tabs -->
@@ -276,6 +304,10 @@ class Buddypress_Share_Admin {
 				   class="nav-tab <?php echo 'icons' === $current_section ? 'nav-tab-active' : ''; ?>">
 					<?php esc_html_e( 'Icon Styles', 'buddypress-share' ); ?>
 				</a>
+				<a href="<?php echo esc_url( admin_url( 'options-general.php?page=buddypress-share&section=license' ) ); ?>" 
+				   class="nav-tab <?php echo 'license' === $current_section ? 'nav-tab-active' : ''; ?>">
+					<?php esc_html_e( 'License', 'buddypress-share' ); ?>
+				</a>
 			</nav>
 
 			<div class="tab-content">
@@ -286,6 +318,9 @@ class Buddypress_Share_Admin {
 						break;
 					case 'icons':
 						$this->render_icon_settings();
+						break;
+					case 'license':
+						$this->render_license_settings();
 						break;
 					default:
 						$this->render_general_settings();
@@ -710,6 +745,226 @@ class Buddypress_Share_Admin {
 
 			<?php submit_button( __( 'Save Icon Settings', 'buddypress-share' ) ); ?>
 		</form>
+		<?php
+	}
+
+	/**
+	 * Render license settings section.
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 */
+	private function render_license_settings() {
+		if ( ! class_exists( 'BP_Share_License_Manager' ) ) {
+			?>
+			<div class="notice notice-warning">
+				<p><?php esc_html_e( 'License management is not available. Please contact support.', 'buddypress-share' ); ?></p>
+			</div>
+			<?php
+			return;
+		}
+
+		$license_manager = BP_Share_License_Manager::get_instance();
+		$license_manager->render_license_tab();
+		
+		// Enqueue license scripts
+		$this->enqueue_license_scripts();
+	}
+
+	/**
+	 * Enqueue license management scripts.
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 */
+	private function enqueue_license_scripts() {
+		?>
+		<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			// Handle license activation
+			$('#activate-license').on('click', function(e) {
+				e.preventDefault();
+				var licenseKey = $('#bp_share_license_key').val().trim();
+				
+				if (!licenseKey) {
+					$('#license-message').html('<div class="notice notice-error"><p><?php esc_html_e( "Please enter a license key", "buddypress-share" ); ?></p></div>');
+					return;
+				}
+				
+				$(this).prop('disabled', true).text('<?php esc_html_e( "Activating...", "buddypress-share" ); ?>');
+				
+				$.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					data: {
+						action: 'bp_share_activate_license',
+						license_key: licenseKey,
+						nonce: bp_share_admin_vars.nonce
+					},
+					success: function(response) {
+						if (response.success) {
+							$('#license-message').html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
+							setTimeout(function() {
+								location.reload();
+							}, 1500);
+						} else {
+							$('#license-message').html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
+							$('#activate-license').prop('disabled', false).text('<?php esc_html_e( "Activate License", "buddypress-share" ); ?>');
+						}
+					},
+					error: function() {
+						$('#license-message').html('<div class="notice notice-error"><p><?php esc_html_e( "An error occurred. Please try again.", "buddypress-share" ); ?></p></div>');
+						$('#activate-license').prop('disabled', false).text('<?php esc_html_e( "Activate License", "buddypress-share" ); ?>');
+					}
+				});
+			});
+			
+			// Handle license deactivation
+			$('#deactivate-license').on('click', function(e) {
+				e.preventDefault();
+				
+				if (!confirm('<?php esc_html_e( "Are you sure you want to deactivate your license?", "buddypress-share" ); ?>')) {
+					return;
+				}
+				
+				$(this).prop('disabled', true).text('<?php esc_html_e( "Deactivating...", "buddypress-share" ); ?>');
+				
+				$.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					data: {
+						action: 'bp_share_deactivate_license',
+						nonce: bp_share_admin_vars.nonce
+					},
+					success: function(response) {
+						if (response.success) {
+							$('#license-message').html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
+							setTimeout(function() {
+								location.reload();
+							}, 1500);
+						} else {
+							$('#license-message').html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
+							$('#deactivate-license').prop('disabled', false).text('<?php esc_html_e( "Deactivate License", "buddypress-share" ); ?>');
+						}
+					},
+					error: function() {
+						$('#license-message').html('<div class="notice notice-error"><p><?php esc_html_e( "An error occurred. Please try again.", "buddypress-share" ); ?></p></div>');
+						$('#deactivate-license').prop('disabled', false).text('<?php esc_html_e( "Deactivate License", "buddypress-share" ); ?>');
+					}
+				});
+			});
+			
+			// Handle license check
+			$('#check-license').on('click', function(e) {
+				e.preventDefault();
+				
+				$(this).prop('disabled', true).text('<?php esc_html_e( "Checking...", "buddypress-share" ); ?>');
+				
+				$.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					data: {
+						action: 'bp_share_check_license',
+						nonce: bp_share_admin_vars.nonce
+					},
+					success: function(response) {
+						if (response.success) {
+							$('#license-message').html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
+							setTimeout(function() {
+								location.reload();
+							}, 1500);
+						} else {
+							$('#license-message').html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
+						}
+						$('#check-license').prop('disabled', false).text('<?php esc_html_e( "Check License", "buddypress-share" ); ?>');
+					},
+					error: function() {
+						$('#license-message').html('<div class="notice notice-error"><p><?php esc_html_e( "An error occurred. Please try again.", "buddypress-share" ); ?></p></div>');
+						$('#check-license').prop('disabled', false).text('<?php esc_html_e( "Check License", "buddypress-share" ); ?>');
+					}
+				});
+			});
+		});
+		</script>
+		
+		<style>
+		.bp-share-license-section {
+			background: #fff;
+			padding: 20px;
+			border: 1px solid #ccd0d4;
+			border-radius: 4px;
+			margin-top: 20px;
+		}
+		
+		.bp-share-license-info h3 {
+			margin-top: 0;
+			color: #23282d;
+		}
+		
+		.bp-share-license-actions {
+			margin-top: 20px;
+		}
+		
+		.bp-share-license-actions .button {
+			margin-right: 10px;
+		}
+		
+		.bp-share-license-message {
+			margin-top: 15px;
+		}
+		
+		.bp-share-license-info-box {
+			margin-top: 30px;
+			padding: 20px;
+			background: #f8f9fa;
+			border-left: 4px solid #0073aa;
+		}
+		
+		.bp-share-license-info-box h4 {
+			margin-top: 0;
+			color: #0073aa;
+		}
+		
+		.bp-share-license-info-box ul {
+			list-style: none;
+			padding: 0;
+		}
+		
+		.bp-share-license-info-box li {
+			padding: 5px 0;
+		}
+		
+		.bp-share-license-info-box .dashicons {
+			color: #0073aa;
+			margin-right: 5px;
+		}
+		
+		.bp-share-license-status {
+			display: inline-flex;
+			align-items: center;
+			font-weight: 600;
+		}
+		
+		.bp-share-license-status .dashicons {
+			margin-right: 5px;
+		}
+		
+		.bp-share-license-valid {
+			color: #46b450;
+		}
+		
+		.bp-share-license-expired {
+			color: #ffb900;
+		}
+		
+		.bp-share-license-invalid {
+			color: #dc3232;
+		}
+		
+		.bp-share-license-inactive {
+			color: #666;
+		}
+		</style>
 		<?php
 	}
 

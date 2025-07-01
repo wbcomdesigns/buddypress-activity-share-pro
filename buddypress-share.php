@@ -39,6 +39,86 @@ if ( ! defined( 'BP_SHARE' ) ) {
 	define( 'BP_ACTIVITY_SHARE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 }
 
+// EDD License constants
+if ( ! defined( 'BP_ACTIVITY_SHARE_STORE_URL' ) ) {
+	define( 'BP_ACTIVITY_SHARE_STORE_URL', 'https://wbcomdesigns.com/' );
+	define( 'BP_ACTIVITY_SHARE_ITEM_ID', 1234567 ); // Replace with your actual EDD item ID
+	define( 'BP_ACTIVITY_SHARE_ITEM_NAME', 'BuddyPress Activity Share Pro' );
+}
+
+/**
+ * Load license system early with proper loading order
+ */
+function bp_share_load_license_system() {
+	// Only load if user has permissions
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	
+	// Define license files in the correct loading order
+	$license_files = array(
+		'EDD_SL_Plugin_Updater' => BP_ACTIVITY_SHARE_PLUGIN_PATH . 'license/EDD_SL_Plugin_Updater.php',
+		'BP_Share_EDD_Updater_Wrapper' => BP_ACTIVITY_SHARE_PLUGIN_PATH . 'license/class-bp-share-edd-updater-wrapper.php',
+		'BP_Share_License_Manager' => BP_ACTIVITY_SHARE_PLUGIN_PATH . 'license/class-bp-share-license-manager.php',
+		'BP_Share_License_Updater' => BP_ACTIVITY_SHARE_PLUGIN_PATH . 'license/class-bp-share-license-updater.php'
+	);
+	
+	// Check if all files exist first
+	$missing_files = array();
+	foreach ( $license_files as $class_name => $file_path ) {
+		if ( ! file_exists( $file_path ) ) {
+			$missing_files[] = $file_path;
+			error_log( 'BP Share: Missing license file: ' . $file_path );
+		}
+	}
+	
+	if ( ! empty( $missing_files ) ) {
+		add_action( 'admin_notices', function() use ( $missing_files ) {
+			?>
+			<div class="notice notice-error">
+				<p><?php esc_html_e( 'BuddyPress Activity Share Pro: License management files are missing.', 'buddypress-share' ); ?></p>
+				<p><strong><?php esc_html_e( 'Missing files:', 'buddypress-share' ); ?></strong></p>
+				<ul>
+					<?php foreach ( $missing_files as $file ) : ?>
+						<li><code><?php echo esc_html( str_replace( ABSPATH, '', $file ) ); ?></code></li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<?php
+		});
+		return;
+	}
+	
+	// Load files in the correct order to avoid class dependency issues
+	foreach ( $license_files as $class_name => $file_path ) {
+		if ( ! class_exists( $class_name ) ) {
+			require_once $file_path;
+			
+			// Verify the class was loaded
+			if ( ! class_exists( $class_name ) ) {
+				error_log( 'BP Share: Failed to load class: ' . $class_name . ' from file: ' . $file_path );
+				add_action( 'admin_notices', function() use ( $class_name, $file_path ) {
+					?>
+					<div class="notice notice-error">
+						<p><?php printf( esc_html__( 'BuddyPress Activity Share Pro: Failed to load license class %s from %s', 'buddypress-share' ), $class_name, basename( $file_path ) ); ?></p>
+					</div>
+					<?php
+				});
+				return;
+			}
+		}
+	}
+	
+	// Initialize license components only after all classes are loaded
+	if ( class_exists( 'BP_Share_License_Manager' ) ) {
+		BP_Share_License_Manager::get_instance();
+	}
+	
+	if ( class_exists( 'BP_Share_License_Updater' ) ) {
+		BP_Share_License_Updater::get_instance();
+	}
+}
+
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-buddypress-share-activator.php
@@ -94,7 +174,8 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bp_activity_s
 function bp_activity_share_pro_plugin_actions( $links, $file ) {
 	if ( class_exists( 'BuddyPress' ) && current_user_can( 'manage_options' ) ) {
 		$settings_link = '<a href="' . esc_url( admin_url( 'options-general.php?page=buddypress-share' ) ) . '">' . esc_html__( 'Settings', 'buddypress-share' ) . '</a>';
-		array_unshift( $links, $settings_link ); // before other links.
+		$license_link = '<a href="' . esc_url( admin_url( 'options-general.php?page=buddypress-share&section=license' ) ) . '">' . esc_html__( 'License', 'buddypress-share' ) . '</a>';
+		array_unshift( $links, $settings_link, $license_link ); // before other links.
 	}
 	return $links;
 }
@@ -127,6 +208,11 @@ function bpshare_pro_plugin_init() {
 		run_buddypress_share_pro();
 	}
 }
+
+/**
+ * Load license system after plugins are loaded with proper dependency order
+ */
+add_action( 'plugins_loaded', 'bp_share_load_license_system', 5 );
 
 /**
  * Check config
