@@ -16,7 +16,7 @@
  * The core plugin class.
  *
  * This is used to define internationalization, admin-specific hooks, and
- * public-facing site hooks.
+ * public-facing site hooks. Optimized for large sites with improved performance.
  *
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
@@ -47,7 +47,6 @@ class Buddypress_Share {
 	 */
 	protected $plugin_name;
 
-
 	/**
 	 * The current version of the plugin.
 	 *
@@ -64,11 +63,10 @@ class Buddypress_Share {
 	 * Load the dependencies, define the locale, and set the hooks for the admin area and
 	 * the public-facing side of the site.
 	 *
-	 * @access public
 	 * @since    1.0.0
+	 * @access   public
 	 */
 	public function __construct() {
-
 		$this->plugin_name = 'buddypress-share';
 		$this->version     = '2.0.0';
 
@@ -95,7 +93,6 @@ class Buddypress_Share {
 	 * @access   private
 	 */
 	private function load_dependencies() {
-
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
@@ -108,6 +105,9 @@ class Buddypress_Share {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-buddypress-share-i18n.php';
 
+		/**
+		 * The class responsible for Wbcom admin settings framework.
+		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wbcom/wbcom-admin-settings.php';
 
 		/**
@@ -116,7 +116,7 @@ class Buddypress_Share {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-buddypress-share-admin.php';
 
 		/**
-		 * The class responsible for display admin notice for revirew after 7 days.
+		 * The class responsible for display admin notice for review after 7 days.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-buddypress-share-feedback.php';
 
@@ -139,7 +139,6 @@ class Buddypress_Share {
 	 * @access   private
 	 */
 	private function set_locale() {
-
 		$plugin_i18n = new Buddypress_Share_i18n();
 
 		// Hook to plugins_loaded instead of init for earlier loading
@@ -150,25 +149,38 @@ class Buddypress_Share {
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
 	 *
+	 * Optimized with cache clearing hooks for better performance.
+	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
 		$plugin_admin = new Buddypress_Share_Admin( $this->get_plugin_name(), $this->get_version() );
 
+		// Core admin hooks
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( bp_core_admin_hook(), $plugin_admin, 'bp_share_plugin_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'bp_share_settings_init' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'bpas_register_setting' );
+
+		// AJAX handlers for admin
 		$this->loader->add_action( 'wp_ajax_wss_social_icons', $plugin_admin, 'wss_social_icons' );
 		$this->loader->add_action( 'wp_ajax_wss_social_remove_icons', $plugin_admin, 'wss_social_remove_icons' );
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'bpas_register_setting' );
+
+		// Cache clearing hooks for performance optimization
+		$this->loader->add_action( 'update_site_option_bp_share_services', $plugin_admin, 'clear_public_settings_cache' );
+		$this->loader->add_action( 'update_site_option_bp_share_services_extra', $plugin_admin, 'clear_public_settings_cache' );
+		$this->loader->add_action( 'update_site_option_bp_reshare_settings', $plugin_admin, 'clear_public_settings_cache' );
+		$this->loader->add_action( 'update_option_bpas_icon_color_settings', $plugin_admin, 'clear_public_settings_cache' );
 	}
 
 	/**
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
+	 *
+	 * Optimized with new AJAX handlers for better performance on large sites.
 	 *
 	 * @since    1.0.0
 	 * @access   private
@@ -178,6 +190,8 @@ class Buddypress_Share {
 		$theme_name    = wp_get_theme();
 
 		$plugin_public = new Buddypress_Share_Public( $this->get_plugin_name(), $this->get_version() );
+		
+		// Core public hooks
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_filter( 'language_attributes', $plugin_public, 'bp_share_doctype_opengraph' );
@@ -185,25 +199,39 @@ class Buddypress_Share {
 		$this->loader->add_action( 'bp_init', $plugin_public, 'bp_activity_share_button_dis' );
 		$this->loader->add_action( 'body_class', $plugin_public, 'add_bp_share_services_logout_body_class' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'bp_activity_share_popup_box', 999 );
+		
+		// Theme-specific content hooks
 		if ( ! in_array( $theme_name->template, $theme_support ) ) {
 			$this->loader->add_filter( 'the_content', $plugin_public, 'bp_activity_post_share_button_action', 999 );
 		}
 
+		// BuddyPress activity hooks
 		$this->loader->add_action( 'bp_register_activity_actions', $plugin_public, 'bp_share_register_activity_actions' );
-		$this->loader->add_action( 'wp_ajax_bp_activity_create_reshare_ajax', $plugin_public, 'bp_activity_create_reshare_ajax' );
 		$this->loader->add_action( 'bp_activity_entry_content', $plugin_public, 'bp_activity_share_entry_content' );
 
+		// Shortcode registration
 		$this->loader->add_shortcode( 'bp_activity_post_reshare', $plugin_public, 'bp_activity_post_reshare' );
+
+		// REST API integration
 		$this->loader->add_filter( 'bp_rest_activity_prepare_value', $plugin_public, 'bp_activity_post_reshare_data_embed_rest_api', 10, 3 );
 		
+		// AJAX handlers for public functionality
+		$this->loader->add_action( 'wp_ajax_bp_activity_create_reshare_ajax', $plugin_public, 'bp_activity_create_reshare_ajax' );
 		$this->loader->add_action( 'wp_ajax_bp_share_get_activity_content', $plugin_public, 'bp_share_get_activity_content' );
+		
+		// NEW: Optimized AJAX handler for loading groups and friends dynamically
+		$this->loader->add_action( 'wp_ajax_bp_get_user_share_options', $plugin_public, 'get_user_share_options_ajax' );
+
+		// Performance optimization hooks
+		$this->loader->add_action( 'bp_has_activities', $plugin_public, 'preload_shared_activities', 10, 2 );
+		$this->loader->add_filter( 'bp_activity_get', $plugin_public, 'batch_load_share_counts', 10, 1 );
 	}
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
-	 * @access public
 	 * @since    1.0.0
+	 * @access   public
 	 */
 	public function run() {
 		$this->loader->run();
@@ -213,9 +241,9 @@ class Buddypress_Share {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
-	 * @access public
-	 * @return    string    The name of the plugin.
+	 * @since    1.0.0
+	 * @access   public
+	 * @return   string    The name of the plugin.
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
@@ -224,9 +252,9 @@ class Buddypress_Share {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since     1.0.0
-	 * @access public
-	 * @return    Buddypress_Share_Loader    Orchestrates the hooks of the plugin.
+	 * @since    1.0.0
+	 * @access   public
+	 * @return   Buddypress_Share_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -235,12 +263,11 @@ class Buddypress_Share {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
-	 * @access public
-	 * @return    string    The version number of the plugin.
+	 * @since    1.0.0
+	 * @access   public
+	 * @return   string    The version number of the plugin.
 	 */
 	public function get_version() {
 		return $this->version;
 	}
-
 }

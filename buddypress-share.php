@@ -28,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 if ( ! defined( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION' ) ) {
-	define( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION', '1.5.0' );
+	define( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION', '1.5.1' );
 }
 if ( ! defined( 'BP_SHARE' ) ) {
 	define( 'BP_SHARE', 'buddypress-share' );
@@ -347,16 +347,6 @@ function bp_share_pro_set_default_option() {
 	}
 }
 add_action( 'admin_init', 'bp_share_pro_set_default_option' );
-
-require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';
-
-use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
-
-$myUpdateChecker = PucFactory::buildUpdateChecker(
-	'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-activity-share-pro.json',
-	__FILE__,
-	'buddypress-activity-share-pro'
-);
 
 /**
  * This function handles sharing an activity URL on the compose message box in BuddyPress or BuddyBoss.
