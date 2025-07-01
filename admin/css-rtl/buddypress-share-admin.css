@@ -1,0 +1,243 @@
+/**
+ * BuddyPress Activity Share - Admin CSS (Updated)
+ * 
+ * Simplified admin styling using native WordPress patterns.
+ * Keeps only essential drag/drop styles and removes complex custom UI.
+ * 
+ * @package    Buddypress_Share
+ * @subpackage Buddypress_Share/admin/css
+ * @since      1.5.2
+ */
+
+/* ===================================================================
+   NATIVE WORDPRESS TAB CONTENT STYLING
+   =================================================================== */
+
+.tab-content {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-top: none;
+	padding: 20px;
+	border-radius: 0 0 4px 4px;
+	margin-bottom: 20px;
+}
+
+/* ===================================================================
+   DRAG & DROP SOCIAL SERVICES STYLING
+   =================================================================== */
+
+.social_icon_section {
+	display: flex;
+	gap: 20px;
+	margin: 20px 0;
+}
+
+.social-services-list {
+	flex: 1;
+	min-height: 200px;
+}
+
+.social-services-list h3 {
+	margin-top: 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: #646970;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	margin-bottom: 10px;
+}
+
+.enabled-services-list,
+.disabled-services-list {
+	min-height: 150px;
+	padding: 15px;
+	border: 2px dashed #c3c4c7;
+	border-radius: 4px;
+	background: #fafafa;
+	list-style: none;
+	margin: 0;
+	transition: all 0.3s ease;
+}
+
+.enabled-services-list:hover,
+.disabled-services-list:hover {
+	border-color: #2271b1;
+	background: #f6f7f7;
+}
+
+.enabled-services-list.ui-droppable-hover,
+.disabled-services-list.ui-droppable-hover {
+	border-color: #135e96;
+	background: #f0f6fc;
+	border-style: solid;
+}
+
+.socialicon {
+	display: flex;
+	align-items: center;
+	padding: 8px 12px;
+	margin: 4px 0;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	cursor: move;
+	transition: all 0.2s ease;
+	font-size: 13px;
+	color: #2c3338;
+	list-style: none;
+}
+
+.socialicon:hover {
+	background: #f6f7f7;
+	border-color: #999;
+	transform: translateY(-1px);
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.socialicon.ui-sortable-helper {
+	background: #2271b1;
+	color: #fff;
+	border-color: #135e96;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+	transform: rotate(-2deg);
+}
+
+.socialicon.ui-sortable-placeholder {
+	background: #e5f5ff;
+	border: 2px dashed #2271b1;
+	height: 32px;
+	margin: 4px 0;
+}
+
+.no-services-message {
+	color: #646970;
+	font-style: italic;
+	text-align: center;
+	padding: 20px;
+	background: none !important;
+	border: none !important;
+	cursor: default !important;
+	list-style: none;
+}
+
+.no-services-message:hover {
+	background: none !important;
+	transform: none !important;
+	box-shadow: none !important;
+	border-color: #c3c4c7 !important;
+}
+
+/* ===================================================================
+   COLOR PICKER STYLING
+   =================================================================== */
+
+.bp-share-color-picker {
+	width: 100px;
+}
+
+/* ===================================================================
+   FORM IMPROVEMENTS
+   =================================================================== */
+
+.form-table th {
+	padding: 15px 0 15px 10px;
+	width: 200px;
+}
+
+.form-table td {
+	padding: 15px 10px;
+}
+
+.form-table fieldset label {
+	margin-bottom: 8px;
+	display: inline-block;
+}
+
+/* ===================================================================
+   RESPONSIVE DESIGN
+   =================================================================== */
+
+@media screen and (max-width: 782px) {
+	.social_icon_section {
+		flex-direction: column;
+	}
+	
+	.social-services-list {
+		margin-bottom: 20px;
+	}
+	
+	.form-table th,
+	.form-table td {
+		display: block;
+		width: 100%;
+		padding: 10px 0;
+	}
+	
+	.form-table th {
+		border-bottom: 1px solid #ddd;
+		margin-bottom: 10px;
+	}
+}
+
+/* ===================================================================
+   TOUCH DEVICE SUPPORT
+   =================================================================== */
+
+@media (pointer: coarse) {
+	.socialicon {
+		min-height: 44px;
+		padding: 12px 16px;
+		font-size: 14px;
+	}
+}
+
+/* ===================================================================
+   REMOVE OLD COMPLEX STYLES (Keep only essential ones)
+   =================================================================== */
+
+/* Remove all complex custom form styling */
+.bp-share-form-section,
+.bp-share-section-header,
+.bp-share-setting-item,
+.bp-share-setting-control,
+.bp-share-toggle,
+.bp-share-slider,
+.bp-share-submit-button,
+.bp-share-admin-header,
+.bp-share-admin-content,
+.bp-share-tabs-wrapper,
+.bp-share-tabs-section,
+.bp-share-nav-tabs,
+.bp-share-form-wrapper,
+.bp-share-notice,
+.bp-share-settings-grid,
+.bp-share-radio-group,
+.bp-share-radio-item,
+.bp-share-radio-label,
+.bp-share-radio-indicator,
+.bp-share-radio-content,
+.bp-share-advanced-options,
+.bp-share-privacy-options,
+.bp-share-submit-section,
+.bp-share-preview-section,
+.bp-share-help-section,
+.bp-share-pro-tips,
+.bp-share-icon-styles-grid,
+.bp-share-color-options,
+.bp-share-color-field,
+.bp-share-preview-container,
+.bp-share-reset-section {
+	/* These complex styles are no longer needed */
+	/* Using native WordPress form styling instead */
+}
+
+/* Keep only essential drag/drop animations */
+.socialicon.sorting {
+	opacity: 0.7;
+}
+
+.enabled-services-list.drag-active,
+.disabled-services-list.drag-active {
+	background: rgba(34, 113, 177, 0.1);
+}
+/*# sourceMappingURL=buddypress-share-admin.css.map */

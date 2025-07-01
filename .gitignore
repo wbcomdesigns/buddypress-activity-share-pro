@@ -1,2 +1,128 @@
-node_modules
+# WordPress Plugin .gitignore
+
+# WordPress Core Files (if included by mistake)
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/blogs.dir/
+wp-content/upgrade/
+wp-admin/
+wp-includes/
+*.log
+.htaccess
+sitemap.xml
+sitemap.xml.gz
+
+# Node.js and NPM
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Build and Distribution
+dist/
+build/
+vendor/
+composer.lock
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# OS Generated Files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Backup and Temporary Files
+*.bak
+*.backup
+*.old
+*.orig
+*.swp
+*.swo
+*~
+.tmp
+temp/
+tmp/
+
+# Log Files
+*.log
+logs/
+error.log
+debug.log
+
+# Development and Testing
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+tests/
+phpunit.xml
+.phpunit.result.cache
+coverage/
+
+# Grunt/Gulp generated files
+.grunt/
+.sass-cache/
+*.css.map
+*.js.map
+
+# License and sensitive files
+license-keys.txt
+*.key
+*.pem
+
+# ZIP files and releases
+*.zip
+*.tar.gz
+*.rar
+releases/
+dist/
+
+# Documentation build
+docs/_build/
+site/
+
+# Cache directories
+.cache/
+wp-content/cache/
+
+# Security
+wp-config-sample.php
+readme.html
+license.txt
+
+# Plugin update files
+plugin-update-checker/cache/
+
+# WP CLI
+wp-cli.local.yml
+wp-cli.yml
+
+# Composer
+vendor/
+composer.phar
+
+# Local development
+local-config.php
+.htaccess.local
+robots.txt
+
+# Miscellaneous
+*.patch
+*.diff

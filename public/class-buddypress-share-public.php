@@ -13,7 +13,7 @@
  * The public-facing functionality of the plugin.
  *
  * Defines the plugin name, version, and hooks for public-facing functionality.
- * Updated with modern CDN integration and Font Awesome 5.15.4.
+ * Updated with modern CDN integration, Font Awesome 5.15.4, and simple asset helper functions.
  *
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/public
@@ -121,22 +121,22 @@ class Buddypress_Share_Public {
 			'all' 
 		);
 
-		// Custom AS-Icons font (local - essential for plugin icons)
-		wp_enqueue_style( 
-			'bp-share-as-icons', 
-			$plugin_url . 'public/css/as-icons.css', 
-			array(), 
-			$this->version, 
-			'all' 
+		// Custom AS-Icons font with auto min/RTL support
+		bp_share_enqueue_style(
+			'bp-share-as-icons',
+			$plugin_url . 'public/css/as-icons', // Without .css
+			array(),
+			$this->version,
+			'all'
 		);
 		
-		// Main plugin CSS (local)
-		wp_enqueue_style( 
-			$this->plugin_name, 
-			$plugin_url . 'public/css/buddypress-share-public.css', 
-			array( 'bp-share-as-icons' ), 
-			$this->version, 
-			'all' 
+		// Main plugin CSS with auto min/RTL support
+		bp_share_enqueue_style(
+			$this->plugin_name,
+			$plugin_url . 'public/css/buddypress-share-public', // Without .css
+			array( 'bp-share-as-icons' ),
+			$this->version,
+			'all'
 		);
 	}
 
@@ -177,13 +177,13 @@ class Buddypress_Share_Public {
 			true 
 		);
 		
-		// Main plugin script
-		wp_enqueue_script( 
-			$this->plugin_name, 
-			$plugin_url . 'public/js/buddypress-share-public.js', 
-			array( 'jquery', 'wp-i18n' ), 
-			$this->version, 
-			true 
+		// Main plugin script with auto minification
+		bp_share_enqueue_script(
+			$this->plugin_name,
+			$plugin_url . 'public/js/buddypress-share-public', // Without .js
+			array( 'jquery', 'wp-i18n' ),
+			$this->version,
+			true
 		);
 		
 		// Set script translations
@@ -1394,7 +1394,7 @@ class Buddypress_Share_Public {
 		<div class="modal fade activity-share-modal" id="activity-share-modal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="activity-share-modal-title">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
-					<!-- FIXED: Close button with proper Bootstrap 4 attributes -->
+					<!-- Close button with proper Bootstrap 4 attributes -->
 					<div class="modal-header">
 						<h5 class="modal-title" id="activity-share-modal-title"><?php esc_html_e( 'Share Activity', 'buddypress-share' ); ?></h5>
 						<button type="button" class="close activity-share-modal-close" data-dismiss="modal" aria-label="Close">
@@ -1416,7 +1416,7 @@ class Buddypress_Share_Public {
 								<div class="form-item">
 									<div class="form-select">
 										<label for="post-in"><?php esc_html_e( 'Post in', 'buddypress-share' ); ?></label>
-										<!-- FIXED: Select2 dropdown with proper initialization -->
+										<!-- Select2 dropdown with proper initialization -->
 										<select id="post-in" name="postIn" class="bp-share-select2" style="width: 100%;">
 											<option value="0"><?php esc_html_e( 'My Profile', 'buddypress-share' ); ?></option>
 											<option value="message"><?php esc_html_e( 'Message', 'buddypress-share' ); ?></option>
@@ -1450,7 +1450,7 @@ class Buddypress_Share_Public {
 			</div>
 		</div>
 
-		<!-- FIXED: Modal and Select2 initialization script -->
+		<!-- Modal and Select2 initialization script -->
 		<script type="text/javascript">
 		jQuery(document).ready(function($) {
 			// Fix Bootstrap modal initialization

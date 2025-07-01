@@ -125,6 +125,11 @@ class Buddypress_Share {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-buddypress-share-public.php';
+		
+		/**
+		 * The class responsible for asset loading helper functions.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/bp-share-helpers.php';
 
 		$this->loader = new Buddypress_Share_Loader();
 	}

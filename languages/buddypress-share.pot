@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Wbcom Designs - BuddyPress Activity Share Pro 1.5.0\n"
+"Project-Id-Version: Wbcom Designs - BuddyPress Activity Share Pro 1.5.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/buddypress-activity-share-pro\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-20T13:39:33+05:30\n"
+"POT-Creation-Date: 2025-07-01T18:53:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: buddypress-share\n"
@@ -35,1176 +35,725 @@ msgstr ""
 msgid "Wbcom Designs<admin@wbcomdesigns.com>"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:138
-msgid "WB Plugins"
+#: admin/class-buddypress-share-admin.php:150
+msgid "Loading..."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:139
-msgid "General"
+#: admin/class-buddypress-share-admin.php:151
+msgid "Saving..."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:141
-msgid "Activity Share Pro"
+#: admin/class-buddypress-share-admin.php:152
+#: admin/class-buddypress-share-admin.php:260
+msgid "Settings saved successfully!"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:155
+#: admin/class-buddypress-share-admin.php:153
+#: admin/class-buddypress-share-admin.php:816
+#: admin/class-buddypress-share-admin.php:851
+#: admin/class-buddypress-share-admin.php:882
+msgid "An error occurred. Please try again."
+msgstr ""
+
+#: admin/class-buddypress-share-admin.php:228
+msgid "BuddyPress Activity Share"
+msgstr ""
+
+#: admin/class-buddypress-share-admin.php:229
+#: public/class-buddypress-share-public.php:698
+#: public/class-buddypress-share-public.php:719
+msgid "Activity Share"
+msgstr ""
+
+#: admin/class-buddypress-share-admin.php:245
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:167
-msgid "BuddyPress Activity Share Pro Settings"
+#: admin/class-buddypress-share-admin.php:253
+msgid "BuddyPress Activity Share Settings"
 msgstr ""
 
-#. translators: %s:
-#: admin/class-buddypress-share-admin.php:169
-msgid "Version %s"
+#: admin/class-buddypress-share-admin.php:269
+#: license/class-bp-share-license-manager.php:284
+msgid "License activated successfully!"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:192
-msgid "Welcome"
+#: admin/class-buddypress-share-admin.php:278
+#: license/class-bp-share-license-manager.php:303
+msgid "License deactivated successfully!"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:193
-#: admin/templates/bpas-general-settings-page.php:16
+#: admin/class-buddypress-share-admin.php:297
 msgid "General Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:194
-#: admin/templates/bpas-reshare-setting-page.php:16
-msgid "Share Settings"
+#: admin/class-buddypress-share-admin.php:301
+msgid "Sharing Options"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:195
-#: admin/templates/bpas-icon-color-page.php:12
-msgid "Icon Settings"
+#: admin/class-buddypress-share-admin.php:305
+msgid "Icon Styles"
 msgstr ""
 
-#: admin/class-buddypress-share-feedback.php:99
-msgid "%d "
-msgid_plural "%d "
-msgstr[0] ""
-msgstr[1] ""
-
-#: admin/class-buddypress-share-feedback.php:104
-msgid "zero seconds"
-msgstr ""
-
-#: admin/class-buddypress-share-feedback.php:152
-#: admin/class-buddypress-share-feedback.php:200
-#: admin/wbcom/templates/wbcom-plugins-page.php:612
-msgid "BuddyPress Activity Social Share"
-msgstr ""
-
-#: admin/class-buddypress-share-feedback.php:155
-msgid "Are you enjoying BuddyPress Activity Social Share?"
-msgstr ""
-
-#: admin/class-buddypress-share-feedback.php:157
-msgid "We hope you're enjoying the plugin ! Could you please leave us a review ? "
-msgstr ""
-
-#: admin/class-buddypress-share-feedback.php:162
-msgid "Leave a Review"
-msgstr ""
-
-#: admin/class-buddypress-share-feedback.php:165
-msgid "No thanks"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:17
-#: admin/templates/bpas-welcome-page.php:26
-msgid "Documentation"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:23
-#: admin/templates/bpas-icon-color-page.php:15
-#: admin/templates/bpas-reshare-setting-page.php:19
-msgid "Settings saved successfully."
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:33
-msgid "Enable Social Share"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:34
-msgid "Enable this option to show share button in activity page."
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:43
-msgid "Social Share in Logout Mode"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:44
-msgid "Enable this option to display social share icons when the user is logged out."
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:55
-msgid "Enable Sharing Sites"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:62
-msgid "Disable"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:67
-#: admin/templates/bpas-general-settings-page.php:96
-#: public/class-buddypress-share-public.php:294
-msgid "Facebook"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:69
-#: admin/templates/bpas-general-settings-page.php:98
-msgid "Twitter"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:71
-#: admin/templates/bpas-general-settings-page.php:100
-#: public/class-buddypress-share-public.php:307
-msgid "Pinterest"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:73
-#: admin/templates/bpas-general-settings-page.php:102
-#: public/class-buddypress-share-public.php:348
-msgid "Linkedin"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:75
-#: admin/templates/bpas-general-settings-page.php:104
-#: public/class-buddypress-share-public.php:312
-msgid "Reddit"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:77
-#: admin/templates/bpas-general-settings-page.php:106
-#: public/class-buddypress-share-public.php:319
-msgid "WordPress"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:79
-#: admin/templates/bpas-general-settings-page.php:108
-#: public/class-buddypress-share-public.php:326
-msgid "Pocket"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:81
-#: admin/templates/bpas-general-settings-page.php:110
-#: public/class-buddypress-share-public.php:334
-msgid "Telegram"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:83
-#: admin/templates/bpas-general-settings-page.php:112
-#: public/class-buddypress-share-public.php:342
-msgid "Bluesky"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:85
-#: admin/templates/bpas-general-settings-page.php:114
-#: public/class-buddypress-share-public.php:370
-msgid "E-mail"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:87
-#: admin/templates/bpas-general-settings-page.php:116
-#: public/class-buddypress-share-public.php:354
-msgid "WhatsApp"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:91
-msgid "Enable"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:125
-msgid "Open as a popup window"
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:127
-msgid "Default is set to open windows in a popup. If this option is disabled, services will open in a new tab instead of a popup."
-msgstr ""
-
-#: admin/templates/bpas-general-settings-page.php:157
-#: admin/templates/bpas-reshare-setting-page.php:111
-msgid "Save Changes"
-msgstr ""
-
-#: admin/templates/bpas-icon-color-page.php:28
-msgid "Sharing Icon Style"
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:28
-msgid "Disable Post Share Activity"
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:29
-msgid "Enable or disable the feature for sharing blog posts according to your preference."
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:41
-msgid "Disable My Profile Sharing"
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:42
-msgid "Enable or disable the feature for sharing your profile according to your preference."
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:54
-msgid "Disable Message Sharing"
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:55
-msgid "Enable or disable the feature for sharing messages according to your preference."
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:67
-msgid "Disable Group Sharing"
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:68
-msgid "Enable or disable the feature for sharing groups according to your preference."
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:80
-msgid "Disable Friends Sharing"
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:81
-msgid "Enable or disable the feature for sharing friends according to your preference."
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:93
-msgid "Reshare Activity"
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:99
-msgid "Parent"
-msgstr ""
-
-#: admin/templates/bpas-reshare-setting-page.php:104
-msgid "Child"
-msgstr ""
-
-#: admin/templates/bpas-welcome-page.php:17
-msgid "BuddyPress Activity Share Pro facilitates sharing your BuddyPress activities on social media platforms. Additionally, it enables the resharing of BuddyPress activities and WordPress posts on your website, contributing to increased visibility and engagement across the social network for your activities and blog posts."
-msgstr ""
-
-#: admin/templates/bpas-welcome-page.php:20
-msgid "Help &amp; Support Resources"
-msgstr ""
-
-#: admin/templates/bpas-welcome-page.php:21
-msgid "Here are resources to help you get started. Documentation is usually the best place to start. Should you require help anytime, our customer care team is available to assist you at the support center."
-msgstr ""
-
-#: admin/templates/bpas-welcome-page.php:27
-msgid "We have prepared an extensive guide on BuddyPress Activity Share Pro to learn all aspects of the plugin. You will find most of your answers here."
-msgstr ""
-
-#: admin/templates/bpas-welcome-page.php:28
-msgid "Read Documentation"
-msgstr ""
-
-#: admin/templates/bpas-welcome-page.php:34
-msgid "Support Center"
-msgstr ""
-
-#: admin/templates/bpas-welcome-page.php:35
-msgid "We strive to offer the best customer care via our support center. Once your theme is activated, you can ask us for help anytime."
-msgstr ""
-
-#: admin/templates/bpas-welcome-page.php:36
-msgid "Get Support"
-msgstr ""
-
-#: admin/templates/bpas-welcome-page.php:41
-msgid "Got Feedback?"
-msgstr ""
-
-#: admin/templates/bpas-welcome-page.php:42
-msgid "We want to hear about your experience with the plugin. We would also love to hear any suggestions you may for future updates."
-msgstr ""
-
-#: admin/templates/bpas-welcome-page.php:43
-msgid "Send Feedback"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-license-page.php:9
-#: admin/wbcom/wbcom-paid-plugin-settings.php:31
-#: admin/wbcom/wbcom-paid-plugin-settings.php:32
-#: admin/wbcom/wbcom-paid-plugin-settings.php:49
+#: admin/class-buddypress-share-admin.php:309
+#: buddypress-share.php:177
 msgid "License"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-license-page.php:14
-msgid "Plugin License"
+#: admin/class-buddypress-share-admin.php:379
+msgid "Enable Social Sharing"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-license-page.php:20
-#: admin/wbcom/templates/wbcom-license-page.php:32
-msgid "Product"
+#: admin/class-buddypress-share-admin.php:387
+msgid "Enable social sharing on activities"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-license-page.php:21
-#: admin/wbcom/templates/wbcom-license-page.php:33
-msgid "Version"
+#: admin/class-buddypress-share-admin.php:393
+msgid "Guest Sharing"
 msgstr ""
-
-#: admin/wbcom/templates/wbcom-license-page.php:22
-#: admin/wbcom/templates/wbcom-license-page.php:34
-msgid "Key"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-license-page.php:23
-#: admin/wbcom/templates/wbcom-license-page.php:35
-msgid "Status"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-license-page.php:24
-#: admin/wbcom/templates/wbcom-license-page.php:36
-msgid "Action"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:9
-#: admin/wbcom/wbcom-admin-settings.php:279
-msgid "Themes & Extension"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:17
-#: admin/wbcom/templates/wbcom-plugins-page.php:25
-msgid "Paid Extension"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:18
-msgid "Free Extension"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:19
-msgid "LearnDash Extension"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:20
-#: admin/wbcom/templates/wbcom-plugins-page.php:366
-#: admin/wbcom/wbcom-admin-settings.php:198
-#: admin/wbcom/wbcom-admin-settings.php:199
-msgid "Our Themes"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:26
-#: admin/wbcom/templates/wbcom-plugins-page.php:327
-#: admin/wbcom/templates/wbcom-plugins-page.php:417
-msgid "View More Extensions"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:31
-msgid "Advanced Username Manager"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:32
-msgid "Allow users to change their usernames directly from their profile settings. Enhance flexibility for members while keeping admin-level approval and control over username updates."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:34
-#: admin/wbcom/templates/wbcom-plugins-page.php:44
-#: admin/wbcom/templates/wbcom-plugins-page.php:54
-#: admin/wbcom/templates/wbcom-plugins-page.php:64
-#: admin/wbcom/templates/wbcom-plugins-page.php:74
-#: admin/wbcom/templates/wbcom-plugins-page.php:84
-#: admin/wbcom/templates/wbcom-plugins-page.php:94
-#: admin/wbcom/templates/wbcom-plugins-page.php:104
-#: admin/wbcom/templates/wbcom-plugins-page.php:114
-#: admin/wbcom/templates/wbcom-plugins-page.php:124
-#: admin/wbcom/templates/wbcom-plugins-page.php:134
-#: admin/wbcom/templates/wbcom-plugins-page.php:144
-#: admin/wbcom/templates/wbcom-plugins-page.php:154
-#: admin/wbcom/templates/wbcom-plugins-page.php:164
-#: admin/wbcom/templates/wbcom-plugins-page.php:174
-#: admin/wbcom/templates/wbcom-plugins-page.php:184
-#: admin/wbcom/templates/wbcom-plugins-page.php:194
-#: admin/wbcom/templates/wbcom-plugins-page.php:204
-#: admin/wbcom/templates/wbcom-plugins-page.php:214
-#: admin/wbcom/templates/wbcom-plugins-page.php:224
-#: admin/wbcom/templates/wbcom-plugins-page.php:234
-#: admin/wbcom/templates/wbcom-plugins-page.php:244
-#: admin/wbcom/templates/wbcom-plugins-page.php:254
-#: admin/wbcom/templates/wbcom-plugins-page.php:264
-#: admin/wbcom/templates/wbcom-plugins-page.php:274
-#: admin/wbcom/templates/wbcom-plugins-page.php:284
-#: admin/wbcom/templates/wbcom-plugins-page.php:294
-#: admin/wbcom/templates/wbcom-plugins-page.php:304
-#: admin/wbcom/templates/wbcom-plugins-page.php:314
-#: admin/wbcom/templates/wbcom-plugins-page.php:335
-#: admin/wbcom/templates/wbcom-plugins-page.php:345
-#: admin/wbcom/templates/wbcom-plugins-page.php:355
-#: admin/wbcom/templates/wbcom-plugins-page.php:375
-#: admin/wbcom/templates/wbcom-plugins-page.php:385
-#: admin/wbcom/templates/wbcom-plugins-page.php:395
-#: admin/wbcom/templates/wbcom-plugins-page.php:405
-#: admin/wbcom/templates/wbcom-plugins-page.php:425
-#: admin/wbcom/templates/wbcom-plugins-page.php:435
-#: admin/wbcom/templates/wbcom-plugins-page.php:445
-#: admin/wbcom/templates/wbcom-plugins-page.php:455
-#: admin/wbcom/templates/wbcom-plugins-page.php:465
-#: admin/wbcom/templates/wbcom-plugins-page.php:475
-#: admin/wbcom/templates/wbcom-plugins-page.php:485
-#: admin/wbcom/templates/wbcom-plugins-page.php:495
-#: admin/wbcom/templates/wbcom-plugins-page.php:505
-#: admin/wbcom/templates/wbcom-plugins-page.php:515
-#: admin/wbcom/templates/wbcom-plugins-page.php:525
-#: admin/wbcom/templates/wbcom-plugins-page.php:535
-#: admin/wbcom/templates/wbcom-plugins-page.php:545
-#: admin/wbcom/templates/wbcom-plugins-page.php:555
-#: admin/wbcom/templates/wbcom-plugins-page.php:565
-#: admin/wbcom/templates/wbcom-plugins-page.php:575
-#: admin/wbcom/templates/wbcom-plugins-page.php:585
-#: admin/wbcom/templates/wbcom-plugins-page.php:595
-#: admin/wbcom/templates/wbcom-plugins-page.php:605
-#: admin/wbcom/templates/wbcom-plugins-page.php:615
-msgid "View Details"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:35
-#: admin/wbcom/templates/wbcom-plugins-page.php:45
-#: admin/wbcom/templates/wbcom-plugins-page.php:55
-#: admin/wbcom/templates/wbcom-plugins-page.php:65
-#: admin/wbcom/templates/wbcom-plugins-page.php:75
-#: admin/wbcom/templates/wbcom-plugins-page.php:85
-#: admin/wbcom/templates/wbcom-plugins-page.php:95
-#: admin/wbcom/templates/wbcom-plugins-page.php:105
-#: admin/wbcom/templates/wbcom-plugins-page.php:115
-#: admin/wbcom/templates/wbcom-plugins-page.php:125
-#: admin/wbcom/templates/wbcom-plugins-page.php:135
-#: admin/wbcom/templates/wbcom-plugins-page.php:145
-#: admin/wbcom/templates/wbcom-plugins-page.php:155
-#: admin/wbcom/templates/wbcom-plugins-page.php:165
-#: admin/wbcom/templates/wbcom-plugins-page.php:175
-#: admin/wbcom/templates/wbcom-plugins-page.php:185
-#: admin/wbcom/templates/wbcom-plugins-page.php:195
-#: admin/wbcom/templates/wbcom-plugins-page.php:205
-#: admin/wbcom/templates/wbcom-plugins-page.php:215
-#: admin/wbcom/templates/wbcom-plugins-page.php:225
-#: admin/wbcom/templates/wbcom-plugins-page.php:235
-#: admin/wbcom/templates/wbcom-plugins-page.php:245
-#: admin/wbcom/templates/wbcom-plugins-page.php:255
-#: admin/wbcom/templates/wbcom-plugins-page.php:265
-#: admin/wbcom/templates/wbcom-plugins-page.php:275
-#: admin/wbcom/templates/wbcom-plugins-page.php:285
-#: admin/wbcom/templates/wbcom-plugins-page.php:295
-#: admin/wbcom/templates/wbcom-plugins-page.php:305
-#: admin/wbcom/templates/wbcom-plugins-page.php:315
-#: admin/wbcom/templates/wbcom-plugins-page.php:336
-#: admin/wbcom/templates/wbcom-plugins-page.php:346
-#: admin/wbcom/templates/wbcom-plugins-page.php:356
-#: admin/wbcom/templates/wbcom-plugins-page.php:376
-#: admin/wbcom/templates/wbcom-plugins-page.php:386
-#: admin/wbcom/templates/wbcom-plugins-page.php:396
-#: admin/wbcom/templates/wbcom-plugins-page.php:406
-#: admin/wbcom/templates/wbcom-plugins-page.php:426
-#: admin/wbcom/templates/wbcom-plugins-page.php:436
-#: admin/wbcom/templates/wbcom-plugins-page.php:446
-#: admin/wbcom/templates/wbcom-plugins-page.php:456
-#: admin/wbcom/templates/wbcom-plugins-page.php:466
-#: admin/wbcom/templates/wbcom-plugins-page.php:476
-#: admin/wbcom/templates/wbcom-plugins-page.php:486
-#: admin/wbcom/templates/wbcom-plugins-page.php:496
-#: admin/wbcom/templates/wbcom-plugins-page.php:506
-#: admin/wbcom/templates/wbcom-plugins-page.php:516
-#: admin/wbcom/templates/wbcom-plugins-page.php:526
-#: admin/wbcom/templates/wbcom-plugins-page.php:536
-#: admin/wbcom/templates/wbcom-plugins-page.php:546
-#: admin/wbcom/templates/wbcom-plugins-page.php:556
-#: admin/wbcom/templates/wbcom-plugins-page.php:566
-#: admin/wbcom/templates/wbcom-plugins-page.php:576
-#: admin/wbcom/templates/wbcom-plugins-page.php:586
-#: admin/wbcom/templates/wbcom-plugins-page.php:596
-#: admin/wbcom/templates/wbcom-plugins-page.php:606
-#: admin/wbcom/templates/wbcom-plugins-page.php:616
-msgid "Docs"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:41
-msgid "BuddyLists"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:42
-msgid "Empower users to create personalized lists of friends, follow curated streams, and organize their connections for a better social experience within your community."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:51
-msgid "BuddyPress Schedule Activity"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:52
-msgid "Plan posts and activities in advance with easy scheduling tools. Keep your community active even during off-hours and automate important updates."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:61
-msgid "BuddyPress Anonymous Activity"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:62
-msgid "Enable members to share updates anonymously without revealing their identity, encouraging more honest, open, and candid conversations across your platform."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:71
-msgid "BuddyPress Edit Activity"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:72
-msgid "Let users edit their posted activities anytime. Help members fix mistakes or update their posts, keeping conversations fresh and accurate."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:81
-msgid "WP Stories"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:82
-msgid "Introduce Instagram-style stories where users can share photos and videos. Boost community engagement through visual storytelling and real-time content sharing."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:91
-msgid "BuddyPress Business Profile"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:92
-msgid "Allow businesses to set up profile pages, showcase their services, and directly connect with potential customers through your social network."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:101
-msgid "BuddyPress Moderation Pro"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:102
-msgid "Allow members to flag inappropriate content and maintain a safe, respectful, and welcoming community environment."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:111
-msgid "BuddyPress Resume Manager"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:112
-msgid "Let users upload and display professional resumes right on their profiles. Ideal for building career-focused communities."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:121
-msgid "BuddyPress Polls"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:122
-msgid "Let members create polls and surveys directly inside activity streams to collect opinions, boost participation, and spark discussions easily."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:131
-msgid "BuddyPress Private Community Pro"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:132
-msgid "Restrict access to BuddyPress areas. Protect member profiles and create a fully private, members-only experience."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:141
-msgid "BuddyPress Profile Pro"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:142
-msgid "Add custom repeater fields and groups to member profiles. Collect richer information and enhance profile personalization."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:151
-msgid "BuddyPress Check-ins Pro"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:152
-msgid "Allow users to check in at places like restaurants or events. Encourage social interactions and real-world meetups through your platform."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:161
-msgid "BuddyPress Ideapush Integration"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:162
-msgid "Streamline idea management. Let members submit ideas, provide feedback, and spark innovation directly within their profiles."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:171
-msgid "BuddyPress Contact Me"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:172
-msgid "Add easy-to-use contact forms on member profiles. Enable seamless communication between visitors and users without sharing personal information."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:181
-msgid "BuddyPress Member Blog Pro"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:182
-msgid "Offer personal blogging spaces for members. Let users share articles, stories, and updates, turning your community into a vibrant content hub."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:191
-msgid "BuddyVendor"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:192
-msgid "Combine e-commerce with social networking. Allow users to buy, sell, and interact on a community-driven multi-vendor marketplace."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:201
-msgid "BuddyPress Statistics"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:202
-msgid "Get detailed community analytics. Monitor activities, understand engagement patterns, and make smarter decisions to grow your site."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:211
-msgid "Who viewed my profile"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:212
-msgid "Give users visibility into who has visited their profile. Build curiosity, drive more profile views, and increase member engagement."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:221
-msgid "BuddyPress Friend & Follow Suggestion"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:222
-msgid "Provide personalized friend and follow suggestions based on profile data, boosting connections and community interactions."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:231
-msgid "BuddyPress Giphy"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:232
-msgid "Enable GIF sharing in activities, comments, and private messages. Make conversations more fun, expressive, and visually engaging."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:241
-msgid "Shortcodes for BuddyPress Pro"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:242
-msgid "Add BuddyPress components anywhere on your site with shortcodes and Elementor widgets. Enjoy full design freedom and flexibility."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:251
-msgid "BuddyPress Sticky Post"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:252
-msgid "Highlight important updates by pinning posts to the top of activity streams. Ensure key messages are always seen by members."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:261
-msgid "BuddyPress Quotes"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:262
-msgid "Let users decorate their posts with vibrant backgrounds and images, making activity updates more expressive and attention-grabbing."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:271
-msgid "BuddyPress Auto Friends"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:272
-msgid "Automatically add specific users as friends to new members, helping them build their network and feel connected from day one."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:281
-msgid "BuddyPress Newsfeed"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:282
-msgid "Organize activity updates into a familiar Facebook-style newsfeed, helping members find new content quickly and engage more."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:291
-msgid "BuddyPress Status"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:292
-msgid "Allow members to post quick status updates and react to activities, making your community more dynamic and lively."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:301
-msgid "BuddyPress Hashtags"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:302
-msgid "Boost discoverability and organize discussions by adding hashtag functionality across activities, posts, and comments."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:311
-msgid "BuddyPress Profanity Filter"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:312
-msgid "Block unwanted words and keep your community safe, family-friendly, and free from offensive language."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:326
-msgid "Extension for LearnDash"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:332
-msgid "LMS Notes"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:333
-msgid "LMS Notes will extend the LMS functionality to create Notes for courses, lessons and topics."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:342
-msgid "Learndash wpForo"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:343
-msgid "The LearnDash wpForo integration allows you to create dedicated discussion channels for your learners and link your courses to multiple forums."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:352
-msgid "LearnDash Dashboard"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:353
-msgid "The LearnDash Dashboard provides admins, instructors, group leaders, and students with personalized dashboards, allowing them to easily manage their courses, lessons, and communication."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:367
-msgid "View More Themes"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:372
-msgid "Reign Theme"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:373
-msgid "Create your social network website for the company, school, sports team, or any niche community using a highly customizable WordPress, Community theme."
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:382
-msgid "BuddyX Pro Theme"
-msgstr ""
-
-#: admin/wbcom/templates/wbcom-plugins-page.php:383
-msgid "Build a flexible, code-free online community website with full control. Enjoy unique layouts, clean code, and easy customization for BuddyPress/BossBoss Platform."
-msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:392
-msgid "BuddyX Theme"
+#: admin/class-buddypress-share-admin.php:401
+msgid "Allow logged-out users to share activities"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:393
-msgid "BuddyX is a free, fast, and responsive WordPress theme for creating social network sites like Facebook. Ideal for BuddyPress and BuddyBoss communities, memberships, eLearning, and marketplaces."
+#: admin/class-buddypress-share-admin.php:407
+msgid "Popup Windows"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:402
-msgid "KnowX Theme"
+#: admin/class-buddypress-share-admin.php:415
+msgid "Open social sharing links in popup windows"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:403
-msgid "A Free WordPress Knowledge base Theme. KnowX helps you set up a Knowledge Base in WordPress in less time than it takes to brew a coffee."
+#: admin/class-buddypress-share-admin.php:422
+msgid "Social Services"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:416
-msgid "Our Free Extension"
+#: admin/class-buddypress-share-admin.php:423
+msgid "Drag social services between the lists to enable or disable them. Changes are saved automatically via AJAX."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:422
-msgid "Wbcom Essential"
+#: admin/class-buddypress-share-admin.php:429
+msgid "Enabled Services"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:423
-msgid "Get dozens of stylish widgets packed inside Wbcom Essential. Enhance your BuddyPress site's design with advanced customizations without needing any technical skills."
+#: admin/class-buddypress-share-admin.php:444
+msgid "No services enabled. Drag services from the available list to enable them."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:432
-msgid "BuddyPress Member Type"
+#: admin/class-buddypress-share-admin.php:451
+msgid "Available Services"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:433
-msgid "Effortlessly create and manage multiple member types. Personalize user experiences and organize your community more effectively based on user profiles."
+#: admin/class-buddypress-share-admin.php:466
+msgid "All services are enabled. Drag services from the enabled list to disable them."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:442
-msgid "BuddyPress Advertisement Placements"
+#: admin/class-buddypress-share-admin.php:473
+msgid "Save General Settings"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:443
-msgid "Add advertisement placements across your BuddyPress community. Increase engagement and generate extra revenue with seamless ad integration."
+#: admin/class-buddypress-share-admin.php:573
+msgid "Content Type Controls"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:452
-msgid "reCaptcha for BuddyPress"
+#: admin/class-buddypress-share-admin.php:574
+msgid "Control which types of content can be shared within your BuddyPress community."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:453
-msgid "Secure your BuddyPress, WordPress, and WooCommerce sites by adding powerful Google reCaptcha protection against bots and spam activities."
+#: admin/class-buddypress-share-admin.php:579
+msgid "Disable Sharing For"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:462
-msgid "BuddyPress Member Blog"
+#: admin/class-buddypress-share-admin.php:588
+msgid "Blog Posts"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:463
-msgid "Allow community members to create and manage their blog posts directly from their BuddyPress profiles, boosting engagement and user-generated content."
+#: admin/class-buddypress-share-admin.php:597
+msgid "Profile Sharing"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:472
-msgid "BuddyPress WooCommerce Integration"
+#: admin/class-buddypress-share-admin.php:606
+msgid "Private Messages"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:473
-msgid "Easily integrate WooCommerce with BuddyPress. Showcase WooCommerce activities inside profiles and create a seamless social shopping experience."
+#: admin/class-buddypress-share-admin.php:615
+msgid "Groups"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:482
-msgid "BuddyPress Activity Link Preview"
+#: admin/class-buddypress-share-admin.php:624
+msgid "Friends"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:483
-msgid "Automatically generate rich link previews inside the activity feed, displaying title, description, and image to make posts more engaging."
+#: admin/class-buddypress-share-admin.php:631
+msgid "Activity Display"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:492
-msgid "BuddyPress Birthday Widget"
+#: admin/class-buddypress-share-admin.php:640
+msgid "Show original activity only"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:493
-msgid "Celebrate community members' birthdays by displaying upcoming birthdays in a sidebar widget, fostering deeper social interactions."
+#: admin/class-buddypress-share-admin.php:649
+msgid "Show complete activity with nested content"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:502
-msgid "BuddyPress Redirect"
+#: admin/class-buddypress-share-admin.php:657
+msgid "Save Sharing Settings"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:503
-msgid "Redirect users to custom pages after login or logout, based on their user roles, creating a more personalized navigation experience."
+#: admin/class-buddypress-share-admin.php:675
+msgid "Circle Style"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:512
-msgid "BuddyPress Activity Bump"
+#: admin/class-buddypress-share-admin.php:676
+msgid "Rectangle Style"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:513
-msgid "Move the most recent interactions to the top of the activity feed automatically, keeping your BuddyPress newsfeed lively and active."
+#: admin/class-buddypress-share-admin.php:677
+msgid "Black & White"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:522
-msgid "BuddyPress Lock – Private Community"
+#: admin/class-buddypress-share-admin.php:678
+msgid "Bar Style"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:523
-msgid "Lock down selected BuddyPress components to create a private, members-only community and protect your site's content from the public."
+#: admin/class-buddypress-share-admin.php:691
+msgid "Icon Style"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:532
-msgid "Shortcodes for BuddyPress"
+#: admin/class-buddypress-share-admin.php:709
+msgid "Background Color"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:533
-msgid "Use simple shortcodes to embed BuddyPress components like activity streams, member lists, or groups on any page or post."
+#: admin/class-buddypress-share-admin.php:716
+msgid "Choose the background color for sharing icons."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:542
-msgid "BuddyPress User Todo List"
+#: admin/class-buddypress-share-admin.php:721
+msgid "Text Color"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:543
-msgid "Allow users to create, organize, and manage personal to-do lists with categories directly from their BuddyPress profiles."
+#: admin/class-buddypress-share-admin.php:728
+msgid "Choose the text/icon color for sharing buttons."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:552
-msgid "BuddyPress Job Manager"
+#: admin/class-buddypress-share-admin.php:733
+msgid "Hover Color"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:553
-msgid "Create dedicated job tabs for employers and candidates inside their BuddyPress profiles, enhancing your site's job board functionality."
+#: admin/class-buddypress-share-admin.php:740
+msgid "Choose the hover color for sharing icons."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:562
-msgid "BuddyPress Group Reviews"
+#: admin/class-buddypress-share-admin.php:746
+msgid "Save Icon Settings"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:563
-msgid "Enable members to rate and review BuddyPress groups based on multiple criteria, improving group quality and encouraging community feedback."
+#: admin/class-buddypress-share-admin.php:761
+msgid "License management is not available. Please contact support."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:572
-msgid "BuddyPress Member Reviews"
+#: admin/class-buddypress-share-admin.php:790
+#: license/class-bp-share-license-manager.php:275
+msgid "Please enter a license key"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:573
-msgid "Allow users to rate and review other member profiles based on customizable criteria, helping build trust and credibility within your community."
+#: admin/class-buddypress-share-admin.php:794
+msgid "Activating..."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:582
-msgid "BuddyPress Check-ins"
+#: admin/class-buddypress-share-admin.php:812
+#: admin/class-buddypress-share-admin.php:817
+#: license/class-bp-share-license-manager.php:115
+msgid "Activate License"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:583
-msgid "Allow community members to post activity updates along with their current location, encouraging real-world interactions and meetups."
+#: admin/class-buddypress-share-admin.php:826
+msgid "Are you sure you want to deactivate your license?"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:592
-msgid "BuddyPress Activity Filter"
+#: admin/class-buddypress-share-admin.php:830
+msgid "Deactivating..."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:593
-msgid "Display customized activity feeds by applying filters to show specific content types based on your community's needs."
+#: admin/class-buddypress-share-admin.php:847
+#: admin/class-buddypress-share-admin.php:852
+#: license/class-bp-share-license-manager.php:111
+msgid "Deactivate License"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:602
-msgid "BuddyPress Favorite Notification"
+#: admin/class-buddypress-share-admin.php:861
+msgid "Checking..."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:603
-msgid "Send real-time notifications to members when someone favorites their content, boosting engagement and interaction across your community."
+#: admin/class-buddypress-share-admin.php:879
+#: admin/class-buddypress-share-admin.php:883
+#: license/class-bp-share-license-manager.php:120
+msgid "Check License"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-plugins-page.php:613
-msgid "Allow users to share their BuddyPress activity updates easily to external social media platforms, extending their reach. "
+#: admin/class-buddypress-share-admin.php:1001
+#: admin/class-buddypress-share-admin.php:1050
+msgid "Security nonce check failed."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-support-page.php:9
-#: admin/wbcom/wbcom-admin-settings.php:206
-#: admin/wbcom/wbcom-admin-settings.php:207
-#: admin/wbcom/wbcom-admin-settings.php:285
-msgid "Support"
+#: admin/class-buddypress-share-admin.php:1005
+#: admin/class-buddypress-share-admin.php:1054
+msgid "Insufficient permissions."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-support-page.php:14
-msgid "How can we help you?"
+#: admin/class-buddypress-share-admin.php:1011
+#: admin/class-buddypress-share-admin.php:1060
+msgid "Service name is required."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-support-page.php:15
-msgid "Our team is here to help you out at anytime. If you have any idea about how we could improve. You can share access to your site on our helpdesk if it can help getting faster."
+#: admin/class-buddypress-share-admin.php:1017
+msgid "Invalid service name: %s"
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-support-page.php:24
-msgid "Tickets Support"
+#: admin/class-buddypress-share-admin.php:1033
+msgid "Service \"%s\" added successfully."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-support-page.php:25
-msgid "Open a ticket on our helpdesk, we don't guarantee a fast response but within a week. Except if you've purchased one of our product we'll reply within 24 hours."
+#: admin/class-buddypress-share-admin.php:1038
+msgid "Failed to add service to database."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-support-page.php:28
-msgid "Open a ticket"
+#: admin/class-buddypress-share-admin.php:1074
+msgid "Service \"%s\" removed successfully."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-support-page.php:41
-#: admin/wbcom/templates/wbcom-support-page.php:45
-msgid "Contact Us"
+#: admin/class-buddypress-share-admin.php:1079
+msgid "Failed to remove service from database."
 msgstr ""
 
-#: admin/wbcom/templates/wbcom-support-page.php:42
-msgid "Create a new thread on our plugin page, participation is open to anyone from all around the world. We'll be there to help as well but can't guarantee any delay."
+#: admin/class-buddypress-share-admin.php:1083
+msgid "Service \"%s\" not found in enabled services."
 msgstr ""
 
-#: admin/wbcom/wbcom-admin-settings.php:166
-msgid "Activate"
+#: buddypress-share.php:79
+msgid "BuddyPress Activity Share Pro: License management files are missing."
 msgstr ""
 
-#: admin/wbcom/wbcom-admin-settings.php:167
-msgid "Deactivate"
+#: buddypress-share.php:80
+msgid "Missing files:"
 msgstr ""
 
-#: admin/wbcom/wbcom-admin-settings.php:190
-#: admin/wbcom/wbcom-admin-settings.php:191
-msgid "Our Plugins"
+#: buddypress-share.php:103
+msgid "BuddyPress Activity Share Pro: Failed to load license class %s from %s"
 msgstr ""
 
-#: admin/wbcom/wbcom-admin-settings.php:273
-#: buddypress-share.php:78
+#: buddypress-share.php:176
 msgid "Settings"
 msgstr ""
 
-#: buddypress-share.php:166
+#: buddypress-share.php:269
 msgid "BuddyPress Activity Share Pro requires to be activated on the blog where BuddyPress is activated."
 msgstr ""
 
-#: buddypress-share.php:175
+#: buddypress-share.php:278
 msgid "BuddyPress Activity Share Pro and BuddyPress need to share the same network configuration."
 msgstr ""
 
-#: buddypress-share.php:204
-#: buddypress-share.php:249
+#: buddypress-share.php:306
+#: buddypress-share.php:350
+#: includes/class-buddypress-share.php:322
 msgid "BuddyPress Activity Share Pro"
 msgstr ""
 
-#: buddypress-share.php:205
+#: buddypress-share.php:307
 msgid "BuddyPress"
 msgstr ""
 
 #. translators: 1: Name of the plugin 2: Name of the dependent plugin
-#: buddypress-share.php:209
+#: buddypress-share.php:311
 msgid "%1$s is ineffective now as it requires %2$s to be installed and active."
 msgstr ""
 
-#: buddypress-share.php:250
+#: buddypress-share.php:351
 msgid "Youzify"
 msgstr ""
 
 #. translators: %s:
-#: buddypress-share.php:253
+#: buddypress-share.php:354
 msgid "%1$s plugin can not be use with %2$s plugin."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:235
-#: public/class-buddypress-share-public.php:609
-#: public/class-buddypress-share-public.php:1045
+#: includes/class-buddypress-share.php:324
+msgid "Share BuddyPress activities on social media and within your community."
+msgstr ""
+
+#. translators: the plugin name.
+#: license/class-bp-share-edd-updater-wrapper.php:78
+#: license/EDD_SL_Plugin_Updater.php:288
+msgid "There is a new version of %1$s available."
+msgstr ""
+
+#: license/class-bp-share-edd-updater-wrapper.php:79
+#: license/EDD_SL_Plugin_Updater.php:294
+msgid "Contact your network administrator to install the update."
+msgstr ""
+
+#: license/class-bp-share-edd-updater-wrapper.php:80
+msgid "View version %2$s details"
+msgstr ""
+
+#: license/class-bp-share-edd-updater-wrapper.php:81
+#: license/EDD_SL_Plugin_Updater.php:318
+msgid "Update now."
+msgstr ""
+
+#: license/class-bp-share-edd-updater-wrapper.php:82
+#: license/EDD_SL_Plugin_Updater.php:553
+msgid "You do not have permission to install plugin updates"
+msgstr ""
+
+#: license/class-bp-share-edd-updater-wrapper.php:83
+#: license/EDD_SL_Plugin_Updater.php:553
+msgid "Error"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:71
+msgid "Plugin License"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:72
+msgid "Enter your license key to receive automatic updates and premium support."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:81
+msgid "License Key"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:89
+msgid "Enter your license key"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:91
+msgid "Enter the license key you received when purchasing the plugin."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:98
+msgid "License Status"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:124
+msgid "Save License Key"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:133
+msgid "License Benefits"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:135
+msgid "Automatic plugin updates"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:136
+msgid "Premium support"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:137
+msgid "Security updates"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:138
+msgid "New features and improvements"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:143
+msgid "Get License Key"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:160
+msgid "Active"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:167
+msgid "License never expires"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:170
+msgid "License expires: %s"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:181
+msgid "Expired"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:184
+msgid "Your license has expired. Please renew to continue receiving updates."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:190
+msgid "Invalid"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:193
+msgid "This license is not valid for this site. Please check your license key."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:199
+msgid "Inactive"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:202
+msgid "Please enter and activate your license key."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:246
+#: license/class-bp-share-license-manager.php:269
+#: license/class-bp-share-license-manager.php:294
+#: license/class-bp-share-license-manager.php:313
+msgid "Insufficient permissions"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:259
+msgid "License key saved successfully"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:319
+msgid "No license key found"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:331
+msgid "License is valid!"
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:333
+msgid "License is not valid."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:362
+#: license/class-bp-share-license-manager.php:394
+#: license/class-bp-share-license-manager.php:438
+msgid "An error occurred, please try again."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:372
+msgid "Your license key expired on %s."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:378
+msgid "Your license key has been disabled."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:381
+msgid "Invalid license."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:385
+msgid "Your license is not active for this URL."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:388
+msgid "This appears to be an invalid license key for %s."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:391
+msgid "Your license key has reached its activation limit."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:407
+msgid "License activation failed."
+msgstr ""
+
+#: license/class-bp-share-license-manager.php:451
+msgid "License deactivation failed."
+msgstr ""
+
+#. translators: 1. opening anchor tag, do not translate 2. the new plugin version 3. closing anchor tag, do not translate.
+#: license/EDD_SL_Plugin_Updater.php:299
+msgid "%1$sView version %2$s details%3$s."
+msgstr ""
+
+#: license/EDD_SL_Plugin_Updater.php:307
+msgid "%1$sView version %2$s details%3$s or %4$supdate now%5$s."
+msgstr ""
+
+#: public/class-buddypress-share-public.php:396
+#: public/class-buddypress-share-public.php:1175
+#: public/class-buddypress-share-public.php:1625
 msgid "Share"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:241
-#: public/class-buddypress-share-public.php:663
-msgid "My Profile"
-msgstr ""
-
-#: public/class-buddypress-share-public.php:246
-msgid "Share to My Profile"
-msgstr ""
-
-#: public/class-buddypress-share-public.php:251
-#: public/class-buddypress-share-public.php:664
-msgid "Message"
-msgstr ""
-
-#: public/class-buddypress-share-public.php:256
-msgid "Share to Message"
-msgstr ""
-
-#: public/class-buddypress-share-public.php:262
-msgid "Select Group"
-msgstr ""
-
-#: public/class-buddypress-share-public.php:267
-msgid "Share to a group"
-msgstr ""
-
-#: public/class-buddypress-share-public.php:274
-msgid "Select Friend"
-msgstr ""
-
-#: public/class-buddypress-share-public.php:279
-msgid "Share with Friends"
-msgstr ""
-
-#: public/class-buddypress-share-public.php:300
-msgid "X"
-msgstr ""
-
-#: public/class-buddypress-share-public.php:374
-msgid "Copy Link"
-msgstr ""
-
-#: public/class-buddypress-share-public.php:375
-msgid "Link Copied!"
-msgstr ""
-
-#: public/class-buddypress-share-public.php:379
+#: public/class-buddypress-share-public.php:411
 msgid "Please enable share services!"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:527
-#: public/class-buddypress-share-public.php:536
-#: public/class-buddypress-share-public.php:546
-#: public/class-buddypress-share-public.php:555
+#: public/class-buddypress-share-public.php:443
+msgid "Share to My Profile"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:444
+#: public/class-buddypress-share-public.php:1421
+msgid "My Profile"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:449
+msgid "Share to Message"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:450
+#: public/class-buddypress-share-public.php:1422
+msgid "Message"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:457
+msgid "Share to a group"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:458
+msgid "Select Group"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:463
+msgid "Share with Friends"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:464
+msgid "Select Friend"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:532
+msgid "Copy Link"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:534
+msgid "Link Copied!"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:554
+msgid "Facebook"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:559
+msgid "X"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:564
+msgid "LinkedIn"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:569
+msgid "Pinterest"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:574
+msgid "Reddit"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:579
+msgid "WordPress"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:584
+msgid "Pocket"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:589
+msgid "Telegram"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:594
+msgid "Bluesky"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:599
+msgid "WhatsApp"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:615
+msgid "E-mail"
+msgstr ""
+
+#: public/class-buddypress-share-public.php:696
+#: public/class-buddypress-share-public.php:717
 msgid "Shared an activity"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:529
-#: public/class-buddypress-share-public.php:548
-msgid "Activity Share"
+#: public/class-buddypress-share-public.php:706
+#: public/class-buddypress-share-public.php:726
+msgid "Shared a post"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:538
-#: public/class-buddypress-share-public.php:557
+#: public/class-buddypress-share-public.php:708
+#: public/class-buddypress-share-public.php:728
 msgid "Post Activity Share"
 msgstr ""
 
-#. translators: 1: the user link. 2: the group link.
-#: public/class-buddypress-share-public.php:568
-msgid "%1$s Shared an activity"
+#. translators: %s: user link
+#: public/class-buddypress-share-public.php:748
+msgid "%s shared an activity"
 msgstr ""
 
-#. translators: 1: the user link. 2: the group link.
-#: public/class-buddypress-share-public.php:587
+#. translators: 1: user link, 2: group link
+#: public/class-buddypress-share-public.php:779
 msgid "%1$s shared an activity in the group %2$s"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:655
-msgid "Status Update"
+#: public/class-buddypress-share-public.php:794
+msgid "Security check failed."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:656
-msgid "Please select post in field to post activity."
+#: public/class-buddypress-share-public.php:799
+#: public/class-buddypress-share-public.php:964
+msgid "User not logged in."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:661
-msgid "Post in"
+#: public/class-buddypress-share-public.php:810
+msgid "Missing required parameters."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:666
-msgid "Group list"
+#: public/class-buddypress-share-public.php:816
+msgid "Invalid activity type."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:674
-msgid "Friend list"
+#: public/class-buddypress-share-public.php:830
+msgid "You do not have permission to post in this group."
 msgstr ""
 
-#. translators: Placeholder is for the username
-#: public/class-buddypress-share-public.php:693
-msgid "Hi %s! Write something here. Use @ to mention someone..."
+#: public/class-buddypress-share-public.php:837
+msgid "Failed to create activity."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:719
-msgid "Discard"
+#: public/class-buddypress-share-public.php:846
+msgid "Activity shared successfully."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:720
-msgid "Post"
+#: public/class-buddypress-share-public.php:940
+msgid "Invalid activity ID."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:758
-#: public/class-buddypress-share-public.php:989
+#: public/class-buddypress-share-public.php:1341
+#: public/class-buddypress-share-public.php:1589
 msgid "Read More"
 msgstr ""
 
-#. translators: used between list items, there is a space after the comma.
-#: public/class-buddypress-share-public.php:1017
+#: public/class-buddypress-share-public.php:1370
 msgid ", "
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1024
-msgctxt "list item separator"
-msgid ", "
+#: public/class-buddypress-share-public.php:1399
+msgid "Share Activity"
 msgstr ""
 
-#: public/js/buddypress-share-public.js:195
-msgid "Failed to fetch activity content"
+#: public/class-buddypress-share-public.php:1413
+msgid "Status Update"
 msgstr ""
 
-#: public/js/buddypress-share-public.js:279
-msgid "Failed to share activity"
+#: public/class-buddypress-share-public.php:1418
+msgid "Post in"
 msgstr ""
 
-#: public/js/buddypress-share-public.js:283
-msgid "AJAX request failed"
+#: public/class-buddypress-share-public.php:1442
+msgid "Discard"
 msgstr ""
 
-#: public/js/buddypress-share-public.js:339
-msgid "Copied!"
+#: public/class-buddypress-share-public.php:1445
+msgid "Post"
 msgstr ""
 
-#: public/js/buddypress-share-public.js:340
-msgid "Copy failed"
-msgstr ""
-
-#: public/js/buddypress-share-public.js:342
-msgid "Unable to copy"
+#. translators: %s: username
+#: public/class-buddypress-share-public.php:1526
+msgid "Hi %s! Write something here. Use @ to mention someone..."
 msgstr ""

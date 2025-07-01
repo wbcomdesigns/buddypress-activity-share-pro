@@ -15,6 +15,7 @@
  *
  * UPDATED: Modern CDN integration with Font Awesome 5.15.4 and optimized asset loading.
  * UPDATED: Added license management system integration.
+ * UPDATED: Added simple asset helper functions for minification and RTL support.
  *
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/admin
@@ -95,13 +96,13 @@ class Buddypress_Share_Admin {
 			wp_enqueue_style( 'wp-color-picker' );
 		}
 
-		// Main admin stylesheet
-		wp_enqueue_style( 
-			$this->plugin_name, 
-			$plugin_url . 'admin/css/buddypress-share-admin.css', 
-			array(), 
-			$this->version, 
-			'all' 
+		// Main admin stylesheet with auto min/RTL support
+		bp_share_enqueue_style(
+			$this->plugin_name . '-admin',
+			$plugin_url . 'admin/css/buddypress-share-admin', // Without .css
+			array(),
+			$this->version,
+			'all'
 		);
 	}
 
@@ -130,18 +131,18 @@ class Buddypress_Share_Admin {
 			wp_enqueue_script( 'wp-color-picker' );
 		}
 
-		// Main admin script
-		wp_enqueue_script( 
-			$this->plugin_name, 
-			$plugin_url . 'admin/js/buddypress-share-admin.js', 
-			array( 'jquery', 'jquery-ui-sortable' ), 
-			$this->version, 
-			true 
+		// Main admin script with auto minification
+		bp_share_enqueue_script(
+			$this->plugin_name . '-admin',
+			$plugin_url . 'admin/js/buddypress-share-admin', // Without .js
+			array( 'jquery', 'jquery-ui-sortable' ),
+			$this->version,
+			true
 		);
 
 		// Localize script
 		wp_localize_script(
-			$this->plugin_name,
+			$this->plugin_name . '-admin',
 			'bp_share_admin_vars',
 			array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
