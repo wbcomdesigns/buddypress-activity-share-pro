@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -244,15 +246,23 @@ class Buddypress_Share_Admin {
 		$bp_share_services_extra = get_site_option( 'bp_share_services_extra', array( 'bp_share_services_open' => 'on' ) );
 		$bp_share_services_open = isset( $bp_share_services_extra['bp_share_services_open'] ) ? $bp_share_services_extra['bp_share_services_open'] : 'on';
 		
-		// Get enabled services
-		$enabled_services = get_site_option( 'bp_share_services', array(
-			'Facebook'  => 'Facebook',
-			'Twitter'   => 'Twitter', 
-			'LinkedIn'  => 'LinkedIn',
-			'E-mail'    => 'E-mail',
-			'WhatsApp'  => 'WhatsApp',
-			'Pinterest' => 'Pinterest',
-		));
+		// Get enabled services - FIXED: Ensure it's always an array
+		$enabled_services = get_site_option( 'bp_share_services', array() );
+		if ( ! is_array( $enabled_services ) ) {
+			$enabled_services = array();
+		}
+		
+		// Set default services if empty
+		if ( empty( $enabled_services ) ) {
+			$enabled_services = array(
+				'Facebook'  => 'Facebook',
+				'Twitter'   => 'Twitter', 
+				'LinkedIn'  => 'LinkedIn',
+				'E-mail'    => 'E-mail',
+				'WhatsApp'  => 'WhatsApp',
+				'Pinterest' => 'Pinterest',
+			);
+		}
 		
 		$all_services = $this->get_all_available_services();
 		$disabled_services = array_diff_key( $all_services, $enabled_services );
@@ -319,6 +329,12 @@ class Buddypress_Share_Admin {
 					<ul id="drag_icon_ul" class="enabled-services-list">
 						<?php if ( ! empty( $enabled_services ) ) : ?>
 							<?php foreach ( $enabled_services as $service_key => $service_name ) : ?>
+								<?php 
+								// FIXED: Ensure service_name is a string
+								if ( is_array( $service_name ) ) {
+									$service_name = $service_key; // Use key as fallback
+								}
+								?>
 								<li class="socialicon icon_<?php echo esc_attr( sanitize_title( $service_key ) ); ?>">
 									<?php echo esc_html( $service_name ); ?>
 								</li>
@@ -336,6 +352,12 @@ class Buddypress_Share_Admin {
 					<ul id="drag_social_icon" class="disabled-services-list">
 						<?php if ( ! empty( $disabled_services ) ) : ?>
 							<?php foreach ( $disabled_services as $service_key => $service_name ) : ?>
+								<?php 
+								// FIXED: Ensure service_name is a string
+								if ( is_array( $service_name ) ) {
+									$service_name = $service_key; // Use key as fallback
+								}
+								?>
 								<li class="socialicon icon_<?php echo esc_attr( sanitize_title( $service_key ) ); ?>">
 									<?php echo esc_html( $service_name ); ?>
 								</li>
@@ -632,6 +654,7 @@ class Buddypress_Share_Admin {
 			$current_services = array();
 		}
 		
+		// FIXED: Store as key => value pair where both are strings
 		$current_services[ $service_name ] = $service_name;
 		$updated = update_site_option( 'bp_share_services', $current_services );
 		
@@ -743,7 +766,13 @@ class Buddypress_Share_Admin {
 		$sanitized = array();
 		foreach ( $services as $key => $value ) {
 			$sanitized_key = sanitize_text_field( $key );
-			$sanitized_value = sanitize_text_field( $value );
+			
+			// FIXED: Ensure value is always a string
+			if ( is_array( $value ) ) {
+				$sanitized_value = $sanitized_key; // Use key as fallback if value is array
+			} else {
+				$sanitized_value = sanitize_text_field( $value );
+			}
 			
 			if ( ! empty( $sanitized_key ) && ! empty( $sanitized_value ) ) {
 				$sanitized[ $sanitized_key ] = $sanitized_value;
