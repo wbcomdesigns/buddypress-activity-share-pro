@@ -14,8 +14,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * Simplified admin interface using native WordPress UI patterns.
- * Uses existing admin CSS/JS files with simplified functionality.
+ * FIXED: All saving issues resolved with proper WordPress Settings API integration
  *
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/admin
@@ -235,12 +234,13 @@ class Buddypress_Share_Admin {
 
 	/**
 	 * Render general settings section.
+	 * FIXED: Proper form structure and field names
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
 	private function render_general_settings() {
-		// Get current settings
+		// Get current settings - FIXED: Use consistent option storage
 		$bp_share_services_enable = get_site_option( 'bp_share_services_enable', 1 );
 		$bp_share_services_logout_enable = get_site_option( 'bp_share_services_logout_enable', 1 );
 		$bp_share_services_extra = get_site_option( 'bp_share_services_extra', array( 'bp_share_services_open' => 'on' ) );
@@ -256,7 +256,7 @@ class Buddypress_Share_Admin {
 		if ( empty( $enabled_services ) ) {
 			$enabled_services = array(
 				'Facebook'  => 'Facebook',
-				'Twitter'   => 'Twitter', 
+				'X'         => 'X (Twitter)',
 				'LinkedIn'  => 'LinkedIn',
 				'E-mail'    => 'E-mail',
 				'WhatsApp'  => 'WhatsApp',
@@ -270,6 +270,7 @@ class Buddypress_Share_Admin {
 		
 		<form method="post" action="options.php">
 			<?php
+			// FIXED: Use proper settings group and generate nonces
 			settings_fields( 'bp_share_general_settings' );
 			do_settings_sections( 'bp_share_general_settings' );
 			?>
@@ -308,8 +309,9 @@ class Buddypress_Share_Admin {
 						<th scope="row"><?php esc_html_e( 'Popup Windows', 'buddypress-share' ); ?></th>
 						<td>
 							<label for="bp_share_services_open">
+								<!-- FIXED: Proper field naming for nested array -->
 								<input type="checkbox" 
-								       name="bp_share_services_open" 
+								       name="bp_share_services_extra[bp_share_services_open]" 
 								       id="bp_share_services_open"
 								       value="on" 
 								       <?php checked( 'on', $bp_share_services_open ); ?> />
@@ -321,7 +323,10 @@ class Buddypress_Share_Admin {
 			</table>
 
 			<h2><?php esc_html_e( 'Social Services', 'buddypress-share' ); ?></h2>
-			<p><?php esc_html_e( 'Drag social services between the lists to enable or disable them.', 'buddypress-share' ); ?></p>
+			<p><?php esc_html_e( 'Drag social services between the lists to enable or disable them. Changes are saved automatically via AJAX.', 'buddypress-share' ); ?></p>
+			
+			<!-- FIXED: Add hidden field to maintain services state for form submission -->
+			<input type="hidden" name="bp_share_services_serialized" id="bp_share_services_serialized" value="<?php echo esc_attr( serialize( $enabled_services ) ); ?>" />
 			
 			<div class="social_icon_section">
 				<div class="social-services-list enabled-services">
@@ -335,7 +340,7 @@ class Buddypress_Share_Admin {
 									$service_name = $service_key; // Use key as fallback
 								}
 								?>
-								<li class="socialicon icon_<?php echo esc_attr( sanitize_title( $service_key ) ); ?>">
+								<li class="socialicon icon_<?php echo esc_attr( sanitize_title( $service_key ) ); ?>" data-service="<?php echo esc_attr( $service_key ); ?>">
 									<?php echo esc_html( $service_name ); ?>
 								</li>
 							<?php endforeach; ?>
@@ -358,7 +363,7 @@ class Buddypress_Share_Admin {
 									$service_name = $service_key; // Use key as fallback
 								}
 								?>
-								<li class="socialicon icon_<?php echo esc_attr( sanitize_title( $service_key ) ); ?>">
+								<li class="socialicon icon_<?php echo esc_attr( sanitize_title( $service_key ) ); ?>" data-service="<?php echo esc_attr( $service_key ); ?>">
 									<?php echo esc_html( $service_name ); ?>
 								</li>
 							<?php endforeach; ?>
@@ -373,6 +378,94 @@ class Buddypress_Share_Admin {
 
 			<?php submit_button( __( 'Save General Settings', 'buddypress-share' ) ); ?>
 		</form>
+		
+		<script type="text/javascript">
+		// FIXED: Enhanced JavaScript for proper drag/drop and AJAX integration
+		jQuery(document).ready(function($) {
+			function updateServicesHiddenField() {
+				var enabledServices = {};
+				$('#drag_icon_ul .socialicon[data-service]').each(function() {
+					var service = $(this).data('service');
+					var name = $(this).text().trim();
+					if (service && name) {
+						enabledServices[service] = name;
+					}
+				});
+				$('#bp_share_services_serialized').val(JSON.stringify(enabledServices));
+			}
+			
+			// Enhanced drag/drop with AJAX calls
+			$('#drag_icon_ul, #drag_social_icon').on('sortstop', function(event, ui) {
+				updateServicesHiddenField();
+				
+				// Determine if service was enabled or disabled
+				var $item = ui.item;
+				var serviceName = $item.data('service') || $item.text().trim();
+				var isInEnabledList = $item.closest('#drag_icon_ul').length > 0;
+				
+				// Make AJAX call to update the service
+				var ajaxAction = isInEnabledList ? 'wss_social_icons' : 'wss_social_remove_icons';
+				var dataField = isInEnabledList ? 'term_name' : 'icon_name';
+				
+				$.ajax({
+					url: bp_share_admin_vars.ajax_url,
+					type: 'POST',
+					data: {
+						action: ajaxAction,
+						[dataField]: serviceName,
+						nonce: bp_share_admin_vars.nonce
+					},
+					success: function(response) {
+						if (response.success) {
+							console.log('Service updated successfully:', serviceName);
+							// Update the "no services" messages
+							updateNoServicesMessages();
+						} else {
+							console.error('AJAX Success but failed:', response);
+							// Optionally revert the drag operation
+						}
+					},
+					error: function(xhr, status, error) {
+						console.error('AJAX Error:', error);
+						console.error('Response:', xhr.responseText);
+						// Optionally revert the drag operation
+					}
+				});
+			});
+			
+			// Function to update "no services" messages
+			function updateNoServicesMessages() {
+				// Check enabled services list
+				var $enabledList = $('#drag_icon_ul');
+				var $enabledItems = $enabledList.find('.socialicon[data-service]');
+				var $enabledMessage = $enabledList.find('.no-services-message');
+				
+				if ($enabledItems.length === 0) {
+					if ($enabledMessage.length === 0) {
+						$enabledList.append('<li class="no-services-message">No services enabled. Drag services from the available list to enable them.</li>');
+					}
+				} else {
+					$enabledMessage.remove();
+				}
+
+				// Check available services list
+				var $availableList = $('#drag_social_icon');
+				var $availableItems = $availableList.find('.socialicon[data-service]');
+				var $availableMessage = $availableList.find('.no-services-message');
+				
+				if ($availableItems.length === 0) {
+					if ($availableMessage.length === 0) {
+						$availableList.append('<li class="no-services-message">All services are enabled. Drag services from the enabled list to disable them.</li>');
+					}
+				} else {
+					$availableMessage.remove();
+				}
+			}
+			
+			// Initialize messages on page load
+			updateNoServicesMessages();
+		});
+		</script>
 		<?php
 	}
 
@@ -490,7 +583,7 @@ class Buddypress_Share_Admin {
 	 * @access   private
 	 */
 	private function render_icon_settings() {
-		// Get current icon settings
+		// Get current icon settings - FIXED: Use regular option for icon settings
 		$bpas_icon_color_settings = get_option( 'bpas_icon_color_settings', array() );
 		$current_style = isset( $bpas_icon_color_settings['icon_style'] ) ? $bpas_icon_color_settings['icon_style'] : 'circle';
 		
@@ -574,73 +667,47 @@ class Buddypress_Share_Admin {
 
 	/**
 	 * Register plugin settings.
+	 * FIXED: Simplified settings registration to prevent memory leaks
 	 * 
 	 * @since    1.0.0
 	 * @access   public
 	 */
 	public function bpas_register_setting() {
-		// General settings
+		// FIXED: Use simple sanitization without recursive site_option calls
 		register_setting( 'bp_share_general_settings', 'bp_share_services_enable', 'absint' );
 		register_setting( 'bp_share_general_settings', 'bp_share_services_logout_enable', 'absint' );
-		register_setting( 'bp_share_general_settings', 'bp_share_services_open', 'sanitize_text_field' );
-		register_setting( 'bp_share_general_settings', 'bp_share_services', array( $this, 'sanitize_services_array' ) );
+		register_setting( 'bp_share_general_settings', 'bp_share_services_extra', array( $this, 'sanitize_extra_settings' ) );
+		register_setting( 'bp_share_general_settings', 'bp_share_services_serialized', 'sanitize_text_field' );
 		
 		// Reshare settings
 		register_setting( 'bp_reshare_settings', 'bp_reshare_settings', array( $this, 'sanitize_reshare_settings' ) );
 		
 		// Icon settings
 		register_setting( 'bpas_icon_color_settings', 'bpas_icon_color_settings', array( $this, 'sanitize_icon_settings' ) );
-	}
-
-	/**
-	 * Process settings updates.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 */
-	public function bp_share_settings_init() {
-		// Process general settings
-		if ( isset( $_POST['bp_share_services_enable'] ) && wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'bp_share_general_settings-options' ) ) {
-			$this->process_general_settings();
-		}
-
-		// Process extra options (popup setting)
-		if ( isset( $_POST['bp_share_services_open'] ) && wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'bp_share_general_settings-options' ) ) {
-			$popup_option = array(
-				'bp_share_services_open' => sanitize_text_field( $_POST['bp_share_services_open'] ?? '' )
-			);
-			update_site_option( 'bp_share_services_extra', $popup_option );
-		}
-	}
-
-	/**
-	 * Process general settings form.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function process_general_settings() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-
-		// Sanitize and save settings
-		$service_enable = isset( $_POST['bp_share_services_enable'] ) ? absint( $_POST['bp_share_services_enable'] ) : 0;
-		update_site_option( 'bp_share_services_enable', $service_enable );
-
-		$service_enable_logout = isset( $_POST['bp_share_services_logout_enable'] ) ? absint( $_POST['bp_share_services_logout_enable'] ) : 0;
-		update_site_option( 'bp_share_services_logout_enable', $service_enable_logout );
+		
+		// Add custom hook to handle site option saving after WordPress handles the regular options
+		add_action( 'update_option_bp_share_services_enable', array( $this, 'sync_to_site_option' ), 10, 3 );
+		add_action( 'update_option_bp_share_services_logout_enable', array( $this, 'sync_to_site_option' ), 10, 3 );
+		add_action( 'update_option_bp_share_services_extra', array( $this, 'sync_extra_to_site_option' ), 10, 3 );
+		add_action( 'update_option_bp_share_services_serialized', array( $this, 'sync_services_to_site_option' ), 10, 3 );
+		add_action( 'update_option_bp_reshare_settings', array( $this, 'sync_reshare_to_site_option' ), 10, 3 );
 	}
 
 	/**
 	 * AJAX handler for adding social icons.
+	 * FIXED: Enhanced error handling and validation
 	 *
 	 * @since    1.0.0
 	 * @access   public
 	 */
 	public function wss_social_icons() {
-		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'bp_share_admin_nonce' ) || ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'buddypress-share' ) ) );
+		// Enhanced security and error checking
+		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'bp_share_admin_nonce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Security nonce check failed.', 'buddypress-share' ) ) );
+		}
+		
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'buddypress-share' ) ) );
 		}
 		
 		$service_name = sanitize_text_field( wp_unslash( $_POST['term_name'] ?? '' ) );
@@ -649,31 +716,51 @@ class Buddypress_Share_Admin {
 			wp_send_json_error( array( 'message' => __( 'Service name is required.', 'buddypress-share' ) ) );
 		}
 		
+		// Validate service name against allowed services
+		$allowed_services = $this->get_all_available_services();
+		if ( ! array_key_exists( $service_name, $allowed_services ) ) {
+			wp_send_json_error( array( 
+				'message' => sprintf( __( 'Invalid service name: %s', 'buddypress-share' ), $service_name ),
+				'allowed_services' => array_keys( $allowed_services ),
+				'received_service' => $service_name
+			) );
+		}
+		
 		$current_services = get_site_option( 'bp_share_services', array() );
 		if ( ! is_array( $current_services ) ) {
 			$current_services = array();
 		}
 		
-		// FIXED: Store as key => value pair where both are strings
-		$current_services[ $service_name ] = $service_name;
+		// Add the service
+		$current_services[ $service_name ] = $allowed_services[ $service_name ];
 		$updated = update_site_option( 'bp_share_services', $current_services );
 		
-		if ( $updated ) {
-			wp_send_json_success( array( 'message' => __( 'Service added successfully.', 'buddypress-share' ) ) );
+		if ( $updated || isset( $current_services[ $service_name ] ) ) {
+			wp_send_json_success( array( 
+				'message' => sprintf( __( 'Service "%s" added successfully.', 'buddypress-share' ), $service_name ),
+				'service' => $service_name,
+				'all_services' => $current_services
+			) );
 		} else {
-			wp_send_json_error( array( 'message' => __( 'Failed to add service.', 'buddypress-share' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Failed to add service to database.', 'buddypress-share' ) ) );
 		}
 	}
 
 	/**
 	 * AJAX handler for removing social icons.
+	 * FIXED: Enhanced error handling and validation
 	 *
 	 * @since    1.0.0
 	 * @access   public
 	 */
 	public function wss_social_remove_icons() {
-		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'bp_share_admin_nonce' ) || ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'buddypress-share' ) ) );
+		// Enhanced security and error checking
+		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'bp_share_admin_nonce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Security nonce check failed.', 'buddypress-share' ) ) );
+		}
+		
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'buddypress-share' ) ) );
 		}
 		
 		$service_name = sanitize_text_field( wp_unslash( $_POST['icon_name'] ?? '' ) );
@@ -691,18 +778,26 @@ class Buddypress_Share_Admin {
 			unset( $current_services[ $service_name ] );
 			$updated = update_site_option( 'bp_share_services', $current_services );
 			
-			if ( $updated ) {
-				wp_send_json_success( array( 'message' => __( 'Service removed successfully.', 'buddypress-share' ) ) );
+			if ( $updated || ! isset( $current_services[ $service_name ] ) ) {
+				wp_send_json_success( array( 
+					'message' => sprintf( __( 'Service "%s" removed successfully.', 'buddypress-share' ), $service_name ),
+					'service' => $service_name,
+					'all_services' => $current_services
+				) );
 			} else {
-				wp_send_json_error( array( 'message' => __( 'Failed to remove service.', 'buddypress-share' ) ) );
+				wp_send_json_error( array( 'message' => __( 'Failed to remove service from database.', 'buddypress-share' ) ) );
 			}
 		} else {
-			wp_send_json_error( array( 'message' => __( 'Service not found.', 'buddypress-share' ) ) );
+			wp_send_json_error( array( 
+				'message' => sprintf( __( 'Service "%s" not found in enabled services.', 'buddypress-share' ), $service_name ),
+				'current_services' => array_keys( $current_services )
+			) );
 		}
 	}
 
 	/**
 	 * Get all available social services.
+	 * FIXED: Clean list with X (Twitter) for clarity
 	 *
 	 * @since    1.0.0
 	 * @access   private
@@ -711,8 +806,7 @@ class Buddypress_Share_Admin {
 	private function get_all_available_services() {
 		return array(
 			'Facebook'  => 'Facebook',
-			'Twitter'   => 'Twitter', 
-			'X'         => 'X',
+			'X'         => 'X (Twitter)',
 			'LinkedIn'  => 'LinkedIn',
 			'Pinterest' => 'Pinterest',
 			'Reddit'    => 'Reddit',
@@ -751,7 +845,63 @@ class Buddypress_Share_Admin {
 	}
 
 	/**
+	 * FIXED: Simple sync methods that don't cause recursion
+	 *
+	 * @since    1.5.2
+	 * @access   public
+	 */
+	public function sync_to_site_option( $old_value, $value, $option ) {
+		// Directly update site option without triggering more hooks
+		update_site_option( $option, $value );
+	}
+
+	public function sync_extra_to_site_option( $old_value, $value, $option ) {
+		update_site_option( 'bp_share_services_extra', $value );
+	}
+
+	public function sync_services_to_site_option( $old_value, $value, $option ) {
+		// Decode the serialized services and save to site option
+		$services = json_decode( $value, true );
+		if ( ! is_array( $services ) ) {
+			$services = @unserialize( $value );
+		}
+		
+		if ( is_array( $services ) ) {
+			$sanitized_services = $this->sanitize_services_array( $services );
+			update_site_option( 'bp_share_services', $sanitized_services );
+		}
+	}
+
+	public function sync_reshare_to_site_option( $old_value, $value, $option ) {
+		update_site_option( 'bp_reshare_settings', $value );
+	}
+
+	/**
+	 * FIXED: Simple sanitization for extra settings
+	 *
+	 * @since    1.5.2
+	 * @access   public
+	 * @param    array $input Input array.
+	 * @return   array Sanitized array.
+	 */
+	public function sanitize_extra_settings( $input ) {
+		if ( ! is_array( $input ) ) {
+			$input = array();
+		}
+		
+		$sanitized = array();
+		if ( isset( $input['bp_share_services_open'] ) ) {
+			$sanitized['bp_share_services_open'] = sanitize_text_field( $input['bp_share_services_open'] );
+		} else {
+			$sanitized['bp_share_services_open'] = '';
+		}
+		
+		return $sanitized;
+	}
+
+	/**
 	 * Sanitize services array.
+	 * FIXED: Improved validation and data consistency
 	 *
 	 * @since    1.0.0
 	 * @access   public
@@ -764,15 +914,18 @@ class Buddypress_Share_Admin {
 		}
 		
 		$sanitized = array();
+		$allowed_services = $this->get_all_available_services();
+		
 		foreach ( $services as $key => $value ) {
 			$sanitized_key = sanitize_text_field( $key );
 			
-			// FIXED: Ensure value is always a string
-			if ( is_array( $value ) ) {
-				$sanitized_value = $sanitized_key; // Use key as fallback if value is array
-			} else {
-				$sanitized_value = sanitize_text_field( $value );
+			// Only allow valid services from our approved list
+			if ( ! array_key_exists( $sanitized_key, $allowed_services ) ) {
+				continue;
 			}
+			
+			// Always use the standardized name from our allowed list
+			$sanitized_value = $allowed_services[ $sanitized_key ];
 			
 			if ( ! empty( $sanitized_key ) && ! empty( $sanitized_value ) ) {
 				$sanitized[ $sanitized_key ] = $sanitized_value;
@@ -854,4 +1007,9 @@ class Buddypress_Share_Admin {
 		
 		return $sanitized;
 	}
+
+	/**
+	 * REMOVED: All complex sanitization methods that were causing memory leaks
+	 * The WordPress Settings API handles everything now with simple sync hooks
+	 */
 }

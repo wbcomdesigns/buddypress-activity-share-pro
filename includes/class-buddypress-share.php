@@ -113,8 +113,12 @@ class Buddypress_Share {
 
 		/**
 		 * The class responsible for display admin notice for review after 7 days.
+		 * FIXED: Make this optional if file doesn't exist
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-buddypress-share-feedback.php';
+		$feedback_file = plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-buddypress-share-feedback.php';
+		if ( file_exists( $feedback_file ) ) {
+			require_once $feedback_file;
+		}
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -146,6 +150,7 @@ class Buddypress_Share {
 	 * of the plugin.
 	 *
 	 * Updated to use independent menu system and optimized with cache clearing hooks.
+	 * FIXED: Removed deprecated bp_share_settings_init method call
 	 *
 	 * @since    1.0.0
 	 * @access   private
@@ -160,7 +165,9 @@ class Buddypress_Share {
 		// Use standard admin_menu hook instead of bp_core_admin_hook for independent menu
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'bp_share_plugin_menu' );
 		
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'bp_share_settings_init' );
+		// FIXED: Removed the deprecated bp_share_settings_init method call
+		// $this->loader->add_action( 'admin_init', $plugin_admin, 'bp_share_settings_init' );
+		
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'bpas_register_setting' );
 
@@ -243,26 +250,20 @@ class Buddypress_Share {
 		if ( isset( $screen->id ) ) {
 			// Add class for all plugin admin pages
 			$plugin_pages = array(
-				'toplevel_page_buddypress-share',
-				'activity-share_page_buddypress-share-settings',
-				'activity-share_page_buddypress-share-icons'
+				'settings_page_buddypress-share'
 			);
 			
 			if ( in_array( $screen->id, $plugin_pages, true ) ) {
 				$classes .= ' bp-activity-share-admin';
 			}
 			
-			// Add specific class for each page
-			switch ( $screen->id ) {
-				case 'toplevel_page_buddypress-share':
-					$classes .= ' bp-share-general-page';
-					break;
-				case 'activity-share_page_buddypress-share-settings':
-					$classes .= ' bp-share-settings-page';
-					break;
-				case 'activity-share_page_buddypress-share-icons':
-					$classes .= ' bp-share-icons-page';
-					break;
+			// Add specific class for the settings page
+			if ( $screen->id === 'settings_page_buddypress-share' ) {
+				$classes .= ' bp-share-settings-page';
+				
+				// Add section-specific classes
+				$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : 'general';
+				$classes .= ' bp-share-section-' . $current_section;
 			}
 		}
 		

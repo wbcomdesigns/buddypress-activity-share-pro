@@ -14,7 +14,7 @@
  * Plugin Name:       Wbcom Designs - BuddyPress Activity Share Pro
  * Plugin URI:        https://www.wbcomdesigns.com
  * Description:       This plugin adds an extended feature to BuddyPress, allowing users to share Activity 'Post Updates' on social sites.
- * Version:           1.5.1
+ * Version:           1.5.2
  * Author:            Wbcom Designs<admin@wbcomdesigns.com>
  * Author URI:        https://www.wbcomdesigns.com
  * License:           GPL-2.0+
@@ -27,9 +27,11 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
 if ( ! defined( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION' ) ) {
-	define( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION', '1.5.1' );
+	define( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION', '1.5.2' );
 }
+
 if ( ! defined( 'BP_SHARE' ) ) {
 	define( 'BP_SHARE', 'buddypress-share' );
 	define( 'BP_ACTIVITY_SHARE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -46,15 +48,28 @@ if ( ! defined( 'BP_SHARE' ) ) {
  * @since    1.0.0
  */
 function activate_buddypress_share_pro() {
-
+	// Deactivate free version if active
 	if ( in_array( 'buddypress-activity-social-share/buddypress-share.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		deactivate_plugins( 'buddypress-activity-social-share/buddypress-share.php' );
 	}
+	
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-buddypress-share-activator.php';
 	Buddypress_Share_Activator::activate();
 }
-
 register_activation_hook( __FILE__, 'activate_buddypress_share_pro' );
+
+/**
+ * The code that runs during plugin deactivation.
+ *
+ * @access public
+ * @author   Wbcom Designs
+ * @since    1.5.2
+ */
+function deactivate_buddypress_share_pro() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-buddypress-share-activator.php';
+	Buddypress_Share_Activator::deactivate();
+}
+register_deactivation_hook( __FILE__, 'deactivate_buddypress_share_pro' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -70,12 +85,15 @@ if ( ! class_exists( 'Buddypress_Share' ) ) {
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bp_activity_share_pro_plugin_actions', 10, 2 );
 
 /**
- * @desc Adds the Settings link to the plugin activate/deactivate page
+ * Adds the Settings link to the plugin activate/deactivate page
+ *
+ * @param array $links Plugin action links.
+ * @param string $file Plugin file.
+ * @return array Modified action links.
  */
 function bp_activity_share_pro_plugin_actions( $links, $file ) {
-
 	if ( class_exists( 'BuddyPress' ) && current_user_can( 'manage_options' ) ) {
-		$settings_link = '<a href="' . esc_url( admin_url( 'admin.php?page=buddypress-share' ) ) . '">' . esc_html__( 'Settings', 'buddypress-share' ) . '</a>';
+		$settings_link = '<a href="' . esc_url( admin_url( 'options-general.php?page=buddypress-share' ) ) . '">' . esc_html__( 'Settings', 'buddypress-share' ) . '</a>';
 		array_unshift( $links, $settings_link ); // before other links.
 	}
 	return $links;
@@ -91,7 +109,6 @@ function bp_activity_share_pro_plugin_actions( $links, $file ) {
  * @since    1.0.0
  */
 function run_buddypress_share_pro() {
-
 	$plugin = new Buddypress_Share();
 	$plugin->run();
 }
@@ -177,7 +194,7 @@ function bpshare_pro_same_network_config() {
 }
 
 /**
- *  Check if buddypress activate.
+ * Check if buddypress activate.
  */
 function bpshare_pro_requires_buddypress() {
 	// Check if in the admin area and current user has permission to manage options.
@@ -191,7 +208,6 @@ function bpshare_pro_requires_buddypress() {
 		}
 	}
 }
-
 add_action( 'admin_init', 'bpshare_pro_requires_buddypress' );
 
 /**
@@ -217,7 +233,7 @@ function bpshare_pro_required_plugin_admin_notice() {
 }
 
 /**
- *  Add notice with youzify plugin.
+ * Add notice with youzify plugin.
  *
  * @author wbcomdesigns
  * @since  1.1.0
@@ -236,7 +252,6 @@ function bpshare_pro_youzify() {
 		}
 	}
 }
-
 add_action( 'admin_init', 'bpshare_pro_youzify' );
 
 /**
@@ -259,10 +274,9 @@ function bpshare_pro_youzify_plugin_admin_notice() {
 
 add_action( 'activated_plugin', 'bpshare_pro_activation_redirect_settings' );
 /**
- * Redirect to plugin settings page after activated
+ * Redirect to plugin settings page after activation
  */
 function bpshare_pro_activation_redirect_settings( $plugin ) {
-
 	// If Youzify is active, no need to proceed further.
 	if ( class_exists( 'Youzify' ) ) {
 		return;
@@ -278,7 +292,7 @@ function bpshare_pro_activation_redirect_settings( $plugin ) {
 			if ( isset( $_REQUEST['action'] ) && 'activate' === sanitize_text_field( $_REQUEST['action'] ) && isset( $_REQUEST['plugin'] ) && sanitize_text_field( $_REQUEST['plugin'] ) === $plugin ) { // phpcs:ignore
 
 				// Redirect to the settings page after plugin activation.
-				wp_redirect( admin_url( 'admin.php?page=buddypress-share' ) );
+				wp_redirect( admin_url( 'options-general.php?page=buddypress-share' ) );
 				exit;
 			}
 		}
@@ -335,16 +349,7 @@ function bp_share_pro_share_activity_url_on_compose() {
 		<?php
 	}
 }
-
 add_action( 'wp_footer', 'bp_share_pro_share_activity_url_on_compose' );
-
-/**
- * REMOVED: Old default options function that created inconsistent defaults.
- * Replaced with proper defaults in the activator class.
- * 
- * The old bp_share_pro_set_default_option() function has been removed to prevent
- * conflicts with the new, improved default setup in the activator class.
- */
 
 /**
  * Initialize default options for new installations only.

@@ -163,6 +163,7 @@ class Buddypress_Share_Activator {
 
 		} catch ( Exception $e ) {
 			// Silently fail if indexes can't be created
+			error_log( 'BP Share: Could not create database indexes - ' . $e->getMessage() );
 		}
 	}
 
@@ -195,7 +196,7 @@ class Buddypress_Share_Activator {
 	 * @access   private
 	 */
 	private static function setup_version_tracking() {
-		$current_version = defined( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION' ) ? BP_ACTIVITY_SHARE_PLUGIN_VERSION : '1.5.1';
+		$current_version = defined( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION' ) ? BP_ACTIVITY_SHARE_PLUGIN_VERSION : '1.5.2';
 		$installed_version = get_site_option( 'bp_share_plugin_version' );
 		
 		// Track installation/upgrade
@@ -227,6 +228,11 @@ class Buddypress_Share_Activator {
 			// Upgrade tasks for versions before 1.5.0
 			self::upgrade_to_150();
 		}
+
+		if ( version_compare( $old_version, '1.5.2', '<' ) ) {
+			// Upgrade tasks for versions before 1.5.2
+			self::upgrade_to_152();
+		}
 	}
 
 	/**
@@ -238,6 +244,21 @@ class Buddypress_Share_Activator {
 	private static function upgrade_to_150() {
 		// Clear any legacy caches
 		wp_cache_delete( 'bp_share_legacy_cache', 'buddypress_share' );
+	}
+
+	/**
+	 * Upgrade tasks for version 1.5.2 and above.
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 */
+	private static function upgrade_to_152() {
+		// Clean up old feedback-related options
+		delete_site_option( 'bp_social_share_activation_date' );
+		delete_site_option( 'bp_social_share_no_bug' );
+		
+		// Clear any legacy caches
+		wp_cache_delete( 'bp_share_feedback_cache', 'buddypress_share' );
 	}
 
 	/**
@@ -286,7 +307,8 @@ class Buddypress_Share_Activator {
 			);
 
 		} catch ( Exception $e ) {
-			// Silently fail
+			// Log errors but don't fail
+			error_log( 'BP Share Cleanup: ' . $e->getMessage() );
 		}
 	}
 
@@ -302,5 +324,44 @@ class Buddypress_Share_Activator {
 
 		// Clear caches
 		wp_cache_flush();
+	}
+
+	/**
+	 * Uninstall cleanup (called from uninstall hook).
+	 *
+	 * @since    1.5.2
+	 * @access   public
+	 */
+	public static function uninstall() {
+		// Remove plugin options
+		$options_to_remove = array(
+			'bp_share_services',
+			'bp_share_services_enable',
+			'bp_share_services_logout_enable',
+			'bp_share_services_extra',
+			'bp_reshare_settings',
+			'bpas_icon_color_settings',
+			'bp_share_plugin_version',
+			'bp_share_install_date',
+			'bp_share_db_version',
+			'bp_share_all_services_disable',
+			// Clean up any legacy feedback options
+			'bp_social_share_activation_date',
+			'bp_social_share_no_bug',
+		);
+		
+		foreach ( $options_to_remove as $option ) {
+			delete_site_option( $option );
+			delete_option( $option );
+		}
+
+		// Clear scheduled hooks
+		wp_clear_scheduled_hook( 'bp_share_weekly_cleanup' );
+		
+		// Clear all caches
+		wp_cache_flush();
+		
+		// Fire uninstall hook
+		do_action( 'bp_share_uninstalled' );
 	}
 }
