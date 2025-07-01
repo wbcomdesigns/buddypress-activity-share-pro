@@ -1,13 +1,12 @@
 <?php
 /**
- * Icon Settings Template for BuddyPress Activity Share Pro
+ * Clean Icon Settings Template for BuddyPress Activity Share Pro
  *
- * This template displays the icon settings page for the plugin.
- * Updated for the independent menu system without wbcom wrapper.
- * Enhanced with modern styling and better UX.
+ * This template displays the icon settings page without inline styles/scripts.
+ * All styling moved to separate CSS file for better maintainability.
  *
  * @link       http://wbcomdesigns.com
- * @since      1.0.0
+ * @since      1.5.1
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/admin/templates
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
@@ -38,22 +37,50 @@ $icon_styles = array(
 		'name'        => __( 'Circle Style', 'buddypress-share' ),
 		'description' => __( 'Modern circular icons with clean borders', 'buddypress-share' ),
 		'image'       => BP_ACTIVITY_SHARE_PLUGIN_URL . 'admin/images/style_01.jpg',
+		'preview'     => 'circle-preview'
 	),
 	'rec'        => array(
 		'name'        => __( 'Rectangle Style', 'buddypress-share' ),
 		'description' => __( 'Rectangular icons with rounded corners', 'buddypress-share' ),
 		'image'       => BP_ACTIVITY_SHARE_PLUGIN_URL . 'admin/images/style_02.jpg',
+		'preview'     => 'rectangle-preview'
 	),
 	'blackwhite' => array(
 		'name'        => __( 'Black & White', 'buddypress-share' ),
 		'description' => __( 'Minimalist monochrome design', 'buddypress-share' ),
 		'image'       => BP_ACTIVITY_SHARE_PLUGIN_URL . 'admin/images/style_03.jpg',
+		'preview'     => 'blackwhite-preview'
 	),
 	'baricon'    => array(
 		'name'        => __( 'Bar Style', 'buddypress-share' ),
 		'description' => __( 'Horizontal bar layout for sharing icons', 'buddypress-share' ),
 		'image'       => BP_ACTIVITY_SHARE_PLUGIN_URL . 'admin/images/style_04.jpg',
+		'preview'     => 'bar-preview'
 	),
+);
+
+// Color settings with defaults
+$color_settings = array(
+	'bg_color' => array(
+		'label' => __( 'Background Color', 'buddypress-share' ),
+		'default' => '#667eea',
+		'description' => __( 'Choose the background color for sharing icons.', 'buddypress-share' )
+	),
+	'text_color' => array(
+		'label' => __( 'Text Color', 'buddypress-share' ),
+		'default' => '#ffffff',
+		'description' => __( 'Choose the text/icon color for sharing buttons.', 'buddypress-share' )
+	),
+	'hover_color' => array(
+		'label' => __( 'Hover Color', 'buddypress-share' ),
+		'default' => '#5a6fd8',
+		'description' => __( 'Choose the hover color for sharing icons.', 'buddypress-share' )
+	),
+	'border_color' => array(
+		'label' => __( 'Border Color', 'buddypress-share' ),
+		'default' => '#e1e5e9',
+		'description' => __( 'Choose the border color for sharing icons.', 'buddypress-share' )
+	)
 );
 
 ?>
@@ -69,7 +96,7 @@ $icon_styles = array(
 		</div>
 
 		<!-- Settings Form -->
-		<form method="post" action="options.php" id="bp_icon_form">
+		<form method="post" action="options.php" id="bp_icon_form" class="bp-share-icon-settings">
 			<?php
 			settings_fields( 'bpas_icon_color_settings' );
 			do_settings_sections( 'bpas_icon_color_settings' );
@@ -101,9 +128,10 @@ $icon_styles = array(
 									<?php if ( file_exists( str_replace( BP_ACTIVITY_SHARE_PLUGIN_URL, BP_ACTIVITY_SHARE_PLUGIN_PATH, $style_data['image'] ) ) ) : ?>
 										<img src="<?php echo esc_url( $style_data['image'] ); ?>" 
 										     alt="<?php echo esc_attr( $style_data['name'] ); ?>"
-										     class="bp-share-style-image" />
+										     class="bp-share-style-image" 
+										     loading="lazy" />
 									<?php else : ?>
-										<div class="bp-share-style-placeholder">
+										<div class="bp-share-style-placeholder <?php echo esc_attr( $style_data['preview'] ); ?>">
 											<span class="dashicons dashicons-format-image"></span>
 											<p><?php echo esc_html( $style_data['name'] ); ?></p>
 										</div>
@@ -138,74 +166,127 @@ $icon_styles = array(
 				</div>
 
 				<div class="bp-share-color-options">
-					<div class="bp-share-color-field">
-						<label for="icon_bg_color" class="bp-share-color-label">
-							<?php esc_html_e( 'Background Color', 'buddypress-share' ); ?>
-						</label>
-						<input type="text" 
-						       id="icon_bg_color"
-						       name="bpas_icon_color_settings[bg_color]" 
-						       value="<?php echo esc_attr( $bpas_icon_color_settings['bg_color'] ?? '#667eea' ); ?>" 
-						       class="bp-share-color-picker" />
-						<p class="description"><?php esc_html_e( 'Choose the background color for sharing icons.', 'buddypress-share' ); ?></p>
-					</div>
-
-					<div class="bp-share-color-field">
-						<label for="icon_text_color" class="bp-share-color-label">
-							<?php esc_html_e( 'Text Color', 'buddypress-share' ); ?>
-						</label>
-						<input type="text" 
-						       id="icon_text_color"
-						       name="bpas_icon_color_settings[text_color]" 
-						       value="<?php echo esc_attr( $bpas_icon_color_settings['text_color'] ?? '#ffffff' ); ?>" 
-						       class="bp-share-color-picker" />
-						<p class="description"><?php esc_html_e( 'Choose the text/icon color for sharing buttons.', 'buddypress-share' ); ?></p>
-					</div>
-
-					<div class="bp-share-color-field">
-						<label for="icon_hover_color" class="bp-share-color-label">
-							<?php esc_html_e( 'Hover Color', 'buddypress-share' ); ?>
-						</label>
-						<input type="text" 
-						       id="icon_hover_color"
-						       name="bpas_icon_color_settings[hover_color]" 
-						       value="<?php echo esc_attr( $bpas_icon_color_settings['hover_color'] ?? '#5a6fd8' ); ?>" 
-						       class="bp-share-color-picker" />
-						<p class="description"><?php esc_html_e( 'Choose the hover color for sharing icons.', 'buddypress-share' ); ?></p>
-					</div>
+					<?php foreach ( $color_settings as $color_key => $color_data ) : ?>
+						<div class="bp-share-color-field">
+							<label for="icon_<?php echo esc_attr( $color_key ); ?>" class="bp-share-color-label">
+								<?php echo esc_html( $color_data['label'] ); ?>
+							</label>
+							<input type="text" 
+							       id="icon_<?php echo esc_attr( $color_key ); ?>"
+							       name="bpas_icon_color_settings[<?php echo esc_attr( $color_key ); ?>]" 
+							       value="<?php echo esc_attr( $bpas_icon_color_settings[ $color_key ] ?? $color_data['default'] ); ?>" 
+							       class="bp-share-color-picker" 
+							       data-preview-target=".preview-icon"
+							       data-default-color="<?php echo esc_attr( $color_data['default'] ); ?>" />
+							<p class="description"><?php echo esc_html( $color_data['description'] ); ?></p>
+						</div>
+					<?php endforeach; ?>
 				</div>
 
-				<!-- Live Preview -->
+				<!-- Live Preview Section -->
 				<div class="bp-share-preview-section">
 					<h4><?php esc_html_e( 'Live Preview', 'buddypress-share' ); ?></h4>
 					<div class="bp-share-preview-container">
 						<div class="bp-share-preview-icons">
 							<span class="bp-share-preview-icon facebook" data-service="facebook">
-								<i class="fab fa-facebook-f"></i>
-								<span>Facebook</span>
+								<span class="dashicons dashicons-facebook-alt"></span>
+								<span class="icon-label"><?php esc_html_e( 'Facebook', 'buddypress-share' ); ?></span>
 							</span>
 							<span class="bp-share-preview-icon twitter" data-service="twitter">
-								<i class="fab fa-twitter"></i>
-								<span>Twitter</span>
+								<span class="dashicons dashicons-twitter"></span>
+								<span class="icon-label"><?php esc_html_e( 'Twitter', 'buddypress-share' ); ?></span>
 							</span>
 							<span class="bp-share-preview-icon linkedin" data-service="linkedin">
-								<i class="fab fa-linkedin-in"></i>
-								<span>LinkedIn</span>
+								<span class="dashicons dashicons-linkedin"></span>
+								<span class="icon-label"><?php esc_html_e( 'LinkedIn', 'buddypress-share' ); ?></span>
+							</span>
+							<span class="bp-share-preview-icon email" data-service="email">
+								<span class="dashicons dashicons-email"></span>
+								<span class="icon-label"><?php esc_html_e( 'Email', 'buddypress-share' ); ?></span>
 							</span>
 						</div>
+					</div>
+					<p class="bp-share-preview-help">
+						<?php esc_html_e( 'The preview above shows how your icons will appear on the frontend. Changes are applied immediately.', 'buddypress-share' ); ?>
+					</p>
+				</div>
+			</div>
+
+			<!-- Advanced Settings -->
+			<div class="bp-share-form-section">
+				<div class="bp-share-section-header">
+					<h3 class="bp-share-section-title">
+						<?php esc_html_e( 'Advanced Settings', 'buddypress-share' ); ?>
+					</h3>
+					<p class="bp-share-section-description">
+						<?php esc_html_e( 'Additional customization options for icon display.', 'buddypress-share' ); ?>
+					</p>
+				</div>
+
+				<div class="bp-share-advanced-options">
+					<div class="bp-share-form-field">
+						<label class="bp-share-toggle">
+							<input type="checkbox" 
+							       name="bpas_icon_color_settings[show_labels]" 
+							       value="1"
+							       <?php checked( 1, $bpas_icon_color_settings['show_labels'] ?? 1 ); ?> />
+							<span class="bp-share-slider"></span>
+						</label>
+						<span class="bp-share-toggle-label">
+							<?php esc_html_e( 'Show service labels with icons', 'buddypress-share' ); ?>
+						</span>
+						<p class="bp-share-field-help">
+							<?php esc_html_e( 'When enabled, service names will be displayed alongside icons.', 'buddypress-share' ); ?>
+						</p>
+					</div>
+
+					<div class="bp-share-form-field">
+						<label class="bp-share-toggle">
+							<input type="checkbox" 
+							       name="bpas_icon_color_settings[animate_icons]" 
+							       value="1"
+							       <?php checked( 1, $bpas_icon_color_settings['animate_icons'] ?? 1 ); ?> />
+							<span class="bp-share-slider"></span>
+						</label>
+						<span class="bp-share-toggle-label">
+							<?php esc_html_e( 'Enable icon animations', 'buddypress-share' ); ?>
+						</span>
+						<p class="bp-share-field-help">
+							<?php esc_html_e( 'Add smooth hover animations to sharing icons.', 'buddypress-share' ); ?>
+						</p>
+					</div>
+
+					<div class="bp-share-form-field">
+						<label for="icon_size" class="bp-share-field-label">
+							<?php esc_html_e( 'Icon Size', 'buddypress-share' ); ?>
+						</label>
+						<select name="bpas_icon_color_settings[icon_size]" id="icon_size" class="bp-share-select">
+							<option value="small" <?php selected( 'small', $bpas_icon_color_settings['icon_size'] ?? 'medium' ); ?>>
+								<?php esc_html_e( 'Small', 'buddypress-share' ); ?>
+							</option>
+							<option value="medium" <?php selected( 'medium', $bpas_icon_color_settings['icon_size'] ?? 'medium' ); ?>>
+								<?php esc_html_e( 'Medium', 'buddypress-share' ); ?>
+							</option>
+							<option value="large" <?php selected( 'large', $bpas_icon_color_settings['icon_size'] ?? 'medium' ); ?>>
+								<?php esc_html_e( 'Large', 'buddypress-share' ); ?>
+							</option>
+						</select>
+						<p class="description">
+							<?php esc_html_e( 'Choose the size of sharing icons displayed on your site.', 'buddypress-share' ); ?>
+						</p>
 					</div>
 				</div>
 			</div>
 
 			<!-- Submit Button -->
 			<div class="bp-share-submit-section">
-				<?php submit_button( 
-					__( 'Save Icon Settings', 'buddypress-share' ), 
-					'primary', 
-					'submit', 
-					true, 
-					array( 'class' => 'bp-share-submit-button' )
-				); ?>
+				<button type="submit" 
+				        name="submit" 
+				        class="bp-share-submit-button">
+					<span class="dashicons dashicons-saved"></span>
+					<?php esc_html_e( 'Save Icon Settings', 'buddypress-share' ); ?>
+				</button>
+				<span class="bp-share-spinner"></span>
 				
 				<div class="bp-share-save-info">
 					<p class="description">
@@ -214,369 +295,15 @@ $icon_styles = array(
 				</div>
 			</div>
 		</form>
+
+		<!-- Reset to Defaults -->
+		<div class="bp-share-reset-section">
+			<h3><?php esc_html_e( 'Reset Settings', 'buddypress-share' ); ?></h3>
+			<p><?php esc_html_e( 'Reset all icon settings to their default values.', 'buddypress-share' ); ?></p>
+			<button type="button" class="button button-secondary bp-share-reset-button" data-confirm="<?php esc_attr_e( 'Are you sure you want to reset all icon settings to defaults? This action cannot be undone.', 'buddypress-share' ); ?>">
+				<span class="dashicons dashicons-backup"></span>
+				<?php esc_html_e( 'Reset to Defaults', 'buddypress-share' ); ?>
+			</button>
+		</div>
 	</div>
 </div>
-
-<style>
-/* Icon Settings Specific Styles */
-.bp-share-icon-styles-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-	gap: 20px;
-	margin: 20px 0;
-}
-
-.bp-share-icon-style-option {
-	position: relative;
-}
-
-.bp-share-style-label {
-	display: block;
-	cursor: pointer;
-	border: 2px solid #e1e5e9;
-	border-radius: 12px;
-	background: #fff;
-	transition: all 0.3s ease;
-	overflow: hidden;
-	margin: 0;
-}
-
-.bp-share-style-label:hover {
-	border-color: #667eea;
-	transform: translateY(-2px);
-	box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
-}
-
-.bp-share-style-radio {
-	position: absolute;
-	opacity: 0;
-	width: 0;
-	height: 0;
-}
-
-.bp-share-style-preview {
-	position: relative;
-	height: 150px;
-	overflow: hidden;
-	background: #f8f9fa;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.bp-share-style-image {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.bp-share-style-placeholder {
-	text-align: center;
-	color: #666;
-}
-
-.bp-share-style-placeholder .dashicons {
-	font-size: 48px;
-	margin-bottom: 10px;
-	color: #ccc;
-}
-
-.bp-share-style-overlay {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: rgba(102, 126, 234, 0.9);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	opacity: 0;
-	transition: opacity 0.3s ease;
-}
-
-.bp-share-style-check {
-	background: #fff;
-	border-radius: 50%;
-	width: 40px;
-	height: 40px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: #667eea;
-	font-size: 20px;
-}
-
-.bp-share-style-radio:checked + .bp-share-style-preview .bp-share-style-overlay {
-	opacity: 1;
-}
-
-.bp-share-style-radio:checked ~ .bp-share-style-label,
-.bp-share-style-radio:checked + .bp-share-style-preview + .bp-share-style-info + .bp-share-style-label {
-	border-color: #667eea;
-	background: linear-gradient(135deg, #f0f8ff 0%, #e8f4fd 100%);
-}
-
-.bp-share-style-info {
-	padding: 20px;
-}
-
-.bp-share-style-name {
-	margin: 0 0 8px 0;
-	font-size: 16px;
-	font-weight: 600;
-	color: #333;
-}
-
-.bp-share-style-description {
-	margin: 0;
-	font-size: 14px;
-	color: #666;
-	line-height: 1.5;
-}
-
-.bp-share-color-options {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-	gap: 30px;
-	margin: 20px 0;
-}
-
-.bp-share-color-field {
-	background: #fff;
-	padding: 20px;
-	border: 1px solid #e1e5e9;
-	border-radius: 8px;
-}
-
-.bp-share-color-label {
-	display: block;
-	font-weight: 600;
-	margin-bottom: 10px;
-	color: #333;
-}
-
-.bp-share-color-picker {
-	width: 100%;
-	height: 40px;
-	border: 2px solid #e1e5e9;
-	border-radius: 6px;
-	padding: 0 10px;
-	margin-bottom: 10px;
-}
-
-.bp-share-preview-section {
-	margin-top: 30px;
-	padding: 20px;
-	background: #f8f9fa;
-	border-radius: 8px;
-}
-
-.bp-share-preview-section h4 {
-	margin: 0 0 15px 0;
-	color: #333;
-}
-
-.bp-share-preview-container {
-	text-align: center;
-}
-
-.bp-share-preview-icons {
-	display: flex;
-	justify-content: center;
-	gap: 15px;
-	flex-wrap: wrap;
-}
-
-.bp-share-preview-icon {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	padding: 10px 15px;
-	background: #667eea;
-	color: #fff;
-	border-radius: 6px;
-	text-decoration: none;
-	transition: all 0.3s ease;
-	cursor: pointer;
-}
-
-.bp-share-preview-icon:hover {
-	background: #5a6fd8;
-	transform: translateY(-2px);
-}
-
-.bp-share-preview-icon i {
-	font-size: 16px;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-	.bp-share-icon-styles-grid {
-		grid-template-columns: 1fr;
-	}
-	
-	.bp-share-color-options {
-		grid-template-columns: 1fr;
-		gap: 20px;
-	}
-	
-	.bp-share-preview-icons {
-		flex-direction: column;
-		align-items: center;
-	}
-}
-
-/* Focus styles for accessibility */
-.bp-share-style-radio:focus + .bp-share-style-preview {
-	outline: 2px solid #667eea;
-	outline-offset: 2px;
-}
-
-.bp-share-color-picker:focus {
-	outline: 2px solid #667eea;
-	outline-offset: 2px;
-	border-color: #667eea;
-}
-</style>
-
-<script>
-jQuery(document).ready(function($) {
-	
-	// Initialize WordPress color picker if available
-	if ($.fn.wpColorPicker) {
-		$('.bp-share-color-picker').wpColorPicker({
-			change: function(event, ui) {
-				updatePreview();
-			}
-		});
-	}
-
-	/**
-	 * Update live preview when colors change
-	 */
-	function updatePreview() {
-		const bgColor = $('#icon_bg_color').val() || '#667eea';
-		const textColor = $('#icon_text_color').val() || '#ffffff';
-		const hoverColor = $('#icon_hover_color').val() || '#5a6fd8';
-		
-		// Update preview icons
-		$('.bp-share-preview-icon').css({
-			'background-color': bgColor,
-			'color': textColor
-		});
-		
-		// Update hover styles dynamically
-		const hoverStyle = `
-			<style id="bp-share-preview-hover">
-				.bp-share-preview-icon:hover {
-					background-color: ${hoverColor} !important;
-					color: ${textColor} !important;
-				}
-			</style>
-		`;
-		
-		$('#bp-share-preview-hover').remove();
-		$('head').append(hoverStyle);
-	}
-
-	/**
-	 * Update preview when style changes
-	 */
-	$('.bp-share-style-radio').on('change', function() {
-		const selectedStyle = $(this).val();
-		
-		// Update preview based on selected style
-		$('.bp-share-preview-icon').removeClass('circle rec blackwhite baricon').addClass(selectedStyle);
-		
-		// Add visual feedback
-		$(this).closest('.bp-share-icon-style-option').addClass('selected')
-			.siblings().removeClass('selected');
-	});
-
-	/**
-	 * Form submission with loading state
-	 */
-	$('#bp_icon_form').on('submit', function() {
-		const $submitBtn = $('.bp-share-submit-button');
-		const $spinner = $('<span class="bp-share-spinner is-active"></span>');
-		
-		$submitBtn.prop('disabled', true).after($spinner);
-		
-		// Re-enable after 5 seconds as fallback
-		setTimeout(function() {
-			$submitBtn.prop('disabled', false);
-			$spinner.remove();
-		}, 5000);
-	});
-
-	/**
-	 * Enhanced notice dismissal
-	 */
-	$(document).on('click', '.notice-dismiss', function() {
-		$(this).closest('.bp-share-notice').fadeOut(300, function() {
-			$(this).remove();
-		});
-	});
-
-	/**
-	 * Auto-hide success messages after 5 seconds
-	 */
-	setTimeout(function() {
-		$('.bp-share-notice:visible').fadeOut(500);
-	}, 5000);
-
-	/**
-	 * Initialize preview and selected state
-	 */
-	updatePreview();
-	$('.bp-share-style-radio:checked').trigger('change');
-
-	/**
-	 * Color field enhancements
-	 */
-	$('.bp-share-color-picker').on('input', function() {
-		updatePreview();
-		
-		// Add visual feedback that settings have changed
-		$(this).closest('form').addClass('has-changes');
-	});
-
-	/**
-	 * Accessibility improvements
-	 */
-	// Add ARIA labels to style options
-	$('.bp-share-style-radio').each(function() {
-		const label = $(this).siblings('.bp-share-style-info').find('.bp-share-style-name').text();
-		$(this).attr('aria-label', label);
-	});
-
-	// Keyboard navigation for style selection
-	$('.bp-share-style-radio').on('keydown', function(e) {
-		const $current = $(this);
-		let $next;
-		
-		switch(e.which) {
-			case 37: // Left arrow
-			case 38: // Up arrow
-				e.preventDefault();
-				$next = $current.closest('.bp-share-icon-style-option').prev().find('.bp-share-style-radio');
-				if ($next.length === 0) {
-					$next = $('.bp-share-style-radio').last();
-				}
-				$next.focus().prop('checked', true).trigger('change');
-				break;
-				
-			case 39: // Right arrow
-			case 40: // Down arrow
-				e.preventDefault();
-				$next = $current.closest('.bp-share-icon-style-option').next().find('.bp-share-style-radio');
-				if ($next.length === 0) {
-					$next = $('.bp-share-style-radio').first();
-				}
-				$next.focus().prop('checked', true).trigger('change');
-				break;
-		}
-	});
-});
-</script>

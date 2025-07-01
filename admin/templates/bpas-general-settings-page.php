@@ -1,13 +1,12 @@
 <?php
 /**
- * General Settings Template for BuddyPress Activity Share Pro
+ * Clean Share Settings Template for BuddyPress Activity Share Pro
  *
- * This template displays the general settings page for the plugin.
- * Completely independent - no wbcom dependencies.
- * Optimized for better performance and security on large sites.
+ * This template displays the share/reshare settings page without inline styles/scripts.
+ * All styling moved to separate CSS file for better maintainability.
  *
  * @link       http://wbcomdesigns.com
- * @since      1.0.0
+ * @since      1.5.1
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/admin/templates
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
@@ -23,503 +22,317 @@ if ( ! current_user_can( 'manage_options' ) ) {
 	wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'buddypress-share' ) );
 }
 
-// Optimize by loading all settings once instead of multiple get_site_option calls
-$plugin_settings = array(
-	'services_enable'        => get_site_option( 'bp_share_services_enable' ),
-	'services_logout_enable' => get_site_option( 'bp_share_services_logout_enable' ),
-	'extra_options'          => get_site_option( 'bp_share_services_extra' ),
-	'social_services'        => get_site_option( 'bp_share_services', array() ),
-);
+// Get current settings
+$bp_reshare_settings = get_site_option( 'bp_reshare_settings', array() );
+$bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
 
 // Determine if settings were saved
-$bp_share_settings_save_notice = 'display:none';
+$bp_reshare_settings_save_notice = 'display:none';
 if ( isset( $_GET['settings-updated'] ) && 'true' === $_GET['settings-updated'] ) { //phpcs:ignore
-	$bp_share_settings_save_notice = '';
+	$bp_reshare_settings_save_notice = '';
 }
 
-/**
- * Available social services configuration.
- * Centralized configuration for better maintainability.
- *
- * @since 1.5.1
- */
-$available_social_services = array(
-	'Facebook'  => array(
-		'label' => __( 'Facebook', 'buddypress-share' ),
-		'icon'  => 'icon_Facebook',
+// Share settings configuration
+$share_settings = array(
+	'disable_post_reshare_activity' => array(
+		'title' => __( 'Disable Post Share Activity', 'buddypress-share' ),
+		'description' => __( 'Enable this option to prevent sharing of blog posts according to your preference.', 'buddypress-share' ),
+		'icon' => 'dashicons-admin-post'
 	),
-	'Twitter'   => array(
-		'label' => __( 'Twitter', 'buddypress-share' ),
-		'icon'  => 'icon_Twitter',
+	'disable_my_profile_reshare_activity' => array(
+		'title' => __( 'Disable My Profile Sharing', 'buddypress-share' ),
+		'description' => __( 'Enable this option to prevent users from sharing activities to their own profiles.', 'buddypress-share' ),
+		'icon' => 'dashicons-admin-users'
 	),
-	'Pinterest' => array(
-		'label' => __( 'Pinterest', 'buddypress-share' ),
-		'icon'  => 'icon_Pinterest',
+	'disable_message_reshare_activity' => array(
+		'title' => __( 'Disable Message Sharing', 'buddypress-share' ),
+		'description' => __( 'Enable this option to prevent sharing activities via private messages.', 'buddypress-share' ),
+		'icon' => 'dashicons-email'
 	),
-	'LinkedIn'  => array(
-		'label' => __( 'LinkedIn', 'buddypress-share' ),
-		'icon'  => 'icon_LinkedIn',
+	'disable_group_reshare_activity' => array(
+		'title' => __( 'Disable Group Sharing', 'buddypress-share' ),
+		'description' => __( 'Enable this option to prevent sharing activities to groups.', 'buddypress-share' ),
+		'icon' => 'dashicons-groups'
 	),
-	'Reddit'    => array(
-		'label' => __( 'Reddit', 'buddypress-share' ),
-		'icon'  => 'icon_Reddit',
-	),
-	'WordPress' => array(
-		'label' => __( 'WordPress', 'buddypress-share' ),
-		'icon'  => 'icon_WordPress',
-	),
-	'Pocket'    => array(
-		'label' => __( 'Pocket', 'buddypress-share' ),
-		'icon'  => 'icon_Pocket',
-	),
-	'Telegram'  => array(
-		'label' => __( 'Telegram', 'buddypress-share' ),
-		'icon'  => 'icon_Telegram',
-	),
-	'Bluesky'   => array(
-		'label' => __( 'Bluesky', 'buddypress-share' ),
-		'icon'  => 'icon_Bluesky',
-	),
-	'E-mail'    => array(
-		'label' => __( 'E-mail', 'buddypress-share' ),
-		'icon'  => 'icon_Gmail',
-	),
-	'Whatsapp'  => array(
-		'label' => __( 'WhatsApp', 'buddypress-share' ),
-		'icon'  => 'icon_WhatAapp',
-	),
+	'disable_friends_reshare_activity' => array(
+		'title' => __( 'Disable Friends Sharing', 'buddypress-share' ),
+		'description' => __( 'Enable this option to prevent sharing activities with friends.', 'buddypress-share' ),
+		'icon' => 'dashicons-share-alt2'
+	)
 );
 
-/**
- * Helper function to render social service items.
- *
- * @since 1.5.1
- * @param array  $services_config Available services configuration.
- * @param array  $enabled_services Currently enabled services.
- * @param string $list_type Type of list ('enabled' or 'disabled').
- */
-function render_social_service_items( $services_config, $enabled_services, $list_type = 'disabled' ) {
-	foreach ( $services_config as $service_key => $service_data ) {
-		$is_enabled = ! empty( $enabled_services[ $service_key ] );
-		
-		// Show in disabled list if not enabled, and vice versa
-		if ( ( 'disabled' === $list_type && ! $is_enabled ) || ( 'enabled' === $list_type && $is_enabled ) ) {
-			$icon_class = esc_attr( $service_data['icon'] );
-			$service_label = esc_html( $service_data['label'] );
-			$service_name = esc_attr( 'icon_' . strtolower( str_replace( '-', '_', $service_key ) ) );
-			
-			echo '<li class="socialicon ' . $icon_class . '" name="' . $service_name . '">' . $service_label . '</li>';
-		}
-	}
-}
-
-/**
- * Helper function to generate social services string for hidden field.
- *
- * @since 1.5.1
- * @param array $social_services Enabled social services.
- * @return string Comma-separated string of service keys.
- */
-function bp_share_get_social_services_string( $social_services ) {
-	if ( empty( $social_services ) || ! is_array( $social_services ) ) {
-		return '';
-	}
-	
-	$service_keys = array_keys( $social_services );
-	return implode( ',', array_map( 'esc_attr', $service_keys ) );
-}
+// Activity display options
+$activity_display_options = array(
+	'parent' => array(
+		'title' => __( 'Parent Activity', 'buddypress-share' ),
+		'description' => __( 'Display the original activity without nested content when sharing.', 'buddypress-share' ),
+		'icon' => 'dashicons-arrow-up-alt'
+	),
+	'child' => array(
+		'title' => __( 'Child Activity', 'buddypress-share' ),
+		'description' => __( 'Display the complete activity including any nested shared content.', 'buddypress-share' ),
+		'icon' => 'dashicons-arrow-down-alt'
+	)
+);
 
 ?>
 <div class="bp-share-admin-content">
 	<div class="bp-share-form-wrapper">
 		
 		<!-- Success Message -->
-		<div class="bp-share-notice notice-success" style="<?php echo esc_attr( $bp_share_settings_save_notice ); ?>">
-			<p><strong><?php esc_html_e( 'Settings saved successfully.', 'buddypress-share' ); ?></strong></p>
+		<div class="bp-share-notice notice-success" style="<?php echo esc_attr( $bp_reshare_settings_save_notice ); ?>">
+			<p><strong><?php esc_html_e( 'Share settings saved successfully.', 'buddypress-share' ); ?></strong></p>
 			<button type="button" class="notice-dismiss">
 				<span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'buddypress-share' ); ?></span>
 			</button>
 		</div>
-		
-		<!-- Error Message Container -->
-		<div class="option-not-save-message"></div>
-		
+
 		<!-- Settings Form -->
-		<form method="post" action="options.php" id="bp_share_form">
+		<form method="post" action="options.php" id="bp_reshare_form">
 			<?php 
 			// Security nonces
-			settings_fields( 'bp_share_general_settings' );
-			do_settings_sections( 'bp_share_general_settings' );
+			settings_fields( 'bp_reshare_settings' );
+			do_settings_sections( 'bp_reshare_settings' );
 			?>
-			
-			<!-- Enable Social Share Setting -->
+
+			<!-- Content Type Sharing Controls -->
 			<div class="bp-share-form-section">
 				<div class="bp-share-section-header">
 					<h3 class="bp-share-section-title">
-						<?php esc_html_e( 'Enable Social Share', 'buddypress-share' ); ?>
+						<?php esc_html_e( 'Content Type Controls', 'buddypress-share' ); ?>
 					</h3>
 					<p class="bp-share-section-description">
-						<?php esc_html_e( 'Enable this option to show share button in activity page.', 'buddypress-share' ); ?>
+						<?php esc_html_e( 'Control which types of content can be shared within your BuddyPress community.', 'buddypress-share' ); ?>
 					</p>
 				</div>
-				<div class="bp-share-form-field">
-					<label class="bp-share-toggle">
-						<input type="checkbox" 
-						       name="bp_share_services_enable" 
-						       id="bp_share_services_enable" 
-						       value="1" 
-						       <?php checked( '1', $plugin_settings['services_enable'] ); ?> />
-						<span class="bp-share-slider"></span>
-					</label>
-					<span class="bp-share-toggle-label">
-						<?php esc_html_e( 'Enable social sharing', 'buddypress-share' ); ?>
-					</span>
+
+				<div class="bp-share-settings-grid">
+					<?php foreach ( $share_settings as $setting_key => $setting_data ) : ?>
+						<div class="bp-share-setting-item">
+							<div class="bp-share-setting-icon">
+								<span class="dashicons <?php echo esc_attr( $setting_data['icon'] ); ?>"></span>
+							</div>
+							<div class="bp-share-setting-info">
+								<h4 class="bp-share-setting-title"><?php echo esc_html( $setting_data['title'] ); ?></h4>
+								<p class="bp-share-setting-description"><?php echo esc_html( $setting_data['description'] ); ?></p>
+							</div>
+							<div class="bp-share-setting-control">
+								<label class="bp-share-toggle">
+									<input type="checkbox" 
+									       name="bp_reshare_settings[<?php echo esc_attr( $setting_key ); ?>]" 
+									       value="1" 
+									       <?php checked( 1, isset( $bp_reshare_settings[ $setting_key ] ) ? $bp_reshare_settings[ $setting_key ] : 0 ); ?> />
+									<span class="bp-share-slider"></span>
+								</label>
+							</div>
+						</div>
+					<?php endforeach; ?>
 				</div>
 			</div>
 
-			<!-- Social Share in Logout Mode Setting -->
-			<div id="social_share_logout_wrap" class="bp-share-form-section" style="<?php echo $plugin_settings['services_enable'] ? '' : 'display:none;'; ?>">
-				<div class="bp-share-section-header">
-					<h3 class="bp-share-section-title">
-						<?php esc_html_e( 'Social Share in Logout Mode', 'buddypress-share' ); ?>
-					</h3>
-					<p class="bp-share-section-description">
-						<?php esc_html_e( 'Enable this option to display social share icons when the user is logged out.', 'buddypress-share' ); ?>
-					</p>
-				</div>
-				<div class="bp-share-form-field">
-					<label class="bp-share-toggle">
-						<input type="checkbox" 
-						       name="bp_share_services_logout_enable" 
-						       id="bp_share_services_logout_enable" 
-						       value="1" 
-						       <?php checked( '1', $plugin_settings['services_logout_enable'] ); ?> />
-						<span class="bp-share-slider"></span>
-					</label>
-					<span class="bp-share-toggle-label">
-						<?php esc_html_e( 'Allow sharing when logged out', 'buddypress-share' ); ?>
-					</span>
-				</div>
-			</div>
-
-			<!-- Enable Sharing Sites Section -->
+			<!-- Reshare Activity Behavior -->
 			<div class="bp-share-form-section">
 				<div class="bp-share-section-header">
 					<h3 class="bp-share-section-title">
-						<?php esc_html_e( 'Configure Social Services', 'buddypress-share' ); ?>
+						<?php esc_html_e( 'Reshare Activity Display', 'buddypress-share' ); ?>
 					</h3>
 					<p class="bp-share-section-description">
-						<?php esc_html_e( 'Drag and drop social services between the disabled and enabled lists to configure which services are available for sharing.', 'buddypress-share' ); ?>
+						<?php esc_html_e( 'Choose how shared activities are displayed in the activity stream.', 'buddypress-share' ); ?>
 					</p>
 				</div>
 
-				<div class="bp-share-drag-drop-container">
-					<section class="social_icon_section">
-						
-						<!-- Disabled Services List -->
-						<ul id="drag_social_icon" class="social-services-list disabled-services">
-							<h3><?php esc_html_e( 'Available Services', 'buddypress-share' ); ?></h3>
-							<li class="list-info">
-								<small><?php esc_html_e( 'Drag services from here to enable them', 'buddypress-share' ); ?></small>
-							</li>
-							<?php render_social_service_items( $available_social_services, $plugin_settings['social_services'], 'disabled' ); ?>
-							
-							<!-- Show message if no disabled services -->
-							<?php if ( count( array_diff_key( $available_social_services, $plugin_settings['social_services'] ) ) === 0 ) : ?>
-								<li class="no-services-message">
-									<em><?php esc_html_e( 'All services are enabled', 'buddypress-share' ); ?></em>
-								</li>
-							<?php endif; ?>
-						</ul>
-						
-						<!-- Enabled Services List -->
-						<ul id="drag_icon_ul" class="social-services-list enabled-services">
-							<h3><?php esc_html_e( 'Enabled Services', 'buddypress-share' ); ?></h3>
-							<li class="list-info">
-								<small><?php esc_html_e( 'Drag services from here to disable them', 'buddypress-share' ); ?></small>
-							</li>
-							<?php render_social_service_items( $available_social_services, $plugin_settings['social_services'], 'enabled' ); ?>
-							
-							<!-- Show message if no enabled services -->
-							<?php if ( empty( $plugin_settings['social_services'] ) ) : ?>
-								<li class="no-services-message">
-									<em><?php esc_html_e( 'No services enabled', 'buddypress-share' ); ?></em>
-								</li>
-							<?php endif; ?>
-						</ul>
-					</section>
-					
-					<!-- Drag and Drop Instructions -->
-					<div class="drag-drop-instructions">
+				<div class="bp-share-radio-group">
+					<?php foreach ( $activity_display_options as $option_key => $option_data ) : ?>
+						<div class="bp-share-radio-item">
+							<label class="bp-share-radio-label">
+								<input type="radio" 
+								       name="bp_reshare_settings[reshare_share_activity]" 
+								       value="<?php echo esc_attr( $option_key ); ?>" 
+								       <?php checked( $option_key, $bp_reshare_settings_activity ); ?> />
+								<span class="bp-share-radio-indicator">
+									<span class="dashicons <?php echo esc_attr( $option_data['icon'] ); ?>"></span>
+								</span>
+								<div class="bp-share-radio-content">
+									<h4><?php echo esc_html( $option_data['title'] ); ?></h4>
+									<p><?php echo esc_html( $option_data['description'] ); ?></p>
+								</div>
+							</label>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+
+			<!-- Advanced Sharing Options -->
+			<div class="bp-share-form-section">
+				<div class="bp-share-section-header">
+					<h3 class="bp-share-section-title">
+						<?php esc_html_e( 'Advanced Options', 'buddypress-share' ); ?>
+					</h3>
+					<p class="bp-share-section-description">
+						<?php esc_html_e( 'Additional settings to fine-tune sharing behavior.', 'buddypress-share' ); ?>
+					</p>
+				</div>
+
+				<div class="bp-share-advanced-options">
+					<div class="bp-share-form-field">
+						<label class="bp-share-toggle">
+							<input type="checkbox" 
+							       name="bp_reshare_settings[enable_share_count]" 
+							       value="1"
+							       <?php checked( 1, $bp_reshare_settings['enable_share_count'] ?? 1 ); ?> />
+							<span class="bp-share-slider"></span>
+						</label>
+						<span class="bp-share-toggle-label">
+							<?php esc_html_e( 'Display share count', 'buddypress-share' ); ?>
+						</span>
+						<p class="bp-share-field-help">
+							<?php esc_html_e( 'Show the number of times content has been shared.', 'buddypress-share' ); ?>
+						</p>
+					</div>
+
+					<div class="bp-share-form-field">
+						<label class="bp-share-toggle">
+							<input type="checkbox" 
+							       name="bp_reshare_settings[prevent_self_share]" 
+							       value="1"
+							       <?php checked( 1, $bp_reshare_settings['prevent_self_share'] ?? 1 ); ?> />
+							<span class="bp-share-slider"></span>
+						</label>
+						<span class="bp-share-toggle-label">
+							<?php esc_html_e( 'Prevent users from sharing their own content', 'buddypress-share' ); ?>
+						</span>
+						<p class="bp-share-field-help">
+							<?php esc_html_e( 'Users cannot share activities they created themselves.', 'buddypress-share' ); ?>
+						</p>
+					</div>
+
+					<div class="bp-share-form-field">
+						<label for="max_share_depth" class="bp-share-field-label">
+							<?php esc_html_e( 'Maximum Share Depth', 'buddypress-share' ); ?>
+						</label>
+						<select name="bp_reshare_settings[max_share_depth]" id="max_share_depth" class="bp-share-select">
+							<option value="1" <?php selected( 1, $bp_reshare_settings['max_share_depth'] ?? 3 ); ?>>
+								<?php esc_html_e( '1 Level', 'buddypress-share' ); ?>
+							</option>
+							<option value="2" <?php selected( 2, $bp_reshare_settings['max_share_depth'] ?? 3 ); ?>>
+								<?php esc_html_e( '2 Levels', 'buddypress-share' ); ?>
+							</option>
+							<option value="3" <?php selected( 3, $bp_reshare_settings['max_share_depth'] ?? 3 ); ?>>
+								<?php esc_html_e( '3 Levels', 'buddypress-share' ); ?>
+							</option>
+							<option value="unlimited" <?php selected( 'unlimited', $bp_reshare_settings['max_share_depth'] ?? 3 ); ?>>
+								<?php esc_html_e( 'Unlimited', 'buddypress-share' ); ?>
+							</option>
+						</select>
 						<p class="description">
-							<strong><?php esc_html_e( 'Instructions:', 'buddypress-share' ); ?></strong>
-							<?php esc_html_e( 'Drag social service icons between the lists to enable or disable them. Changes are saved automatically when you submit the form.', 'buddypress-share' ); ?>
+							<?php esc_html_e( 'Limit how many times content can be re-shared (shares of shares).', 'buddypress-share' ); ?>
 						</p>
 					</div>
 				</div>
 			</div>
-			
-			<!-- Popup Window Setting -->
+
+			<!-- Privacy & Permissions -->
 			<div class="bp-share-form-section">
 				<div class="bp-share-section-header">
 					<h3 class="bp-share-section-title">
-						<?php esc_html_e( 'Sharing Behavior', 'buddypress-share' ); ?>
+						<?php esc_html_e( 'Privacy & Permissions', 'buddypress-share' ); ?>
 					</h3>
 					<p class="bp-share-section-description">
-						<?php esc_html_e( 'Control how social sharing links behave when clicked.', 'buddypress-share' ); ?>
+						<?php esc_html_e( 'Control who can share content and under what conditions.', 'buddypress-share' ); ?>
 					</p>
 				</div>
-				<div class="bp-share-form-field">
-					<label class="bp-share-toggle">
-						<input type="checkbox" 
-						       name="bp_share_services_open" 
-						       id="bpas-popup-share" 
-						       value="on"
-						       <?php checked( 'on', $plugin_settings['extra_options']['bp_share_services_open'] ?? '' ); ?> />
-						<span class="bp-share-slider"></span>
-					</label>
-					<span class="bp-share-toggle-label">
-						<?php esc_html_e( 'Open sharing links in popup windows', 'buddypress-share' ); ?>
-					</span>
-					<p class="bp-share-field-help">
-						<?php esc_html_e( 'When enabled, sharing links will open in popup windows. When disabled, they will open in new tabs.', 'buddypress-share' ); ?>
-					</p>
+
+				<div class="bp-share-privacy-options">
+					<div class="bp-share-form-field">
+						<label class="bp-share-toggle">
+							<input type="checkbox" 
+							       name="bp_reshare_settings[respect_privacy]" 
+							       value="1"
+							       <?php checked( 1, $bp_reshare_settings['respect_privacy'] ?? 1 ); ?> />
+							<span class="bp-share-slider"></span>
+						</label>
+						<span class="bp-share-toggle-label">
+							<?php esc_html_e( 'Respect activity privacy settings', 'buddypress-share' ); ?>
+						</span>
+						<p class="bp-share-field-help">
+							<?php esc_html_e( 'Private activities cannot be shared outside their original context.', 'buddypress-share' ); ?>
+						</p>
+					</div>
+
+					<div class="bp-share-form-field">
+						<label class="bp-share-toggle">
+							<input type="checkbox" 
+							       name="bp_reshare_settings[require_permission]" 
+							       value="1"
+							       <?php checked( 1, $bp_reshare_settings['require_permission'] ?? 0 ); ?> />
+							<span class="bp-share-slider"></span>
+						</label>
+						<span class="bp-share-toggle-label">
+							<?php esc_html_e( 'Require permission to share others\' content', 'buddypress-share' ); ?>
+						</span>
+						<p class="bp-share-field-help">
+							<?php esc_html_e( 'Users must approve before their content can be shared by others.', 'buddypress-share' ); ?>
+						</p>
+					</div>
 				</div>
 			</div>
 
-			<!-- Hidden Fields for Social Services -->
-			<input type="hidden" name="page_options" value="<?php echo esc_attr( bp_share_get_social_services_string( $plugin_settings['social_services'] ) ); ?>" />
-			
 			<!-- Submit Button -->
 			<div class="bp-share-submit-section">
 				<button type="submit" 
-				        name="bpas_submit_general_options" 
+				        name="bpas_submit_reshare_options" 
 				        class="bp-share-submit-button">
 					<span class="dashicons dashicons-saved"></span>
-					<?php esc_html_e( 'Save Settings', 'buddypress-share' ); ?>
+					<?php esc_html_e( 'Save Share Settings', 'buddypress-share' ); ?>
 				</button>
-				<span class="bp-share-spinner" style="float: none; margin: 0 10px;"></span>
+				<span class="bp-share-spinner"></span>
 				
 				<div class="bp-share-save-info">
 					<p class="description">
-						<?php esc_html_e( 'Settings will be applied immediately after saving.', 'buddypress-share' ); ?>
+						<?php esc_html_e( 'These settings control how content sharing works in your BuddyPress community.', 'buddypress-share' ); ?>
 					</p>
 				</div>
 			</div>
 		</form>
 
-		<!-- Additional Settings Hook -->
-		<?php 
-		/**
-		 * Action hook to add additional settings sections.
-		 *
-		 * @since 1.0.0
-		 */
-		do_action( 'bp_share_add_services_options' ); 
-		?>
+		<!-- Settings Preview -->
+		<div class="bp-share-preview-section">
+			<h3><?php esc_html_e( 'Settings Preview', 'buddypress-share' ); ?></h3>
+			<div class="bp-share-preview-content">
+				<div class="bp-share-preview-item">
+					<h4><?php esc_html_e( 'Enabled Sharing Methods', 'buddypress-share' ); ?></h4>
+					<ul class="bp-share-preview-list" id="enabled-sharing-methods">
+						<!-- Populated by JavaScript -->
+					</ul>
+				</div>
+				<div class="bp-share-preview-item">
+					<h4><?php esc_html_e( 'Activity Display Mode', 'buddypress-share' ); ?></h4>
+					<p class="bp-share-preview-text" id="activity-display-mode">
+						<!-- Populated by JavaScript -->
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Help Section -->
+		<div class="bp-share-help-section">
+			<h3><?php esc_html_e( 'Need Help?', 'buddypress-share' ); ?></h3>
+			<div class="bp-share-help-content">
+				<div class="bp-share-help-item">
+					<h4><?php esc_html_e( 'Share Settings Guide', 'buddypress-share' ); ?></h4>
+					<p><?php esc_html_e( 'Learn how to configure sharing settings for your community.', 'buddypress-share' ); ?></p>
+					<a href="https://docs.wbcomdesigns.com/doc_category/buddypress-activity-social-share/" target="_blank" class="button button-secondary">
+						<?php esc_html_e( 'View Documentation', 'buddypress-share' ); ?>
+					</a>
+				</div>
+				<div class="bp-share-help-item">
+					<h4><?php esc_html_e( 'Privacy Best Practices', 'buddypress-share' ); ?></h4>
+					<p><?php esc_html_e( 'Understand how to balance sharing features with user privacy.', 'buddypress-share' ); ?></p>
+					<a href="https://wbcomdesigns.com/support/" target="_blank" class="button button-secondary">
+						<?php esc_html_e( 'Get Support', 'buddypress-share' ); ?>
+					</a>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
-
-<script>
-/**
- * Enhanced JavaScript for better UX - No external dependencies
- */
-jQuery(document).ready(function($) {
-	
-	/**
-	 * Toggle logout option visibility based on main enable option
-	 */
-	function toggleLogoutOption() {
-		const isEnabled = $('#bp_share_services_enable').is(':checked');
-		$('#social_share_logout_wrap').toggle(isEnabled);
-	}
-	
-	// Initial check on page load
-	toggleLogoutOption();
-	
-	// Listen for changes on the enable checkbox
-	$('#bp_share_services_enable').on('change', toggleLogoutOption);
-
-	/**
-	 * Form submission with loading state
-	 */
-	$('#bp_share_form').on('submit', function() {
-		const $submitBtn = $('.bp-share-submit-button');
-		const $spinner = $('.bp-share-spinner');
-		
-		$submitBtn.prop('disabled', true);
-		$spinner.addClass('is-active');
-		
-		// Re-enable after 5 seconds as fallback
-		setTimeout(function() {
-			$submitBtn.prop('disabled', false);
-			$spinner.removeClass('is-active');
-		}, 5000);
-	});
-
-	/**
-	 * Enhanced notice dismissal
-	 */
-	$(document).on('click', '.notice-dismiss', function() {
-		$(this).closest('.bp-share-notice').fadeOut(300, function() {
-			$(this).remove();
-		});
-	});
-
-	/**
-	 * Auto-hide success messages after 5 seconds
-	 */
-	setTimeout(function() {
-		$('.bp-share-notice:visible').fadeOut(500);
-	}, 5000);
-
-	/**
-	 * Accessibility improvements
-	 */
-	// Add ARIA labels to toggles
-	$('.bp-share-toggle input').each(function() {
-		const label = $(this).closest('.bp-share-form-section').find('.bp-share-section-title').text();
-		$(this).attr('aria-label', label);
-	});
-
-	// Add focus styles for keyboard navigation
-	$('.bp-share-toggle input').on('focus', function() {
-		$(this).next('.bp-share-slider').addClass('focused');
-	}).on('blur', function() {
-		$(this).next('.bp-share-slider').removeClass('focused');
-	});
-
-	/**
-	 * Drag and drop functionality enhancement
-	 */
-	// Add visual feedback for drag operations
-	$('.social-services-list').on('dragenter', function() {
-		$(this).addClass('drag-active');
-	}).on('dragleave', function() {
-		$(this).removeClass('drag-active');
-	});
-
-	// Update hidden field when services change
-	function updateHiddenField() {
-		const enabledServices = [];
-		$('#drag_icon_ul .socialicon').each(function() {
-			const serviceName = $(this).text().trim();
-			enabledServices.push(serviceName);
-		});
-		$('input[name="page_options"]').val(enabledServices.join(','));
-	}
-
-	// Monitor changes to enabled services list
-	if (window.MutationObserver) {
-		const observer = new MutationObserver(function(mutations) {
-			mutations.forEach(function(mutation) {
-				if (mutation.type === 'childList') {
-					updateHiddenField();
-				}
-			});
-		});
-
-		if (document.getElementById('drag_icon_ul')) {
-			observer.observe(document.getElementById('drag_icon_ul'), {
-				childList: true,
-				subtree: true
-			});
-		}
-	}
-
-	/**
-	 * Initialize drag and drop functionality if jQuery UI is available
-	 */
-	if ($.fn.draggable && $.fn.droppable) {
-		// Setup drag and drop as per existing functionality
-		initializeDragDrop();
-	}
-
-	function initializeDragDrop() {
-		// Draggable items
-		$('.social-services-list .socialicon').draggable({
-			revert: 'invalid',
-			helper: 'clone',
-			start: function() {
-				$(this).css('opacity', '0.5');
-			},
-			stop: function() {
-				$(this).css('opacity', '1');
-			}
-		});
-
-		// Droppable areas
-		$('#drag_icon_ul').droppable({
-			accept: '#drag_social_icon .socialicon',
-			drop: function(event, ui) {
-				const $item = ui.draggable;
-				const serviceName = $item.text().trim();
-				
-				// Move item to enabled list
-				$item.appendTo($(this));
-				
-				// Update hidden field
-				updateHiddenField();
-				
-				// AJAX call to save state
-				saveServiceState(serviceName, 'enable');
-			}
-		});
-
-		$('#drag_social_icon').droppable({
-			accept: '#drag_icon_ul .socialicon',
-			drop: function(event, ui) {
-				const $item = ui.draggable;
-				const serviceName = $item.text().trim();
-				
-				// Move item to disabled list
-				$item.appendTo($(this));
-				
-				// Update hidden field
-				updateHiddenField();
-				
-				// AJAX call to save state
-				saveServiceState(serviceName, 'disable');
-			}
-		});
-	}
-
-	function saveServiceState(serviceName, action) {
-		$.ajax({
-			url: ajaxurl,
-			type: 'POST',
-			data: {
-				action: action === 'enable' ? 'wss_social_icons' : 'wss_social_remove_icons',
-				term_name: serviceName,
-				icon_name: serviceName,
-				nonce: $('#_wpnonce').val()
-			},
-			success: function(response) {
-				if (response.success) {
-					// Visual feedback
-					showNotice('Service updated successfully', 'success');
-				} else {
-					showNotice('Failed to update service', 'error');
-				}
-			},
-			error: function() {
-				showNotice('Network error occurred', 'error');
-			}
-		});
-	}
-
-	function showNotice(message, type) {
-		const $notice = $('<div class="bp-share-notice notice-' + type + '">')
-			.html('<p>' + message + '</p>')
-			.hide()
-			.prependTo('.bp-share-form-wrapper')
-			.fadeIn();
-		
-		setTimeout(function() {
-			$notice.fadeOut(function() {
-				$(this).remove();
-			});
-		}, 3000);
-	}
-});
-</script>
