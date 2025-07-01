@@ -1,8 +1,8 @@
 /**
- * BuddyPress Activity Share - Admin JavaScript (Updated)
+ * BuddyPress Activity Share - Admin JavaScript (Cleaned)
  * 
- * Simplified to essential functionality only: drag/drop, AJAX, and color picker.
- * Removes complex custom UI in favor of native WordPress patterns.
+ * Essential functionality only: drag/drop, AJAX, and color picker.
+ * Clean, optimized code with proper error handling.
  * 
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/admin/js
@@ -13,7 +13,7 @@
     'use strict';
 
     /**
-     * Simplified admin functionality controller
+     * Admin functionality controller
      */
     const BPShareAdmin = {
         
@@ -73,8 +73,6 @@
 
         /**
          * Handle service move between lists
-         * @param {jQuery} $item - Moved item
-         * @param {string} action - 'enable' or 'disable'
          */
         handleServiceMove: function($item, action) {
             const serviceName = $item.text().trim();
@@ -96,8 +94,6 @@
 
         /**
          * Update service status via AJAX
-         * @param {string} serviceName - Service name
-         * @param {string} action - 'enable' or 'disable'
          */
         updateServiceStatus: function(serviceName, action) {
             const ajaxAction = action === 'enable' ? 'wss_social_icons' : 'wss_social_remove_icons';
@@ -164,10 +160,10 @@
 
             $('.bp-share-color-picker').wpColorPicker({
                 change: function(event, ui) {
-                    // Color change handling if needed in the future
+                    // Color change handling if needed
                 },
                 clear: function(event) {
-                    // Color clear handling if needed in the future
+                    // Color clear handling if needed
                 }
             });
         },
@@ -229,8 +225,6 @@
 
         /**
          * Show admin notice
-         * @param {string} message - Notice message
-         * @param {string} type - Notice type (success, error, warning, info)
          */
         showNotice: function(message, type) {
             const $notice = $('<div class="notice notice-' + type + ' is-dismissible"><p>' + message + '</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">Dismiss this notice.</span></button></div>');

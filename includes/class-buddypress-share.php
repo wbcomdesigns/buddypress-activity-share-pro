@@ -230,10 +230,6 @@ class Buddypress_Share {
 		
 		// NEW: Optimized AJAX handler for loading groups and friends dynamically
 		$this->loader->add_action( 'wp_ajax_bp_get_user_share_options', $plugin_public, 'get_user_share_options_ajax' );
-
-		// Performance optimization hooks
-		$this->loader->add_action( 'bp_has_activities', $plugin_public, 'preload_shared_activities', 10, 2 );
-		$this->loader->add_filter( 'bp_activity_get', $plugin_public, 'batch_load_share_counts', 10, 1 );
 	}
 
 	/**

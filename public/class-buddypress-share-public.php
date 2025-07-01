@@ -13,7 +13,7 @@
  * The public-facing functionality of the plugin.
  *
  * Defines the plugin name, version, and hooks for public-facing functionality.
- * Optimized for performance with reduced database queries and cleaner code.
+ * Fixed version that resolves CSS loading and foreach errors.
  *
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/public
@@ -64,8 +64,6 @@ class Buddypress_Share_Public {
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * Optimized to only load assets where needed for better performance.
-	 *
 	 * @since    1.0.0
 	 * @access   public
 	 */
@@ -75,8 +73,9 @@ class Buddypress_Share_Public {
 			return;
 		}
 
-		$rtl_css = is_rtl() ? '-rtl' : '';
-		$css_extension = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.css' : '.min.css';
+		// Get plugin URL dynamically - extract folder name from current file path
+		$plugin_folder = basename( dirname( dirname( __FILE__ ) ) );
+		$plugin_url = plugins_url( $plugin_folder );
 
 		// Load Font Awesome only if not already loaded
 		if ( ! wp_style_is( 'wb-font-awesome', 'enqueued' ) ) {
@@ -89,34 +88,37 @@ class Buddypress_Share_Public {
 			);
 		}
 
-		// Load required stylesheets
+		// Load Bootstrap from CDN
 		wp_enqueue_style( 
 			'bootstrap-css', 
-			plugin_dir_url( __FILE__ ) . 'css/vendor/bootstrap.min.css', 
+			'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css', 
 			array(), 
-			$this->version, 
+			'4.6.2', 
 			'all' 
 		);
 		
+		// Load Select2 from CDN
 		wp_enqueue_style( 
 			'select2-css', 
-			plugin_dir_url( __FILE__ ) . 'css/vendor/select2.min.css', 
+			'https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css', 
 			array(), 
-			$this->version, 
+			'4.1.0', 
 			'all' 
 		);
-		
+
+		// Load icons CSS
 		wp_enqueue_style( 
 			'icons-css', 
-			plugin_dir_url( __FILE__ ) . 'css' . $rtl_css . '/as-icons' . $css_extension, 
+			$plugin_url . '/public/css/as-icons.css', 
 			array(), 
 			$this->version, 
 			'all' 
 		);
 		
+		// Load main CSS
 		wp_enqueue_style( 
 			$this->plugin_name, 
-			plugin_dir_url( __FILE__ ) . 'css' . $rtl_css . '/buddypress-share-public' . $css_extension, 
+			$plugin_url . '/public/css/buddypress-share-public.css', 
 			array(), 
 			$this->version, 
 			'all' 
@@ -125,8 +127,6 @@ class Buddypress_Share_Public {
 
 	/**
 	 * Register the JavaScript for the public-facing side of the site.
-	 *
-	 * Optimized asset loading and reduced database calls for better performance.
 	 *
 	 * @since    1.0.0
 	 * @access   public
@@ -137,39 +137,39 @@ class Buddypress_Share_Public {
 			return;
 		}
 
+		// Get plugin URL dynamically - extract folder name from current file path
+		$plugin_folder = basename( dirname( dirname( __FILE__ ) ) );
+		$plugin_url = plugins_url( $plugin_folder );
+
 		// Get settings once and cache
 		$settings = $this->get_plugin_settings();
 		$reshare_share_activity = isset( $settings['reshare_settings']['reshare_share_activity'] ) ? $settings['reshare_settings']['reshare_share_activity'] : 'parent';
 
-		$js_extension = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.js' : '.min.js';
-
 		// Load jQuery UI tooltip
 		wp_enqueue_script( 'jquery-ui-tooltip' );
 		
-		// Handle Bootstrap conflicts more efficiently
-		if ( ! $this->has_bootstrap_conflict() ) {
-			wp_enqueue_script( 
-				'bootstrap-js', 
-				plugin_dir_url( __FILE__ ) . 'js/vendor/bootstrap.min.js', 
-				array( 'jquery' ), 
-				$this->version, 
-				false 
-			);
-		}
+		// Load Bootstrap from CDN
+		wp_enqueue_script( 
+			'bootstrap-js', 
+			'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js', 
+			array( 'jquery' ), 
+			'4.6.2', 
+			false 
+		);
 		
-		// Load Select2
+		// Load Select2 from CDN
 		wp_enqueue_script( 
 			'select2-js', 
-			plugin_dir_url( __FILE__ ) . 'js/vendor/select2.min.js', 
+			'https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js', 
 			array( 'jquery' ), 
-			$this->version, 
+			'4.1.0', 
 			false 
 		);
 		
 		// Load main plugin script
 		wp_enqueue_script( 
 			$this->plugin_name, 
-			plugin_dir_url( __FILE__ ) . 'js/buddypress-share-public' . $js_extension, 
+			$plugin_url . '/public/js/buddypress-share-public.js', 
 			array( 'jquery', 'wp-i18n' ), 
 			$this->version, 
 			false 
@@ -187,9 +187,21 @@ class Buddypress_Share_Public {
 				'current_user_id'        => get_current_user_id(),
 				'reshare_share_activity' => $reshare_share_activity,
 				'ajax_nonce'             => wp_create_nonce( 'bp-activity-share-nonce' ),
-				'member_profile_url'     => bp_loggedin_user_domain() . 'messages/compose/',
+				'member_profile_url'     => function_exists('bp_loggedin_user_domain') ? bp_loggedin_user_domain() . 'messages/compose/' : '',
 			)
 		);
+	}
+
+	/**
+	 * Check if there's a Bootstrap conflict that should prevent loading.
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 * @return   bool True if conflict exists, false otherwise.
+	 */
+	private function has_bootstrap_conflict() {
+		// Check for known conflicting plugins/themes
+		return ( class_exists( 'WeDevs_Dokan' ) && function_exists( 'dokan_is_seller_dashboard' ) && dokan_is_seller_dashboard() );
 	}
 
 	/**
@@ -207,18 +219,6 @@ class Buddypress_Share_Public {
 	}
 
 	/**
-	 * Check if there's a Bootstrap conflict that should prevent loading.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @return   bool True if conflict exists, false otherwise.
-	 */
-	private function has_bootstrap_conflict() {
-		// Check for known conflicting plugins/themes
-		return ( class_exists( 'WeDevs_Dokan' ) && function_exists( 'dokan_is_seller_dashboard' ) && dokan_is_seller_dashboard() );
-	}
-
-	/**
 	 * Get plugin settings with static caching to avoid repeated database calls.
 	 *
 	 * @since    1.5.2
@@ -227,15 +227,8 @@ class Buddypress_Share_Public {
 	 */
 	private function get_plugin_settings() {
 		if ( null === $this->cached_settings ) {
-			// Debug: Log what we're getting from the database
 			$services = get_site_option( 'bp_share_services', array() );
 			$services_enable = get_site_option( 'bp_share_services_enable', 1 );
-			
-			// Debug logging (remove after fixing)
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'BP Share Debug - Services: ' . print_r( $services, true ) );
-				error_log( 'BP Share Debug - Services Enable: ' . $services_enable );
-			}
 			
 			$this->cached_settings = array(
 				'services'         => $services,
@@ -379,7 +372,7 @@ class Buddypress_Share_Public {
 				'label'   => __( 'Share to Message', 'buddypress-share' ),
 				'title'   => __( 'Message', 'buddypress-share' ),
 				'is_link' => true,
-				'url'     => bp_loggedin_user_domain() . 'messages/compose/?activity_url=' . bp_loggedin_user_domain() . 'activity/' . bp_get_activity_id(),
+				'url'     => function_exists('bp_loggedin_user_domain') ? bp_loggedin_user_domain() . 'messages/compose/?activity_url=' . bp_loggedin_user_domain() . 'activity/' . bp_get_activity_id() : '#',
 			),
 			'groups' => array(
 				'setting' => 'disable_group_reshare_activity',
@@ -483,7 +476,7 @@ class Buddypress_Share_Public {
 				'icon'  => 'fa fa-facebook',
 				'label' => __( 'Facebook', 'buddypress-share' )
 			),
-			'Twitter' => array(
+			'X' => array(
 				'url'   => 'https://twitter.com/share?url=' . urlencode( $activity_link ) . '&text=' . urlencode( $activity_title ),
 				'icon'  => 'fa fa-twitter',
 				'label' => __( 'X', 'buddypress-share' )
@@ -558,6 +551,9 @@ class Buddypress_Share_Public {
 	 * @return   string Activity permalink.
 	 */
 	private function get_activity_permalink( $activity ) {
+		if (function_exists('bp_activity_get_permalink')) {
+			return bp_activity_get_permalink($activity->id);
+		}
 		return site_url() . '/' . bp_get_members_slug() . '/' . $activity->user_nicename . '/' . bp_get_activity_slug() . '/' . $activity->id . '/';
 	}
 
@@ -595,6 +591,361 @@ class Buddypress_Share_Public {
 			});
 		</script>
 		<?php
+	}
+
+	/**
+	 * DISABLED: Batch load share counts for better performance.
+	 * This method was causing foreach errors, so it's disabled.
+	 *
+	 * @since    1.5.2
+	 * @access   public
+	 * @param    mixed $activities Activities array or other data.
+	 * @return   mixed Original input data.
+	 */
+	public function batch_load_share_counts( $activities ) {
+		// Disabled to prevent foreach errors
+		return $activities;
+	}
+
+	/**
+	 * DISABLED: Preload shared activities and posts to avoid N+1 queries.
+	 * This method was causing foreach errors, so it's disabled.
+	 *
+	 * @since    1.5.2
+	 * @access   public
+	 * @param    array $activities Activities array.
+	 */
+	public function preload_shared_activities( $activities ) {
+		// Disabled to prevent foreach errors
+		return;
+	}
+
+	/**
+	 * Clear cached settings when settings are updated.
+	 *
+	 * @since    1.5.2
+	 * @access   public
+	 */
+	public function clear_settings_cache() {
+		$this->cached_settings = null;
+	}
+
+	/**
+	 * Register custom activity actions.
+	 * 
+	 * @since 1.0.0
+	 * @access public
+	 */
+	public function bp_share_register_activity_actions() {
+		$bp = buddypress();
+		
+		// Register activity share action
+		bp_activity_set_action(
+			$bp->activity->id,
+			'activity_share',
+			esc_html__( 'Shared an activity', 'buddypress-share' ),
+			array( $this, 'bp_share_activity_format_action_activity_reshare' ),
+			esc_html__( 'Activity Share', 'buddypress-share' ),
+			array( 'activity', 'group', 'member', 'member_groups' )
+		);
+
+		// Register post share action
+		bp_activity_set_action(
+			$bp->activity->id,
+			'post_share',
+			esc_html__( 'Shared a post', 'buddypress-share' ),
+			array( $this, 'bp_share_activity_format_action_activity_reshare' ),
+			esc_html__( 'Post Activity Share', 'buddypress-share' ),
+			array( 'activity', 'group', 'member', 'member_groups' )
+		);
+
+		// Register group actions if groups component is active
+		if ( bp_is_active( 'groups' ) ) {
+			bp_activity_set_action(
+				$bp->groups->id,
+				'activity_share',
+				esc_html__( 'Shared an activity', 'buddypress-share' ),
+				array( $this, 'bp_share_activity_format_action_group_reshare' ),
+				esc_html__( 'Activity Share', 'buddypress-share' ),
+				array( 'activity', 'group', 'member', 'member_groups' )
+			);
+
+			bp_activity_set_action(
+				$bp->groups->id,
+				'post_share',
+				esc_html__( 'Shared a post', 'buddypress-share' ),
+				array( $this, 'bp_share_activity_format_action_group_reshare' ),
+				esc_html__( 'Post Activity Share', 'buddypress-share' ),
+				array( 'activity', 'group', 'member', 'member_groups' )
+			);
+		}
+	}
+
+	/**
+	 * Format activity share action text.
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @param    string $action   Registered action.
+	 * @param    object $activity Activity object.
+	 * @return   string Activity action.
+	 */
+	public function bp_share_activity_format_action_activity_reshare( $action, $activity ) {
+		$user_link = bp_core_get_userlink( $activity->user_id );
+		
+		return sprintf(
+			/* translators: %s: user link */
+			esc_html__( '%s shared an activity', 'buddypress-share' ),
+			$user_link
+		);
+	}
+
+	/**
+	 * Format group share action text.
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 * @param    string $action   Registered action.
+	 * @param    object $activity Activity object.
+	 * @return   string Activity action.
+	 */
+	public function bp_share_activity_format_action_group_reshare( $action, $activity ) {
+		$user_link = bp_core_get_userlink( $activity->user_id );
+		$group = bp_groups_get_activity_group( $activity->item_id );
+		
+		if ( ! $group ) {
+			return $action;
+		}
+		
+		// Handle BP version compatibility
+		if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
+			$group_link = '<a href="' . esc_url( bp_get_group_url( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
+		} else {
+			$group_link = '<a href="' . esc_url( bp_get_group_permalink( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
+		}
+
+		return sprintf(
+			/* translators: 1: user link, 2: group link */
+			esc_html__( '%1$s shared an activity in the group %2$s', 'buddypress-share' ),
+			$user_link,
+			$group_link
+		);
+	}
+
+	/**
+	 * Handle AJAX request for creating activity reshare.
+	 *
+	 * @since 1.0.0
+	 * @access public
+	 */
+	public function bp_activity_create_reshare_ajax() {
+		// Verify nonce for security
+		if ( ! wp_verify_nonce( $_POST['_ajax_nonce'] ?? '', 'bp-activity-share-nonce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'buddypress-share' ) ) );
+		}
+
+		// Check if user is logged in
+		if ( ! is_user_logged_in() ) {
+			wp_send_json_error( array( 'message' => __( 'User not logged in.', 'buddypress-share' ) ) );
+		}
+
+		// Validate and sanitize input
+		$user_id = get_current_user_id();
+		$activity_id = absint( $_POST['activity_id'] ?? 0 );
+		$activity_type = sanitize_key( $_POST['type'] ?? '' );
+		$activity_content = sanitize_textarea_field( wp_unslash( $_POST['activity_content'] ?? '' ) );
+		$activity_in = absint( $_POST['activity_in'] ?? 0 );
+
+		if ( ! $activity_id || ! $activity_type ) {
+			wp_send_json_error( array( 'message' => __( 'Missing required parameters.', 'buddypress-share' ) ) );
+		}
+
+		// Validate activity type
+		$allowed_types = array( 'activity_share', 'post_share' );
+		if ( ! in_array( $activity_type, $allowed_types, true ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid activity type.', 'buddypress-share' ) ) );
+		}
+
+		// Handle user mentions
+		if ( isset( $_POST['activity_in_type'] ) && 'user' === $_POST['activity_in_type'] ) {
+			$username = $this->get_user_name_by_id( $activity_in );
+			if ( $username ) {
+				$activity_content = "@{$username} \r\n{$activity_content}";
+			}
+			$activity_in = 0;
+		}
+
+		// Validate group permissions
+		if ( $activity_in > 0 && ! $this->user_can_post_to_group( $user_id, $activity_in ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission to post in this group.', 'buddypress-share' ) ) );
+		}
+
+		// Create activity
+		$new_activity_id = $this->create_share_activity( $user_id, $activity_id, $activity_type, $activity_content, $activity_in );
+
+		if ( ! $new_activity_id ) {
+			wp_send_json_error( array( 'message' => __( 'Failed to create activity.', 'buddypress-share' ) ) );
+		}
+
+		// Update share count
+		$new_count = $this->update_share_count( $activity_id, $activity_type );
+
+		wp_send_json_success( array( 
+			'share_count' => $new_count,
+			'activity_id' => $new_activity_id,
+			'message'     => __( 'Activity shared successfully.', 'buddypress-share' )
+		) );
+	}
+
+	/**
+	 * Get username by user ID with version compatibility.
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 * @param    int $user_id User ID.
+	 * @return   string|false Username or false on failure.
+	 */
+	private function get_user_name_by_id( $user_id ) {
+		if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
+			return bp_members_get_user_slug( $user_id );
+		}
+		return bp_core_get_username( $user_id );
+	}
+
+	/**
+	 * Check if user can post to group.
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 * @param    int $user_id  User ID.
+	 * @param    int $group_id Group ID.
+	 * @return   bool True if user can post, false otherwise.
+	 */
+	private function user_can_post_to_group( $user_id, $group_id ) {
+		return bp_is_active( 'groups' ) && groups_is_user_member( $user_id, $group_id );
+	}
+
+	/**
+	 * Create share activity.
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 * @param    int    $user_id         User ID.
+	 * @param    int    $activity_id     Activity/Post ID being shared.
+	 * @param    string $activity_type   Type of activity.
+	 * @param    string $activity_content Share content.
+	 * @param    int    $activity_in     Group ID if sharing to group.
+	 * @return   int|false New activity ID or false on failure.
+	 */
+	private function create_share_activity( $user_id, $activity_id, $activity_type, $activity_content, $activity_in ) {
+		$activity_args = array(
+			'user_id'           => $user_id,
+			'component'         => ( $activity_in > 0 ) ? 'groups' : 'activity',
+			'type'              => $activity_type,
+			'content'           => $activity_content,
+			'secondary_item_id' => $activity_id,
+			'item_id'           => $activity_in,
+		);
+
+		return bp_activity_add( $activity_args );
+	}
+
+	/**
+	 * Update share count for activity or post.
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 * @param    int    $activity_id   Activity/Post ID.
+	 * @param    string $activity_type Activity type.
+	 * @return   int New share count.
+	 */
+	private function update_share_count( $activity_id, $activity_type ) {
+		$meta_key = 'share_count';
+		
+		if ( 'post_share' === $activity_type ) {
+			$current_count = (int) get_post_meta( $activity_id, $meta_key, true );
+			$new_count = $current_count + 1;
+			update_post_meta( $activity_id, $meta_key, $new_count );
+		} else {
+			$current_count = (int) bp_activity_get_meta( $activity_id, $meta_key, true );
+			$new_count = $current_count + 1;
+			bp_activity_update_meta( $activity_id, $meta_key, $new_count );
+		}
+
+		return $new_count;
+	}
+
+	/**
+	 * Load activity content via AJAX.
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 */
+	public function bp_share_get_activity_content() {
+		check_ajax_referer( 'bp-activity-share-nonce', '_ajax_nonce' );
+
+		$activity_id = ! empty( $_POST['activity_id'] ) ? sanitize_text_field( wp_unslash( $_POST['activity_id'] ) ) : 0;
+		
+		if ( ! $activity_id ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid activity ID.', 'buddypress-share' ) ) );
+		}
+		
+		ob_start();
+		if ( bp_has_activities( 'include=' . $activity_id ) ) {
+			while ( bp_activities() ) {
+				bp_the_activity();
+				bp_get_template_part( 'activity/entry' );
+			}
+		}
+		$result = array( 'contents' => ob_get_clean() );
+		wp_send_json_success( $result );
+	}
+
+	/**
+	 * AJAX handler for loading groups and friends dynamically.
+	 *
+	 * @since    1.5.2
+	 * @access   public
+	 */
+	public function get_user_share_options_ajax() {
+		check_ajax_referer( 'bp-activity-share-nonce', '_ajax_nonce' );
+		
+		if ( ! is_user_logged_in() ) {
+			wp_send_json_error( array( 'message' => __( 'User not logged in.', 'buddypress-share' ) ) );
+		}
+		
+		$user_id = get_current_user_id();
+		$data = array();
+		
+		// Load groups (limit to 50 for performance)
+		if ( bp_is_active( 'groups' ) ) {
+			$groups = groups_get_groups( array( 
+				'user_id'          => $user_id,
+				'per_page'         => 50,
+				'populate_extras'  => false
+			) );
+			$data['groups'] = isset( $groups['groups'] ) ? $groups['groups'] : array();
+		}
+		
+		// Load friends (limit to 50 for performance)
+		if ( bp_is_active( 'friends' ) && function_exists( 'friends_get_friend_user_ids' ) ) {
+			$friends_ids = friends_get_friend_user_ids( $user_id );
+			$friends_data = array();
+			
+			$limited_friends = array_slice( $friends_ids, 0, 50 );
+			foreach ( $limited_friends as $friend_id ) {
+				$user_data = get_userdata( $friend_id );
+				if ( $user_data ) {
+					$friends_data[] = array(
+						'id'           => $friend_id,
+						'display_name' => $user_data->display_name
+					);
+				}
+			}
+			$data['friends'] = $friends_data;
+		}
+		
+		wp_send_json_success( $data );
 	}
 
 	/**
@@ -739,108 +1090,6 @@ class Buddypress_Share_Public {
 			<meta property="og:image:height" content="300" />
 		<?php endif; ?>
 		<?php
-	}
-
-	/**
-	 * Register custom activity actions.
-	 * 
-	 * @since 1.0.0
-	 * @access public
-	 */
-	public function bp_share_register_activity_actions() {
-		$bp = buddypress();
-		
-		// Register activity share action
-		bp_activity_set_action(
-			$bp->activity->id,
-			'activity_share',
-			esc_html__( 'Shared an activity', 'buddypress-share' ),
-			array( $this, 'bp_share_activity_format_action_activity_reshare' ),
-			esc_html__( 'Activity Share', 'buddypress-share' ),
-			array( 'activity', 'group', 'member', 'member_groups' )
-		);
-
-		// Register post share action
-		bp_activity_set_action(
-			$bp->activity->id,
-			'post_share',
-			esc_html__( 'Shared a post', 'buddypress-share' ),
-			array( $this, 'bp_share_activity_format_action_activity_reshare' ),
-			esc_html__( 'Post Activity Share', 'buddypress-share' ),
-			array( 'activity', 'group', 'member', 'member_groups' )
-		);
-
-		// Register group actions if groups component is active
-		if ( bp_is_active( 'groups' ) ) {
-			bp_activity_set_action(
-				$bp->groups->id,
-				'activity_share',
-				esc_html__( 'Shared an activity', 'buddypress-share' ),
-				array( $this, 'bp_share_activity_format_action_group_reshare' ),
-				esc_html__( 'Activity Share', 'buddypress-share' ),
-				array( 'activity', 'group', 'member', 'member_groups' )
-			);
-
-			bp_activity_set_action(
-				$bp->groups->id,
-				'post_share',
-				esc_html__( 'Shared a post', 'buddypress-share' ),
-				array( $this, 'bp_share_activity_format_action_group_reshare' ),
-				esc_html__( 'Post Activity Share', 'buddypress-share' ),
-				array( 'activity', 'group', 'member', 'member_groups' )
-			);
-		}
-	}
-
-	/**
-	 * Format activity share action text.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 * @param    string $action   Registered action.
-	 * @param    object $activity Activity object.
-	 * @return   string Activity action.
-	 */
-	public function bp_share_activity_format_action_activity_reshare( $action, $activity ) {
-		$user_link = bp_core_get_userlink( $activity->user_id );
-		
-		return sprintf(
-			/* translators: %s: user link */
-			esc_html__( '%s shared an activity', 'buddypress-share' ),
-			$user_link
-		);
-	}
-
-	/**
-	 * Format group share action text.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 * @param    string $action   Registered action.
-	 * @param    object $activity Activity object.
-	 * @return   string Activity action.
-	 */
-	public function bp_share_activity_format_action_group_reshare( $action, $activity ) {
-		$user_link = bp_core_get_userlink( $activity->user_id );
-		$group = bp_groups_get_activity_group( $activity->item_id );
-		
-		if ( ! $group ) {
-			return $action;
-		}
-		
-		// Handle BP version compatibility
-		if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
-			$group_link = '<a href="' . esc_url( bp_get_group_url( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
-		} else {
-			$group_link = '<a href="' . esc_url( bp_get_group_permalink( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
-		}
-
-		return sprintf(
-			/* translators: 1: user link, 2: group link */
-			esc_html__( '%1$s shared an activity in the group %2$s', 'buddypress-share' ),
-			$user_link,
-			$group_link
-		);
 	}
 
 	/**
@@ -1241,222 +1490,6 @@ class Buddypress_Share_Public {
 	}
 
 	/**
-	 * Handle AJAX request for creating activity reshare.
-	 *
-	 * @since 1.0.0
-	 * @access public
-	 */
-	public function bp_activity_create_reshare_ajax() {
-		// Verify nonce for security
-		if ( ! wp_verify_nonce( $_POST['_ajax_nonce'] ?? '', 'bp-activity-share-nonce' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'buddypress-share' ) ) );
-		}
-
-		// Check if user is logged in
-		if ( ! is_user_logged_in() ) {
-			wp_send_json_error( array( 'message' => __( 'User not logged in.', 'buddypress-share' ) ) );
-		}
-
-		// Validate and sanitize input
-		$user_id = get_current_user_id();
-		$activity_id = absint( $_POST['activity_id'] ?? 0 );
-		$activity_type = sanitize_key( $_POST['type'] ?? '' );
-		$activity_content = sanitize_textarea_field( wp_unslash( $_POST['activity_content'] ?? '' ) );
-		$activity_in = absint( $_POST['activity_in'] ?? 0 );
-
-		if ( ! $activity_id || ! $activity_type ) {
-			wp_send_json_error( array( 'message' => __( 'Missing required parameters.', 'buddypress-share' ) ) );
-		}
-
-		// Validate activity type
-		$allowed_types = array( 'activity_share', 'post_share' );
-		if ( ! in_array( $activity_type, $allowed_types, true ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid activity type.', 'buddypress-share' ) ) );
-		}
-
-		// Handle user mentions
-		if ( isset( $_POST['activity_in_type'] ) && 'user' === $_POST['activity_in_type'] ) {
-			$username = $this->get_user_name_by_id( $activity_in );
-			if ( $username ) {
-				$activity_content = "@{$username} \r\n{$activity_content}";
-			}
-			$activity_in = 0;
-		}
-
-		// Validate group permissions
-		if ( $activity_in > 0 && ! $this->user_can_post_to_group( $user_id, $activity_in ) ) {
-			wp_send_json_error( array( 'message' => __( 'You do not have permission to post in this group.', 'buddypress-share' ) ) );
-		}
-
-		// Create activity
-		$new_activity_id = $this->create_share_activity( $user_id, $activity_id, $activity_type, $activity_content, $activity_in );
-
-		if ( ! $new_activity_id ) {
-			wp_send_json_error( array( 'message' => __( 'Failed to create activity.', 'buddypress-share' ) ) );
-		}
-
-		// Update share count
-		$new_count = $this->update_share_count( $activity_id, $activity_type );
-
-		wp_send_json_success( array( 
-			'share_count' => $new_count,
-			'activity_id' => $new_activity_id,
-			'message'     => __( 'Activity shared successfully.', 'buddypress-share' )
-		) );
-	}
-
-	/**
-	 * Get username by user ID with version compatibility.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @param    int $user_id User ID.
-	 * @return   string|false Username or false on failure.
-	 */
-	private function get_user_name_by_id( $user_id ) {
-		if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
-			return bp_members_get_user_slug( $user_id );
-		}
-		return bp_core_get_username( $user_id );
-	}
-
-	/**
-	 * Check if user can post to group.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @param    int $user_id  User ID.
-	 * @param    int $group_id Group ID.
-	 * @return   bool True if user can post, false otherwise.
-	 */
-	private function user_can_post_to_group( $user_id, $group_id ) {
-		return bp_is_active( 'groups' ) && groups_is_user_member( $user_id, $group_id );
-	}
-
-	/**
-	 * Create share activity.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @param    int    $user_id         User ID.
-	 * @param    int    $activity_id     Activity/Post ID being shared.
-	 * @param    string $activity_type   Type of activity.
-	 * @param    string $activity_content Share content.
-	 * @param    int    $activity_in     Group ID if sharing to group.
-	 * @return   int|false New activity ID or false on failure.
-	 */
-	private function create_share_activity( $user_id, $activity_id, $activity_type, $activity_content, $activity_in ) {
-		$activity_args = array(
-			'user_id'           => $user_id,
-			'component'         => ( $activity_in > 0 ) ? 'groups' : 'activity',
-			'type'              => $activity_type,
-			'content'           => $activity_content,
-			'secondary_item_id' => $activity_id,
-			'item_id'           => $activity_in,
-		);
-
-		return bp_activity_add( $activity_args );
-	}
-
-	/**
-	 * Update share count for activity or post.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @param    int    $activity_id   Activity/Post ID.
-	 * @param    string $activity_type Activity type.
-	 * @return   int New share count.
-	 */
-	private function update_share_count( $activity_id, $activity_type ) {
-		$meta_key = 'share_count';
-		
-		if ( 'post_share' === $activity_type ) {
-			$current_count = (int) get_post_meta( $activity_id, $meta_key, true );
-			$new_count = $current_count + 1;
-			update_post_meta( $activity_id, $meta_key, $new_count );
-		} else {
-			$current_count = (int) bp_activity_get_meta( $activity_id, $meta_key, true );
-			$new_count = $current_count + 1;
-			bp_activity_update_meta( $activity_id, $meta_key, $new_count );
-		}
-
-		return $new_count;
-	}
-
-	/**
-	 * Load activity content via AJAX.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 */
-	public function bp_share_get_activity_content() {
-		check_ajax_referer( 'bp-activity-share-nonce', '_ajax_nonce' );
-
-		$activity_id = ! empty( $_POST['activity_id'] ) ? sanitize_text_field( wp_unslash( $_POST['activity_id'] ) ) : 0;
-		
-		if ( ! $activity_id ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid activity ID.', 'buddypress-share' ) ) );
-		}
-		
-		ob_start();
-		if ( bp_has_activities( 'include=' . $activity_id ) ) {
-			while ( bp_activities() ) {
-				bp_the_activity();
-				bp_get_template_part( 'activity/entry' );
-			}
-		}
-		$result = array( 'contents' => ob_get_clean() );
-		wp_send_json_success( $result );
-	}
-
-	/**
-	 * AJAX handler for loading groups and friends dynamically.
-	 *
-	 * @since    1.5.2
-	 * @access   public
-	 */
-	public function get_user_share_options_ajax() {
-		check_ajax_referer( 'bp-activity-share-nonce', '_ajax_nonce' );
-		
-		if ( ! is_user_logged_in() ) {
-			wp_send_json_error( array( 'message' => __( 'User not logged in.', 'buddypress-share' ) ) );
-		}
-		
-		$user_id = get_current_user_id();
-		$data = array();
-		
-		// Load groups (limit to 50 for performance)
-		if ( bp_is_active( 'groups' ) ) {
-			$groups = groups_get_groups( array( 
-				'user_id'          => $user_id,
-				'per_page'         => 50,
-				'populate_extras'  => false
-			) );
-			$data['groups'] = isset( $groups['groups'] ) ? $groups['groups'] : array();
-		}
-		
-		// Load friends (limit to 50 for performance)
-		if ( bp_is_active( 'friends' ) && function_exists( 'friends_get_friend_user_ids' ) ) {
-			$friends_ids = friends_get_friend_user_ids( $user_id );
-			$friends_data = array();
-			
-			$limited_friends = array_slice( $friends_ids, 0, 50 );
-			foreach ( $limited_friends as $friend_id ) {
-				$user_data = get_userdata( $friend_id );
-				if ( $user_data ) {
-					$friends_data[] = array(
-						'id'           => $friend_id,
-						'display_name' => $user_data->display_name
-					);
-				}
-			}
-			$data['friends'] = $friends_data;
-		}
-		
-		wp_send_json_success( $data );
-	}
-
-	/**
 	 * Shortcode for post sharing button.
 	 * 
 	 * @since    1.0.0
@@ -1506,154 +1539,5 @@ class Buddypress_Share_Public {
 		$share_count = bp_activity_get_meta( $activity->id, 'share_count', true );
 		$response->data['bp_activity_share_count'] = $share_count;
 		return $response;
-	}
-
-	/**
-	 * Batch load share counts for better performance.
-	 *
-	 * @since    1.5.2
-	 * @access   public
-	 * @param    mixed $activities Activities array or other data.
-	 * @return   mixed Original input data.
-	 */
-	public function batch_load_share_counts( $activities ) {
-		// Defensive programming - handle any input type
-		if ( ! is_array( $activities ) ) {
-			return $activities;
-		}
-		
-		if ( empty( $activities ) ) {
-			return $activities;
-		}
-		
-		// Validate that we have proper activity objects
-		$activity_ids = array();
-		foreach ( $activities as $activity ) {
-			if ( is_object( $activity ) && isset( $activity->id ) ) {
-				$activity_ids[] = (int) $activity->id;
-			}
-		}
-		
-		if ( empty( $activity_ids ) ) {
-			return $activities;
-		}
-		
-		// Single query to get all share counts
-		global $wpdb, $bp;
-		
-		// Check if BuddyPress is properly loaded
-		if ( ! isset( $bp->activity->table_name_meta ) ) {
-			return $activities;
-		}
-		
-		$table = $bp->activity->table_name_meta;
-		
-		try {
-			$placeholders = implode( ',', array_fill( 0, count( $activity_ids ), '%d' ) );
-			$query = $wpdb->prepare(
-				"SELECT activity_id, meta_value FROM {$table} WHERE meta_key = 'share_count' AND activity_id IN ({$placeholders})",
-				$activity_ids
-			);
-			
-			$share_counts = $wpdb->get_results( $query, OBJECT_K );
-			
-			// Attach to activity objects only if they are objects
-			foreach ( $activities as &$activity ) {
-				if ( is_object( $activity ) && isset( $activity->id ) ) {
-					$activity->share_count = isset( $share_counts[ $activity->id ] ) 
-						? (int) $share_counts[ $activity->id ]->meta_value 
-						: 0;
-				}
-			}
-		} catch ( Exception $e ) {
-			// Silently fail if there's a database error
-			error_log( 'BP Share: Error in batch_load_share_counts - ' . $e->getMessage() );
-		}
-		
-		return $activities;
-	}
-
-	/**
-	 * Preload shared activities and posts to avoid N+1 queries.
-	 *
-	 * @since    1.5.2
-	 * @access   public
-	 * @param    array $activities Activities array.
-	 */
-	public function preload_shared_activities( $activities ) {
-		$share_activity_ids = array();
-		$post_ids = array();
-		
-		foreach ( $activities as $activity ) {
-			if ( 'activity_share' === $activity->type && $activity->secondary_item_id ) {
-				$share_activity_ids[] = $activity->secondary_item_id;
-			} elseif ( 'post_share' === $activity->type && $activity->secondary_item_id ) {
-				$post_ids[] = $activity->secondary_item_id;
-			}
-		}
-		
-		// Preload shared activities
-		if ( ! empty( $share_activity_ids ) ) {
-			bp_has_activities( array( 'include' => $share_activity_ids ) );
-		}
-		
-		// Preload shared posts
-		if ( ! empty( $post_ids ) ) {
-			get_posts( array( 
-				'include'          => $post_ids, 
-				'post_type'        => 'any',
-				'suppress_filters' => false
-			) );
-		}
-	}
-
-	/**
-	 * Clear cached settings when settings are updated.
-	 *
-	 * @since    1.5.2
-	 * @access   public
-	 */
-	public function clear_settings_cache() {
-		$this->cached_settings = null;
-	}
-
-	/**
-	 * Validate user permissions for sharing.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @param    int    $user_id     User ID.
-	 * @param    int    $activity_id Activity ID.
-	 * @param    string $activity_type Activity type.
-	 * @return   bool True if user can share, false otherwise.
-	 */
-	private function can_user_share_activity( $user_id, $activity_id, $activity_type ) {
-		if ( ! $user_id ) {
-			return false;
-		}
-
-		// Check if activity exists and is accessible
-		if ( 'activity_share' === $activity_type ) {
-			$activity = new BP_Activity_Activity( $activity_id );
-			if ( empty( $activity->id ) || $activity->hide_sitewide ) {
-				return false;
-			}
-		}
-
-		return apply_filters( 'bp_activity_share_user_can_share', true, $user_id, $activity_id, $activity_type );
-	}
-
-	/**
-	 * Log errors for debugging.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @param    string $message Error message.
-	 * @param    array  $data    Additional data.
-	 */
-	private function log_error( $message, $data = array() ) {
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( '[BP Activity Share Pro] ' . $message . ' ' . wp_json_encode( $data ) );
-		}
 	}
 }

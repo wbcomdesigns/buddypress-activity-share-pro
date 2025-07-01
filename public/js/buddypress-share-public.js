@@ -1,16 +1,14 @@
 /**
- * BuddyPress Activity Share - Main JavaScript
+ * BuddyPress Activity Share - Main JavaScript (Cleaned)
  * 
  * Handles all client-side functionality for the sharing interface.
- * Optimized for performance with cleaner code structure and better error handling.
+ * Clean, optimized code with better error handling and performance.
  * 
  * @since      1.0.0
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/public/js
  * @author     Wbcom Designs <admin@wbcomdesigns.com>
  */
-
-const { __, _x, _n, sprintf } = wp.i18n;
 
 (function($) {
     'use strict';
@@ -38,9 +36,6 @@ const { __, _x, _n, sprintf } = wp.i18n;
         friends: null,
         loaded: false,
 
-        /**
-         * Get cached data or load via AJAX
-         */
         getShareOptions: function(forceReload = false) {
             if (this.loaded && !forceReload) {
                 return Promise.resolve({
@@ -65,11 +60,11 @@ const { __, _x, _n, sprintf } = wp.i18n;
                             this.loaded = true;
                             resolve(response.data);
                         } else {
-                            reject(new Error(response.data?.message || __('Failed to load share options', 'buddypress-share')));
+                            reject(new Error(response.data?.message || 'Failed to load share options'));
                         }
                     },
                     error: () => {
-                        reject(new Error(__('Network error while loading share options', 'buddypress-share')));
+                        reject(new Error('Network error while loading share options'));
                     }
                 });
             });
@@ -94,7 +89,6 @@ const { __, _x, _n, sprintf } = wp.i18n;
             this.setupCopyLink();
             this.setupReshareOptions();
             this.setupDropdownPosition();
-            this.setupPerformanceOptimizations();
         },
 
         /**
@@ -159,15 +153,18 @@ const { __, _x, _n, sprintf } = wp.i18n;
             $(document).on('click', SELECTORS.activityShareButton, this.handleShareButtonOpen.bind(this));
             $(document).on('click', '.bp-activity-share-activity', this.submitShareActivity.bind(this));
             $(document).on('click', '.bp-activity-share-close', this.closeModal.bind(this));
-            $(SELECTORS.shareModal).on('show.bs.modal', this.onModalShow.bind(this));
-            $(SELECTORS.shareModal).on('hidden.bs.modal', this.onModalHidden.bind(this));
+            
+            if (typeof $.fn.modal !== 'undefined') {
+                $(SELECTORS.shareModal).on('show.bs.modal', this.onModalShow.bind(this));
+                $(SELECTORS.shareModal).on('hidden.bs.modal', this.onModalHidden.bind(this));
+            }
         },
 
         initializeSelect2: function() {
-            if ($(SELECTORS.postInSelect).length) {
+            if ($(SELECTORS.postInSelect).length && typeof $.fn.select2 !== 'undefined') {
                 $(SELECTORS.postInSelect).select2({
                     dropdownParent: $(SELECTORS.shareModal),
-                    placeholder: __('Select where to share...', 'buddypress-share'),
+                    placeholder: 'Select where to share...',
                     allowClear: false,
                     minimumResultsForSearch: 10
                 });
@@ -213,7 +210,7 @@ const { __, _x, _n, sprintf } = wp.i18n;
             
             // Add groups
             if (data.groups && data.groups.length > 0) {
-                const $groupOptgroup = $('<optgroup>').attr('label', __('Groups', 'buddypress-share'));
+                const $groupOptgroup = $('<optgroup>').attr('label', 'Groups');
                 
                 data.groups.forEach(group => {
                     $groupOptgroup.append(
@@ -229,7 +226,7 @@ const { __, _x, _n, sprintf } = wp.i18n;
             
             // Add friends
             if (data.friends && data.friends.length > 0) {
-                const $friendOptgroup = $('<optgroup>').attr('label', __('Friends', 'buddypress-share'));
+                const $friendOptgroup = $('<optgroup>').attr('label', 'Friends');
                 
                 data.friends.forEach(friend => {
                     $friendOptgroup.append(
@@ -248,7 +245,7 @@ const { __, _x, _n, sprintf } = wp.i18n;
             if ($select.hasClass('select2-hidden-accessible')) {
                 $select.select2('destroy').select2({
                     dropdownParent: $(SELECTORS.shareModal),
-                    placeholder: __('Select where to share...', 'buddypress-share'),
+                    placeholder: 'Select where to share...',
                     allowClear: false,
                     minimumResultsForSearch: 10
                 });
@@ -256,11 +253,11 @@ const { __, _x, _n, sprintf } = wp.i18n;
         },
 
         handleLoadError: function(error) {
-            console.error(__('Failed to load share options:', 'buddypress-share'), error);
+            console.error('Failed to load share options:', error);
             
             const $errorMsg = $('<div>')
                 .addClass('bp-share-error-message')
-                .text(__('Unable to load sharing options. Please try again.', 'buddypress-share'));
+                .text('Unable to load sharing options. Please try again.');
             
             $(SELECTORS.shareModal).find('.modal-header').after($errorMsg);
             
@@ -312,7 +309,9 @@ const { __, _x, _n, sprintf } = wp.i18n;
             }
 
             $('#bp-reshare-activity-id').val(activityId);
-            $(SELECTORS.shareModal).modal('show');
+            if (typeof $.fn.modal !== 'undefined') {
+                $(SELECTORS.shareModal).modal('show');
+            }
         },
 
         fetchActivityContent: function(activityId, reshareShareActivity) {
@@ -349,7 +348,7 @@ const { __, _x, _n, sprintf } = wp.i18n;
 
         showActivityLoadingState: function() {
             const $container = $(SELECTORS.shareModal + ' .modal-body #bp-activity-share-widget-box-status-header');
-            $container.html('<div class="bp-share-loading">' + __('Loading activity...', 'buddypress-share') + '</div>');
+            $container.html('<div class="bp-share-loading">Loading activity...</div>');
         },
 
         hideActivityLoadingState: function() {
@@ -358,7 +357,7 @@ const { __, _x, _n, sprintf } = wp.i18n;
 
         showActivityLoadError: function() {
             const $container = $(SELECTORS.shareModal + ' .modal-body #bp-activity-share-widget-box-status-header');
-            $container.html('<div class="bp-share-error">' + __('Failed to load activity content.', 'buddypress-share') + '</div>');
+            $container.html('<div class="bp-share-error">Failed to load activity content.</div>');
         },
 
         displayActivityInModal: function(activityId, activityHtml, reshareShareActivity) {
@@ -427,11 +426,11 @@ const { __, _x, _n, sprintf } = wp.i18n;
                     if (response.success) {
                         this.handleShareSuccess(activityId, response.data);
                     } else {
-                        this.handleShareError(response.data?.message || __('Failed to share activity', 'buddypress-share'));
+                        this.handleShareError(response.data?.message || 'Failed to share activity');
                     }
                 },
                 error: () => {
-                    this.handleShareError(__('Network error occurred', 'buddypress-share'));
+                    this.handleShareError('Network error occurred');
                 },
                 complete: () => {
                     this.hideSubmitLoadingState();
@@ -441,16 +440,18 @@ const { __, _x, _n, sprintf } = wp.i18n;
 
         showSubmitLoadingState: function() {
             const $button = $('.bp-activity-share-activity');
-            $button.prop('disabled', true).text(__('Sharing...', 'buddypress-share'));
+            $button.prop('disabled', true).text('Sharing...');
         },
 
         hideSubmitLoadingState: function() {
             const $button = $('.bp-activity-share-activity');
-            $button.prop('disabled', false).text(__('Post', 'buddypress-share'));
+            $button.prop('disabled', false).text('Post');
         },
 
         handleShareSuccess: function(activityId, data) {
-            $(SELECTORS.shareModal).modal('hide');
+            if (typeof $.fn.modal !== 'undefined') {
+                $(SELECTORS.shareModal).modal('hide');
+            }
             
             // Update share count
             const $shareCount = $('#bp-activity-reshare-count-' + activityId);
@@ -468,11 +469,11 @@ const { __, _x, _n, sprintf } = wp.i18n;
                 $altShareCount.text(currentCount + 1);
             }
 
-            this.showSuccessMessage(__('Activity shared successfully!', 'buddypress-share'));
+            this.showSuccessMessage('Activity shared successfully!');
         },
 
         handleShareError: function(message) {
-            console.error(__('Share error:', 'buddypress-share'), message);
+            console.error('Share error:', message);
             this.showErrorMessage(message);
         },
 
@@ -501,7 +502,9 @@ const { __, _x, _n, sprintf } = wp.i18n;
         },
 
         closeModal: function() {
-            $(SELECTORS.shareModal).modal('hide');
+            if (typeof $.fn.modal !== 'undefined') {
+                $(SELECTORS.shareModal).modal('hide');
+            }
         },
 
         resetModal: function() {
@@ -584,7 +587,7 @@ const { __, _x, _n, sprintf } = wp.i18n;
                     this.showCopyError($tooltip);
                 }
             } catch (err) {
-                console.error(__('Copy failed:', 'buddypress-share'), err);
+                console.error('Copy failed:', err);
                 this.showCopyError($tooltip);
             }
 
@@ -592,7 +595,7 @@ const { __, _x, _n, sprintf } = wp.i18n;
         },
 
         showCopySuccess: function($tooltip) {
-            $tooltip.removeClass('tooltip-hide').text(__('Link Copied!', 'buddypress-share'));
+            $tooltip.removeClass('tooltip-hide').text('Link Copied!');
             
             setTimeout(() => {
                 $tooltip.addClass('tooltip-hide');
@@ -600,7 +603,7 @@ const { __, _x, _n, sprintf } = wp.i18n;
         },
 
         showCopyError: function($tooltip) {
-            $tooltip.removeClass('tooltip-hide').text(__('Copy failed', 'buddypress-share'));
+            $tooltip.removeClass('tooltip-hide').text('Copy failed');
             
             setTimeout(() => {
                 $tooltip.addClass('tooltip-hide');
@@ -674,57 +677,6 @@ const { __, _x, _n, sprintf } = wp.i18n;
             const isNearBottom = (windowScrollTop + windowHeight) >= (documentHeight - 100);
 
             $('.bp-activity-share-dropdown-menu').toggleClass('position-top', isNearBottom);
-        },
-
-        /**
-         * Setup performance optimizations
-         */
-        setupPerformanceOptimizations: function() {
-            this.preloadCriticalResources();
-            this.setupLazyLoading();
-            this.setupResizeHandler();
-        },
-
-        preloadCriticalResources: function() {
-            // Preload functionality can be added here
-        },
-
-        setupLazyLoading: function() {
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            ShareCache.getShareOptions();
-                        }
-                    });
-                }, { rootMargin: '100px' });
-
-                $(SELECTORS.activityShareButton).each((index, element) => {
-                    observer.observe(element);
-                });
-            }
-        },
-
-        setupResizeHandler: function() {
-            let resizeTimeout;
-            
-            $(window).on('resize', () => {
-                if (resizeTimeout) {
-                    clearTimeout(resizeTimeout);
-                }
-                
-                resizeTimeout = setTimeout(() => {
-                    this.handleResize();
-                }, 250);
-            });
-        },
-
-        handleResize: function() {
-            this.toggleDropdownPosition();
-            
-            if ($(SELECTORS.shareModal).hasClass('show')) {
-                // Modal repositioning logic if needed
-            }
         }
     };
 
@@ -735,7 +687,7 @@ const { __, _x, _n, sprintf } = wp.i18n;
         try {
             ActivityShare.init();
         } catch (error) {
-            console.error(__('Failed to initialize BuddyPress Activity Share:', 'buddypress-share'), error);
+            console.error('Failed to initialize BuddyPress Activity Share:', error);
         }
     });
 
