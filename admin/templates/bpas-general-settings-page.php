@@ -3,6 +3,7 @@
  * General Settings Template for BuddyPress Activity Share Pro
  *
  * This template displays the general settings page for the plugin.
+ * Completely independent - no wbcom dependencies.
  * Optimized for better performance and security on large sites.
  *
  * @link       http://wbcomdesigns.com
@@ -55,8 +56,8 @@ $available_social_services = array(
 		'label' => __( 'Pinterest', 'buddypress-share' ),
 		'icon'  => 'icon_Pinterest',
 	),
-	'Linkedin'  => array(
-		'label' => __( 'Linkedin', 'buddypress-share' ),
+	'LinkedIn'  => array(
+		'label' => __( 'LinkedIn', 'buddypress-share' ),
 		'icon'  => 'icon_LinkedIn',
 	),
 	'Reddit'    => array(
@@ -112,341 +113,216 @@ function render_social_service_items( $services_config, $enabled_services, $list
 	}
 }
 
+/**
+ * Helper function to generate social services string for hidden field.
+ *
+ * @since 1.5.1
+ * @param array $social_services Enabled social services.
+ * @return string Comma-separated string of service keys.
+ */
+function bp_share_get_social_services_string( $social_services ) {
+	if ( empty( $social_services ) || ! is_array( $social_services ) ) {
+		return '';
+	}
+	
+	$service_keys = array_keys( $social_services );
+	return implode( ',', array_map( 'esc_attr', $service_keys ) );
+}
+
 ?>
-<div class="wbcom-tab-content">
-	<div class="wbcom-wrapper-admin">
-		<div class="wbcom-admin-title-section wbcom-flex">
-			<h3 class="wbcom-welcome-title"><?php esc_html_e( 'General Settings', 'buddypress-share' ); ?></h3>
-			<a href="<?php echo esc_url( 'https://docs.wbcomdesigns.com/doc_category/buddypress-activity-social-share/' ); ?>" class="wbcom-docslink" target="_blank"><?php esc_html_e( 'Documentation', 'buddypress-share' ); ?></a>
+<div class="bp-share-admin-content">
+	<div class="bp-share-form-wrapper">
+		
+		<!-- Success Message -->
+		<div class="bp-share-notice notice-success" style="<?php echo esc_attr( $bp_share_settings_save_notice ); ?>">
+			<p><strong><?php esc_html_e( 'Settings saved successfully.', 'buddypress-share' ); ?></strong></p>
+			<button type="button" class="notice-dismiss">
+				<span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'buddypress-share' ); ?></span>
+			</button>
 		</div>
-
-		<div class="wbcom-admin-option-wrap wbcom-admin-option-wrap-view">
+		
+		<!-- Error Message Container -->
+		<div class="option-not-save-message"></div>
+		
+		<!-- Settings Form -->
+		<form method="post" action="options.php" id="bp_share_form">
+			<?php 
+			// Security nonces
+			settings_fields( 'bp_share_general_settings' );
+			do_settings_sections( 'bp_share_general_settings' );
+			?>
 			
-			<!-- Success Message -->
-			<div class="bpas-save-option-message notice notice-success is-dismissible" style="<?php echo esc_attr( $bp_share_settings_save_notice ); ?>">
-				<p><strong><?php esc_html_e( 'Settings saved successfully.', 'buddypress-share' ); ?></strong></p>
-				<button type="button" class="notice-dismiss">
-					<span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice.', 'buddypress-share' ); ?></span>
-				</button>
-			</div>
-			
-			<!-- Error Message Container -->
-			<div class="option-not-save-message"></div>
-			
-			<!-- Settings Form -->
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" id="bp_share_form">
-				<?php 
-				// Security nonces
-				wp_nonce_field( 'bpas_general_settings_save', 'bpas_general_nonce' );
-				?>
-				<input type="hidden" name="action" value="bpas_save_general_settings" />
-				
-				<div class="form-table buddypress-profanity-admin-table">
-					
-					<!-- Enable Social Share Setting -->
-					<div class="wbcom-settings-section-wrap">
-						<div class="wbcom-settings-section-options-heading">
-							<label for="bp_share_services_enable">
-								<strong><?php esc_html_e( 'Enable Social Share', 'buddypress-share' ); ?></strong>
-							</label>
-							<p class="description"><?php esc_html_e( 'Enable this option to show share button in activity page.', 'buddypress-share' ); ?></p>
-						</div>
-						<div id="bp_share_chb" class="wbcom-settings-section-options">
-							<label class="switch">
-								<input type="checkbox" 
-								       name="bp_share_services_enable" 
-								       id="bp_share_services_enable" 
-								       value="1" 
-								       <?php checked( '1', $plugin_settings['services_enable'] ); ?> />
-								<span class="slider round"></span>
-							</label>
-						</div>
-					</div>
-
-					<!-- Social Share in Logout Mode Setting -->
-					<div id="social_share_logout_wrap" class="wbcom-settings-section-wrap" style="<?php echo $plugin_settings['services_enable'] ? '' : 'display:none;'; ?>">
-						<div class="wbcom-settings-section-options-heading">
-							<label for="bp_share_services_logout_enable">
-								<strong><?php esc_html_e( 'Social Share in Logout Mode', 'buddypress-share' ); ?></strong>
-							</label>
-							<p class="description"><?php esc_html_e( 'Enable this option to display social share icons when the user is logged out.', 'buddypress-share' ); ?></p>
-						</div>
-						<div class="wbcom-settings-section-options">
-							<label class="switch">
-								<input type="checkbox" 
-								       name="bp_share_services_logout_enable" 
-								       id="bp_share_services_logout_enable" 
-								       value="1" 
-								       <?php checked( '1', $plugin_settings['services_logout_enable'] ); ?> />
-								<span class="slider round"></span>
-							</label>
-						</div>
-					</div>
-				</div>
-
-				<!-- Enable Sharing Sites Section -->
-				<div class="wbcom-settings-section-wrap">
-					<div class="wbcom-settings-section-options-heading">
-						<label for="wbcom-social-share">
-							<strong><?php esc_html_e( 'Enable Sharing Sites', 'buddypress-share' ); ?></strong>
-						</label>
-						<p class="description"><?php esc_html_e( 'Drag and drop social services between the disabled and enabled lists to configure which services are available for sharing.', 'buddypress-share' ); ?></p>
-					</div>
-
-					<div class="wbcom-settings-section-options">
-						<section class="social_icon_section">
-							
-							<!-- Disabled Services List -->
-							<ul id="drag_social_icon" class="social-services-list disabled-services">
-								<h3><?php esc_html_e( 'Disabled Services', 'buddypress-share' ); ?></h3>
-								<li class="list-info">
-									<small><?php esc_html_e( 'Drag services from here to enable them', 'buddypress-share' ); ?></small>
-								</li>
-								<?php render_social_service_items( $available_social_services, $plugin_settings['social_services'], 'disabled' ); ?>
-								
-								<!-- Show message if no disabled services -->
-								<?php if ( count( array_diff_key( $available_social_services, $plugin_settings['social_services'] ) ) === 0 ) : ?>
-									<li class="no-services-message">
-										<em><?php esc_html_e( 'All services are enabled', 'buddypress-share' ); ?></em>
-									</li>
-								<?php endif; ?>
-							</ul>
-							
-							<!-- Enabled Services List -->
-							<ul id="drag_icon_ul" class="social-services-list enabled-services">
-								<h3><?php esc_html_e( 'Enabled Services', 'buddypress-share' ); ?></h3>
-								<li class="list-info">
-									<small><?php esc_html_e( 'Drag services from here to disable them', 'buddypress-share' ); ?></small>
-								</li>
-								<?php render_social_service_items( $available_social_services, $plugin_settings['social_services'], 'enabled' ); ?>
-								
-								<!-- Show message if no enabled services -->
-								<?php if ( empty( $plugin_settings['social_services'] ) ) : ?>
-									<li class="no-services-message">
-										<em><?php esc_html_e( 'No services enabled', 'buddypress-share' ); ?></em>
-									</li>
-								<?php endif; ?>
-							</ul>
-						</section>
-						
-						<!-- Drag and Drop Instructions -->
-						<div class="drag-drop-instructions">
-							<p class="description">
-								<strong><?php esc_html_e( 'Instructions:', 'buddypress-share' ); ?></strong>
-								<?php esc_html_e( 'Drag social service icons between the lists to enable or disable them. Changes are saved automatically when you submit the form.', 'buddypress-share' ); ?>
-							</p>
-						</div>
-					</div>
-				</div>
-				
-				<!-- Popup Window Setting -->
-				<div class="wbcom-settings-section-wrap">
-					<div class="wbcom-settings-section-options-heading">
-						<label for="bpas-popup-share">
-							<strong><?php esc_html_e( 'Open as Popup Window', 'buddypress-share' ); ?></strong>
-						</label>
-						<p class="description"><?php esc_html_e( 'Default is set to open windows in a popup. If this option is disabled, services will open in a new tab instead of a popup.', 'buddypress-share' ); ?></p>
-					</div>
-
-					<div class="wbcom-settings-section-options">
-						<label class="switch">
-							<input type="checkbox" 
-							       name="bp_share_services_open" 
-							       id="bpas-popup-share" 
-							       value="on"
-							       <?php checked( 'on', $plugin_settings['extra_options']['bp_share_services_open'] ?? '' ); ?> />
-							<span class="slider round"></span>
-						</label>
-					</div>
-				</div>
-
-				<!-- Hidden Fields for Social Services -->
-				<input type="hidden" name="page_options" value="<?php echo esc_attr( $this->get_social_services_string( $plugin_settings['social_services'] ) ); ?>" />
-				
-				<!-- Submit Button -->
-				<div class="wbcom-settings-section-wrap">
-					<p class="submit">
-						<input type="submit" 
-						       name="bpas_submit_general_options" 
-						       class="button button-primary bp_share_option_save" 
-						       value="<?php esc_attr_e( 'Save Changes', 'buddypress-share' ); ?>" />
-						<span class="spinner" style="float: none; margin: 0 10px;"></span>
+			<!-- Enable Social Share Setting -->
+			<div class="bp-share-form-section">
+				<div class="bp-share-section-header">
+					<h3 class="bp-share-section-title">
+						<?php esc_html_e( 'Enable Social Share', 'buddypress-share' ); ?>
+					</h3>
+					<p class="bp-share-section-description">
+						<?php esc_html_e( 'Enable this option to show share button in activity page.', 'buddypress-share' ); ?>
 					</p>
 				</div>
-			</form>
+				<div class="bp-share-form-field">
+					<label class="bp-share-toggle">
+						<input type="checkbox" 
+						       name="bp_share_services_enable" 
+						       id="bp_share_services_enable" 
+						       value="1" 
+						       <?php checked( '1', $plugin_settings['services_enable'] ); ?> />
+						<span class="bp-share-slider"></span>
+					</label>
+					<span class="bp-share-toggle-label">
+						<?php esc_html_e( 'Enable social sharing', 'buddypress-share' ); ?>
+					</span>
+				</div>
+			</div>
 
-			<!-- Additional Settings Hook -->
-			<?php 
-			/**
-			 * Action hook to add additional settings sections.
-			 *
-			 * @since 1.0.0
-			 */
-			do_action( 'bp_share_add_services_options' ); 
-			?>
-		</div>
+			<!-- Social Share in Logout Mode Setting -->
+			<div id="social_share_logout_wrap" class="bp-share-form-section" style="<?php echo $plugin_settings['services_enable'] ? '' : 'display:none;'; ?>">
+				<div class="bp-share-section-header">
+					<h3 class="bp-share-section-title">
+						<?php esc_html_e( 'Social Share in Logout Mode', 'buddypress-share' ); ?>
+					</h3>
+					<p class="bp-share-section-description">
+						<?php esc_html_e( 'Enable this option to display social share icons when the user is logged out.', 'buddypress-share' ); ?>
+					</p>
+				</div>
+				<div class="bp-share-form-field">
+					<label class="bp-share-toggle">
+						<input type="checkbox" 
+						       name="bp_share_services_logout_enable" 
+						       id="bp_share_services_logout_enable" 
+						       value="1" 
+						       <?php checked( '1', $plugin_settings['services_logout_enable'] ); ?> />
+						<span class="bp-share-slider"></span>
+					</label>
+					<span class="bp-share-toggle-label">
+						<?php esc_html_e( 'Allow sharing when logged out', 'buddypress-share' ); ?>
+					</span>
+				</div>
+			</div>
+
+			<!-- Enable Sharing Sites Section -->
+			<div class="bp-share-form-section">
+				<div class="bp-share-section-header">
+					<h3 class="bp-share-section-title">
+						<?php esc_html_e( 'Configure Social Services', 'buddypress-share' ); ?>
+					</h3>
+					<p class="bp-share-section-description">
+						<?php esc_html_e( 'Drag and drop social services between the disabled and enabled lists to configure which services are available for sharing.', 'buddypress-share' ); ?>
+					</p>
+				</div>
+
+				<div class="bp-share-drag-drop-container">
+					<section class="social_icon_section">
+						
+						<!-- Disabled Services List -->
+						<ul id="drag_social_icon" class="social-services-list disabled-services">
+							<h3><?php esc_html_e( 'Available Services', 'buddypress-share' ); ?></h3>
+							<li class="list-info">
+								<small><?php esc_html_e( 'Drag services from here to enable them', 'buddypress-share' ); ?></small>
+							</li>
+							<?php render_social_service_items( $available_social_services, $plugin_settings['social_services'], 'disabled' ); ?>
+							
+							<!-- Show message if no disabled services -->
+							<?php if ( count( array_diff_key( $available_social_services, $plugin_settings['social_services'] ) ) === 0 ) : ?>
+								<li class="no-services-message">
+									<em><?php esc_html_e( 'All services are enabled', 'buddypress-share' ); ?></em>
+								</li>
+							<?php endif; ?>
+						</ul>
+						
+						<!-- Enabled Services List -->
+						<ul id="drag_icon_ul" class="social-services-list enabled-services">
+							<h3><?php esc_html_e( 'Enabled Services', 'buddypress-share' ); ?></h3>
+							<li class="list-info">
+								<small><?php esc_html_e( 'Drag services from here to disable them', 'buddypress-share' ); ?></small>
+							</li>
+							<?php render_social_service_items( $available_social_services, $plugin_settings['social_services'], 'enabled' ); ?>
+							
+							<!-- Show message if no enabled services -->
+							<?php if ( empty( $plugin_settings['social_services'] ) ) : ?>
+								<li class="no-services-message">
+									<em><?php esc_html_e( 'No services enabled', 'buddypress-share' ); ?></em>
+								</li>
+							<?php endif; ?>
+						</ul>
+					</section>
+					
+					<!-- Drag and Drop Instructions -->
+					<div class="drag-drop-instructions">
+						<p class="description">
+							<strong><?php esc_html_e( 'Instructions:', 'buddypress-share' ); ?></strong>
+							<?php esc_html_e( 'Drag social service icons between the lists to enable or disable them. Changes are saved automatically when you submit the form.', 'buddypress-share' ); ?>
+						</p>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Popup Window Setting -->
+			<div class="bp-share-form-section">
+				<div class="bp-share-section-header">
+					<h3 class="bp-share-section-title">
+						<?php esc_html_e( 'Sharing Behavior', 'buddypress-share' ); ?>
+					</h3>
+					<p class="bp-share-section-description">
+						<?php esc_html_e( 'Control how social sharing links behave when clicked.', 'buddypress-share' ); ?>
+					</p>
+				</div>
+				<div class="bp-share-form-field">
+					<label class="bp-share-toggle">
+						<input type="checkbox" 
+						       name="bp_share_services_open" 
+						       id="bpas-popup-share" 
+						       value="on"
+						       <?php checked( 'on', $plugin_settings['extra_options']['bp_share_services_open'] ?? '' ); ?> />
+						<span class="bp-share-slider"></span>
+					</label>
+					<span class="bp-share-toggle-label">
+						<?php esc_html_e( 'Open sharing links in popup windows', 'buddypress-share' ); ?>
+					</span>
+					<p class="bp-share-field-help">
+						<?php esc_html_e( 'When enabled, sharing links will open in popup windows. When disabled, they will open in new tabs.', 'buddypress-share' ); ?>
+					</p>
+				</div>
+			</div>
+
+			<!-- Hidden Fields for Social Services -->
+			<input type="hidden" name="page_options" value="<?php echo esc_attr( bp_share_get_social_services_string( $plugin_settings['social_services'] ) ); ?>" />
+			
+			<!-- Submit Button -->
+			<div class="bp-share-submit-section">
+				<button type="submit" 
+				        name="bpas_submit_general_options" 
+				        class="bp-share-submit-button">
+					<span class="dashicons dashicons-saved"></span>
+					<?php esc_html_e( 'Save Settings', 'buddypress-share' ); ?>
+				</button>
+				<span class="bp-share-spinner" style="float: none; margin: 0 10px;"></span>
+				
+				<div class="bp-share-save-info">
+					<p class="description">
+						<?php esc_html_e( 'Settings will be applied immediately after saving.', 'buddypress-share' ); ?>
+					</p>
+				</div>
+			</div>
+		</form>
+
+		<!-- Additional Settings Hook -->
+		<?php 
+		/**
+		 * Action hook to add additional settings sections.
+		 *
+		 * @since 1.0.0
+		 */
+		do_action( 'bp_share_add_services_options' ); 
+		?>
 	</div>
 </div>
 
-<style>
-/* Optimized CSS for better UX */
-.social_icon_section {
-	display: flex;
-	gap: 20px;
-	margin: 20px 0;
-	min-height: 200px;
-}
-
-.social-services-list {
-	flex: 1;
-	border: 2px dashed #ddd;
-	border-radius: 8px;
-	padding: 15px;
-	background: #fafafa;
-	min-height: 180px;
-	transition: all 0.3s ease;
-}
-
-.social-services-list.ui-droppable-hover {
-	border-color: #0073aa;
-	background: #f0f8ff;
-}
-
-.social-services-list h3 {
-	margin: 0 0 10px 0;
-	padding: 0;
-	font-size: 14px;
-	font-weight: 600;
-	color: #333;
-	border-bottom: 1px solid #ddd;
-	padding-bottom: 8px;
-}
-
-.social-services-list .list-info {
-	list-style: none;
-	margin-bottom: 10px;
-	opacity: 0.7;
-}
-
-.social-services-list .socialicon {
-	display: inline-block;
-	margin: 5px;
-	padding: 8px 12px;
-	background: #fff;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	cursor: move;
-	transition: all 0.2s ease;
-	font-size: 12px;
-}
-
-.social-services-list .socialicon:hover {
-	background: #0073aa;
-	color: #fff;
-	transform: translateY(-2px);
-	box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-}
-
-.social-services-list .socialicon.ui-draggable-dragging {
-	opacity: 0.7;
-	transform: rotate(5deg);
-	z-index: 1000;
-}
-
-.no-services-message {
-	list-style: none;
-	text-align: center;
-	padding: 20px;
-	color: #666;
-}
-
-.drag-drop-instructions {
-	margin-top: 15px;
-	padding: 15px;
-	background: #fff;
-	border-left: 4px solid #0073aa;
-	border-radius: 4px;
-}
-
-/* Switch styling for better UX */
-.switch {
-	position: relative;
-	display: inline-block;
-	width: 60px;
-	height: 34px;
-}
-
-.switch input {
-	opacity: 0;
-	width: 0;
-	height: 0;
-}
-
-.slider {
-	position: absolute;
-	cursor: pointer;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #ccc;
-	transition: .4s;
-}
-
-.slider:before {
-	position: absolute;
-	content: "";
-	height: 26px;
-	width: 26px;
-	left: 4px;
-	bottom: 4px;
-	background-color: white;
-	transition: .4s;
-}
-
-input:checked + .slider {
-	background-color: #0073aa;
-}
-
-input:checked + .slider:before {
-	transform: translateX(26px);
-}
-
-.slider.round {
-	border-radius: 34px;
-}
-
-.slider.round:before {
-	border-radius: 50%;
-}
-
-/* Loading state */
-.bp_share_option_save:disabled {
-	opacity: 0.6;
-	cursor: not-allowed;
-}
-
-.spinner.is-active {
-	visibility: visible;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-	.social_icon_section {
-		flex-direction: column;
-		gap: 15px;
-	}
-	
-	.wbcom-admin-title-section.wbcom-flex {
-		flex-direction: column;
-		gap: 10px;
-	}
-}
-</style>
-
 <script>
 /**
- * Enhanced JavaScript for better UX
+ * Enhanced JavaScript for better UX - No external dependencies
  */
 jQuery(document).ready(function($) {
 	
@@ -468,8 +344,8 @@ jQuery(document).ready(function($) {
 	 * Form submission with loading state
 	 */
 	$('#bp_share_form').on('submit', function() {
-		const $submitBtn = $('.bp_share_option_save');
-		const $spinner = $('.spinner');
+		const $submitBtn = $('.bp-share-submit-button');
+		const $spinner = $('.bp-share-spinner');
 		
 		$submitBtn.prop('disabled', true);
 		$spinner.addClass('is-active');
@@ -485,7 +361,7 @@ jQuery(document).ready(function($) {
 	 * Enhanced notice dismissal
 	 */
 	$(document).on('click', '.notice-dismiss', function() {
-		$(this).closest('.notice').fadeOut(300, function() {
+		$(this).closest('.bp-share-notice').fadeOut(300, function() {
 			$(this).remove();
 		});
 	});
@@ -494,58 +370,156 @@ jQuery(document).ready(function($) {
 	 * Auto-hide success messages after 5 seconds
 	 */
 	setTimeout(function() {
-		$('.bpas-save-option-message:visible').fadeOut(500);
+		$('.bp-share-notice:visible').fadeOut(500);
 	}, 5000);
 
 	/**
 	 * Accessibility improvements
 	 */
-	// Add ARIA labels to switches
-	$('.switch input').each(function() {
-		const label = $(this).closest('.wbcom-settings-section-wrap').find('label strong').first().text();
+	// Add ARIA labels to toggles
+	$('.bp-share-toggle input').each(function() {
+		const label = $(this).closest('.bp-share-form-section').find('.bp-share-section-title').text();
 		$(this).attr('aria-label', label);
 	});
 
 	// Add focus styles for keyboard navigation
-	$('.switch input').on('focus', function() {
-		$(this).next('.slider').addClass('focused');
+	$('.bp-share-toggle input').on('focus', function() {
+		$(this).next('.bp-share-slider').addClass('focused');
 	}).on('blur', function() {
-		$(this).next('.slider').removeClass('focused');
+		$(this).next('.bp-share-slider').removeClass('focused');
 	});
-});
-</script>
 
-<?php
-/**
- * Helper method to generate social services string for hidden field.
- * This should be added to the admin class, but included here for completeness.
- *
- * @since 1.5.1
- * @param array $social_services Enabled social services.
- * @return string Comma-separated string of service keys.
- */
-if ( ! function_exists( 'get_social_services_string' ) ) {
-	function get_social_services_string( $social_services ) {
-		if ( empty( $social_services ) || ! is_array( $social_services ) ) {
-			return '';
-		}
-		
-		$service_keys = array_keys( $social_services );
-		return implode( ',', array_map( 'esc_attr', $service_keys ) );
+	/**
+	 * Drag and drop functionality enhancement
+	 */
+	// Add visual feedback for drag operations
+	$('.social-services-list').on('dragenter', function() {
+		$(this).addClass('drag-active');
+	}).on('dragleave', function() {
+		$(this).removeClass('drag-active');
+	});
+
+	// Update hidden field when services change
+	function updateHiddenField() {
+		const enabledServices = [];
+		$('#drag_icon_ul .socialicon').each(function() {
+			const serviceName = $(this).text().trim();
+			enabledServices.push(serviceName);
+		});
+		$('input[name="page_options"]').val(enabledServices.join(','));
 	}
-}
 
-// Use the function for the hidden field
-if ( ! empty( $plugin_settings['social_services'] ) ) {
-	$social_key_string = get_social_services_string( $plugin_settings['social_services'] );
-} else {
-	$social_key_string = '';
-}
-?>
+	// Monitor changes to enabled services list
+	if (window.MutationObserver) {
+		const observer = new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				if (mutation.type === 'childList') {
+					updateHiddenField();
+				}
+			});
+		});
 
-<!-- Update the hidden field value -->
-<script>
-jQuery(document).ready(function($) {
-	$('input[name="page_options"]').val('<?php echo esc_js( $social_key_string ); ?>');
+		if (document.getElementById('drag_icon_ul')) {
+			observer.observe(document.getElementById('drag_icon_ul'), {
+				childList: true,
+				subtree: true
+			});
+		}
+	}
+
+	/**
+	 * Initialize drag and drop functionality if jQuery UI is available
+	 */
+	if ($.fn.draggable && $.fn.droppable) {
+		// Setup drag and drop as per existing functionality
+		initializeDragDrop();
+	}
+
+	function initializeDragDrop() {
+		// Draggable items
+		$('.social-services-list .socialicon').draggable({
+			revert: 'invalid',
+			helper: 'clone',
+			start: function() {
+				$(this).css('opacity', '0.5');
+			},
+			stop: function() {
+				$(this).css('opacity', '1');
+			}
+		});
+
+		// Droppable areas
+		$('#drag_icon_ul').droppable({
+			accept: '#drag_social_icon .socialicon',
+			drop: function(event, ui) {
+				const $item = ui.draggable;
+				const serviceName = $item.text().trim();
+				
+				// Move item to enabled list
+				$item.appendTo($(this));
+				
+				// Update hidden field
+				updateHiddenField();
+				
+				// AJAX call to save state
+				saveServiceState(serviceName, 'enable');
+			}
+		});
+
+		$('#drag_social_icon').droppable({
+			accept: '#drag_icon_ul .socialicon',
+			drop: function(event, ui) {
+				const $item = ui.draggable;
+				const serviceName = $item.text().trim();
+				
+				// Move item to disabled list
+				$item.appendTo($(this));
+				
+				// Update hidden field
+				updateHiddenField();
+				
+				// AJAX call to save state
+				saveServiceState(serviceName, 'disable');
+			}
+		});
+	}
+
+	function saveServiceState(serviceName, action) {
+		$.ajax({
+			url: ajaxurl,
+			type: 'POST',
+			data: {
+				action: action === 'enable' ? 'wss_social_icons' : 'wss_social_remove_icons',
+				term_name: serviceName,
+				icon_name: serviceName,
+				nonce: $('#_wpnonce').val()
+			},
+			success: function(response) {
+				if (response.success) {
+					// Visual feedback
+					showNotice('Service updated successfully', 'success');
+				} else {
+					showNotice('Failed to update service', 'error');
+				}
+			},
+			error: function() {
+				showNotice('Network error occurred', 'error');
+			}
+		});
+	}
+
+	function showNotice(message, type) {
+		const $notice = $('<div class="bp-share-notice notice-' + type + '">')
+			.html('<p>' + message + '</p>')
+			.hide()
+			.prependTo('.bp-share-form-wrapper')
+			.fadeIn();
+		
+		setTimeout(function() {
+			$notice.fadeOut(function() {
+				$(this).remove();
+			});
+		}, 3000);
+	}
 });
 </script>

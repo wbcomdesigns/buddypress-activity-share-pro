@@ -1,8 +1,8 @@
 /**
- * BuddyPress Activity Share Pro - Admin Styles
+ * BuddyPress Activity Share Pro - Enhanced Admin Styles
  * 
- * Complete CSS file including all existing styles plus new optimizations
- * Comprehensive styling for all admin interface components
+ * Complete CSS file for the independent admin interface
+ * Modern, clean design without external dependencies
  * 
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/admin/css
@@ -10,70 +10,122 @@
  */
 
 /* ==========================================================================
-   Base Admin Styles (Existing)
+   Admin Header Styles
    ========================================================================== */
 
-.wbcom-bb-plugins-offer-wrapper {
-    background: #fff;
-    margin: 20px 0;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+.bp-share-admin-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    padding: 2rem 0;
+    margin: -10px -20px 20px -20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-#wb_admin_logo {
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
+.bp-share-header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.wbcom-wrap {
-    background: #f1f1f1;
-    min-height: 100vh;
-    padding: 20px 0;
+.bp-share-plugin-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-.bpss-header {
-    background: #fff;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+.bp-share-plugin-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.wbcom_admin_header-wrapper {
-    padding: 20px 30px;
-    border-bottom: 1px solid #eee;
+.bp-share-plugin-icon .dashicons {
+    font-size: 32px;
+    color: #fff;
 }
 
-#wb_admin_plugin_name {
-    font-size: 24px;
+.bp-share-plugin-title {
+    margin: 0;
+    font-size: 28px;
     font-weight: 600;
-    color: #333;
-    margin-bottom: 10px;
+    color: #fff;
+    line-height: 1.2;
 }
 
-#wb_admin_plugin_name span {
+.bp-share-version {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 20px;
     font-size: 14px;
-    color: #666;
-    font-weight: normal;
-    background: #f0f0f0;
-    padding: 4px 8px;
-    border-radius: 4px;
+    font-weight: 500;
     margin-left: 10px;
 }
 
-.wbcom-admin-settings-page {
+.bp-share-plugin-description {
+    margin: 8px 0 0 0;
+    font-size: 16px;
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+.bp-share-header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.bp-share-header-actions .button {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bp-share-header-actions .button:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.5);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.bp-share-header-actions .dashicons {
+    font-size: 16px;
+}
+
+/* ==========================================================================
+   Admin Content Container
+   ========================================================================== */
+
+.bp-share-admin-content {
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     overflow: hidden;
 }
 
 /* ==========================================================================
-   Navigation Tabs (Existing + Enhanced)
+   Tab Navigation Styles
    ========================================================================== */
 
-.wbcom-tabs-section {
-    border-bottom: 1px solid #ccd0d4;
+.bp-share-tabs-section {
+    border-bottom: 1px solid #e1e5e9;
     background: #fff;
 }
 
@@ -84,7 +136,7 @@
     border-bottom: none;
 }
 
-.nav-tab-wrapper ul {
+.bp-share-nav-tabs {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -92,37 +144,37 @@
     flex-wrap: wrap;
 }
 
-.nav-tab-wrapper li {
+.bp-share-nav-tabs li {
     margin: 0;
-    border-right: 1px solid #ccd0d4;
+    border-right: 1px solid #e1e5e9;
 }
 
-.nav-tab-wrapper li:last-child {
+.bp-share-nav-tabs li:last-child {
     border-right: none;
 }
 
 .nav-tab {
     display: block;
-    padding: 15px 20px;
+    padding: 18px 24px;
     text-decoration: none;
     color: #555;
-    background: #f9f9f9;
+    background: #f8f9fa;
     border: none;
     border-bottom: 3px solid transparent;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     font-weight: 500;
+    position: relative;
 }
 
 .nav-tab:hover {
-    background: #e9e9e9;
+    background: #e9ecef;
     color: #333;
 }
 
 .nav-tab.nav-tab-active {
     background: #fff;
-    color: #0073aa;
-    border-bottom-color: #0073aa;
-    position: relative;
+    color: #667eea;
+    border-bottom-color: #667eea;
 }
 
 .nav-tab.nav-tab-active::after {
@@ -136,284 +188,294 @@
 }
 
 /* Responsive Navigation */
-.wb-responsive-menu {
+.bp-share-responsive-menu {
     display: none;
     padding: 15px 20px;
-    background: #f9f9f9;
-    border-bottom: 1px solid #ccd0d4;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e1e5e9;
     cursor: pointer;
+    align-items: center;
+    gap: 10px;
 }
 
-.wb-toggle-btn {
+.bp-share-toggle-btn {
     display: none;
 }
 
-.wb-toggle-icon {
+.bp-share-toggle-icon {
     display: flex;
     align-items: center;
     font-weight: 600;
     color: #333;
+    cursor: pointer;
 }
 
-.wb-icon-bars::before {
-    content: "☰";
+.bp-share-icon-bars {
     margin-right: 10px;
     font-size: 16px;
 }
 
 @media (max-width: 768px) {
-    .wb-responsive-menu {
-        display: block;
+    .bp-share-responsive-menu {
+        display: flex;
     }
     
-    .nav-tab-wrapper ul {
+    .bp-share-nav-tabs {
         display: none;
         flex-direction: column;
         width: 100%;
     }
     
-    .wb-toggle-btn:checked + .wb-toggle-icon + ul {
+    .bp-share-toggle-btn:checked ~ .bp-share-nav-tabs {
         display: flex;
     }
     
-    .nav-tab-wrapper li {
+    .bp-share-nav-tabs li {
         border-right: none;
-        border-bottom: 1px solid #ccd0d4;
+        border-bottom: 1px solid #e1e5e9;
     }
     
     .nav-tab {
-        padding: 12px 20px;
+        padding: 15px 20px;
     }
-}
-
-/* ==========================================================================
-   Tab Content Area
-   ========================================================================== */
-
-.wbcom-tab-content {
-    background: #fff;
-    padding: 30px;
-    min-height: 500px;
-}
-
-.wbcom-wrapper-admin {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.wbcom-admin-title-section {
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #f0f0f0;
-}
-
-.wbcom-admin-title-section.wbcom-flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.wbcom-welcome-title {
-    margin: 0;
-    font-size: 28px;
-    font-weight: 600;
-    color: #333;
-    line-height: 1.2;
-}
-
-.wbcom-docslink {
-    background: linear-gradient(135deg, #0073aa 0%, #005a87 100%);
-    color: #fff !important;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0,115,170,0.3);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.wbcom-docslink:hover {
-    background: linear-gradient(135deg, #005a87 0%, #004a73 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,115,170,0.4);
-}
-
-.wbcom-docslink::before {
-    content: "📚";
-    font-size: 16px;
+    
+    .bp-share-header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .bp-share-plugin-info {
+        flex-direction: column;
+        text-align: center;
+    }
 }
 
 /* ==========================================================================
    Welcome Page Styles
    ========================================================================== */
 
-.wbcom-welcome-main-wrapper {
-    padding: 40px 0;
+.bp-share-welcome-content {
+    padding: 40px;
 }
 
-.wbcom-welcome-head {
+.bp-share-welcome-header {
     text-align: center;
     margin-bottom: 50px;
 }
 
-.wbcom-welcome-description {
-    font-size: 18px;
-    line-height: 1.6;
-    color: #555;
-    max-width: 800px;
-    margin: 0 auto 40px;
-}
-
-.wbcom-welcome-content {
-    margin-top: 40px;
-}
-
-.wbcom-welcome-support-info h3 {
-    font-size: 24px;
+.bp-share-welcome-header h2 {
+    font-size: 32px;
     color: #333;
     margin-bottom: 20px;
-    text-align: center;
+    font-weight: 600;
 }
 
-.wbcom-welcome-support-info > p {
-    font-size: 16px;
+.bp-share-welcome-description {
+    font-size: 18px;
+    line-height: 1.6;
     color: #666;
-    text-align: center;
-    margin-bottom: 40px;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.wbcom-support-info-wrap {
+.bp-share-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin: 50px 0;
+}
+
+.bp-share-feature-card {
+    background: #fff;
+    border: 1px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.bp-share-feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-color: #667eea;
+}
+
+.bp-share-feature-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.bp-share-feature-icon .dashicons {
+    font-size: 32px;
+    color: #fff;
+}
+
+.bp-share-feature-card h3 {
+    font-size: 20px;
+    color: #333;
+    margin: 0 0 15px 0;
+    font-weight: 600;
+}
+
+.bp-share-feature-card p {
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.bp-share-quick-actions {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    margin: 50px 0;
+}
+
+.bp-share-quick-actions h3 {
+    font-size: 24px;
+    color: #333;
+    margin: 0 0 30px 0;
+    font-weight: 600;
+}
+
+.bp-share-action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.bp-share-action-buttons .button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.bp-share-action-buttons .button-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    color: #fff;
+}
+
+.bp-share-action-buttons .button-primary:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.bp-share-action-buttons .button-secondary {
+    background: #fff;
+    border: 2px solid #e1e5e9;
+    color: #333;
+}
+
+.bp-share-action-buttons .button-secondary:hover {
+    border-color: #667eea;
+    color: #667eea;
+    transform: translateY(-2px);
+}
+
+.bp-share-support-section {
+    margin-top: 50px;
+}
+
+.bp-share-support-section h3 {
+    font-size: 24px;
+    color: #333;
+    margin: 0 0 30px 0;
+    font-weight: 600;
+    text-align: center;
+}
+
+.bp-share-support-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
-    margin-top: 40px;
 }
 
-.wbcom-support-info-widgets {
+.bp-share-support-item {
     background: #fff;
+    border: 1px solid #e1e5e9;
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.wbcom-support-info-widgets:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-}
-
-.wbcom-support-inner {
     padding: 30px;
     text-align: center;
 }
 
-.wbcom-support-inner h3 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-size: 20px;
+.bp-share-support-item .dashicons {
+    font-size: 48px;
+    color: #667eea;
+    margin-bottom: 20px;
+}
+
+.bp-share-support-item h4 {
+    font-size: 18px;
     color: #333;
-    margin-bottom: 15px;
+    margin: 0 0 15px 0;
+    font-weight: 600;
 }
 
-.wbcom-support-inner h3 .dashicons {
-    font-size: 24px;
-    color: #0073aa;
-}
-
-.wbcom-support-inner p {
+.bp-share-support-item p {
     color: #666;
     line-height: 1.6;
-    margin-bottom: 25px;
+    margin: 0 0 20px 0;
 }
 
-.button-welcome-support {
-    background: linear-gradient(135deg, #0073aa 0%, #005a87 100%);
-    color: #fff !important;
+.bp-share-support-item .button-link {
+    color: #667eea;
     text-decoration: none;
-    padding: 12px 25px;
-    border-radius: 6px;
     font-weight: 500;
     transition: all 0.3s ease;
-    display: inline-block;
-    box-shadow: 0 3px 10px rgba(0,115,170,0.3);
 }
 
-.button-welcome-support:hover {
-    background: linear-gradient(135deg, #005a87 0%, #004a73 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,115,170,0.4);
+.bp-share-support-item .button-link:hover {
+    color: #5a6fd8;
+    text-decoration: underline;
 }
 
 /* ==========================================================================
-   Settings Form Styles
+   Form Styles
    ========================================================================== */
 
-.wbcom-admin-option-wrap {
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
+.bp-share-form-section {
+    padding: 30px 40px;
+    border-bottom: 1px solid #e1e5e9;
 }
 
-.wbcom-admin-option-wrap-view {
-    padding: 0;
-}
-
-.form-table {
-    margin: 0;
-}
-
-.buddypress-profanity-admin-table {
-    margin-bottom: 30px;
-}
-
-.wbcom-settings-section-wrap {
-    margin-bottom: 0;
-    padding: 25px 30px;
-    border-bottom: 1px solid #f0f0f0;
-    background: #fafafa;
-    transition: background-color 0.2s ease;
-}
-
-.wbcom-settings-section-wrap:last-child {
+.bp-share-form-section:last-child {
     border-bottom: none;
 }
 
-.wbcom-settings-section-wrap:hover {
-    background: #f5f5f5;
+.bp-share-section-header {
+    margin-bottom: 25px;
 }
 
-.wbcom-settings-section-options-heading {
-    margin-bottom: 15px;
-}
-
-.wbcom-settings-section-options-heading label {
-    display: block;
-    font-weight: 600;
+.bp-share-section-title {
+    font-size: 18px;
     color: #333;
-    margin-bottom: 8px;
-    font-size: 16px;
+    margin: 0 0 8px 0;
+    font-weight: 600;
 }
 
-.wbcom-settings-section-options-heading .description {
+.bp-share-section-description {
     color: #666;
-    font-style: normal;
     font-size: 14px;
     line-height: 1.5;
-    margin: 8px 0 0 0;
+    margin: 0;
 }
 
-.wbcom-settings-section-options {
+.bp-share-form-field {
     display: flex;
     align-items: center;
     gap: 15px;
@@ -421,7 +483,61 @@
 }
 
 /* ==========================================================================
-   Social Services Drag & Drop Interface (Enhanced)
+   Toggle Switch Styles
+   ========================================================================== */
+
+.bp-share-toggle {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.bp-share-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.bp-share-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.bp-share-slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.bp-share-toggle input:checked + .bp-share-slider {
+    background-color: #667eea;
+}
+
+.bp-share-toggle input:checked + .bp-share-slider:before {
+    transform: translateX(26px);
+}
+
+.bp-share-toggle input:focus + .bp-share-slider {
+    box-shadow: 0 0 1px #667eea;
+}
+
+/* ==========================================================================
+   Social Services Drag & Drop Interface
    ========================================================================== */
 
 .social_icon_section {
@@ -450,7 +566,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, transparent 0%, rgba(0,115,170,0.02) 50%, transparent 100%);
+    background: linear-gradient(45deg, transparent 0%, rgba(102,126,234,0.02) 50%, transparent 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
@@ -461,10 +577,10 @@
 }
 
 .social-services-list.ui-droppable-hover {
-    border-color: #0073aa;
+    border-color: #667eea;
     background: linear-gradient(135deg, #f0f8ff 0%, #e8f4fd 100%);
     transform: scale(1.02);
-    box-shadow: 0 8px 25px rgba(0,115,170,0.2);
+    box-shadow: 0 8px 25px rgba(102,126,234,0.2);
 }
 
 .social-services-list.drag-active {
@@ -473,8 +589,8 @@
 }
 
 @keyframes pulse {
-    0%, 100% { border-color: #0073aa; }
-    50% { border-color: #005a87; }
+    0%, 100% { border-color: #667eea; }
+    50% { border-color: #5a6fd8; }
 }
 
 .social-services-list h3 {
@@ -496,7 +612,7 @@
     transform: translateX(-50%);
     width: 40px;
     height: 2px;
-    background: #0073aa;
+    background: #667eea;
 }
 
 .disabled-services h3 {
@@ -553,11 +669,11 @@
 }
 
 .social-services-list .socialicon:hover {
-    background: #0073aa;
+    background: #667eea;
     color: #fff;
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(0,115,170,0.3);
-    border-color: #0073aa;
+    box-shadow: 0 6px 20px rgba(102,126,234,0.3);
+    border-color: #667eea;
 }
 
 .social-services-list .socialicon.ui-draggable-dragging {
@@ -565,9 +681,9 @@
     transform: rotate(5deg) scale(1.1);
     z-index: 1000;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    background: #0073aa;
+    background: #667eea;
     color: #fff;
-    border-color: #0073aa;
+    border-color: #667eea;
 }
 
 .enabled-services .socialicon {
@@ -605,7 +721,7 @@
     margin-top: 20px;
     padding: 20px;
     background: #fff;
-    border-left: 4px solid #0073aa;
+    border-left: 4px solid #667eea;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
@@ -618,107 +734,48 @@
 }
 
 /* ==========================================================================
-   Toggle Switch Styles
-   ========================================================================== */
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 34px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.switch input:checked + .slider {
-    background-color: #0073aa;
-}
-
-.switch input:checked + .slider:before {
-    transform: translateX(26px);
-}
-
-.switch input:focus + .slider {
-    box-shadow: 0 0 1px #0073aa;
-}
-
-.slider.focused {
-    outline: 2px solid #0073aa;
-    outline-offset: 2px;
-}
-
-/* ==========================================================================
    Form Controls & Buttons
    ========================================================================== */
 
-.submit {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
+.bp-share-submit-section {
+    padding: 30px 40px;
+    background: #f8f9fa;
+    border-top: 1px solid #e1e5e9;
 }
 
-.bp_share_option_save {
-    background: #0073aa;
-    border-color: #0073aa;
+.bp-share-submit-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
     color: #fff;
-    padding: 12px 24px;
-    font-size: 14px;
+    padding: 12px 30px;
+    font-size: 16px;
     font-weight: 600;
-    border-radius: 4px;
-    transition: all 0.2s ease;
+    border-radius: 6px;
+    transition: all 0.3s ease;
     cursor: pointer;
+    border: none;
 }
 
-.bp_share_option_save:hover {
-    background: #005a87;
-    border-color: #005a87;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+.bp-share-submit-button:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-.bp_share_option_save:disabled {
+.bp-share-submit-button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
 
-.spinner {
+.bp-share-spinner {
     float: none !important;
     margin: 0 10px !important;
     visibility: hidden;
 }
 
-.spinner.is-active {
+.bp-share-spinner.is-active {
     visibility: visible;
 }
 
@@ -726,26 +783,27 @@
    Notice Styles
    ========================================================================== */
 
-.bpas-save-option-message {
+.bp-share-notice {
     margin: 20px 0;
-    padding: 15px;
+    padding: 15px 20px;
     border-radius: 6px;
     position: relative;
+    border-left: 4px solid;
 }
 
-.bpas-save-option-message.notice-success {
-    background: #d4edda;
-    border-left: 4px solid #28a745;
+.bp-share-notice.notice-success {
+    background: #d1ecf1;
+    border-left-color: #28a745;
     color: #155724;
 }
 
-.bpas-save-option-message.notice-error {
+.bp-share-notice.notice-error {
     background: #f8d7da;
-    border-left: 4px solid #dc3545;
+    border-left-color: #dc3545;
     color: #721c24;
 }
 
-.bpas-save-option-message .notice-dismiss {
+.bp-share-notice .notice-dismiss {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -754,18 +812,24 @@
     font-size: 16px;
     cursor: pointer;
     color: inherit;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.bp-share-notice .notice-dismiss:hover {
+    background: rgba(0,0,0,0.1);
 }
 
 /* ==========================================================================
    Loading States
    ========================================================================== */
 
-.loading {
+.bp-share-loading {
     position: relative;
     opacity: 0.7;
 }
 
-.loading::after {
+.bp-share-loading::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -774,7 +838,7 @@
     height: 20px;
     margin: -10px 0 0 -10px;
     border: 2px solid #f3f3f3;
-    border-top: 2px solid #0073aa;
+    border-top: 2px solid #667eea;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -790,44 +854,54 @@
 
 @media (max-width: 768px) {
     .social_icon_section {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         gap: 15px;
     }
     
-    .wbcom-admin-title-section.wbcom-flex {
+    .bp-share-welcome-content {
+        padding: 20px;
+    }
+    
+    .bp-share-features-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .bp-share-action-buttons {
         flex-direction: column;
-        gap: 15px;
-        text-align: center;
+        align-items: center;
     }
     
-    .wbcom-settings-section-wrap {
-        padding: 15px;
+    .bp-share-form-section {
+        padding: 20px;
     }
     
-    .switch {
-        width: 50px;
-        height: 28px;
-    }
-    
-    .slider:before {
-        height: 20px;
-        width: 20px;
-        left: 4px;
-        bottom: 4px;
-    }
-    
-    .switch input:checked + .slider:before {
-        transform: translateX(22px);
+    .bp-share-form-field {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
     }
 }
 
 @media (max-width: 480px) {
-    .wbcom-tab-content {
-        padding: 15px;
+    .bp-share-welcome-header h2 {
+        font-size: 24px;
+    }
+    
+    .bp-share-welcome-description {
+        font-size: 16px;
+    }
+    
+    .bp-share-feature-card {
+        padding: 20px;
+    }
+    
+    .bp-share-quick-actions {
+        padding: 20px;
     }
     
     .social-services-list {
-        padding: 10px;
+        padding: 15px;
         min-height: 150px;
     }
     
@@ -843,8 +917,8 @@
    ========================================================================== */
 
 .socialicon:focus,
-.switch input:focus + .slider {
-    outline: 2px solid #0073aa;
+.bp-share-toggle input:focus + .bp-share-slider {
+    outline: 2px solid #667eea;
     outline-offset: 2px;
 }
 
@@ -862,7 +936,7 @@
         border-width: 2px;
     }
     
-    .switch input:checked + .slider {
+    .bp-share-toggle input:checked + .bp-share-slider {
         background-color: #000;
     }
 }
@@ -870,13 +944,279 @@
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
     .socialicon,
-    .slider,
-    .slider:before,
-    .bp_share_option_save {
+    .bp-share-slider,
+    .bp-share-slider:before,
+    .bp-share-submit-button,
+    .bp-share-feature-card {
         transition: none;
     }
     
-    .loading::after {
+    .bp-share-loading::after {
         animation: none;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { border-color: #667eea; }
+    }
+}
+
+/* ==========================================================================
+   Dark Mode Support (Future Enhancement)
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    .bp-share-admin-content {
+        background: #1e1e1e;
+        color: #e0e0e0;
+    }
+    
+    .bp-share-feature-card {
+        background: #2d2d2d;
+        border-color: #404040;
+        color: #e0e0e0;
+    }
+    
+    .bp-share-feature-card h3 {
+        color: #fff;
+    }
+    
+    .social-services-list {
+        background: #2d2d2d;
+        border-color: #404040;
+    }
+    
+    .social-services-list .socialicon {
+        background: #3d3d3d;
+        border-color: #505050;
+        color: #e0e0e0;
+    }
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    .bp-share-admin-header,
+    .bp-share-header-actions,
+    .bp-share-action-buttons,
+    .bp-share-submit-section {
+        display: none;
+    }
+    
+    .bp-share-admin-content {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+    
+    .bp-share-welcome-content {
+        padding: 20px;
+    }
+}
+
+/* ==========================================================================
+   Icon Styles for Social Services
+   ========================================================================== */
+
+.socialicon.icon_Facebook:before {
+    content: "\f09a";
+    font-family: "Font Awesome 5 Brands";
+}
+
+.socialicon.icon_Twitter:before {
+    content: "\f099";
+    font-family: "Font Awesome 5 Brands";
+}
+
+.socialicon.icon_LinkedIn:before {
+    content: "\f0e1";
+    font-family: "Font Awesome 5 Brands";
+}
+
+.socialicon.icon_Pinterest:before {
+    content: "\f0d2";
+    font-family: "Font Awesome 5 Brands";
+}
+
+.socialicon.icon_Reddit:before {
+    content: "\f1a1";
+    font-family: "Font Awesome 5 Brands";
+}
+
+.socialicon.icon_WordPress:before {
+    content: "\f19a";
+    font-family: "Font Awesome 5 Brands";
+}
+
+.socialicon.icon_Pocket:before {
+    content: "\f265";
+    font-family: "Font Awesome 5 Brands";
+}
+
+.socialicon.icon_Telegram:before {
+    content: "\f2c6";
+    font-family: "Font Awesome 5 Brands";
+}
+
+.socialicon.icon_Bluesky:before {
+    content: "\f1d8";
+    font-family: "Font Awesome 5 Free";
+}
+
+.socialicon.icon_Gmail:before,
+.socialicon.icon_E-mail:before {
+    content: "\f0e0";
+    font-family: "Font Awesome 5 Free";
+}
+
+.socialicon.icon_WhatsApp:before,
+.socialicon.icon_Whatsapp:before {
+    content: "\f232";
+    font-family: "Font Awesome 5 Brands";
+}
+
+.socialicon:before {
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+/* ==========================================================================
+   Admin Menu Icon Styles
+   ========================================================================== */
+
+#adminmenu .toplevel_page_buddypress-share .wp-menu-image:before {
+    content: "\f237";
+    font-family: "dashicons";
+}
+
+#adminmenu .toplevel_page_buddypress-share:hover .wp-menu-image:before,
+#adminmenu .toplevel_page_buddypress-share.wp-has-current-submenu .wp-menu-image:before {
+    color: #667eea;
+}
+
+/* ==========================================================================
+   Custom Scrollbar for Drag & Drop Areas
+   ========================================================================== */
+
+.social-services-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.social-services-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.social-services-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.social-services-list::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+.bp-share-text-center {
+    text-align: center;
+}
+
+.bp-share-text-left {
+    text-align: left;
+}
+
+.bp-share-text-right {
+    text-align: right;
+}
+
+.bp-share-margin-top {
+    margin-top: 20px;
+}
+
+.bp-share-margin-bottom {
+    margin-bottom: 20px;
+}
+
+.bp-share-padding {
+    padding: 20px;
+}
+
+.bp-share-hidden {
+    display: none;
+}
+
+.bp-share-visible {
+    display: block;
+}
+
+.bp-share-flex {
+    display: flex;
+}
+
+.bp-share-flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bp-share-flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bp-share-gap-10 {
+    gap: 10px;
+}
+
+.bp-share-gap-20 {
+    gap: 20px;
+}
+
+/* ==========================================================================
+   Animation Classes
+   ========================================================================== */
+
+.bp-share-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.bp-share-slide-up {
+    animation: slideUp 0.3s ease-in-out;
+}
+
+.bp-share-scale-in {
+    animation: scaleIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from { 
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to { 
+        opacity: 1;
+        transform: scale(1);
     }
 }

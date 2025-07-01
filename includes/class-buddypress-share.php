@@ -17,6 +17,7 @@
  *
  * This is used to define internationalization, admin-specific hooks, and
  * public-facing site hooks. Optimized for large sites with improved performance.
+ * Updated to use independent menu system without wbcom wrapper.
  *
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
@@ -68,7 +69,7 @@ class Buddypress_Share {
 	 */
 	public function __construct() {
 		$this->plugin_name = 'buddypress-share';
-		$this->version     = '2.0.0';
+		$this->version     = defined( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION' ) ? BP_ACTIVITY_SHARE_PLUGIN_VERSION : '1.5.1';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -104,11 +105,6 @@ class Buddypress_Share {
 		 * of the plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-buddypress-share-i18n.php';
-
-		/**
-		 * The class responsible for Wbcom admin settings framework.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wbcom/wbcom-admin-settings.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -149,7 +145,7 @@ class Buddypress_Share {
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
 	 *
-	 * Optimized with cache clearing hooks for better performance.
+	 * Updated to use independent menu system and optimized with cache clearing hooks.
 	 *
 	 * @since    1.0.0
 	 * @access   private
@@ -160,7 +156,10 @@ class Buddypress_Share {
 		// Core admin hooks
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_action( bp_core_admin_hook(), $plugin_admin, 'bp_share_plugin_menu' );
+		
+		// Use standard admin_menu hook instead of bp_core_admin_hook for independent menu
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'bp_share_plugin_menu' );
+		
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'bp_share_settings_init' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'bpas_register_setting' );
@@ -174,6 +173,9 @@ class Buddypress_Share {
 		$this->loader->add_action( 'update_site_option_bp_share_services_extra', $plugin_admin, 'clear_public_settings_cache' );
 		$this->loader->add_action( 'update_site_option_bp_reshare_settings', $plugin_admin, 'clear_public_settings_cache' );
 		$this->loader->add_action( 'update_option_bpas_icon_color_settings', $plugin_admin, 'clear_public_settings_cache' );
+
+		// Add custom admin body classes for better styling
+		$this->loader->add_filter( 'admin_body_class', $this, 'add_admin_body_classes' );
 	}
 
 	/**
@@ -228,6 +230,46 @@ class Buddypress_Share {
 	}
 
 	/**
+	 * Add custom admin body classes for better styling control.
+	 *
+	 * @since    1.5.1
+	 * @access   public
+	 * @param    string $classes Current admin body classes.
+	 * @return   string Modified admin body classes.
+	 */
+	public function add_admin_body_classes( $classes ) {
+		$screen = get_current_screen();
+		
+		if ( isset( $screen->id ) ) {
+			// Add class for all plugin admin pages
+			$plugin_pages = array(
+				'toplevel_page_buddypress-share',
+				'activity-share_page_buddypress-share-settings',
+				'activity-share_page_buddypress-share-icons'
+			);
+			
+			if ( in_array( $screen->id, $plugin_pages, true ) ) {
+				$classes .= ' bp-activity-share-admin';
+			}
+			
+			// Add specific class for each page
+			switch ( $screen->id ) {
+				case 'toplevel_page_buddypress-share':
+					$classes .= ' bp-share-general-page';
+					break;
+				case 'activity-share_page_buddypress-share-settings':
+					$classes .= ' bp-share-settings-page';
+					break;
+				case 'activity-share_page_buddypress-share-icons':
+					$classes .= ' bp-share-icons-page';
+					break;
+			}
+		}
+		
+		return $classes;
+	}
+
+	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
 	 * @since    1.0.0
@@ -269,5 +311,180 @@ class Buddypress_Share {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Get plugin information for display.
+	 *
+	 * @since    1.5.1
+	 * @access   public
+	 * @return   array Plugin information array.
+	 */
+	public function get_plugin_info() {
+		return array(
+			'name'        => __( 'BuddyPress Activity Share Pro', 'buddypress-share' ),
+			'version'     => $this->version,
+			'description' => __( 'Share BuddyPress activities on social media and within your community.', 'buddypress-share' ),
+			'author'      => 'Wbcom Designs',
+			'author_uri'  => 'https://wbcomdesigns.com',
+			'plugin_uri'  => 'https://wbcomdesigns.com/downloads/buddypress-activity-social-share/',
+			'text_domain' => 'buddypress-share',
+		);
+	}
+
+	/**
+	 * Check plugin requirements and compatibility.
+	 *
+	 * @since    1.5.1
+	 * @access   public
+	 * @return   array Requirements check results.
+	 */
+	public function check_requirements() {
+		$requirements = array(
+			'php_version'        => array(
+				'required' => '7.4',
+				'current'  => PHP_VERSION,
+				'met'      => version_compare( PHP_VERSION, '7.4', '>=' ),
+			),
+			'wordpress_version'  => array(
+				'required' => '5.0',
+				'current'  => get_bloginfo( 'version' ),
+				'met'      => version_compare( get_bloginfo( 'version' ), '5.0', '>=' ),
+			),
+			'buddypress_active'  => array(
+				'required' => true,
+				'current'  => class_exists( 'BuddyPress' ),
+				'met'      => class_exists( 'BuddyPress' ),
+			),
+			'buddypress_version' => array(
+				'required' => '8.0',
+				'current'  => function_exists( 'bp_get_version' ) ? bp_get_version() : 'N/A',
+				'met'      => function_exists( 'bp_get_version' ) ? version_compare( bp_get_version(), '8.0', '>=' ) : false,
+			),
+		);
+
+		return $requirements;
+	}
+
+	/**
+	 * Get plugin status information.
+	 *
+	 * @since    1.5.1
+	 * @access   public
+	 * @return   array Plugin status information.
+	 */
+	public function get_plugin_status() {
+		$requirements = $this->check_requirements();
+		$all_met = true;
+		
+		foreach ( $requirements as $requirement ) {
+			if ( ! $requirement['met'] ) {
+				$all_met = false;
+				break;
+			}
+		}
+		
+		return array(
+			'requirements_met' => $all_met,
+			'requirements'     => $requirements,
+			'active'           => is_plugin_active( plugin_basename( __FILE__ ) ),
+			'version'          => $this->version,
+			'database_version' => get_option( 'bp_share_db_version', '1.0' ),
+		);
+	}
+
+	/**
+	 * Handle plugin upgrade routines.
+	 *
+	 * @since    1.5.1
+	 * @access   public
+	 * @param    string $old_version Previous version.
+	 * @param    string $new_version New version.
+	 */
+	public function handle_upgrade( $old_version, $new_version ) {
+		// Clear caches during upgrade
+		wp_cache_flush();
+		
+		// Version-specific upgrade routines
+		if ( version_compare( $old_version, '1.5.0', '<' ) ) {
+			$this->upgrade_to_150();
+		}
+		
+		// Update version option
+		update_option( 'bp_share_plugin_version', $new_version );
+		
+		// Fire upgrade hook for extensions
+		do_action( 'bp_share_plugin_upgraded', $old_version, $new_version );
+	}
+
+	/**
+	 * Upgrade routines for version 1.5.0.
+	 *
+	 * @since    1.5.1
+	 * @access   private
+	 */
+	private function upgrade_to_150() {
+		// Migrate old settings format if needed
+		$old_services = get_site_option( 'bp_share_services_old' );
+		if ( ! empty( $old_services ) ) {
+			// Convert and migrate old settings
+			$new_services = array();
+			foreach ( (array) $old_services as $service ) {
+				$new_services[ $service ] = $service;
+			}
+			update_site_option( 'bp_share_services', $new_services );
+			delete_site_option( 'bp_share_services_old' );
+		}
+		
+		// Clear legacy caches
+		wp_cache_delete_group( 'bp_share_legacy' );
+	}
+
+	/**
+	 * Deactivation cleanup.
+	 *
+	 * @since    1.5.1
+	 * @access   public
+	 */
+	public function deactivate() {
+		// Clear caches
+		wp_cache_flush();
+		
+		// Clear scheduled hooks
+		wp_clear_scheduled_hook( 'bp_share_cleanup' );
+		
+		// Fire deactivation hook
+		do_action( 'bp_share_deactivated' );
+	}
+
+	/**
+	 * Uninstall cleanup.
+	 *
+	 * @since    1.5.1
+	 * @access   public
+	 */
+	public static function uninstall() {
+		// Remove plugin options
+		$options_to_remove = array(
+			'bp_share_services',
+			'bp_share_services_enable',
+			'bp_share_services_logout_enable',
+			'bp_share_services_extra',
+			'bp_reshare_settings',
+			'bpas_icon_color_settings',
+			'bp_share_plugin_version',
+			'bp_share_db_version',
+		);
+		
+		foreach ( $options_to_remove as $option ) {
+			delete_site_option( $option );
+			delete_option( $option );
+		}
+		
+		// Clear all caches
+		wp_cache_flush();
+		
+		// Fire uninstall hook
+		do_action( 'bp_share_uninstalled' );
 	}
 }

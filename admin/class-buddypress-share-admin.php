@@ -13,7 +13,7 @@
  * The admin-specific functionality of the plugin.
  *
  * Defines the plugin name, version, and optimized hooks for admin functionality.
- * Enhanced with better security, performance optimizations, and cache management.
+ * Enhanced with independent menu system and better security, performance optimizations, and cache management.
  *
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/admin
@@ -72,15 +72,15 @@ class Buddypress_Share_Admin {
 
 		// Only load on plugin pages for better performance
 		$plugin_pages = array(
-			'wbcom-support-page',
-			'wb-plugins_page_buddypress-share',
-			'wbcomplugins',
-			'wbcom-plugins-page',
-			'buddypress-share'
+			'toplevel_page_buddypress-share',
+			'activity-share_page_buddypress-share-settings',
+			'activity-share_page_buddypress-share-icons',
+			'buddypress-share',
+			'buddypress-share-settings',
+			'buddypress-share-icons'
 		);
 		
-		$current_page = $_GET['page'] ?? '';
-		$is_plugin_page = in_array( $current_page, $plugin_pages, true ) || 
+		$is_plugin_page = in_array( $hook, $plugin_pages, true ) || 
 		                 strpos( $hook, 'buddypress-share' ) !== false;
 
 		if ( ! $is_plugin_page ) {
@@ -109,7 +109,13 @@ class Buddypress_Share_Admin {
 		wp_enqueue_script( 'jquery-ui-draggable' );
 		wp_enqueue_script( 'jquery-ui-droppable' );
 		
-		if ( 'wb-plugins_page_buddypress-share' !== $hook ) {
+		$plugin_pages = array(
+			'toplevel_page_buddypress-share',
+			'activity-share_page_buddypress-share-settings',
+			'activity-share_page_buddypress-share-icons',
+		);
+		
+		if ( ! in_array( $hook, $plugin_pages, true ) ) {
 			return;
 		}
 		
@@ -140,31 +146,70 @@ class Buddypress_Share_Admin {
 	 * @return   void
 	 */
 	public function wbcom_hide_all_admin_notices_from_setting_page() {
-		$wbcom_pages_array  = array( 'wbcomplugins', 'wbcom-plugins-page', 'wbcom-support-page', 'buddypress-share' );
-		$wbcom_setting_page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : '';
+		$plugin_pages = array( 
+			'buddypress-share', 
+			'buddypress-share-settings', 
+			'buddypress-share-icons' 
+		);
+		$current_page = filter_input( INPUT_GET, 'page' ) ? filter_input( INPUT_GET, 'page' ) : '';
 
-		if ( in_array( $wbcom_setting_page, $wbcom_pages_array, true ) ) {
+		if ( in_array( $current_page, $plugin_pages, true ) ) {
 			remove_all_actions( 'admin_notices' );
 			remove_all_actions( 'all_admin_notices' );
 		}
 	}
 
 	/**
-	 * Function for add plugin menu.
+	 * Function for add plugin menu - Independent menu system.
 	 *
 	 * @since    1.0.0
 	 * @access   public
 	 */
 	public function bp_share_plugin_menu() {
-		if ( empty( $GLOBALS['admin_page_hooks']['wbcomplugins'] ) ) {
-			add_menu_page( esc_html__( 'WB Plugins', 'buddypress-share' ), esc_html__( 'WB Plugins', 'buddypress-share' ), 'manage_options', 'wbcomplugins', array( $this, 'bp_share_plugin_options' ), 'dashicons-lightbulb', 59 );
-			add_submenu_page( 'wbcomplugins', esc_html__( 'General', 'buddypress-share' ), esc_html__( 'General', 'buddypress-share' ), 'manage_options', 'wbcomplugins' );
-		}
-		add_submenu_page( 'wbcomplugins', esc_html__( 'Activity Share Pro', 'buddypress-share' ), esc_html__( 'Activity Share Pro', 'buddypress-share' ), 'manage_options', $this->plugin_name, array( $this, 'bp_share_plugin_options' ) );
+		$capability = 'manage_options';
+		
+		// Add main menu page
+		add_menu_page(
+			esc_html__( 'Activity Share', 'buddypress-share' ),
+			esc_html__( 'Activity Share', 'buddypress-share' ),
+			$capability,
+			'buddypress-share',
+			array( $this, 'bp_share_plugin_options' ),
+			'dashicons-share',
+			59
+		);
+
+		// Add submenu pages
+		add_submenu_page(
+			'buddypress-share',
+			esc_html__( 'General Settings', 'buddypress-share' ),
+			esc_html__( 'General Settings', 'buddypress-share' ),
+			$capability,
+			'buddypress-share',
+			array( $this, 'bp_share_plugin_options' )
+		);
+
+		add_submenu_page(
+			'buddypress-share',
+			esc_html__( 'Share Settings', 'buddypress-share' ),
+			esc_html__( 'Share Settings', 'buddypress-share' ),
+			$capability,
+			'buddypress-share-settings',
+			array( $this, 'bp_share_settings_page' )
+		);
+
+		add_submenu_page(
+			'buddypress-share',
+			esc_html__( 'Icon Settings', 'buddypress-share' ),
+			esc_html__( 'Icon Settings', 'buddypress-share' ),
+			$capability,
+			'buddypress-share-icons',
+			array( $this, 'bp_share_icons_page' )
+		);
 	}
 
 	/**
-	 * Build the admin options page.
+	 * Build the main admin options page.
 	 *
 	 * @since    1.0.0
 	 * @access   public
@@ -178,23 +223,93 @@ class Buddypress_Share_Admin {
 		}
 		?>
 		<div class="wrap">
-			<div class="wbcom-bb-plugins-offer-wrapper">
-				<div id="wb_admin_logo"></div>
-			</div>
-			<div class="wbcom-wrap">
-				<div class="bpss-header">
-					<div class="wbcom_admin_header-wrapper">
-						<div id="wb_admin_plugin_name">
-							<?php esc_html_e( 'BuddyPress Activity Share Pro Settings', 'buddypress-share' ); ?>
-							<?php /* translators: %s: Plugin version */ ?>
-							<span><?php printf( esc_html__( 'Version %s', 'buddypress-share' ), esc_attr( BP_ACTIVITY_SHARE_PLUGIN_VERSION ) ); ?></span>
+			<div class="bp-share-admin-header">
+				<div class="bp-share-header-content">
+					<div class="bp-share-plugin-info">
+						<div class="bp-share-plugin-icon">
+							<span class="dashicons dashicons-share"></span>
 						</div>
-						<?php echo do_shortcode( '[wbcom_admin_setting_header]' ); ?>
+						<div class="bp-share-plugin-details">
+							<h1 class="bp-share-plugin-title">
+								<?php esc_html_e( 'BuddyPress Activity Share Pro', 'buddypress-share' ); ?>
+								<span class="bp-share-version">
+									<?php printf( esc_html__( 'v%s', 'buddypress-share' ), esc_attr( BP_ACTIVITY_SHARE_PLUGIN_VERSION ) ); ?>
+								</span>
+							</h1>
+							<p class="bp-share-plugin-description">
+								<?php esc_html_e( 'Share BuddyPress activities on social media and within your community.', 'buddypress-share' ); ?>
+							</p>
+						</div>
+					</div>
+					<div class="bp-share-header-actions">
+						<a href="https://docs.wbcomdesigns.com/doc_category/buddypress-activity-social-share/" class="button button-secondary" target="_blank">
+							<span class="dashicons dashicons-book"></span>
+							<?php esc_html_e( 'Documentation', 'buddypress-share' ); ?>
+						</a>
+						<a href="https://wbcomdesigns.com/support/" class="button button-secondary" target="_blank">
+							<span class="dashicons dashicons-sos"></span>
+							<?php esc_html_e( 'Support', 'buddypress-share' ); ?>
+						</a>
 					</div>
 				</div>
-				<div class="wbcom-admin-settings-page">
+			</div>
+
+			<div class="bp-share-admin-content">
+				<div class="bp-share-tabs-wrapper">
 					<?php $this->bpas_plugin_settings_tabs( $tab ); ?>
 				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Share Settings page.
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 */
+	public function bp_share_settings_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'buddypress-share' ) );
+		}
+		
+		?>
+		<div class="wrap">
+			<div class="bp-share-admin-header">
+				<div class="bp-share-header-content">
+					<h1><?php esc_html_e( 'Share Settings', 'buddypress-share' ); ?></h1>
+					<p><?php esc_html_e( 'Configure which content types can be shared and how sharing works.', 'buddypress-share' ); ?></p>
+				</div>
+			</div>
+			<div class="bp-share-admin-content">
+				<?php $this->bpas_reshare_setting_section(); ?>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Icon Settings page.
+	 *
+	 * @since    1.0.0
+	 * @access   public
+	 */
+	public function bp_share_icons_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'buddypress-share' ) );
+		}
+		
+		?>
+		<div class="wrap">
+			<div class="bp-share-admin-header">
+				<div class="bp-share-header-content">
+					<h1><?php esc_html_e( 'Icon Settings', 'buddypress-share' ); ?></h1>
+					<p><?php esc_html_e( 'Customize the appearance and style of sharing icons.', 'buddypress-share' ); ?></p>
+				</div>
+			</div>
+			<div class="bp-share-admin-content">
+				<?php $this->bpas_icon_color_setting_section(); ?>
 			</div>
 		</div>
 		<?php
@@ -211,18 +326,32 @@ class Buddypress_Share_Admin {
 		$bpas_tabs = array(
 			'bpas_welcome'             => esc_html__( 'Welcome', 'buddypress-share' ),
 			'bpas_general_settings'    => esc_html__( 'General Settings', 'buddypress-share' ),
-			'bpas_reshare_settings'    => esc_html__( 'Share Settings', 'buddypress-share' ),
-			'bpas_icon_color_settings' => esc_html__( 'Icon Settings', 'buddypress-share' ),
 		);
 		
-		$tab_html  = '<div class="wbcom-tabs-section"><div class="nav-tab-wrapper"><div class="wb-responsive-menu"><span>' . esc_html( 'Menu' ) . '</span><input class="wb-toggle-btn" type="checkbox" id="wb-toggle-btn"><label class="wb-toggle-icon" for="wb-toggle-btn"><span class="wb-icon-bars"></span></label></div><ul>';
+		$tab_html  = '<div class="bp-share-tabs-section">';
+		$tab_html .= '<div class="nav-tab-wrapper">';
+		$tab_html .= '<div class="bp-share-responsive-menu">';
+		$tab_html .= '<span>' . esc_html__( 'Menu', 'buddypress-share' ) . '</span>';
+		$tab_html .= '<input class="bp-share-toggle-btn" type="checkbox" id="bp-share-toggle-btn">';
+		$tab_html .= '<label class="bp-share-toggle-icon" for="bp-share-toggle-btn">';
+		$tab_html .= '<span class="bp-share-icon-bars">☰</span>';
+		$tab_html .= '</label>';
+		$tab_html .= '</div>';
+		$tab_html .= '<ul class="bp-share-nav-tabs">';
 		
 		foreach ( $bpas_tabs as $bpas_tab => $bpas_name ) {
 			$class     = ( $bpas_tab === $current ) ? 'nav-tab-active' : '';
-			$tab_html .= '<li class="' . esc_attr( $bpas_tab ) . '"><a class="nav-tab ' . esc_attr( $class ) . '" href="admin.php?page=buddypress-share&tab=' . esc_attr( $bpas_tab ) . '">' . esc_html( $bpas_name ) . '</a></li>';
+			$tab_html .= '<li class="' . esc_attr( $bpas_tab ) . '">';
+			$tab_html .= '<a class="nav-tab ' . esc_attr( $class ) . '" href="admin.php?page=buddypress-share&tab=' . esc_attr( $bpas_tab ) . '">';
+			$tab_html .= esc_html( $bpas_name );
+			$tab_html .= '</a>';
+			$tab_html .= '</li>';
 		}
 		
-		$tab_html .= '</div></ul></div>';
+		$tab_html .= '</ul>';
+		$tab_html .= '</div>';
+		$tab_html .= '</div>';
+		
 		echo $tab_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		$this->bpas_include_admin_setting_tabs( $current );
 	}
@@ -244,12 +373,6 @@ class Buddypress_Share_Admin {
 			case 'bpas_general_settings':
 				$this->bpas_general_setting_section();
 				break;
-			case 'bpas_reshare_settings':
-				$this->bpas_reshare_setting_section();
-				break;
-			case 'bpas_icon_color_settings':
-				$this->bpas_icon_color_setting_section();
-				break;
 			default:
 				$this->bpas_welcome_section();
 				break;
@@ -263,9 +386,151 @@ class Buddypress_Share_Admin {
 	 * @access   public
 	 */
 	public function bpas_welcome_section() {
-		if ( file_exists( BP_ACTIVITY_SHARE_PLUGIN_PATH . 'admin/templates/bpas-welcome-page.php' ) ) {
-			require_once BP_ACTIVITY_SHARE_PLUGIN_PATH . 'admin/templates/bpas-welcome-page.php';
+		// Check if the template file exists and use it, otherwise use inline content
+		$template_path = BP_ACTIVITY_SHARE_PLUGIN_PATH . 'admin/templates/bpas-welcome-page.php';
+		
+		if ( file_exists( $template_path ) ) {
+			require_once $template_path;
+		} else {
+			// Fallback inline content if template file doesn't exist
+			$this->render_welcome_content_inline();
 		}
+	}
+
+	/**
+	 * Render welcome content inline as fallback.
+	 *
+	 * @since    1.5.1
+	 * @access   private
+	 */
+	private function render_welcome_content_inline() {
+		?>
+		<div class="bp-share-welcome-content">
+			<div class="bp-share-welcome-header">
+				<h2><?php esc_html_e( 'Welcome to BuddyPress Activity Share Pro', 'buddypress-share' ); ?></h2>
+				<p class="bp-share-welcome-description">
+					<?php esc_html_e( 'Transform your BuddyPress community with powerful sharing capabilities. Enable your members to share activities across social media platforms and within your community, boosting engagement and extending your reach.', 'buddypress-share' ); ?>
+				</p>
+			</div>
+
+			<div class="bp-share-quick-setup">
+				<div class="bp-share-setup-content">
+					<div class="bp-share-setup-info">
+						<h3><?php esc_html_e( 'Quick Setup Guide', 'buddypress-share' ); ?></h3>
+						<p><?php esc_html_e( 'Get your sharing system up and running in just a few steps:', 'buddypress-share' ); ?></p>
+						<ol class="bp-share-setup-steps">
+							<li><?php esc_html_e( 'Enable social sharing in General Settings', 'buddypress-share' ); ?></li>
+							<li><?php esc_html_e( 'Configure which social services to display', 'buddypress-share' ); ?></li>
+							<li><?php esc_html_e( 'Customize your sharing options in Share Settings', 'buddypress-share' ); ?></li>
+							<li><?php esc_html_e( 'Style your icons to match your brand', 'buddypress-share' ); ?></li>
+						</ol>
+					</div>
+					<div class="bp-share-setup-actions">
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=buddypress-share&tab=bpas_general_settings' ) ); ?>" class="bp-share-cta-button primary">
+							<span class="dashicons dashicons-admin-generic"></span>
+							<?php esc_html_e( 'Start Configuration', 'buddypress-share' ); ?>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<style>
+		.bp-share-welcome-content {
+			padding: 20px 0;
+		}
+
+		.bp-share-welcome-header {
+			text-align: center;
+			margin-bottom: 40px;
+		}
+
+		.bp-share-welcome-header h2 {
+			font-size: 28px;
+			color: #333;
+			margin-bottom: 16px;
+			font-weight: 600;
+		}
+
+		.bp-share-welcome-description {
+			font-size: 16px;
+			line-height: 1.6;
+			color: #666;
+			max-width: 700px;
+			margin: 0 auto;
+		}
+
+		.bp-share-quick-setup {
+			background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+			border-radius: 12px;
+			padding: 40px;
+			margin-bottom: 30px;
+		}
+
+		.bp-share-setup-content {
+			display: grid;
+			grid-template-columns: 2fr 1fr;
+			gap: 40px;
+			align-items: center;
+		}
+
+		.bp-share-setup-info h3 {
+			font-size: 22px;
+			color: #333;
+			margin: 0 0 16px 0;
+			font-weight: 600;
+		}
+
+		.bp-share-setup-info p {
+			color: #666;
+			line-height: 1.6;
+			margin: 0 0 20px 0;
+		}
+
+		.bp-share-setup-steps {
+			padding-left: 20px;
+			color: #555;
+			line-height: 1.8;
+		}
+
+		.bp-share-setup-steps li {
+			margin-bottom: 8px;
+		}
+
+		.bp-share-setup-actions {
+			text-align: center;
+		}
+
+		.bp-share-cta-button {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: #fff;
+			text-decoration: none;
+			padding: 16px 32px;
+			border-radius: 8px;
+			font-weight: 600;
+			font-size: 16px;
+			transition: all 0.3s ease;
+			box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+		}
+
+		.bp-share-cta-button:hover {
+			background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+			transform: translateY(-2px);
+			box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+			color: #fff;
+		}
+
+		@media (max-width: 768px) {
+			.bp-share-setup-content {
+				grid-template-columns: 1fr;
+				gap: 30px;
+			}
+		}
+		</style>
+		<?php
 	}
 
 	/**
@@ -305,29 +570,40 @@ class Buddypress_Share_Admin {
 	}
 	
 	/**
-	 * Function to register icon color settings.
+	 * Function to register plugin settings.
 	 * 
 	 * @since    1.0.0
 	 * @access   public
 	 */
 	public function bpas_register_setting() {
+		// Register general settings
+		register_setting( 'bp_share_general_settings', 'bp_share_services_enable' );
+		register_setting( 'bp_share_general_settings', 'bp_share_services_logout_enable' );
+		register_setting( 'bp_share_general_settings', 'bp_share_services_open' );
+		register_setting( 'bp_share_general_settings', 'bp_share_services' );
+		
+		// Register icon color settings
 		register_setting( 'bpas_icon_color_settings', 'bpas_icon_color_settings' );
+		
+		// Register reshare settings
+		register_setting( 'bp_reshare_settings', 'bp_reshare_settings' );
 	}
 
 	/**
 	 * Initialize plugin admin settings with enhanced security and validation.
 	 *
 	 * Enhanced with proper nonce verification and capability checks for security.
+	 * Updated to work without wbcom dependencies.
 	 *
 	 * @since    1.0.0
 	 * @access   public
 	 */
 	public function bp_share_settings_init() {
-		//phpcs:disable
+		// Handle general settings form submission
 		if ( isset( $_POST['bpas_submit_general_options'] ) && ! defined( 'DOING_AJAX' ) ) {
 			
 			// Enhanced security checks
-			if ( ! wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'update-options' ) ) {
+			if ( ! wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'bp_share_general_settings-options' ) ) {
 				wp_die( esc_html__( 'Security check failed.', 'buddypress-share' ) );
 			}
 			
@@ -335,26 +611,30 @@ class Buddypress_Share_Admin {
 				wp_die( esc_html__( 'Insufficient permissions.', 'buddypress-share' ) );
 			}
 			
+			// Save general settings
 			$service_enable = isset( $_POST['bp_share_services_enable'] ) ? sanitize_text_field( wp_unslash( $_POST['bp_share_services_enable'] ) ) : '';
 			update_site_option( 'bp_share_services_enable', $service_enable );
 
 			$service_enable_logout = isset( $_POST['bp_share_services_logout_enable'] ) ? sanitize_text_field( wp_unslash( $_POST['bp_share_services_logout_enable'] ) ) : '';
 			update_site_option( 'bp_share_services_logout_enable', $service_enable_logout );
 
-			/**
-			 * We are saving the popup option as array again as it was previously saved in a similar manner.
-			 */
+			$popup_option = array();
 			$popup_option['bp_share_services_open'] = isset( $_POST['bp_share_services_open'] ) ? sanitize_text_field( wp_unslash( $_POST['bp_share_services_open'] ) ) : '';
 			update_site_option( 'bp_share_services_extra', $popup_option );
 
 			// Clear cache after settings update
 			$this->clear_public_settings_cache();
+			
+			// Redirect with success message
+			wp_redirect( add_query_arg( 'settings-updated', 'true', $_POST['_wp_http_referer'] ?? admin_url( 'admin.php?page=buddypress-share&tab=bpas_general_settings' ) ) );
+			exit();
 		}
 
+		// Handle reshare settings form submission
 		if ( isset( $_POST['bpas_submit_reshare_options'] ) && ! defined( 'DOING_AJAX' ) ) {
 			
 			// Enhanced security checks
-			if ( ! wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'update-options' ) ) {
+			if ( ! wp_verify_nonce( $_POST['_wpnonce'] ?? '', 'bp_reshare_settings-options' ) ) {
 				wp_die( esc_html__( 'Security check failed.', 'buddypress-share' ) );
 			}
 			
@@ -368,10 +648,15 @@ class Buddypress_Share_Admin {
 			// Clear cache after settings update
 			$this->clear_public_settings_cache();
 			
-			wp_redirect( add_query_arg( 'settings-updated', 'true', $_POST['_wp_http_referer'] ) );
+			wp_redirect( add_query_arg( 'settings-updated', 'true', $_POST['_wp_http_referer'] ?? admin_url( 'admin.php?page=buddypress-share-settings' ) ) );
 			exit();
 		}
-		//phpcs:enable
+
+		// Handle icon settings form submission
+		if ( isset( $_POST['submit'] ) && isset( $_POST['option_page'] ) && $_POST['option_page'] === 'bpas_icon_color_settings' ) {
+			// Let WordPress handle this through the normal settings API
+			// This will be processed by the options.php handler
+		}
 	}
 
 	/**
