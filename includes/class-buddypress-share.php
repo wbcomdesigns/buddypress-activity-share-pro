@@ -142,7 +142,8 @@ class Buddypress_Share {
 
 		$plugin_i18n = new Buddypress_Share_i18n();
 
-		$this->loader->add_action( 'init', $plugin_i18n, 'bp_share_load_plugin_textdomain' );
+		// Hook to plugins_loaded instead of init for earlier loading
+		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'bp_share_load_plugin_textdomain' );
 	}
 
 	/**
@@ -173,7 +174,7 @@ class Buddypress_Share {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-		$theme_support = apply_filters( 'buddypress_reactions_theme_support', array( 'reign-theme', 'buddyx-pro' ) );
+		$theme_support = apply_filters( 'buddypress_share_theme_support', array( 'reign-theme', 'buddyx-pro' ) );
 		$theme_name    = wp_get_theme();
 
 		$plugin_public = new Buddypress_Share_Public( $this->get_plugin_name(), $this->get_version() );
