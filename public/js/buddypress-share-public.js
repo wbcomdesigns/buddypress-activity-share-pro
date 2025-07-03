@@ -637,9 +637,9 @@
             $('#bp-activity-share-widget-box-status-header').empty();
             
             // Remove modal classes
-            $('.activity-share-modal').removeClass(function(index, className) {
-                return (className.match(/(^|\s)\S+-\S+/g) || []).join(' ');
-            });
+            // $('.activity-share-modal').removeClass(function(index, className) {
+            //     return (className.match(/(^|\s)\S+-\S+/g) || []).join(' ');
+            // });
         },
 
         /**

@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-01T18:53:36+00:00\n"
+"POT-Creation-Date: 2025-07-03T08:08:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-share\n"
 
 #. Plugin Name of the plugin
@@ -35,298 +35,302 @@ msgstr ""
 msgid "Wbcom Designs<admin@wbcomdesigns.com>"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:150
+#: admin/class-buddypress-share-admin.php:151
 msgid "Loading..."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:151
+#: admin/class-buddypress-share-admin.php:152
 msgid "Saving..."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:152
-#: admin/class-buddypress-share-admin.php:260
+#: admin/class-buddypress-share-admin.php:153
+#: admin/class-buddypress-share-admin.php:261
 msgid "Settings saved successfully!"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:153
-#: admin/class-buddypress-share-admin.php:816
-#: admin/class-buddypress-share-admin.php:851
-#: admin/class-buddypress-share-admin.php:882
+#: admin/class-buddypress-share-admin.php:154
+#: admin/class-buddypress-share-admin.php:817
+#: admin/class-buddypress-share-admin.php:852
+#: admin/class-buddypress-share-admin.php:883
 msgid "An error occurred. Please try again."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:228
+#: admin/class-buddypress-share-admin.php:229
 msgid "BuddyPress Activity Share"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:229
+#: admin/class-buddypress-share-admin.php:230
 #: public/class-buddypress-share-public.php:698
 #: public/class-buddypress-share-public.php:719
 msgid "Activity Share"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:245
+#: admin/class-buddypress-share-admin.php:246
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:253
+#: admin/class-buddypress-share-admin.php:254
 msgid "BuddyPress Activity Share Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:269
+#: admin/class-buddypress-share-admin.php:270
 #: license/class-bp-share-license-manager.php:284
 msgid "License activated successfully!"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:278
+#: admin/class-buddypress-share-admin.php:279
 #: license/class-bp-share-license-manager.php:303
 msgid "License deactivated successfully!"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:297
+#: admin/class-buddypress-share-admin.php:298
 msgid "General Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:301
+#: admin/class-buddypress-share-admin.php:302
 msgid "Sharing Options"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:305
+#: admin/class-buddypress-share-admin.php:306
 msgid "Icon Styles"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:309
+#: admin/class-buddypress-share-admin.php:310
 #: buddypress-share.php:177
 msgid "License"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:379
+#: admin/class-buddypress-share-admin.php:380
 msgid "Enable Social Sharing"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:387
+#: admin/class-buddypress-share-admin.php:388
 msgid "Enable social sharing on activities"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:393
+#: admin/class-buddypress-share-admin.php:394
 msgid "Guest Sharing"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:401
+#: admin/class-buddypress-share-admin.php:402
 msgid "Allow logged-out users to share activities"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:407
+#: admin/class-buddypress-share-admin.php:408
 msgid "Popup Windows"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:415
+#: admin/class-buddypress-share-admin.php:416
 msgid "Open social sharing links in popup windows"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:422
+#: admin/class-buddypress-share-admin.php:423
 msgid "Social Services"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:423
+#: admin/class-buddypress-share-admin.php:424
 msgid "Drag social services between the lists to enable or disable them. Changes are saved automatically via AJAX."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:429
+#: admin/class-buddypress-share-admin.php:430
 msgid "Enabled Services"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:444
+#: admin/class-buddypress-share-admin.php:445
 msgid "No services enabled. Drag services from the available list to enable them."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:451
+#: admin/class-buddypress-share-admin.php:452
 msgid "Available Services"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:466
+#: admin/class-buddypress-share-admin.php:467
 msgid "All services are enabled. Drag services from the enabled list to disable them."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:473
+#: admin/class-buddypress-share-admin.php:474
 msgid "Save General Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:573
+#: admin/class-buddypress-share-admin.php:574
 msgid "Content Type Controls"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:574
+#: admin/class-buddypress-share-admin.php:575
 msgid "Control which types of content can be shared within your BuddyPress community."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:579
+#: admin/class-buddypress-share-admin.php:580
 msgid "Disable Sharing For"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:588
+#: admin/class-buddypress-share-admin.php:589
 msgid "Blog Posts"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:597
+#: admin/class-buddypress-share-admin.php:598
 msgid "Profile Sharing"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:606
+#: admin/class-buddypress-share-admin.php:607
 msgid "Private Messages"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:615
+#: admin/class-buddypress-share-admin.php:616
 msgid "Groups"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:624
+#: admin/class-buddypress-share-admin.php:625
 msgid "Friends"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:631
+#: admin/class-buddypress-share-admin.php:632
 msgid "Activity Display"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:640
+#: admin/class-buddypress-share-admin.php:641
 msgid "Show original activity only"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:649
+#: admin/class-buddypress-share-admin.php:650
 msgid "Show complete activity with nested content"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:657
+#: admin/class-buddypress-share-admin.php:658
 msgid "Save Sharing Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:675
+#: admin/class-buddypress-share-admin.php:676
 msgid "Circle Style"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:676
+#: admin/class-buddypress-share-admin.php:677
 msgid "Rectangle Style"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:677
+#: admin/class-buddypress-share-admin.php:678
 msgid "Black & White"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:678
+#: admin/class-buddypress-share-admin.php:679
 msgid "Bar Style"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:691
+#: admin/class-buddypress-share-admin.php:692
 msgid "Icon Style"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:709
+#: admin/class-buddypress-share-admin.php:710
 msgid "Background Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:716
+#: admin/class-buddypress-share-admin.php:717
 msgid "Choose the background color for sharing icons."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:721
+#: admin/class-buddypress-share-admin.php:722
 msgid "Text Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:728
+#: admin/class-buddypress-share-admin.php:729
 msgid "Choose the text/icon color for sharing buttons."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:733
+#: admin/class-buddypress-share-admin.php:734
 msgid "Hover Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:740
+#: admin/class-buddypress-share-admin.php:741
 msgid "Choose the hover color for sharing icons."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:746
+#: admin/class-buddypress-share-admin.php:747
 msgid "Save Icon Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:761
+#: admin/class-buddypress-share-admin.php:762
 msgid "License management is not available. Please contact support."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:790
+#: admin/class-buddypress-share-admin.php:791
 #: license/class-bp-share-license-manager.php:275
 msgid "Please enter a license key"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:794
+#: admin/class-buddypress-share-admin.php:795
 msgid "Activating..."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:812
-#: admin/class-buddypress-share-admin.php:817
+#: admin/class-buddypress-share-admin.php:813
+#: admin/class-buddypress-share-admin.php:818
 #: license/class-bp-share-license-manager.php:115
 msgid "Activate License"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:826
+#: admin/class-buddypress-share-admin.php:827
 msgid "Are you sure you want to deactivate your license?"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:830
+#: admin/class-buddypress-share-admin.php:831
 msgid "Deactivating..."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:847
-#: admin/class-buddypress-share-admin.php:852
+#: admin/class-buddypress-share-admin.php:848
+#: admin/class-buddypress-share-admin.php:853
 #: license/class-bp-share-license-manager.php:111
 msgid "Deactivate License"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:861
+#: admin/class-buddypress-share-admin.php:862
 msgid "Checking..."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:879
-#: admin/class-buddypress-share-admin.php:883
+#: admin/class-buddypress-share-admin.php:880
+#: admin/class-buddypress-share-admin.php:884
 #: license/class-bp-share-license-manager.php:120
 msgid "Check License"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1001
-#: admin/class-buddypress-share-admin.php:1050
+#: admin/class-buddypress-share-admin.php:1002
+#: admin/class-buddypress-share-admin.php:1051
 msgid "Security nonce check failed."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1005
-#: admin/class-buddypress-share-admin.php:1054
+#: admin/class-buddypress-share-admin.php:1006
+#: admin/class-buddypress-share-admin.php:1055
 msgid "Insufficient permissions."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1011
-#: admin/class-buddypress-share-admin.php:1060
+#: admin/class-buddypress-share-admin.php:1012
+#: admin/class-buddypress-share-admin.php:1061
 msgid "Service name is required."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1017
+#: admin/class-buddypress-share-admin.php:1018
+#, php-format
 msgid "Invalid service name: %s"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1033
+#: admin/class-buddypress-share-admin.php:1034
+#, php-format
 msgid "Service \"%s\" added successfully."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1038
+#: admin/class-buddypress-share-admin.php:1039
 msgid "Failed to add service to database."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1074
+#: admin/class-buddypress-share-admin.php:1075
+#, php-format
 msgid "Service \"%s\" removed successfully."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1079
+#: admin/class-buddypress-share-admin.php:1080
 msgid "Failed to remove service from database."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1083
+#: admin/class-buddypress-share-admin.php:1084
+#, php-format
 msgid "Service \"%s\" not found in enabled services."
 msgstr ""
 
@@ -339,6 +343,7 @@ msgid "Missing files:"
 msgstr ""
 
 #: buddypress-share.php:103
+#, php-format
 msgid "BuddyPress Activity Share Pro: Failed to load license class %s from %s"
 msgstr ""
 
@@ -356,7 +361,7 @@ msgstr ""
 
 #: buddypress-share.php:306
 #: buddypress-share.php:350
-#: includes/class-buddypress-share.php:322
+#: includes/class-buddypress-share.php:327
 msgid "BuddyPress Activity Share Pro"
 msgstr ""
 
@@ -366,6 +371,7 @@ msgstr ""
 
 #. translators: 1: Name of the plugin 2: Name of the dependent plugin
 #: buddypress-share.php:311
+#, php-format
 msgid "%1$s is ineffective now as it requires %2$s to be installed and active."
 msgstr ""
 
@@ -375,16 +381,18 @@ msgstr ""
 
 #. translators: %s:
 #: buddypress-share.php:354
+#, php-format
 msgid "%1$s plugin can not be use with %2$s plugin."
 msgstr ""
 
-#: includes/class-buddypress-share.php:324
+#: includes/class-buddypress-share.php:329
 msgid "Share BuddyPress activities on social media and within your community."
 msgstr ""
 
 #. translators: the plugin name.
 #: license/class-bp-share-edd-updater-wrapper.php:78
 #: license/EDD_SL_Plugin_Updater.php:288
+#, php-format
 msgid "There is a new version of %1$s available."
 msgstr ""
 
@@ -394,6 +402,7 @@ msgid "Contact your network administrator to install the update."
 msgstr ""
 
 #: license/class-bp-share-edd-updater-wrapper.php:80
+#, php-format
 msgid "View version %2$s details"
 msgstr ""
 
@@ -473,6 +482,7 @@ msgid "License never expires"
 msgstr ""
 
 #: license/class-bp-share-license-manager.php:170
+#, php-format
 msgid "License expires: %s"
 msgstr ""
 
@@ -530,6 +540,7 @@ msgid "An error occurred, please try again."
 msgstr ""
 
 #: license/class-bp-share-license-manager.php:372
+#, php-format
 msgid "Your license key expired on %s."
 msgstr ""
 
@@ -546,6 +557,7 @@ msgid "Your license is not active for this URL."
 msgstr ""
 
 #: license/class-bp-share-license-manager.php:388
+#, php-format
 msgid "This appears to be an invalid license key for %s."
 msgstr ""
 
@@ -563,16 +575,18 @@ msgstr ""
 
 #. translators: 1. opening anchor tag, do not translate 2. the new plugin version 3. closing anchor tag, do not translate.
 #: license/EDD_SL_Plugin_Updater.php:299
+#, php-format
 msgid "%1$sView version %2$s details%3$s."
 msgstr ""
 
 #: license/EDD_SL_Plugin_Updater.php:307
+#, php-format
 msgid "%1$sView version %2$s details%3$s or %4$supdate now%5$s."
 msgstr ""
 
 #: public/class-buddypress-share-public.php:396
 #: public/class-buddypress-share-public.php:1175
-#: public/class-buddypress-share-public.php:1625
+#: public/class-buddypress-share-public.php:1627
 msgid "Share"
 msgstr ""
 
@@ -585,7 +599,7 @@ msgid "Share to My Profile"
 msgstr ""
 
 #: public/class-buddypress-share-public.php:444
-#: public/class-buddypress-share-public.php:1421
+#: public/class-buddypress-share-public.php:1423
 msgid "My Profile"
 msgstr ""
 
@@ -594,7 +608,7 @@ msgid "Share to Message"
 msgstr ""
 
 #: public/class-buddypress-share-public.php:450
-#: public/class-buddypress-share-public.php:1422
+#: public/class-buddypress-share-public.php:1424
 msgid "Message"
 msgstr ""
 
@@ -683,11 +697,13 @@ msgstr ""
 
 #. translators: %s: user link
 #: public/class-buddypress-share-public.php:748
+#, php-format
 msgid "%s shared an activity"
 msgstr ""
 
 #. translators: 1: user link, 2: group link
 #: public/class-buddypress-share-public.php:779
+#, php-format
 msgid "%1$s shared an activity in the group %2$s"
 msgstr ""
 
@@ -725,7 +741,7 @@ msgid "Invalid activity ID."
 msgstr ""
 
 #: public/class-buddypress-share-public.php:1341
-#: public/class-buddypress-share-public.php:1589
+#: public/class-buddypress-share-public.php:1591
 msgid "Read More"
 msgstr ""
 
@@ -737,23 +753,24 @@ msgstr ""
 msgid "Share Activity"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1413
+#: public/class-buddypress-share-public.php:1414
 msgid "Status Update"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1418
+#: public/class-buddypress-share-public.php:1420
 msgid "Post in"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1442
+#: public/class-buddypress-share-public.php:1444
 msgid "Discard"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1445
+#: public/class-buddypress-share-public.php:1447
 msgid "Post"
 msgstr ""
 
 #. translators: %s: username
-#: public/class-buddypress-share-public.php:1526
+#: public/class-buddypress-share-public.php:1528
+#, php-format
 msgid "Hi %s! Write something here. Use @ to mention someone..."
 msgstr ""

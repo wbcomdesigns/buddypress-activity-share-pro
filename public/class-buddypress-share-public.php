@@ -415,9 +415,9 @@ class Buddypress_Share_Public {
 				<?php endif; ?>
 				
 				<?php do_action( 'bp_share_user_services', array(), $activity_link, $activity_title ); ?>
+
+				<?php $this->render_popup_overlay(); ?>
 			</div>
-			
-			<?php $this->render_popup_overlay(); ?>
 			
 			<?php $this->render_popup_script( $extra_options ); ?>
 		</div>
@@ -1398,7 +1398,7 @@ class Buddypress_Share_Public {
 					<div class="modal-header">
 						<h5 class="modal-title" id="activity-share-modal-title"><?php esc_html_e( 'Share Activity', 'buddypress-share' ); ?></h5>
 						<button type="button" class="close activity-share-modal-close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true"><i class="as-icon as-icon-times"></i></span>
+							<i class="as-icon as-icon-times"></i>
 						</button>
 					</div>
 					
@@ -1409,8 +1409,10 @@ class Buddypress_Share_Public {
 								<a href="<?php echo esc_url( bp_loggedin_user_domain() ); ?>">
 									<?php bp_loggedin_user_avatar( 'width=' . bp_core_avatar_thumb_width() . '&height=' . bp_core_avatar_thumb_height() ); ?>
 								</a>
-								<span class="user-name"><?php echo esc_html( $user_name ); ?></span>
-								<small class="user-status-text"><?php esc_html_e( 'Status Update', 'buddypress-share' ); ?></small>
+								<div class="user-name-wrapper">
+									<span class="user-name"><?php echo esc_html( $user_name ); ?></span>
+									<small class="user-status-text"><?php esc_html_e( 'Status Update', 'buddypress-share' ); ?></small>
+								</div>
 							</div>
 							<div class="bp-activity-share-filter">
 								<div class="form-item">

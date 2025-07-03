@@ -7,7 +7,7 @@
    SIMPLIFIED CSS CUSTOM PROPERTIES
    =================================================================== */
 
-   :root {
+:root {
     /* Base colors - minimal palette */
     --bp-share-white: #ffffff;
     --bp-share-black: #000000;
@@ -126,7 +126,6 @@ body.dark .activity-share-modal {
 }
 
 .activity-share-modal .modal-body {
-    padding: 0;
     background-color: var(--bp-share-bg);
     color: var(--bp-share-text);
 }
@@ -168,6 +167,7 @@ body.dark .activity-share-modal {
 .activity-share-modal .close:hover,
 .activity-share-modal .activity-share-modal-close:hover {
     border-color: var(--bp-share-danger);
+    color: var(--bp-share-danger);
     background-color: var(--bp-share-bg-secondary);
     transform: scale(1.05);
 }
@@ -193,16 +193,8 @@ body.dark .activity-share-modal {
     flex: 1;
     font-weight: 600;
     position: relative;
-    padding-right: 50px;
     color: var(--bp-share-text);
     font-family: inherit;
-}
-
-.bp-activity-share-avatar > a {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
 }
 
 .bp-activity-share-avatar img {
@@ -317,6 +309,10 @@ body.dark .activity-share-modal {
     font-family: inherit !important;
 }
 
+.activity-share-modal .select2-container.select2-container--default span.select2-selection {
+    padding: 0;
+}
+
 .activity-share-modal .select2-selection {
     border: 1px solid var(--bp-share-border) !important;
     border-radius: var(--bp-share-radius) !important;
@@ -357,7 +353,7 @@ body.dark .activity-share-modal {
 
 .activity-share-modal .form {
     width: 100%;
-    padding: var(--bp-share-spacing-lg);
+    padding: 0;
 }
 
 .activity-share-modal .form-textarea {
@@ -370,18 +366,14 @@ body.dark .activity-share-modal {
 
 #bp-activity-share-widget-box-status-header {
     background-color: var(--bp-share-bg);
-    border: 1px solid var(--bp-share-border);
-    border-radius: var(--bp-share-radius);
+    border-top: 1px solid var(--bp-share-border);
+    border-radius: 0;
     color: var(--bp-share-text);
     font-family: inherit;
 }
 
 #bp-activity-share-widget-box-status-header .activity-content {
-    background-color: var(--bp-share-bg);
     padding: var(--bp-share-spacing);
-    border-radius: var(--bp-share-radius);
-    border: 1px solid var(--bp-share-border-light);
-    color: var(--bp-share-text);
 }
 
 #bp-activity-share-widget-box-status-header .activity-header p,
@@ -617,8 +609,8 @@ body.dark .activity-share-modal {
     }
     
     .bp-activity-share-avatar {
-        padding-right: 50px;
         width: 100%;
+        justify-content: center;
     }
     
     .bp-activity-share-filter {
@@ -638,11 +630,11 @@ body.dark .activity-share-modal {
     }
     
     .activity-share-modal .form {
-        padding: var(--bp-share-spacing);
+        padding: 0;
     }
     
     #bp-activity-share-widget-box-status-header {
-        margin: 0 var(--bp-share-spacing) var(--bp-share-spacing);
+        margin: 0;
     }
 }
 
@@ -659,10 +651,6 @@ body.dark .activity-share-modal {
     
     .quick-post-header-filters-wrap {
         padding: var(--bp-share-spacing) var(--bp-share-spacing) var(--bp-share-spacing-sm);
-    }
-    
-    .bp-activity-share-avatar {
-        padding-right: 45px;
     }
     
     .bp-activity-share-avatar img {
@@ -799,8 +787,6 @@ body.admin-bar .activity-share-modal .modal-dialog {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
     font-size: 14px;
     color: var(--bp-share-text);
     flex-shrink: 0;
@@ -823,7 +809,6 @@ body.admin-bar .activity-share-modal .modal-dialog {
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
     padding: 6px 12px;
     border-radius: var(--bp-share-radius);
     background: transparent;
@@ -919,6 +904,7 @@ body.admin-bar .activity-share-modal .modal-dialog {
     }
 
     .bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-activity-share-to-wrapper .bp-share-wrapper {
+        width: auto;
         min-width: 80px;
         flex-shrink: 0;
         text-align: center;
@@ -935,6 +921,46 @@ body.admin-bar .activity-share-modal .modal-dialog {
         font-size: 12px;
         display: block;
         width: 100%;
+        text-align: center;
+    }
+
+    .bp-nouveau #buddypress .activity-list div.activity-meta .bp-share-wrapper a,
+    .bp-nouveau #buddypress .activity-list div.groups-meta .bp-share-wrapper a {
+        flex-flow: nowrap;
+    }
+
+    .bp-nouveau #buddypress .activity-list div.activity-meta .bp-share-activity-share-to-wrapper .bp-share-wrapper a,
+    .bp-nouveau #buddypress .activity-list div.groups-meta .bp-share-activity-share-to-wrapper .bp-share-wrapper a {
+        flex-flow: wrap;
+        flex-direction: column;
+    }
+
+    #buddypress .activity-list .activity-share-dropdown-menu-container.circle .bp-share-activity-share-to-wrapper .bp-share-wrapper a i[class*=" fa-"],
+    #buddypress .activity-list .activity-share-dropdown-menu-container.rec .bp-share-activity-share-to-wrapper .bp-share-wrapper a i[class*=" fa-"],
+    #buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite .bp-share-activity-share-to-wrapper .bp-share-wrapper a i[class*=" fa-"],
+    #buddypress .activity-list .activity-share-dropdown-menu-container.baricon .bp-share-activity-share-to-wrapper .bp-share-wrapper a i[class*=" fa-"],
+    .bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-activity-share-to-wrapper .bp-share-wrapper i[class*=" fa-"] {
+        margin: 0 auto;
+        padding: 0;
+        font-size: 20px;
+        min-width: 50px;
+        width: 50px;
+        height: 50px;
+        background: rgba(0, 0, 0, .05);
+        border-radius: 100px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+
+    .bp-activity-share-dropdown-toggle .bp-activity-share-dropdown-menu .bp-share-wrapper span.tooltiptext {
+        top: -8px;
     }
 }
 
@@ -945,10 +971,10 @@ body.admin-bar .activity-share-modal .modal-dialog {
 }
 
 /* Popup Overlay */
-.bp-share-service-popup-overlay {
+/* .bp-share-service-popup-overlay {
     position: fixed;
     top: 0;
-    right: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background-color: var(--bp-share-overlay);
@@ -962,15 +988,17 @@ body.bp-share-popup-active .bp-share-service-popup-overlay {
 
 body.bp-share-popup-active {
     overflow: hidden;
-}
+} */
 
 /* ===================================================================
    SOCIAL SHARING BUTTONS IN DROPDOWN
    =================================================================== */
 
 .bp-share-activity-share-to-wrapper {
+    margin-top: 10px;
     padding: 10px 0;
     border-top: 1px solid var(--bp-share-border);
+    border-radius: 0 !important;
 }
 
 .bp-share-wrapper {
@@ -1017,6 +1045,282 @@ body.bp-share-popup-active {
 }
 
 /* ===================================================================
+   ICONS STYLES
+   =================================================================== */
+
+/*--------------------------------------------------------------
+## Circle/Rec Style
+--------------------------------------------------------------*/
+.service-buttons .bp-copy-wrapper {
+    position: relative;
+}
+
+.service-buttons .bp-copy-wrapper span.tooltiptext {
+    position: absolute;
+    top: -30px;
+    right: -18px;
+    left: 0;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle a i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec a i[class*=" fa-"] {
+    width: 25px;
+    min-width: 25px;
+    height: 25px;
+    font-size: 14px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    text-decoration: none !important;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    border: 0;
+    border-radius: 100px !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec a i[class*=" fa-"] {
+    border-radius: 0 !important;
+}
+
+/*--------------------------------------------------------------
+## Black/White Style
+--------------------------------------------------------------*/
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a i[class*=" fa-"] {
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    text-decoration: none !important;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    border-radius: 100px !important;
+
+    background: transparent !important;
+    color: #000 !important;
+    border: 1px solid #000 !important;
+}
+
+/*--------------------------------------------------------------
+## Baricon Style
+--------------------------------------------------------------*/
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon a i[class*=" fa-"] {
+    width: 25px;
+    height: 25px;
+    font-size: 14px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    text-decoration: none !important;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    border-radius: 0 !important;
+    border-top: 3px solid currentColor;
+}
+
+/* Styles */
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon .bp-activity-reshare-icon i[class*=" fa-"] {
+    color: #696f75 !important;
+    border-color: #696f75 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_facebook_share i[class*=" fa-"] {
+    color: #3B5998 !important;
+    border-color: #3B5998 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_x_share i[class*=" fa-"] {
+    color: #1DA1F2 !important;
+    border-color: #1DA1F2 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_email_share i[class*=" fa-"] {
+    color: #AD0000 !important;
+    border-color: #AD0000 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_whatsapp_share i[class*=" fa-"] {
+    color: #46bd00 !important;
+    border-color: #46bd00 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_linkedin_share i[class*=" fa-"] {
+    color: #007BB6 !important;
+    border-color: #007BB6 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_pinterest_share i[class*=" fa-"] {
+    color: #BD081C !important;
+    border-color: #BD081C !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_reddit_share i[class*=" fa-"] {
+    color: #FF4501 !important;
+    border-color: #FF4501 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_wordpress_share i[class*=" fa-"] {
+    color: #21759B !important;
+    border-color: #21759B !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_pocket_share i[class*=" fa-"] {
+    color: #EF3E56 !important;
+    border-color: #EF3E56 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_telegram_share i[class*=" fa-"] {
+    color: #0088cc !important;
+    border-color: #0088cc !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_bluesky_share i[class*=" fa-"] {
+    color: #1185fe !important;
+    border-color: #1185fe !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon .bp-copy i[class*=" fa-"] {
+    color: #696f75 !important;
+    border-color: #696f75 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle .bp-activity-reshare-icon i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec .bp-activity-reshare-icon i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .bp-activity-reshare-icon i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon a:hover .bp-activity-reshare-icon i[class*=" fa-"] {
+    background: #696f75 !important;
+    color: #fff !important;
+    border-color: #696f75 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_facebook_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_facebook_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_facebook_share:hover i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_facebook_share:hover i[class*=" fa-"] {
+    background: #3B5998 !important;
+    color: #fff !important;
+    border-color: #3B5998 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_x_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_x_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_x_share:hover i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_x_share:hover i[class*=" fa-"] {
+    background: #1DA1F2 !important;
+    color: #fff !important;
+    border-color: #1DA1F2 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_email_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_email_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_email_share:hover i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_email_share:hover i[class*=" fa-"] {
+    background: #AD0000 !important;
+    color: #fff !important;
+    border-color: #AD0000 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_whatsapp_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_whatsapp_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_whatsapp_share:hover i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_whatsapp_share:hover i[class*=" fa-"] {
+    background: #46bd00 !important;
+    color: #fff !important;
+    border-color: #46bd00 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_linkedin_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_linkedin_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_linkedin_share:hover i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_linkedin_share:hover i[class*=" fa-"] {
+    background: #007BB6 !important;
+    color: #fff !important;
+    border-color: #007BB6 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_pinterest_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_pinterest_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_pinterest_share:hover i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_pinterest_share:hover i[class*=" fa-"] {
+    background: #BD081C !important;
+    color: #fff !important;
+    border-color: #BD081C !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_reddit_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_reddit_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_reddit_share:hover i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_reddit_share:hover i[class*=" fa-"] {
+    background: #FF4501 !important;
+    color: #fff !important;
+    border-color: #FF4501 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_wordpress_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_wordpress_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_wordpress_share:hover i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_wordpress_share:hover i[class*=" fa-"] {
+    background: #21759B !important;
+    color: #fff !important;
+    border-color: #21759B !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_pocket_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_pocket_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_pocket_share:hover i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_pocket_share:hover i[class*=" fa-"] {
+    background: #EF3E56 !important;
+    color: #fff !important;
+    border-color: #EF3E56 !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_telegram_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_telegram_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_telegram_share:hover i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_telegram_share:hover i[class*=" fa-"] {
+    background: #0088cc !important;
+    color: #fff !important;
+    border-color: #0088cc !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_bluesky_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_bluesky_share i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite #bp_bluesky_share:hover i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon #bp_bluesky_share:hover i[class*=" fa-"] {
+    background: #1185fe !important;
+    color: #fff !important;
+    border-color: #1185fe !important;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle .bp-copy i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec .bp-copy i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite .bp-copy:hover i[class*=" fa-"],
+#buddypress .activity-list .activity-share-dropdown-menu-container.baricon .bp-copy:hover i[class*=" fa-"] {
+    background: #696f75 !important;
+    color: #fff !important;
+    border-color: #696f75 !important;
+}
+
+/* ===================================================================
    THEME INTEGRATION & OVERRIDE PROTECTION
    =================================================================== */
 
@@ -1044,5 +1348,24 @@ body.modal-open .activity-share-modal {
 
 .activity-share-modal .modal-content * {
     box-sizing: border-box;
+}
+
+/* BuddyX */
+#buddypress .activity-list .activity-item .bp-activity-share-dropdown-menu .bp-activity-share-btn .button,
+#buddypress .activity-list .activity-item .bp-activity-share-dropdown-menu .bp-share-wrapper .button {
+    background: transparent !important;
+    width: 100%;
+    padding: 0 !important;
+    border: none !important;
+    text-align: right !important;
+}
+
+/* Reign */
+.site-header .dropdown-toggle::after {
+    content: none;
+}
+
+.wb-reign-theme #bp-activity-share-widget-box-status-header .activity-content {
+    padding: 0;
 }
 /*# sourceMappingURL=buddypress-share-public.css.map */
