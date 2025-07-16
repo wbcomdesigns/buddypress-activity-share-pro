@@ -1084,6 +1084,56 @@ body.bp-share-popup-active {
     border-radius: 100px !important;
 }
 
+
+#buddypress .activity-list .activity-share-dropdown-menu-container #bp_x_share,
+#buddypress .activity-list .activity-share-dropdown-menu-container #bp_telegram_share,
+#buddypress .activity-list .activity-share-dropdown-menu-container #bp_bluesky_share {
+    min-width: auto;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container #bp_x_share i::before {
+    content: "";
+    background-image: url("../images/twitter-x-line.svg");
+    background-size: 14px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container #bp_telegram_share i::before {
+    content: "";
+    background-image: url("../images/telegram-fill.svg");
+    background-size: 17px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container #bp_bluesky_share i::before {
+    content: "";
+    background-image: url("../images/bluesky-fill.svg");
+    background-size: 17px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_x_share i::before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_x_share i::before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_telegram_share i::before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_telegram_share i::before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle #bp_bluesky_share i::before,
+#buddypress .activity-list .activity-share-dropdown-menu-container.rec #bp_bluesky_share i::before {
+    -webkit-filter: invert(1);
+    filter: invert(1);
+}
+
 #buddypress .activity-list .activity-share-dropdown-menu-container.rec a i[class*=" fa-"] {
     border-radius: 0 !important;
 }

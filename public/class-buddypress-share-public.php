@@ -590,7 +590,7 @@ class Buddypress_Share_Public {
 			),
 			'Bluesky' => array(
 				'url'   => 'https://bsky.app/intent/compose?text=' . urlencode( 'Check this out! ' . $activity_title . ' ' . $activity_link ),
-				'icon'  => 'fas fa-cloud',
+				'icon'  => 'fas fa-bluesky',
 				'label' => __( 'Bluesky', 'buddypress-share' )
 			),
 			'WhatsApp' => array(
