@@ -144,11 +144,9 @@ body.dark .activity-share-modal {
 
 .activity-share-modal .close,
 .activity-share-modal .activity-share-modal-close {
-    position: absolute;
-    top: 12px;
-    left: 15px;
     width: 32px;
     height: 32px;
+    margin: 0;
     border: 1px solid var(--bp-share-border);
     background-color: var(--bp-share-bg);
     color: var(--bp-share-text);
@@ -749,7 +747,7 @@ body.admin-bar .activity-share-modal .modal-dialog {
     align-items: center;
     color: var(--bp-share-text);
     line-height: 1.4;
-    gap: 8px;
+    gap: 8px !important;
 }
 
 .bp-activity-share-dropdown-menu .bp-activity-share-btn a,
@@ -1067,7 +1065,7 @@ body.bp-share-popup-active {
     width: 25px;
     min-width: 25px;
     height: 25px;
-    font-size: 14px;
+    font-size: 13px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
