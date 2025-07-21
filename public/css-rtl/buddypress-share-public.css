@@ -326,6 +326,10 @@ body.dark .activity-share-modal {
     font-family: inherit !important;
 }
 
+.activity-share-modal .select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 38px;
+}
+
 .activity-share-modal .select2-dropdown {
     border: 1px solid var(--bp-share-border) !important;
     border-radius: var(--bp-share-radius) !important;
@@ -992,12 +996,12 @@ body.bp-share-popup-active {
    SOCIAL SHARING BUTTONS IN DROPDOWN
    =================================================================== */
 
-.bp-share-activity-share-to-wrapper {
+/* .bp-share-activity-share-to-wrapper {
     margin-top: 10px;
     padding: 10px 0;
     border-top: 1px solid var(--bp-share-border);
     border-radius: 0 !important;
-}
+} */
 
 .bp-share-wrapper {
     display: flex;
@@ -1060,6 +1064,7 @@ body.bp-share-popup-active {
     left: 0;
 }
 
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle a i.as-icon,
 #buddypress .activity-list .activity-share-dropdown-menu-container.circle a i[class*=" fa-"],
 #buddypress .activity-list .activity-share-dropdown-menu-container.rec a i[class*=" fa-"] {
     width: 25px;
@@ -1251,6 +1256,7 @@ body.bp-share-popup-active {
     border-color: #696f75 !important;
 }
 
+#buddypress .activity-list .activity-share-dropdown-menu-container.circle .bp-activity-reshare-icon .as-icon,
 #buddypress .activity-list .activity-share-dropdown-menu-container.circle .bp-activity-reshare-icon i[class*=" fa-"],
 #buddypress .activity-list .activity-share-dropdown-menu-container.rec .bp-activity-reshare-icon i[class*=" fa-"],
 #buddypress .activity-list .activity-share-dropdown-menu-container.blackwhite a:hover .bp-activity-reshare-icon i[class*=" fa-"],

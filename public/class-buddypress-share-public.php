@@ -439,30 +439,30 @@ class Buddypress_Share_Public {
 		$share_options = array(
 			'my-profile' => array(
 				'setting' => 'disable_my_profile_reshare_activity',
-				'icon'    => 'fas fa-user',
-				'label'   => __( 'Share to My Profile', 'buddypress-share' ),
+				'icon'    => 'as-icon as-icon-share-square',
+				'label'   => __( 'Reshare', 'buddypress-share' ),
 				'title'   => __( 'My Profile', 'buddypress-share' ),
 			),
-			'message' => array(
-				'setting' => 'disable_message_reshare_activity',
-				'icon'    => 'fas fa-envelope',
-				'label'   => __( 'Share to Message', 'buddypress-share' ),
-				'title'   => __( 'Message', 'buddypress-share' ),
-				'is_link' => true,
-				'url'     => function_exists('bp_loggedin_user_domain') ? bp_loggedin_user_domain() . 'messages/compose/?activity_url=' . bp_loggedin_user_domain() . 'activity/' . bp_get_activity_id() : '#',
-			),
-			'groups' => array(
-				'setting' => 'disable_group_reshare_activity',
-				'icon'    => 'fas fa-users',
-				'label'   => __( 'Share to a group', 'buddypress-share' ),
-				'title'   => __( 'Select Group', 'buddypress-share' ),
-			),
-			'friends' => array(
-				'setting' => 'disable_friends_reshare_activity',
-				'icon'    => 'fas fa-user-plus',
-				'label'   => __( 'Share with Friends', 'buddypress-share' ),
-				'title'   => __( 'Select Friend', 'buddypress-share' ),
-			),
+			// 'message' => array(
+			// 	'setting' => 'disable_message_reshare_activity',
+			// 	'icon'    => 'fas fa-envelope',
+			// 	'label'   => __( 'Share to Message', 'buddypress-share' ),
+			// 	'title'   => __( 'Message', 'buddypress-share' ),
+			// 	'is_link' => true,
+			// 	'url'     => function_exists('bp_loggedin_user_domain') ? bp_loggedin_user_domain() . 'messages/compose/?activity_url=' . bp_loggedin_user_domain() . 'activity/' . bp_get_activity_id() : '#',
+			// ),
+			// 'groups' => array(
+			// 	'setting' => 'disable_group_reshare_activity',
+			// 	'icon'    => 'fas fa-users',
+			// 	'label'   => __( 'Share to a group', 'buddypress-share' ),
+			// 	'title'   => __( 'Select Group', 'buddypress-share' ),
+			// ),
+			// 'friends' => array(
+			// 	'setting' => 'disable_friends_reshare_activity',
+			// 	'icon'    => 'fas fa-user-plus',
+			// 	'label'   => __( 'Share with Friends', 'buddypress-share' ),
+			// 	'title'   => __( 'Select Friend', 'buddypress-share' ),
+			// ),
 		);
 
 		foreach ( $share_options as $key => $option ) {
