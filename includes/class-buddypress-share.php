@@ -71,6 +71,11 @@ class Buddypress_Share {
 		$this->plugin_name = 'buddypress-share';
 		$this->version     = defined( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION' ) ? BP_ACTIVITY_SHARE_PLUGIN_VERSION : '1.5.1';
 
+		// Only proceed if BuddyPress or BuddyBoss Platform is available
+		if ( ! class_exists( 'BuddyPress' ) && ! defined( 'BP_PLATFORM_VERSION' ) ) {
+			return;
+		}
+
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -130,6 +135,11 @@ class Buddypress_Share {
 		 * The class responsible for asset loading helper functions.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/bp-share-helpers.php';
+		
+		/**
+		 * The file responsible for BuddyBoss Platform compatibility.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/bp-share-buddyboss-compat.php';
 
 		$this->loader = new Buddypress_Share_Loader();
 	}
@@ -169,9 +179,6 @@ class Buddypress_Share {
 		
 		// Use standard admin_menu hook instead of bp_core_admin_hook for independent menu
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'bp_share_plugin_menu' );
-		
-		// FIXED: Removed the deprecated bp_share_settings_init method call
-		// $this->loader->add_action( 'admin_init', $plugin_admin, 'bp_share_settings_init' );
 		
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'bpas_register_setting' );

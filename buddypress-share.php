@@ -68,7 +68,7 @@ function bp_share_load_license_system() {
 	foreach ( $license_files as $class_name => $file_path ) {
 		if ( ! file_exists( $file_path ) ) {
 			$missing_files[] = $file_path;
-			error_log( 'BP Share: Missing license file: ' . $file_path );
+			// License file missing - handled by admin notice below
 		}
 	}
 	
@@ -96,7 +96,7 @@ function bp_share_load_license_system() {
 			
 			// Verify the class was loaded
 			if ( ! class_exists( $class_name ) ) {
-				error_log( 'BP Share: Failed to load class: ' . $class_name . ' from file: ' . $file_path );
+				// Failed to load class - handled by admin notice below
 				add_action( 'admin_notices', function() use ( $class_name, $file_path ) {
 					?>
 					<div class="notice notice-error">
@@ -204,7 +204,11 @@ add_action( 'bp_loaded', 'bpshare_pro_plugin_init' );
  * Plugin init
  */
 function bpshare_pro_plugin_init() {
-	if ( class_exists( 'BuddyPress' ) && bp_activity_share_pro_check_config() ) {
+	// Check if either BuddyPress or BuddyBoss Platform is active
+	$has_buddypress = class_exists( 'BuddyPress' );
+	$has_buddyboss = defined( 'BP_PLATFORM_VERSION' );
+	
+	if ( ( $has_buddypress || $has_buddyboss ) && bp_activity_share_pro_check_config() ) {
 		run_buddypress_share_pro();
 	}
 }
@@ -280,21 +284,30 @@ function bpshare_pro_same_network_config() {
 }
 
 /**
- * Check if buddypress activate.
+ * Check if BuddyPress or BuddyBoss Platform is active.
  */
-function bpshare_pro_requires_buddypress() {
+function bpshare_pro_check_requirements() {
 	// Check if in the admin area and current user has permission to manage options.
-	if ( is_admin() && current_user_can( 'activate_plugins' ) && ! class_exists( 'BuddyPress' ) ) {
+	if ( ! is_admin() || ! current_user_can( 'activate_plugins' ) ) {
+		return;
+	}
+	
+	// Check for BuddyPress or BuddyBoss Platform
+	$has_buddypress = class_exists( 'BuddyPress' );
+	$has_buddyboss = defined( 'BP_PLATFORM_VERSION' );
+	
+	// If neither is active, deactivate this plugin
+	if ( ! $has_buddypress && ! $has_buddyboss ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		add_action( 'admin_notices', 'bpshare_pro_required_plugin_admin_notice' );
 
 		// Safely unset 'activate' parameter to prevent activation notice.
-        if ( isset( $_GET['activate'] ) ) { // phpcs:ignore
-            unset( $_GET['activate'] ); // phpcs:ignore
+		if ( isset( $_GET['activate'] ) ) { // phpcs:ignore
+			unset( $_GET['activate'] ); // phpcs:ignore
 		}
 	}
 }
-add_action( 'admin_init', 'bpshare_pro_requires_buddypress' );
+add_action( 'admin_init', 'bpshare_pro_check_requirements' );
 
 /**
  * Throw an Alert to tell the Admin why it didn't activate.
@@ -303,14 +316,12 @@ add_action( 'admin_init', 'bpshare_pro_requires_buddypress' );
  * @since  2.2.2
  */
 function bpshare_pro_required_plugin_admin_notice() {
-	$bpquotes_plugin = esc_html__( 'BuddyPress Activity Share Pro', 'buddypress-share' );
-	$bp_plugin       = esc_html__( 'BuddyPress', 'buddypress-share' );
+	$plugin_name = esc_html__( 'BuddyPress Activity Share Pro', 'buddypress-share' );
 	echo '<div class="error"><p>';
 	printf(
-	/* translators: 1: Name of the plugin 2: Name of the dependent plugin */
-		esc_html__( '%1$s is ineffective now as it requires %2$s to be installed and active.', 'buddypress-share' ),
-		'<strong>' . esc_html( $bpquotes_plugin ) . '</strong>',
-		'<strong>' . esc_html( $bp_plugin ) . '</strong>'
+		/* translators: %s: Name of the plugin */
+		esc_html__( '%s requires either BuddyPress or BuddyBoss Platform to be installed and active.', 'buddypress-share' ),
+		'<strong>' . esc_html( $plugin_name ) . '</strong>'
 	);
 	echo '</p></div>';
 	if ( isset( $_GET['activate'] ) ) { //phpcs:ignore
@@ -405,37 +416,6 @@ function bp_activity_reshare_post_disable( $post_type ) {
 	return $post_type;
 }
 
-/**
- * This function handles sharing an activity URL on the compose message box in BuddyPress or BuddyBoss.
- */
-function bp_share_pro_share_activity_url_on_compose() {
-	if ( function_exists( 'buddypress' ) && isset( buddypress()->buddyboss ) ) {
-		$check_bb_bp = 'buddyboss';
-	} else {
-		$check_bb_bp = 'buddypress';
-	}
-
-	if ( isset( $_GET['activity_url'] ) ) { // phpcs:ignore
-		$activity_url = esc_url( $_GET['activity_url'] ); // phpcs:ignore
-		?>
-		<script>
-			jQuery(document).ready(function(){
-				var url = "<?php echo esc_js( $activity_url ); ?>";
-				var active_bb_bp = "<?php echo esc_js( $check_bb_bp ); ?>";
-				
-				if( 'buddyboss' === active_bb_bp ){
-					jQuery('#bp-message-content').addClass('focus-in--content');
-					jQuery('#bp-message-content div #message_content').removeAttr("data-placeholder");
-					jQuery('#bp-message-content div #message_content').append(url);
-				} else if( 'buddypress' === active_bb_bp ){
-					jQuery('#message_content').val(url);
-				}
-			});
-		</script>
-		<?php
-	}
-}
-add_action( 'wp_footer', 'bp_share_pro_share_activity_url_on_compose' );
 
 /**
  * Initialize default options for new installations only.
@@ -516,7 +496,6 @@ function bp_share_pro_ensure_defaults() {
 			// All content types enabled by default
 			'disable_post_reshare_activity'        => 0,
 			'disable_my_profile_reshare_activity'  => 0,
-			'disable_message_reshare_activity'     => 0,
 			'disable_group_reshare_activity'       => 0,
 			'disable_friends_reshare_activity'     => 0,
 		);

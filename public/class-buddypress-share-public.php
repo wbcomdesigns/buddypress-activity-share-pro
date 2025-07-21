@@ -178,10 +178,14 @@ class Buddypress_Share_Public {
 		);
 		
 		// Main plugin script with auto minification
+		// Get platform-specific dependencies
+		$script_deps = function_exists( 'bp_share_get_script_dependencies' ) ? bp_share_get_script_dependencies() : array( 'jquery' );
+		$script_deps[] = 'wp-i18n'; // Add i18n support
+		
 		bp_share_enqueue_script(
 			$this->plugin_name,
 			$plugin_url . 'public/js/buddypress-share-public', // Without .js
-			array( 'jquery', 'wp-i18n' ),
+			$script_deps,
 			$this->version,
 			true
 		);
@@ -192,6 +196,7 @@ class Buddypress_Share_Public {
 		// Localize script with necessary data
 		$this->localize_script();
 	}
+
 
 	/**
 	 * Check if Font Awesome is already loaded by other plugins/themes.
@@ -267,7 +272,7 @@ class Buddypress_Share_Public {
 	 */
 	private function should_load_assets() {
 		// Load on BP pages, single posts, or when explicitly requested
-		return ( function_exists( 'is_buddypress' ) && is_buddypress() ) 
+		return bp_share_is_buddypress_page() 
 			|| is_single() 
 			|| apply_filters( 'bp_activity_share_load_assets', false );
 	}
@@ -361,10 +366,18 @@ class Buddypress_Share_Public {
 	 * @access   public
 	 */
 	public function bp_share_inner_activity_filter() {
-		$activity_id = bp_get_activity_id();
+		// Check if BP functions are available
+		if ( ! bp_share_is_bp_active() ) {
+			return;
+		}
+		
+		$activity_id = bp_share_get_activity_id();
+		if ( ! $activity_id ) {
+			return;
+		}
 		
 		// Get share count
-		$share_count = bp_activity_get_meta( $activity_id, 'share_count', true );
+		$share_count = function_exists( 'bp_activity_get_meta' ) ? bp_activity_get_meta( $activity_id, 'share_count', true ) : '';
 		$share_count = $share_count ? $share_count : '';
 
 		global $activities_template;
@@ -375,10 +388,16 @@ class Buddypress_Share_Public {
 		$extra_options = $settings['extra_options'];
 		$bp_reshare_settings = $settings['reshare_settings'];
 		
-		$activity_type  = bp_get_activity_type();
+		$activity_type  = bp_share_get_activity_type();
+		
+		// Check if this activity type should have share button
+		if ( function_exists( 'bp_share_should_show_share_button' ) && ! bp_share_should_show_share_button( $activity_type ) ) {
+			return;
+		}
+		
 		$activity_link  = $this->get_activity_permalink( $activities_template->activity );
-		$activity_title = bp_get_activity_feed_item_title();
-		$mail_subject   = wp_strip_all_tags( $activities_template->activity->action );
+		$activity_title = bp_share_get_activity_title();
+		$mail_subject   = isset( $activities_template->activity->action ) ? wp_strip_all_tags( $activities_template->activity->action ) : '';
 		
 		if ( ! is_user_logged_in() ) {
 			echo '<div class="activity-meta">';
@@ -399,14 +418,14 @@ class Buddypress_Share_Public {
 			
 			<div class="bp-activity-share-dropdown-menu activity-share-dropdown-menu-container <?php echo esc_attr( $activity_type . ' ' . $style ); ?>">
 				<?php if ( is_user_logged_in() ) : ?>
-					<?php $this->render_logged_in_share_options( $bp_reshare_settings ); ?>
+					<?php $this->bp_share_user_services_button( $bp_reshare_settings ); ?>
 				<?php endif; ?>
 				
 				<?php if ( $settings['services_enable'] ) : ?>
 					<div class="bp-share-activity-share-to-wrapper">
 						<?php
 						if ( ! empty( $social_service ) ) {
-							$this->render_social_sharing_buttons( $activity_link, $activity_title, $mail_subject, $social_service );
+							$this->bp_share_social_buttons( $activity_link, $activity_title, $mail_subject, $social_service );
 						} else {
 							esc_html_e( 'Please enable share services!', 'buddypress-share' );
 						}
@@ -416,10 +435,10 @@ class Buddypress_Share_Public {
 				
 				<?php do_action( 'bp_share_user_services', array(), $activity_link, $activity_title ); ?>
 
-				<?php $this->render_popup_overlay(); ?>
+				<?php $this->bp_share_popup_overlay(); ?>
 			</div>
 			
-			<?php $this->render_popup_script( $extra_options ); ?>
+			<?php $this->bp_share_popup_script( $extra_options ); ?>
 		</div>
 		
 		<?php
@@ -429,77 +448,46 @@ class Buddypress_Share_Public {
 	}
 
 	/**
-	 * Render share options for logged-in users.
+	 * Display logged in user share button.
 	 *
 	 * @since    1.5.2
 	 * @access   private
 	 * @param    array $bp_reshare_settings Reshare settings.
 	 */
-	private function render_logged_in_share_options( $bp_reshare_settings ) {
-		$share_options = array(
-			'my-profile' => array(
-				'setting' => 'disable_my_profile_reshare_activity',
-				'icon'    => 'as-icon as-icon-share-square',
-				'label'   => __( 'Reshare', 'buddypress-share' ),
-				'title'   => __( 'My Profile', 'buddypress-share' ),
-			),
-			// 'message' => array(
-			// 	'setting' => 'disable_message_reshare_activity',
-			// 	'icon'    => 'fas fa-envelope',
-			// 	'label'   => __( 'Share to Message', 'buddypress-share' ),
-			// 	'title'   => __( 'Message', 'buddypress-share' ),
-			// 	'is_link' => true,
-			// 	'url'     => function_exists('bp_loggedin_user_domain') ? bp_loggedin_user_domain() . 'messages/compose/?activity_url=' . bp_loggedin_user_domain() . 'activity/' . bp_get_activity_id() : '#',
-			// ),
-			// 'groups' => array(
-			// 	'setting' => 'disable_group_reshare_activity',
-			// 	'icon'    => 'fas fa-users',
-			// 	'label'   => __( 'Share to a group', 'buddypress-share' ),
-			// 	'title'   => __( 'Select Group', 'buddypress-share' ),
-			// ),
-			// 'friends' => array(
-			// 	'setting' => 'disable_friends_reshare_activity',
-			// 	'icon'    => 'fas fa-user-plus',
-			// 	'label'   => __( 'Share with Friends', 'buddypress-share' ),
-			// 	'title'   => __( 'Select Friend', 'buddypress-share' ),
-			// ),
+	private function bp_share_user_services_button( $bp_reshare_settings ) {
+		// Check if any reshare option is enabled
+		$reshare_enabled = false;
+		$reshare_types = array(
+			'disable_my_profile_reshare_activity',
+			'disable_group_reshare_activity',
+			'disable_friends_reshare_activity'
 		);
-
-		foreach ( $share_options as $key => $option ) {
-			if ( ! isset( $bp_reshare_settings[ $option['setting'] ] ) ) {
-				$this->render_share_option( $key, $option );
+		
+		foreach ( $reshare_types as $type ) {
+			if ( ! isset( $bp_reshare_settings[ $type ] ) || ! $bp_reshare_settings[ $type ] ) {
+				$reshare_enabled = true;
+				break;
 			}
+		}
+		
+		// Render single reshare button if any option is enabled
+		if ( $reshare_enabled ) {
+			?>
+			<div class="bp-activity-share-btn bp-activity-reshare-btn" data-reshare="all" data-title="<?php esc_attr_e( 'Reshare Activity', 'buddypress-share' ); ?>">
+				<a class="button item-button bp-secondary-action bp-activity-share-button" data-toggle="modal" data-target="#activity-share-modal" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
+					<span class="bp-activity-reshare-icon">	
+						<i class="as-icon as-icon-share-square"></i>
+					</span>
+					<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
+				</a>
+			</div>
+			<?php
 		}
 	}
 
-	/**
-	 * Render individual share option.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @param    string $key Share option key.
-	 * @param    array  $option Share option data.
-	 */
-	private function render_share_option( $key, $option ) {
-		$css_class = isset( $option['is_link'] ) ? 'bp-activity-share-btn' : 'bp-activity-share-btn bp-activity-reshare-btn';
-		?>
-		<div class="<?php echo esc_attr( $css_class ); ?>" data-reshare="<?php echo esc_attr( $key ); ?>" data-title="<?php echo esc_attr( $option['title'] ); ?>">
-			<?php if ( isset( $option['is_link'] ) ) : ?>
-				<a href="<?php echo esc_url( $option['url'] ); ?>" class="button item-button bp-secondary-action" rel="nofollow">
-			<?php else : ?>
-				<a class="button item-button bp-secondary-action bp-activity-share-button" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
-			<?php endif; ?>
-				<span class="bp-activity-reshare-icon">	
-					<i class="<?php echo esc_attr( $option['icon'] ); ?>"></i>
-				</span>
-				<span class="bp-share-text bp-share-label"><?php echo esc_html( $option['label'] ); ?></span>
-			</a>
-		</div>
-		<?php
-	}
 
 	/**
-	 * Render social sharing buttons with Font Awesome 5 icons.
+	 * Display social share service buttons.
 	 *
 	 * @since    1.5.2
 	 * @access   private
@@ -508,7 +496,7 @@ class Buddypress_Share_Public {
 	 * @param    string $mail_subject   Email subject.
 	 * @param    array  $social_service Enabled social services.
 	 */
-	private function render_social_sharing_buttons( $activity_link, $activity_title, $mail_subject, $social_service ) {
+	private function bp_share_social_buttons( $activity_link, $activity_title, $mail_subject, $social_service ) {
 		$sharing_services = $this->get_sharing_services_config( $activity_link, $activity_title, $mail_subject );
 
 		foreach ( $sharing_services as $service => $details ) {
@@ -635,12 +623,12 @@ class Buddypress_Share_Public {
 	}
 
 	/**
-	 * Render popup overlay for theme compatibility.
+	 * Output popup overlay for theme compatibility.
 	 *
 	 * @since    1.5.2
 	 * @access   private
 	 */
-	private function render_popup_overlay() {
+	private function bp_share_popup_overlay() {
 		$theme_support = apply_filters( 'buddypress_reactions_theme_support', array( 'reign-theme', 'buddyx-pro' ) );
 		$theme_name = wp_get_theme();
 
@@ -650,13 +638,13 @@ class Buddypress_Share_Public {
 	}
 
 	/**
-	 * Render popup activation script.
+	 * Output activity share popup script.
 	 *
 	 * @since    1.5.2
 	 * @access   private
 	 * @param    array $extra_options Extra plugin options.
 	 */
-	private function render_popup_script( $extra_options ) {
+	private function bp_share_popup_script( $extra_options ) {
 		$popup_active = isset( $extra_options['bp_share_services_open'] ) ? $extra_options['bp_share_services_open'] : '';
 		?>
 		<script>
@@ -790,7 +778,7 @@ class Buddypress_Share_Public {
 	 */
 	public function bp_activity_create_reshare_ajax() {
 		// Verify nonce for security
-		if ( ! wp_verify_nonce( $_POST['_ajax_nonce'] ?? '', 'bp-activity-share-nonce' ) ) {
+		if ( ! check_ajax_referer( 'bp-activity-share-nonce', '_ajax_nonce', false ) ) {
 			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'buddypress-share' ) ) );
 		}
 
@@ -816,13 +804,26 @@ class Buddypress_Share_Public {
 			wp_send_json_error( array( 'message' => __( 'Invalid activity type.', 'buddypress-share' ) ) );
 		}
 
-		// Handle user mentions
-		if ( isset( $_POST['activity_in_type'] ) && 'user' === $_POST['activity_in_type'] ) {
-			$username = $this->get_user_name_by_id( $activity_in );
-			if ( $username ) {
-				$activity_content = "@{$username} \r\n{$activity_content}";
+		// Handle different share destinations
+		$destination_type = 'profile'; // default
+		
+		if ( $activity_in > 0 ) {
+			// Check if it's a group or user
+			if ( isset( $_POST['activity_in_type'] ) ) {
+				$destination_type = sanitize_key( $_POST['activity_in_type'] );
+				
+				if ( 'user' === $destination_type ) {
+					// Add mention for user
+					$username = $this->get_user_name_by_id( $activity_in );
+					if ( $username ) {
+						$activity_content = "@{$username} \r\n{$activity_content}";
+					}
+					$activity_in = 0; // Post to main activity stream with mention
+				} elseif ( 'group' === $destination_type ) {
+					// Keep activity_in as group_id for group posting
+					$destination_type = 'group';
+				}
 			}
-			$activity_in = 0;
 		}
 
 		// Validate group permissions
@@ -856,7 +857,7 @@ class Buddypress_Share_Public {
 	 * @return   string|false Username or false on failure.
 	 */
 	private function get_user_name_by_id( $user_id ) {
-		if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
+		if ( function_exists( 'bp_members_get_user_slug' ) ) {
 			return bp_members_get_user_slug( $user_id );
 		}
 		return bp_core_get_username( $user_id );
@@ -888,6 +889,7 @@ class Buddypress_Share_Public {
 	 * @return   int|false New activity ID or false on failure.
 	 */
 	private function create_share_activity( $user_id, $activity_id, $activity_type, $activity_content, $activity_in ) {
+		// Prepare activity arguments
 		$activity_args = array(
 			'user_id'           => $user_id,
 			'component'         => ( $activity_in > 0 ) ? 'groups' : 'activity',
@@ -895,9 +897,26 @@ class Buddypress_Share_Public {
 			'content'           => $activity_content,
 			'secondary_item_id' => $activity_id,
 			'item_id'           => $activity_in,
+			'hide_sitewide'     => false,
 		);
-
-		return bp_activity_add( $activity_args );
+		
+		// For group activities, ensure proper privacy
+		if ( $activity_in > 0 && bp_is_active( 'groups' ) ) {
+			$group = groups_get_group( $activity_in );
+			if ( $group && 'public' !== $group->status ) {
+				$activity_args['hide_sitewide'] = true;
+			}
+		}
+		
+		// Add the activity
+		$new_activity_id = bp_activity_add( $activity_args );
+		
+		// Store original activity reference as meta
+		if ( $new_activity_id && 'activity_share' === $activity_type ) {
+			bp_activity_update_meta( $new_activity_id, 'shared_activity_id', $activity_id );
+		}
+		
+		return $new_activity_id;
 	}
 
 	/**
@@ -1031,7 +1050,7 @@ class Buddypress_Share_Public {
 		$activity_permalink = bp_activity_get_permalink( $bp->current_action );
 		$og_data = $this->prepare_opengraph_data( $activity_obj );
 
-		$this->render_opengraph_meta( $activity_permalink, $og_data );
+		$this->bp_share_opengraph_meta_tags( $activity_permalink, $og_data );
 	}
 
 	/**
@@ -1120,14 +1139,14 @@ class Buddypress_Share_Public {
 	}
 
 	/**
-	 * Render OpenGraph meta tags.
+	 * Output OpenGraph meta tags.
 	 *
 	 * @since    1.5.2
 	 * @access   private
 	 * @param    string $permalink Activity permalink.
 	 * @param    array  $data      OpenGraph data.
 	 */
-	private function render_opengraph_meta( $permalink, $data ) {
+	private function bp_share_opengraph_meta_tags( $permalink, $data ) {
 		?>
 		<meta property="og:type" content="article" />
 		<meta property="og:url" content="<?php echo esc_url( $permalink ); ?>" />
@@ -1201,21 +1220,21 @@ class Buddypress_Share_Public {
 		}
 
 		if ( 'activity_share' === $activity_type ) {
-			$this->bp_render_shared_activity( $secondary_item_id, $reshare_share_activity );
+			$this->bp_share_display_activity( $secondary_item_id, $reshare_share_activity );
 		} elseif ( 'post_share' === $activity_type ) {
-			$this->bp_render_shared_post( $secondary_item_id );
+			$this->bp_share_display_post( $secondary_item_id );
 		}
 	}
 
 	/**
-	 * Render shared BuddyPress activity.
+	 * Display shared BuddyPress activity.
 	 *
 	 * @since    1.5.2
 	 * @access   private
 	 * @param    int    $activity_id Activity ID to render.
 	 * @param    string $display_mode Parent or child display mode.
 	 */
-	private function bp_render_shared_activity( $activity_id, $display_mode ) {
+	private function bp_share_display_activity( $activity_id, $display_mode ) {
 		global $activities_template;
 		
 		// Store the original template
@@ -1247,7 +1266,7 @@ class Buddypress_Share_Public {
 		
 		while ( bp_activities() ) {
 			bp_the_activity();
-			$this->render_shared_activity_html();
+			$this->bp_share_activity_container();
 		}
 		
 		// Restore filters and template
@@ -1258,12 +1277,12 @@ class Buddypress_Share_Public {
 	}
 
 	/**
-	 * Render shared activity HTML.
+	 * Display shared activity container.
 	 *
 	 * @since    1.5.2
 	 * @access   private
 	 */
-	private function render_shared_activity_html() {
+	private function bp_share_activity_container() {
 		?>
 		<div id="bp-reshare-activity-<?php echo esc_attr( bp_get_activity_id() ); ?>" 
 			 class="activity-reshare-item-container" 
@@ -1296,13 +1315,13 @@ class Buddypress_Share_Public {
 	}
 
 	/**
-	 * Render shared WordPress post.
+	 * Display shared WordPress post.
 	 *
 	 * @since    1.5.2
 	 * @access   private
 	 * @param    int $post_id Post ID to render.
 	 */
-	private function bp_render_shared_post( $post_id ) {
+	private function bp_share_display_post( $post_id ) {
 		$post = get_post( $post_id );
 		
 		if ( ! $post || 'publish' !== $post->post_status ) {
@@ -1390,8 +1409,12 @@ class Buddypress_Share_Public {
 		}
 
 		$user_name = $this->get_current_user_name();
+		$bp_reshare_settings = get_site_option( 'bp_reshare_settings', array() );
+		
+		// Get modal classes with platform compatibility
+		$modal_classes = function_exists( 'bp_share_get_modal_classes' ) ? bp_share_get_modal_classes() : 'activity-share-modal modal fade';
 		?>
-		<div class="modal fade activity-share-modal" id="activity-share-modal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="activity-share-modal-title">
+		<div class="<?php echo esc_attr( $modal_classes ); ?>" id="activity-share-modal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="activity-share-modal-title">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<!-- Close button with proper Bootstrap 4 attributes -->
@@ -1421,7 +1444,16 @@ class Buddypress_Share_Public {
 										<!-- Select2 dropdown with proper initialization -->
 										<select id="post-in" name="postIn" class="bp-share-select2" style="width: 100%;">
 											<option value="0"><?php esc_html_e( 'My Profile', 'buddypress-share' ); ?></option>
-											<option value="message"><?php esc_html_e( 'Message', 'buddypress-share' ); ?></option>
+											<?php if ( bp_is_active( 'groups' ) && empty( $bp_reshare_settings['disable_group_reshare_activity'] ) ) : ?>
+												<optgroup label="<?php esc_attr_e( 'Groups', 'buddypress-share' ); ?>" id="bp-share-groups-options">
+													<!-- Groups will be loaded dynamically -->
+												</optgroup>
+											<?php endif; ?>
+											<?php if ( bp_is_active( 'friends' ) && empty( $bp_reshare_settings['disable_friends_reshare_activity'] ) ) : ?>
+												<optgroup label="<?php esc_attr_e( 'Friends', 'buddypress-share' ); ?>" id="bp-share-friends-options">
+													<!-- Friends will be loaded dynamically -->
+												</optgroup>
+											<?php endif; ?>
 										</select>
 									</div>
 								</div>
@@ -1431,7 +1463,7 @@ class Buddypress_Share_Public {
 					
 					<!-- Modal Body -->
 					<div class="modal-body">
-						<?php $this->render_share_form( $user_name ); ?>
+						<?php $this->bp_activity_share_form( $user_name ); ?>
 						<div id="bp-activity-share-widget-box-status-header">
 							<?php $this->bp_activity_share_single_post_formate(); ?>
 						</div>
@@ -1509,20 +1541,20 @@ class Buddypress_Share_Public {
 	 * @return   string Current user name.
 	 */
 	private function get_current_user_name() {
-		if ( function_exists( 'buddypress' ) && version_compare( buddypress()->version, '12.0', '>=' ) ) {
+		if ( function_exists( 'bp_members_get_user_slug' ) ) {
 			return bp_members_get_user_slug( bp_loggedin_user_id() );
 		}
 		return bp_core_get_username( bp_loggedin_user_id() );
 	}
 
 	/**
-	 * Render share form.
+	 * Display activity share form.
 	 *
 	 * @since    1.5.2
 	 * @access   private
 	 * @param    string $user_name Current user name.
 	 */
-	private function render_share_form( $user_name ) {
+	private function bp_activity_share_form( $user_name ) {
 		$placeholder_text = sprintf(
 			/* translators: %s: username */
 			esc_html__( 'Hi %s! Write something here. Use @ to mention someone...', 'buddypress-share' ),

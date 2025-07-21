@@ -61,9 +61,9 @@ class BP_Share_License_Manager {
     }
     
     /**
-     * Render license tab content
+     * Display license tab content
      */
-    public function render_license_tab() {
+    public function bp_share_license_tab() {
         $license_status = $this->get_license_status();
         ?>
         <div class="bp-share-license-section">
@@ -99,7 +99,7 @@ class BP_Share_License_Manager {
                         </th>
                         <td>
                             <div id="license-status">
-                                <?php echo $this->render_license_status_display( $license_status ); ?>
+                                <?php echo $this->bp_share_license_status( $license_status ); ?>
                             </div>
                         </td>
                     </tr>
@@ -149,9 +149,9 @@ class BP_Share_License_Manager {
     }
     
     /**
-     * Render license status display
+     * Display license status
      */
-    private function render_license_status_display( $license_status ) {
+    private function bp_share_license_status( $license_status ) {
         ob_start();
         
         if ( $license_status['status'] === 'valid' ) : ?>

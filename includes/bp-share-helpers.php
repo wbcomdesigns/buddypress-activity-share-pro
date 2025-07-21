@@ -71,3 +71,73 @@ function bp_share_enqueue_script( $handle, $src, $deps = array(), $version = fal
     
     wp_enqueue_script( $handle, $src . $suffix . '.js', $deps, $version, $in_footer );
 }
+
+/**
+ * Check if BuddyPress functions are available
+ *
+ * @return bool
+ */
+function bp_share_is_bp_active() {
+    return function_exists( 'buddypress' ) || function_exists( 'bp_is_active' );
+}
+
+/**
+ * Safe wrapper for bp_get_activity_id
+ *
+ * @return int|false
+ */
+function bp_share_get_activity_id() {
+    if ( function_exists( 'bp_get_activity_id' ) ) {
+        return bp_get_activity_id();
+    }
+    return false;
+}
+
+/**
+ * Safe wrapper for bp_get_activity_type
+ *
+ * @return string|false
+ */
+function bp_share_get_activity_type() {
+    if ( function_exists( 'bp_get_activity_type' ) ) {
+        return bp_get_activity_type();
+    }
+    return false;
+}
+
+/**
+ * Safe wrapper for bp_is_active
+ *
+ * @param string $component Component name
+ * @return bool
+ */
+function bp_share_is_component_active( $component ) {
+    if ( function_exists( 'bp_is_active' ) ) {
+        return bp_is_active( $component );
+    }
+    return false;
+}
+
+/**
+ * Safe wrapper for is_buddypress
+ *
+ * @return bool
+ */
+function bp_share_is_buddypress_page() {
+    if ( function_exists( 'is_buddypress' ) ) {
+        return is_buddypress();
+    }
+    return false;
+}
+
+/**
+ * Safe wrapper for bp_get_activity_feed_item_title
+ *
+ * @return string
+ */
+function bp_share_get_activity_title() {
+    if ( function_exists( 'bp_get_activity_feed_item_title' ) ) {
+        return bp_get_activity_feed_item_title();
+    }
+    return '';
+}

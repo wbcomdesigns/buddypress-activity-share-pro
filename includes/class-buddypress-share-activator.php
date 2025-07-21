@@ -163,7 +163,6 @@ class Buddypress_Share_Activator {
 
 		} catch ( Exception $e ) {
 			// Silently fail if indexes can't be created
-			error_log( 'BP Share: Could not create database indexes - ' . $e->getMessage() );
 		}
 	}
 
@@ -308,7 +307,7 @@ class Buddypress_Share_Activator {
 
 		} catch ( Exception $e ) {
 			// Log errors but don't fail
-			error_log( 'BP Share Cleanup: ' . $e->getMessage() );
+			// Cleanup failed
 		}
 	}
 

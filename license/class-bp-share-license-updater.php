@@ -31,7 +31,6 @@ class BP_Share_License_Updater {
 
         // Check if required classes exist before trying to use them
         if ( ! class_exists( 'BP_Share_EDD_Updater_Wrapper' ) ) {
-            error_log( 'BP Share: BP_Share_EDD_Updater_Wrapper class not found' );
             return;
         }
 

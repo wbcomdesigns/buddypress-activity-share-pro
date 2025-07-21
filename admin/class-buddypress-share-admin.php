@@ -315,16 +315,16 @@ class Buddypress_Share_Admin {
 				<?php
 				switch ( $current_section ) {
 					case 'sharing':
-						$this->render_sharing_settings();
+						$this->bp_share_services_settings_page();
 						break;
 					case 'icons':
-						$this->render_icon_settings();
+						$this->bp_share_icons_settings_page();
 						break;
 					case 'license':
-						$this->render_license_settings();
+						$this->bp_share_license_settings_page();
 						break;
 					default:
-						$this->render_general_settings();
+						$this->bp_share_general_settings_page();
 						break;
 				}
 				?>
@@ -334,12 +334,12 @@ class Buddypress_Share_Admin {
 	}
 
 	/**
-	 * Render general settings section.
+	 * Display general settings section.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function render_general_settings() {
+	private function bp_share_general_settings_page() {
 		// Get current settings
 		$bp_share_services_enable = get_site_option( 'bp_share_services_enable', 1 );
 		$bp_share_services_logout_enable = get_site_option( 'bp_share_services_logout_enable', 1 );
@@ -508,15 +508,13 @@ class Buddypress_Share_Admin {
 					},
 					success: function(response) {
 						if (response.success) {
-							console.log('Service updated successfully:', serviceName);
 							updateNoServicesMessages();
 						} else {
-							console.error('AJAX Success but failed:', response);
+							// Failed to update service
 						}
 					},
 					error: function(xhr, status, error) {
-						console.error('AJAX Error:', error);
-						console.error('Response:', xhr.responseText);
+						// AJAX request failed
 					}
 				});
 			});
@@ -554,12 +552,12 @@ class Buddypress_Share_Admin {
 	}
 
 	/**
-	 * Render sharing settings section.
+	 * Display share services settings section.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function render_sharing_settings() {
+	private function bp_share_services_settings_page() {
 		// Get current settings
 		$bp_reshare_settings = get_site_option( 'bp_reshare_settings', array() );
 		$bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
@@ -596,15 +594,6 @@ class Buddypress_Share_Admin {
 									       value="1" 
 									       <?php checked( 1, isset( $bp_reshare_settings['disable_my_profile_reshare_activity'] ) ? $bp_reshare_settings['disable_my_profile_reshare_activity'] : 0 ); ?> />
 									<?php esc_html_e( 'Profile Sharing', 'buddypress-share' ); ?>
-								</label><br>
-								
-								<label for="disable_message_reshare_activity">
-									<input type="checkbox" 
-									       name="bp_reshare_settings[disable_message_reshare_activity]" 
-									       id="disable_message_reshare_activity"
-									       value="1" 
-									       <?php checked( 1, isset( $bp_reshare_settings['disable_message_reshare_activity'] ) ? $bp_reshare_settings['disable_message_reshare_activity'] : 0 ); ?> />
-									<?php esc_html_e( 'Private Messages', 'buddypress-share' ); ?>
 								</label><br>
 								
 								<label for="disable_group_reshare_activity">
@@ -661,12 +650,12 @@ class Buddypress_Share_Admin {
 	}
 
 	/**
-	 * Render icon settings section.
+	 * Display icon style settings section.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function render_icon_settings() {
+	private function bp_share_icons_settings_page() {
 		// Get current icon settings
 		$bpas_icon_color_settings = get_option( 'bpas_icon_color_settings', array() );
 		$current_style = isset( $bpas_icon_color_settings['icon_style'] ) ? $bpas_icon_color_settings['icon_style'] : 'circle';
@@ -750,12 +739,12 @@ class Buddypress_Share_Admin {
 	}
 
 	/**
-	 * Render license settings section.
+	 * Display license settings section.
 	 *
 	 * @since    1.5.2
 	 * @access   private
 	 */
-	private function render_license_settings() {
+	private function bp_share_license_settings_page() {
 		if ( ! class_exists( 'BP_Share_License_Manager' ) ) {
 			?>
 			<div class="notice notice-warning">
@@ -766,7 +755,7 @@ class Buddypress_Share_Admin {
 		}
 
 		$license_manager = BP_Share_License_Manager::get_instance();
-		$license_manager->render_license_tab();
+		$license_manager->bp_share_license_tab();
 		
 		// Enqueue license scripts
 		$this->enqueue_license_scripts();
@@ -1246,7 +1235,6 @@ class Buddypress_Share_Admin {
 		$boolean_fields = array(
 			'disable_post_reshare_activity',
 			'disable_my_profile_reshare_activity',
-			'disable_message_reshare_activity',
 			'disable_group_reshare_activity',
 			'disable_friends_reshare_activity',
 		);

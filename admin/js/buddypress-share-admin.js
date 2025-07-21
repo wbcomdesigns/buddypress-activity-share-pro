@@ -151,7 +151,7 @@
          */
         updateServiceStatus: function(serviceName, action) {
             if (!serviceName) {
-                console.error('Service name is required');
+                // Service name is required
                 return;
             }
 
@@ -176,10 +176,10 @@
                             serviceName + ' ' + (action === 'enable' ? 'enabled' : 'disabled') + ' successfully', 
                             'success'
                         );
-                        console.log('Service updated successfully:', serviceName);
+                        // Service updated successfully
                     } else {
                         this.showNotice('Failed to update service: ' + (response.data?.message || 'Unknown error'), 'error');
-                        console.error('Service update failed:', response);
+                        // Service update failed
                         this.revertServiceMove(serviceName, action);
                     }
                 },
@@ -192,7 +192,7 @@
                     }
                     
                     this.showNotice(errorMessage, 'error');
-                    console.error('AJAX error:', error);
+                    // AJAX error occurred
                     this.revertServiceMove(serviceName, action);
                 },
                 complete: () => {
@@ -576,9 +576,9 @@
                 $('body').addClass('bp-share-admin-loaded');
             }
             
-            console.log('BuddyPress Share Admin initialized successfully');
+            // BuddyPress Share Admin initialized successfully
         } catch (error) {
-            console.error('Failed to initialize BP Share Admin:', error);
+            // Failed to initialize BP Share Admin
         }
     });
 

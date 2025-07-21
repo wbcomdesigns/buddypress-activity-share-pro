@@ -172,7 +172,7 @@
          */
         initializeSelect2: function() {
             if (typeof $.fn.select2 === 'undefined') {
-                console.warn('Select2 not loaded, falling back to regular select');
+                // Select2 not loaded, falling back to regular select
                 return;
             }
 
@@ -247,25 +247,32 @@
 
         loadShareOptionsIfNeeded: function() {
             const $select = $(SELECTORS.postInSelect);
-            const currentOptions = $select.find('option').length;
+            const hasGroupsOptgroup = $select.find('#bp-share-groups-options').length > 0;
+            const hasFriendsOptgroup = $select.find('#bp-share-friends-options').length > 0;
             
-            if (currentOptions <= 2) {
-                this.showLoadingState();
+            // Only load if we have optgroups that need data
+            if (hasGroupsOptgroup || hasFriendsOptgroup) {
+                const groupsLoaded = $select.find('#bp-share-groups-options option').length > 0;
+                const friendsLoaded = $select.find('#bp-share-friends-options option').length > 0;
                 
-                ShareCache.getShareOptions()
-                    .then(this.populateShareOptions.bind(this))
-                    .catch(this.handleLoadError.bind(this))
-                    .finally(this.hideLoadingState.bind(this));
+                if (!groupsLoaded || !friendsLoaded) {
+                    this.bpShareShowLoading();
+                    
+                    ShareCache.getShareOptions()
+                        .then(this.bpShareLoadOptions.bind(this))
+                        .catch(this.handleLoadError.bind(this))
+                        .finally(this.bpShareHideLoading.bind(this));
+                }
             }
         },
 
-        showLoadingState: function() {
+        bpShareShowLoading: function() {
             const $select = $(SELECTORS.postInSelect);
             $select.prop('disabled', true);
             $select.parent().addClass('loading');
         },
 
-        hideLoadingState: function() {
+        bpShareHideLoading: function() {
             const $select = $(SELECTORS.postInSelect);
             $select.prop('disabled', false);
             $select.parent().removeClass('loading');
@@ -274,42 +281,43 @@
         /**
          * FIXED: Populate share options with proper Select2 handling
          */
-        populateShareOptions: function(data) {
+        bpShareLoadOptions: function(data) {
             const $select = $(SELECTORS.postInSelect);
             
-            // Clear existing optgroups
-            $select.find('optgroup').remove();
-            
-            // Add groups
+            // Add groups to existing optgroup
             if (data.groups && data.groups.length > 0) {
-                const $groupOptgroup = $('<optgroup>').attr('label', 'Groups');
-                
-                data.groups.forEach(group => {
-                    $groupOptgroup.append(
-                        $('<option>')
-                            .val(group.id)
-                            .attr('data-type', 'group')
-                            .text(group.name)
-                    );
-                });
-                
-                $select.append($groupOptgroup);
+                const $groupOptgroup = $select.find('#bp-share-groups-options');
+                if ($groupOptgroup.length > 0) {
+                    // Clear existing options
+                    $groupOptgroup.empty();
+                    
+                    data.groups.forEach(group => {
+                        $groupOptgroup.append(
+                            $('<option>')
+                                .val(group.id)
+                                .attr('data-type', 'group')
+                                .text(group.name)
+                        );
+                    });
+                }
             }
             
-            // Add friends
+            // Add friends to existing optgroup
             if (data.friends && data.friends.length > 0) {
-                const $friendOptgroup = $('<optgroup>').attr('label', 'Friends');
-                
-                data.friends.forEach(friend => {
-                    $friendOptgroup.append(
-                        $('<option>')
-                            .val(friend.id)
-                            .attr('data-type', 'user')
-                            .text(friend.display_name)
-                    );
-                });
-                
-                $select.append($friendOptgroup);
+                const $friendOptgroup = $select.find('#bp-share-friends-options');
+                if ($friendOptgroup.length > 0) {
+                    // Clear existing options
+                    $friendOptgroup.empty();
+                    
+                    data.friends.forEach(friend => {
+                        $friendOptgroup.append(
+                            $('<option>')
+                                .val(friend.id)
+                                .attr('data-type', 'user')
+                                .text(friend.display_name)
+                        );
+                    });
+                }
             }
             
             // Refresh Select2 if it's initialized
@@ -326,7 +334,7 @@
         },
 
         handleLoadError: function(error) {
-            console.error('Failed to load share options:', error);
+            // Failed to load share options
             
             const $errorMsg = $('<div>')
                 .addClass('bp-share-error-message')
@@ -500,7 +508,7 @@
                 return false;
             }
 
-            this.showSubmitLoadingState();
+            this.bpShareButtonLoading();
 
             $.ajax({
                 url: bp_activity_share_vars.ajax_url,
@@ -528,17 +536,17 @@
                     this.handleShareError('Network error occurred');
                 },
                 complete: () => {
-                    this.hideSubmitLoadingState();
+                    this.bpShareButtonReset();
                 }
             });
         },
 
-        showSubmitLoadingState: function() {
+        bpShareButtonLoading: function() {
             const $button = $('.bp-activity-share-activity');
             $button.prop('disabled', true).text('Sharing...');
         },
 
-        hideSubmitLoadingState: function() {
+        bpShareButtonReset: function() {
             const $button = $('.bp-activity-share-activity');
             $button.prop('disabled', false).text('Post');
         },
@@ -566,7 +574,7 @@
         },
 
         handleShareError: function(message) {
-            console.error('Share error:', message);
+            // Share error occurred
             this.showErrorMessage(message);
         },
 
@@ -635,11 +643,6 @@
             
             // Clear activity content
             $('#bp-activity-share-widget-box-status-header').empty();
-            
-            // Remove modal classes
-            // $('.activity-share-modal').removeClass(function(index, className) {
-            //     return (className.match(/(^|\s)\S+-\S+/g) || []).join(' ');
-            // });
         },
 
         /**
@@ -714,7 +717,7 @@
                     this.showCopyError($tooltip);
                 }
             } catch (err) {
-                console.error('Copy failed:', err);
+                // Copy failed
                 this.showCopyError($tooltip);
             }
 
@@ -823,7 +826,7 @@
                 });
             }
         } catch (error) {
-            console.error('Failed to initialize BuddyPress Activity Share:', error);
+            // Failed to initialize BuddyPress Activity Share
         }
     });
 
