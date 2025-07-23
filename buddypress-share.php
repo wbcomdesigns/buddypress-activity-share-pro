@@ -58,9 +58,9 @@ function bp_share_load_license_system() {
 	// Define license files in the correct loading order
 	$license_files = array(
 		'EDD_SL_Plugin_Updater' => BP_ACTIVITY_SHARE_PLUGIN_PATH . 'license/EDD_SL_Plugin_Updater.php',
-		'BP_Share_EDD_Updater_Wrapper' => BP_ACTIVITY_SHARE_PLUGIN_PATH . 'license/class-bp-share-edd-updater-wrapper.php',
-		'BP_Share_License_Manager' => BP_ACTIVITY_SHARE_PLUGIN_PATH . 'license/class-bp-share-license-manager.php',
-		'BP_Share_License_Updater' => BP_ACTIVITY_SHARE_PLUGIN_PATH . 'license/class-bp-share-license-updater.php'
+		'BP_ACTIVITY_SHARE_PLUGIN_EDD_Updater_Wrapper' => BP_ACTIVITY_SHARE_PLUGIN_PATH . 'license/class-buddypress-share-edd-updater-wrapper.php',
+		'BP_ACTIVITY_SHARE_PLUGIN_License_Manager' => BP_ACTIVITY_SHARE_PLUGIN_PATH . 'license/class-buddypress-share-license-manager.php',
+		'BP_ACTIVITY_SHARE_PLUGIN_License_Updater' => BP_ACTIVITY_SHARE_PLUGIN_PATH . 'license/class-buddypress-share-license-updater.php'
 	);
 	
 	// Check if all files exist first
@@ -110,12 +110,12 @@ function bp_share_load_license_system() {
 	}
 	
 	// Initialize license components only after all classes are loaded
-	if ( class_exists( 'BP_Share_License_Manager' ) ) {
-		BP_Share_License_Manager::get_instance();
+	if ( class_exists( 'BP_ACTIVITY_SHARE_PLUGIN_License_Manager' ) ) {
+		BP_ACTIVITY_SHARE_PLUGIN_License_Manager::get_instance();
 	}
 	
-	if ( class_exists( 'BP_Share_License_Updater' ) ) {
-		BP_Share_License_Updater::get_instance();
+	if ( class_exists( 'BP_ACTIVITY_SHARE_PLUGIN_License_Updater' ) ) {
+		new BP_ACTIVITY_SHARE_PLUGIN_License_Updater();
 	}
 }
 
@@ -173,8 +173,8 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bp_activity_s
  */
 function bp_activity_share_pro_plugin_actions( $links, $file ) {
 	if ( class_exists( 'BuddyPress' ) && current_user_can( 'manage_options' ) ) {
-		$settings_link = '<a href="' . esc_url( admin_url( 'options-general.php?page=buddypress-share' ) ) . '">' . esc_html__( 'Settings', 'buddypress-share' ) . '</a>';
-		$license_link = '<a href="' . esc_url( admin_url( 'options-general.php?page=buddypress-share&section=license' ) ) . '">' . esc_html__( 'License', 'buddypress-share' ) . '</a>';
+		$settings_link = '<a href="' . esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share' ) ) . '">' . esc_html__( 'Settings', 'buddypress-share' ) . '</a>';
+		$license_link = '<a href="' . esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=license' ) ) . '">' . esc_html__( 'License', 'buddypress-share' ) . '</a>';
 		array_unshift( $links, $settings_link, $license_link ); // before other links.
 	}
 	return $links;
@@ -211,6 +211,71 @@ function bpshare_pro_plugin_init() {
 	if ( ( $has_buddypress || $has_buddyboss ) && bp_activity_share_pro_check_config() ) {
 		run_buddypress_share_pro();
 	}
+}
+
+/**
+ * Initialize WBCom integration
+ */
+function bp_share_init_wbcom_integration() {
+	// Only register if we have the requirements
+	$has_buddypress = class_exists( 'BuddyPress' );
+	$has_buddyboss = defined( 'BP_PLATFORM_VERSION' );
+	
+	if ( ( $has_buddypress || $has_buddyboss ) && bp_activity_share_pro_check_config() ) {
+		// First check if wbcom_integrate_plugin is already available (from wbcom-essential or another plugin)
+		if ( function_exists( 'wbcom_integrate_plugin' ) ) {
+			// Use the existing integration function
+			wbcom_integrate_plugin( __FILE__, array(
+				'name'         => 'BP Activity Share Pro',
+				'menu_title'   => 'BP Activity Share Pro',
+				'slug'         => 'buddypress-share',
+				'priority'     => 15,
+				'icon'         => 'dashicons-share',
+				'callback'     => 'bp_share_render_admin_page',
+				'settings_url' => admin_url( 'admin.php?page=wbcom-buddypress-share' ),
+			) );
+			return;
+		}
+		
+		// Otherwise, load our own integration
+		if ( class_exists( 'BP_Activity_Share_Wbcom_Integration' ) ) {
+			new BP_Activity_Share_Wbcom_Integration();
+		}
+	}
+}
+
+/**
+ * Fallback integration if primary fails
+ */
+function bp_share_init_fallback_integration() {
+	// Only run if not already integrated
+	if ( ! function_exists( 'wbcom_integrate_plugin' ) && 
+	     class_exists( 'BP_Activity_Share_Wbcom_Integration' ) &&
+	     bp_activity_share_pro_check_config() ) {
+		new BP_Activity_Share_Wbcom_Integration();
+	}
+}
+
+/**
+ * Render admin page for shared wrapper
+ */
+function bp_share_render_admin_page() {
+	// Make sure admin class is loaded
+	if ( ! class_exists( 'Buddypress_Share_Admin' ) ) {
+		require_once plugin_dir_path( __FILE__ ) . 'admin/class-buddypress-share-admin.php';
+	}
+	
+	// Create an instance and call the method
+	$admin = new Buddypress_Share_Admin( 'buddypress-share', BP_ACTIVITY_SHARE_PLUGIN_VERSION );
+	$admin->bp_share_plugin_options();
+}
+
+/**
+ * Initialize WBCom integration
+ */
+if ( is_admin() ) {
+	add_action( 'init', 'bp_share_init_wbcom_integration', 1 );
+	add_action( 'plugins_loaded', 'bp_share_init_fallback_integration', 20 );
 }
 
 /**
@@ -389,7 +454,7 @@ function bpshare_pro_activation_redirect_settings( $plugin ) {
 			if ( isset( $_REQUEST['action'] ) && 'activate' === sanitize_text_field( $_REQUEST['action'] ) && isset( $_REQUEST['plugin'] ) && sanitize_text_field( $_REQUEST['plugin'] ) === $plugin ) { // phpcs:ignore
 
 				// Redirect to the settings page after plugin activation.
-				wp_redirect( admin_url( 'options-general.php?page=buddypress-share' ) );
+				wp_redirect( admin_url( 'admin.php?page=wbcom-buddypress-share' ) );
 				exit;
 			}
 		}
@@ -440,6 +505,68 @@ function bp_share_pro_init_defaults() {
 add_action( 'admin_init', 'bp_share_pro_init_defaults' );
 
 /**
+ * Force cleanup of Twitter service entries and ensure Copy Link is available
+ * This ensures only X (Twitter) remains and Copy Link is added
+ *
+ * @since 1.5.1
+ */
+function bp_share_pro_force_twitter_cleanup() {
+	$current_services = get_site_option( 'bp_share_services', array() );
+	if ( ! is_array( $current_services ) ) {
+		return;
+	}
+	
+	$cleaned_services = array();
+	$has_x = false;
+	$has_copy_link = false;
+	
+	// First pass: collect all services except Twitter and X
+	foreach ( $current_services as $key => $value ) {
+		if ( $key !== 'Twitter' && $key !== 'X' ) {
+			$cleaned_services[$key] = $value;
+			if ( $key === 'Copy-Link' ) {
+				$has_copy_link = true;
+			}
+		} elseif ( ($key === 'Twitter' || $key === 'X') && ! $has_x ) {
+			// Add X (Twitter) only once
+			$cleaned_services['X'] = 'X (Twitter)';
+			$has_x = true;
+		}
+	}
+	
+	// Add Copy Link if it's not already present
+	if ( ! $has_copy_link ) {
+		$cleaned_services['Copy-Link'] = 'Copy Link';
+	}
+	
+	// Update if there were any changes
+	if ( count($cleaned_services) !== count($current_services) || isset($current_services['Twitter']) || ! $has_copy_link ) {
+		update_site_option( 'bp_share_services', $cleaned_services );
+	}
+}
+// Run cleanup on every admin page load to ensure migration
+add_action( 'admin_init', 'bp_share_pro_force_twitter_cleanup', 5 );
+
+/**
+ * Clear options cache to force fresh load
+ * This helps ensure the migration takes effect immediately
+ *
+ * @since 1.5.1  
+ */
+function bp_share_pro_clear_options_cache() {
+	// Clear any cached values
+	wp_cache_delete( 'bp_share_services', 'site-options' );
+	wp_cache_delete( 'alloptions', 'options' );
+	wp_cache_delete( 'notoptions', 'options' );
+	
+	// Force cleanup on settings page
+	if ( isset( $_GET['page'] ) && $_GET['page'] === 'wbcom-buddypress-share' ) {
+		bp_share_pro_force_twitter_cleanup();
+	}
+}
+add_action( 'init', 'bp_share_pro_clear_options_cache' );
+
+/**
  * Ensure default options are set for fresh installations.
  * This function is safe to run multiple times.
  *
@@ -456,13 +583,47 @@ function bp_share_pro_ensure_defaults() {
 	if ( empty( $current_services ) || ! is_array( $current_services ) ) {
 		$default_services = array(
 			'Facebook'  => 'Facebook',
-			'Twitter'   => 'Twitter',
+			'X'         => 'X (Twitter)',
 			'LinkedIn'  => 'LinkedIn',
 			'E-mail'    => 'E-mail',
 			'WhatsApp'  => 'WhatsApp',
 			'Pinterest' => 'Pinterest',
+			'Copy-Link' => 'Copy Link',
 		);
 		update_site_option( 'bp_share_services', $default_services );
+	} else {
+		// Migrate Twitter to X if it exists and remove duplicates
+		$needs_update = false;
+		$new_services = array();
+		$has_x = false;
+		
+		foreach ( $current_services as $key => $value ) {
+			if ( $key === 'Twitter' ) {
+				// Only add X if we haven't already added it
+				if ( ! $has_x ) {
+					$new_services['X'] = 'X (Twitter)';
+					$has_x = true;
+				}
+				$needs_update = true;
+			} elseif ( $key === 'X' ) {
+				// Only keep the first X entry
+				if ( ! $has_x ) {
+					$new_services['X'] = 'X (Twitter)';
+					$has_x = true;
+				}
+				// Ensure value is correct
+				if ( $value !== 'X (Twitter)' ) {
+					$needs_update = true;
+				}
+			} else {
+				$new_services[$key] = $value;
+			}
+		}
+		
+		if ( $needs_update || count($new_services) !== count($current_services) ) {
+			update_site_option( 'bp_share_services', $new_services );
+			$current_services = $new_services;
+		}
 	}
 
 	// Ensure main settings are enabled by default
@@ -517,4 +678,27 @@ function bp_share_pro_ensure_defaults() {
 		);
 		update_site_option( 'bpas_icon_color_settings', $icon_settings );
 	}
+}
+
+/**
+ * Add filter to customize submenu labels
+ */
+add_filter( 'wbcom_submenu_label', 'bp_share_customize_submenu_label', 10, 3 );
+
+/**
+ * Customize submenu label for BuddyPress Activity Share Pro
+ *
+ * @since 1.5.2
+ * @param string $label Current menu label
+ * @param string $slug Plugin slug
+ * @param array $plugin Plugin data
+ * @return string Modified menu label
+ */
+function bp_share_customize_submenu_label( $label, $slug, $plugin ) {
+	// Change menu label for this plugin
+	if ( $slug === 'buddypress-share' ) {
+		return esc_html__( 'BP Activity Share Pro', 'buddypress-share' );
+	}
+	
+	return $label;
 }

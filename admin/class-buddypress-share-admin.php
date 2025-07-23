@@ -96,6 +96,26 @@ class Buddypress_Share_Admin {
 			wp_enqueue_style( 'wp-color-picker' );
 		}
 
+		// Modern shared tab styles - Use centralized version from WBCom Essential if available
+		if ( defined( 'WBCOM_ESSENTIAL_URL' ) && file_exists( WP_PLUGIN_DIR . '/wbcom-essential/includes/shared-admin/wbcom-shared-tabs.css' ) ) {
+			wp_enqueue_style(
+				'wbcom-shared-tabs',
+				WBCOM_ESSENTIAL_URL . 'includes/shared-admin/wbcom-shared-tabs.css',
+				array(),
+				defined( 'WBCOM_ESSENTIAL_VERSION' ) ? WBCOM_ESSENTIAL_VERSION : $this->version,
+				'all'
+			);
+		} else {
+			// Fallback to local copy
+			wp_enqueue_style(
+				'wbcom-shared-tabs',
+				$plugin_url . 'includes/shared-admin/wbcom-shared-tabs.css',
+				array(),
+				$this->version,
+				'all'
+			);
+		}
+
 		// Main admin stylesheet with auto min/RTL support
 		bp_share_enqueue_style(
 			$this->plugin_name . '-admin',
@@ -225,13 +245,16 @@ class Buddypress_Share_Admin {
 	 * @access   public
 	 */
 	public function bp_share_plugin_menu() {
-		add_options_page(
-			__( 'BuddyPress Activity Share', 'buddypress-share' ),
-			__( 'Activity Share', 'buddypress-share' ),
-			'manage_options',
-			'buddypress-share',
-			array( $this, 'bp_share_plugin_options' )
-		);
+		// Only add menu if shared wrapper is not active
+		if ( ! class_exists( 'Wbcom_Shared_Loader' ) ) {
+			add_options_page(
+				__( 'BuddyPress Activity Share', 'buddypress-share' ),
+				__( 'Activity Share', 'buddypress-share' ),
+				'manage_options',
+				'buddypress-share',
+				array( $this, 'bp_share_plugin_options' )
+			);
+		}
 	}
 
 	/**
@@ -251,7 +274,10 @@ class Buddypress_Share_Admin {
 		
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'BuddyPress Activity Share Settings', 'buddypress-share' ); ?></h1>
+			<h1>
+				<span class="dashicons dashicons-share" style="font-size: 36px; width: 36px; height: 36px; margin-right: 10px; vertical-align: middle; color: #646970;"></span>
+				<?php esc_html_e( 'BuddyPress Activity Share Pro Settings', 'buddypress-share' ); ?>
+			</h1>
 			
 			<?php
 			// Show success message if settings were updated
@@ -291,27 +317,37 @@ class Buddypress_Share_Admin {
 			}
 			?>
 
-			<!-- Native WordPress Navigation Tabs -->
-			<nav class="nav-tab-wrapper">
-				<a href="<?php echo esc_url( admin_url( 'options-general.php?page=buddypress-share&section=general' ) ); ?>" 
-				   class="nav-tab <?php echo 'general' === $current_section ? 'nav-tab-active' : ''; ?>">
-					<?php esc_html_e( 'General Settings', 'buddypress-share' ); ?>
-				</a>
-				<a href="<?php echo esc_url( admin_url( 'options-general.php?page=buddypress-share&section=sharing' ) ); ?>" 
-				   class="nav-tab <?php echo 'sharing' === $current_section ? 'nav-tab-active' : ''; ?>">
-					<?php esc_html_e( 'Sharing Options', 'buddypress-share' ); ?>
-				</a>
-				<a href="<?php echo esc_url( admin_url( 'options-general.php?page=buddypress-share&section=icons' ) ); ?>" 
-				   class="nav-tab <?php echo 'icons' === $current_section ? 'nav-tab-active' : ''; ?>">
-					<?php esc_html_e( 'Icon Styles', 'buddypress-share' ); ?>
-				</a>
-				<a href="<?php echo esc_url( admin_url( 'options-general.php?page=buddypress-share&section=license' ) ); ?>" 
-				   class="nav-tab <?php echo 'license' === $current_section ? 'nav-tab-active' : ''; ?>">
-					<?php esc_html_e( 'License', 'buddypress-share' ); ?>
-				</a>
-			</nav>
+			<!-- Modern WBCom Tab Navigation -->
+			<div class="wbcom-tab-wrapper">
+				<nav class="wbcom-nav-tab-wrapper nav-tab-wrapper">
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=general' ) ); ?>" 
+					   class="wbcom-nav-tab nav-tab <?php echo 'general' === $current_section ? 'nav-tab-active' : ''; ?>">
+						<span class="dashicons dashicons-admin-settings"></span>
+						<?php esc_html_e( 'General Settings', 'buddypress-share' ); ?>
+					</a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=sharing' ) ); ?>" 
+					   class="wbcom-nav-tab nav-tab <?php echo 'sharing' === $current_section ? 'nav-tab-active' : ''; ?>">
+						<span class="dashicons dashicons-share"></span>
+						<?php esc_html_e( 'Sharing Options', 'buddypress-share' ); ?>
+					</a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=icons' ) ); ?>" 
+					   class="wbcom-nav-tab nav-tab <?php echo 'icons' === $current_section ? 'nav-tab-active' : ''; ?>">
+						<span class="dashicons dashicons-admin-appearance"></span>
+						<?php esc_html_e( 'Icon Styles', 'buddypress-share' ); ?>
+					</a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=license' ) ); ?>" 
+					   class="wbcom-nav-tab nav-tab <?php echo 'license' === $current_section ? 'nav-tab-active' : ''; ?>">
+						<span class="dashicons dashicons-admin-network"></span>
+						<?php esc_html_e( 'License', 'buddypress-share' ); ?>
+					</a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=faq' ) ); ?>" 
+					   class="wbcom-nav-tab nav-tab <?php echo 'faq' === $current_section ? 'nav-tab-active' : ''; ?>">
+						<span class="dashicons dashicons-editor-help"></span>
+						<?php esc_html_e( 'FAQ', 'buddypress-share' ); ?>
+					</a>
+				</nav>
 
-			<div class="tab-content">
+				<div class="wbcom-tab-content tab-content">
 				<?php
 				switch ( $current_section ) {
 					case 'sharing':
@@ -323,12 +359,16 @@ class Buddypress_Share_Admin {
 					case 'license':
 						$this->bp_share_license_settings_page();
 						break;
+					case 'faq':
+						$this->bp_share_faq_page();
+						break;
 					default:
 						$this->bp_share_general_settings_page();
 						break;
 				}
 				?>
-			</div>
+				</div><!-- .wbcom-tab-content -->
+			</div><!-- .wbcom-tab-wrapper -->
 		</div>
 		<?php
 	}
@@ -352,6 +392,20 @@ class Buddypress_Share_Admin {
 			$enabled_services = array();
 		}
 		
+		// Migrate Twitter to X if it exists
+		if ( isset( $enabled_services['Twitter'] ) ) {
+			$new_services = array();
+			foreach ( $enabled_services as $key => $value ) {
+				if ( $key === 'Twitter' ) {
+					$new_services['X'] = 'X (Twitter)';
+				} else {
+					$new_services[$key] = $value;
+				}
+			}
+			$enabled_services = $new_services;
+			update_site_option( 'bp_share_services', $enabled_services );
+		}
+		
 		// Set default services if empty
 		if ( empty( $enabled_services ) ) {
 			$enabled_services = array(
@@ -361,6 +415,7 @@ class Buddypress_Share_Admin {
 				'E-mail'    => 'E-mail',
 				'WhatsApp'  => 'WhatsApp',
 				'Pinterest' => 'Pinterest',
+				'Copy-Link' => 'Copy Link',
 			);
 		}
 		
@@ -745,7 +800,7 @@ class Buddypress_Share_Admin {
 	 * @access   private
 	 */
 	private function bp_share_license_settings_page() {
-		if ( ! class_exists( 'BP_Share_License_Manager' ) ) {
+		if ( ! class_exists( 'BP_ACTIVITY_SHARE_PLUGIN_License_Manager' ) ) {
 			?>
 			<div class="notice notice-warning">
 				<p><?php esc_html_e( 'License management is not available. Please contact support.', 'buddypress-share' ); ?></p>
@@ -754,8 +809,8 @@ class Buddypress_Share_Admin {
 			return;
 		}
 
-		$license_manager = BP_Share_License_Manager::get_instance();
-		$license_manager->bp_share_license_tab();
+		$license_manager = BP_ACTIVITY_SHARE_PLUGIN_License_Manager::get_instance();
+		$license_manager->render_license_tab();
 		
 		// Enqueue license scripts
 		$this->enqueue_license_scripts();
@@ -1096,6 +1151,7 @@ class Buddypress_Share_Admin {
 			'Bluesky'   => 'Bluesky',
 			'WhatsApp'  => 'WhatsApp',
 			'E-mail'    => 'E-mail',
+			'Copy-Link' => 'Copy Link',
 		);
 	}
 
@@ -1108,8 +1164,8 @@ class Buddypress_Share_Admin {
 	 * @return   bool True if plugin admin page, false otherwise.
 	 */
 	private function is_plugin_admin_page( $hook ) {
-		return ( $hook === 'settings_page_buddypress-share' || 
-		         ( isset( $_GET['page'] ) && $_GET['page'] === 'buddypress-share' ) );
+		return ( $hook === 'wbcom-designs_page_wbcom-buddypress-share' || 
+		         ( isset( $_GET['page'] ) && $_GET['page'] === 'wbcom-buddypress-share' ) );
 	}
 
 	/**
@@ -1182,12 +1238,28 @@ class Buddypress_Share_Admin {
 		
 		$sanitized = array();
 		$allowed_services = $this->get_all_available_services();
+		$has_x = false;
 		
 		foreach ( $services as $key => $value ) {
 			$sanitized_key = sanitize_text_field( $key );
 			
+			// Skip Twitter entries completely
+			if ( $sanitized_key === 'Twitter' ) {
+				// If we don't have X yet, add it instead of Twitter
+				if ( ! $has_x && ! isset( $sanitized['X'] ) ) {
+					$sanitized['X'] = 'X (Twitter)';
+					$has_x = true;
+				}
+				continue;
+			}
+			
 			if ( ! array_key_exists( $sanitized_key, $allowed_services ) ) {
 				continue;
+			}
+			
+			// Track if we've added X
+			if ( $sanitized_key === 'X' ) {
+				$has_x = true;
 			}
 			
 			$sanitized_value = $allowed_services[ $sanitized_key ];
@@ -1250,5 +1322,115 @@ class Buddypress_Share_Admin {
 		$sanitized['reshare_share_activity'] = in_array( $reshare_mode, $allowed_modes, true ) ? $reshare_mode : 'parent';
 		
 		return $sanitized;
+	}
+
+	/**
+	 * Display FAQ section.
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 */
+	private function bp_share_faq_page() {
+		?>
+		<div class="bp-share-faq-section">
+			<h2><?php esc_html_e( 'Frequently Asked Questions', 'buddypress-share' ); ?></h2>
+			
+			<div class="faq-item">
+				<h3><?php esc_html_e( 'How do I enable social sharing on BuddyPress activities?', 'buddypress-share' ); ?></h3>
+				<p><?php esc_html_e( 'Social sharing is enabled by default. You can toggle it on/off from the General Settings tab. Make sure at least one social service is enabled in the social services section.', 'buddypress-share' ); ?></p>
+			</div>
+
+			<div class="faq-item">
+				<h3><?php esc_html_e( 'Can users share activities without being logged in?', 'buddypress-share' ); ?></h3>
+				<p><?php esc_html_e( 'Yes! Enable "Guest Sharing" in the General Settings tab to allow logged-out users to share public activities on social media platforms.', 'buddypress-share' ); ?></p>
+			</div>
+
+			<div class="faq-item">
+				<h3><?php esc_html_e( 'How do I customize the sharing button appearance?', 'buddypress-share' ); ?></h3>
+				<p><?php esc_html_e( 'Navigate to the Icon Styles tab where you can choose from different icon styles (Circle, Rectangle, Black & White, Bar) and customize colors for background, text, and hover states.', 'buddypress-share' ); ?></p>
+			</div>
+
+			<div class="faq-item">
+				<h3><?php esc_html_e( 'Which social platforms are supported?', 'buddypress-share' ); ?></h3>
+				<p><?php esc_html_e( 'The plugin supports Facebook, X (Twitter), LinkedIn, Pinterest, Reddit, WordPress, Pocket, Telegram, Bluesky, WhatsApp, and Email sharing. You can enable/disable each service individually.', 'buddypress-share' ); ?></p>
+			</div>
+
+			<div class="faq-item">
+				<h3><?php esc_html_e( 'Can I disable sharing for specific activity types?', 'buddypress-share' ); ?></h3>
+				<p><?php esc_html_e( 'Yes! In the Sharing Options tab, you can disable sharing for Blog Posts, Profile Sharing, Groups, and Friends activities.', 'buddypress-share' ); ?></p>
+			</div>
+
+			<div class="faq-item">
+				<h3><?php esc_html_e( 'How does the reshare functionality work?', 'buddypress-share' ); ?></h3>
+				<p><?php esc_html_e( 'When a user reshares an activity, you can choose to display either just the original activity or the complete activity with nested content. Configure this in the Sharing Options tab.', 'buddypress-share' ); ?></p>
+			</div>
+
+			<div class="faq-item">
+				<h3><?php esc_html_e( 'Do sharing links open in popup windows?', 'buddypress-share' ); ?></h3>
+				<p><?php esc_html_e( 'By default, yes. Social sharing links open in popup windows for a better user experience. You can disable this behavior in the General Settings tab.', 'buddypress-share' ); ?></p>
+			</div>
+
+			<div class="faq-item">
+				<h3><?php esc_html_e( 'Is the plugin compatible with BuddyBoss Platform?', 'buddypress-share' ); ?></h3>
+				<p><?php esc_html_e( 'Yes! The plugin automatically detects and adapts to work with both BuddyPress and BuddyBoss Platform.', 'buddypress-share' ); ?></p>
+			</div>
+
+			<div class="faq-item">
+				<h3><?php esc_html_e( 'Where can I get support?', 'buddypress-share' ); ?></h3>
+				<p>
+					<?php 
+					printf(
+						esc_html__( 'For premium support, please visit our %1$ssupport portal%2$s. You can also check our %3$sdocumentation%4$s for detailed guides.', 'buddypress-share' ),
+						'<a href="https://wbcomdesigns.com/support/" target="_blank">',
+						'</a>',
+						'<a href="https://docs.wbcomdesigns.com/buddypress-activity-share-pro/" target="_blank">',
+						'</a>'
+					);
+					?>
+				</p>
+			</div>
+
+			<div class="faq-item">
+				<h3><?php esc_html_e( 'How do I update my license key?', 'buddypress-share' ); ?></h3>
+				<p><?php esc_html_e( 'Go to the License tab, enter your license key, and click "Activate License". An active license ensures you receive automatic updates and premium support.', 'buddypress-share' ); ?></p>
+			</div>
+		</div>
+
+		<style>
+		.bp-share-faq-section {
+			max-width: 800px;
+		}
+		
+		.faq-item {
+			background: #f8f9fa;
+			border: 1px solid #e5e7eb;
+			border-radius: 8px;
+			padding: 20px;
+			margin-bottom: 20px;
+		}
+		
+		.faq-item h3 {
+			margin-top: 0;
+			margin-bottom: 10px;
+			color: #1e293b;
+			font-size: 16px;
+		}
+		
+		.faq-item p {
+			margin: 0;
+			color: #4b5563;
+			line-height: 1.6;
+		}
+		
+		.faq-item a {
+			color: #2271b1;
+			text-decoration: none;
+		}
+		
+		.faq-item a:hover {
+			text-decoration: underline;
+		}
+		</style>
+		<?php
 	}
 }

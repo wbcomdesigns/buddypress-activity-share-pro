@@ -239,4 +239,5 @@ function bp_share_platform_admin_notice() {
 	</div>
 	<?php
 }
-add_action( 'admin_notices', 'bp_share_platform_admin_notice' );
+// Removed compatibility mode notice - it's unnecessary
+// add_action( 'admin_notices', 'bp_share_platform_admin_notice' );

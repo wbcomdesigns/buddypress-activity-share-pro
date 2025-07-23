@@ -58,11 +58,12 @@ class Buddypress_Share_Activator {
 		if ( false === get_site_option( 'bp_share_services' ) ) {
 			$default_services = array(
 				'Facebook'  => 'Facebook',
-				'Twitter'   => 'Twitter',
+				'X'         => 'X (Twitter)',
 				'LinkedIn'  => 'LinkedIn',
 				'E-mail'    => 'E-mail',
 				'WhatsApp'  => 'WhatsApp',
 				'Pinterest' => 'Pinterest',
+				'Copy-Link' => 'Copy Link',
 			);
 			update_site_option( 'bp_share_services', $default_services );
 		}

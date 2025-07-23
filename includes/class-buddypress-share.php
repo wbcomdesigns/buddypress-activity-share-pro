@@ -141,6 +141,11 @@ class Buddypress_Share {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/bp-share-buddyboss-compat.php';
 
+		/**
+		 * The class responsible for Wbcom integration.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wbcom-integration.php';
+
 		$this->loader = new Buddypress_Share_Loader();
 	}
 

@@ -9,115 +9,136 @@
  * @since      1.5.2
  */
 
-/* ===================================================================
-   NATIVE WORDPRESS TAB CONTENT STYLING
-   =================================================================== */
-
-.tab-content {
-	background: #fff;
-	border: 1px solid #c3c4c7;
-	border-top: none;
-	padding: 20px;
-	border-radius: 0 0 4px 4px;
-	margin-bottom: 20px;
-}
+/* Tab-specific styles moved to shared CSS file (wbcom-shared-tabs.css) */
 
 /* ===================================================================
    DRAG & DROP SOCIAL SERVICES STYLING
    =================================================================== */
 
 .social_icon_section {
-	display: flex;
-	gap: 20px;
-	margin: 20px 0;
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 30px;
+	margin: 30px 0;
+	max-width: 800px;
 }
 
 .social-services-list {
-	flex: 1;
-	min-height: 200px;
+	background: #fff;
+	border: 1px solid #e1e5e9;
+	border-radius: 8px;
+	padding: 24px;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+	transition: all 0.3s ease;
 }
 
 .social-services-list h3 {
-	margin-top: 0;
-	font-size: 14px;
+	margin: 0 0 20px 0;
+	font-size: 18px;
 	font-weight: 600;
-	color: #646970;
-	text-transform: uppercase;
-	letter-spacing: 0.5px;
-	margin-bottom: 10px;
+	color: #1d2327;
+	padding-bottom: 12px;
+	border-bottom: 2px solid #f0f0f1;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.social-services-list h3::before {
+	content: '';
+	display: inline-block;
+	width: 4px;
+	height: 20px;
+	background: #1d76da;
+	border-radius: 2px;
 }
 
 .enabled-services-list,
 .disabled-services-list {
-	min-height: 150px;
-	padding: 15px;
-	border: 2px dashed #c3c4c7;
-	border-radius: 4px;
-	background: #fafafa;
+	min-height: 120px;
+	padding: 20px;
+	border: 2px dashed #d1d5db;
+	border-radius: 6px;
+	background: #f8f9fa;
 	list-style: none;
 	margin: 0;
 	transition: all 0.3s ease;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+	gap: 12px;
 }
 
 .enabled-services-list:hover,
 .disabled-services-list:hover {
-	border-color: #2271b1;
-	background: #f6f7f7;
+	border-color: #1d76da;
+	background: #f0f6fc;
+	box-shadow: 0 0 0 1px rgba(29, 118, 218, 0.1) inset;
 }
 
 .enabled-services-list.ui-droppable-hover,
 .disabled-services-list.ui-droppable-hover {
-	border-color: #135e96;
-	background: #f0f6fc;
+	border-color: #1d76da;
+	background: #e8f3ff;
 	border-style: solid;
+	box-shadow: 0 0 0 3px rgba(29, 118, 218, 0.15) inset;
 }
 
 .socialicon {
 	display: flex;
 	align-items: center;
-	padding: 8px 12px;
-	margin: 4px 0;
+	justify-content: center;
+	padding: 12px 16px;
+	margin: 0;
 	background: #fff;
-	border: 1px solid #dcdcde;
-	border-radius: 4px;
+	border: 1px solid #e1e5e9;
+	border-radius: 6px;
 	cursor: move;
 	transition: all 0.2s ease;
-	font-size: 13px;
+	font-size: 14px;
+	font-weight: 500;
 	color: #2c3338;
 	list-style: none;
+	text-align: center;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+	position: relative;
 }
 
 .socialicon:hover {
-	background: #f6f7f7;
-	border-color: #999;
-	transform: translateY(-1px);
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	background: #f0f6fc;
+	border-color: #1d76da;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+	color: #1d76da;
 }
 
 .socialicon.ui-sortable-helper {
-	background: #2271b1;
+	background: #1d76da;
 	color: #fff;
-	border-color: #135e96;
-	box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-	transform: rotate(2deg);
+	border-color: #1560b8;
+	box-shadow: 0 8px 16px rgba(29, 118, 218, 0.3);
+	transform: rotate(2deg) scale(1.05);
+	z-index: 1000;
 }
 
 .socialicon.ui-sortable-placeholder {
-	background: #e5f5ff;
-	border: 2px dashed #2271b1;
-	height: 32px;
-	margin: 4px 0;
+	background: #e8f3ff;
+	border: 2px dashed #1d76da;
+	height: 44px;
+	margin: 0;
+	border-radius: 6px;
 }
 
 .no-services-message {
 	color: #646970;
 	font-style: italic;
 	text-align: center;
-	padding: 20px;
+	padding: 40px 20px;
 	background: none !important;
 	border: none !important;
 	cursor: default !important;
 	list-style: none;
+	grid-column: 1 / -1;
+	font-size: 14px;
 }
 
 .no-services-message:hover {
@@ -159,7 +180,8 @@
 
 @media screen and (max-width: 782px) {
 	.social_icon_section {
-		flex-direction: column;
+		grid-template-columns: 1fr;
+		max-width: 100%;
 	}
 	
 	.social-services-list {
@@ -238,5 +260,27 @@
 
 .enabled-services-list.drag-active,
 .disabled-services-list.drag-active {
-	background: rgba(34, 113, 177, 0.1);
+	background: rgba(29, 118, 218, 0.08);
+	border-color: #1d76da;
+}
+
+/* Professional section styling */
+.social-services-list.enabled-services {
+	background: linear-gradient(to bottom, #fff 0%, #f8fafb 100%);
+}
+
+.social-services-list.enabled-services h3 {
+	color: #0e7a0d;
+}
+
+.social-services-list.enabled-services h3::before {
+	background: #0e7a0d;
+}
+
+.social-services-list.disabled-services h3 {
+	color: #646970;
+}
+
+.social-services-list.disabled-services h3::before {
+	background: #646970;
 }

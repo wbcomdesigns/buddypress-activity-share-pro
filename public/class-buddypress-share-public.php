@@ -513,15 +513,16 @@ class Buddypress_Share_Public {
 			}
 		}
 
-		// Add copy link button
-		echo '<div class="bp-share-wrapper bp-copy-wrapper">';
-		echo '<a class="button bp-share bp-copy" href="#" data-href="' . esc_attr( $activity_link ) . '" attr-display="no-popup">';
-		echo '<i class="fas fa-link"></i>';
-		echo '<span class="bp-share-label">' . esc_html__( 'Copy Link', 'buddypress-share' ) . '</span>';
-		echo '</a>';
-		echo '<span class="tooltiptext tooltip-hide">' . esc_attr__( 'Link Copied!', 'buddypress-share' ) . '</span>';
-		echo '</div>';
-		echo '</div>';
+		// Add copy link button if enabled
+		if ( ! empty( $social_service['Copy-Link'] ) ) {
+			echo '<div class="bp-share-wrapper bp-copy-wrapper">';
+			echo '<a class="button bp-share bp-copy" href="#" data-href="' . esc_attr( $activity_link ) . '" attr-display="no-popup">';
+			echo '<i class="fas fa-link"></i>';
+			echo '<span class="bp-share-label">' . esc_html__( 'Copy Link', 'buddypress-share' ) . '</span>';
+			echo '</a>';
+			echo '<span class="tooltiptext tooltip-hide">' . esc_attr__( 'Link Copied!', 'buddypress-share' ) . '</span>';
+			echo '</div>';
+		}
 	}
 
 	/**
