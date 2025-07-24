@@ -173,12 +173,12 @@
                 success: (response) => {
                     if (response.success) {
                         this.showNotice(
-                            serviceName + ' ' + (action === 'enable' ? 'enabled' : 'disabled') + ' successfully', 
+                            serviceName + ' ' + (action === 'enable' ? 'activated' : 'deactivated') + ' successfully', 
                             'success'
                         );
                         // Service updated successfully
                     } else {
-                        this.showNotice('Failed to update service: ' + (response.data?.message || 'Unknown error'), 'error');
+                        this.showNotice('Failed to update network: ' + (response.data?.message || 'Unknown error'), 'error');
                         // Service update failed
                         this.revertServiceMove(serviceName, action);
                     }
@@ -202,7 +202,7 @@
         },
 
         /**
-         * Show loading indicator for service being moved
+         * Show loading indicator for network being moved
          */
         showLoadingIndicator: function(serviceName, action) {
             const $item = $(`.socialicon[data-service="${serviceName}"]`);
@@ -218,7 +218,7 @@
         },
 
         /**
-         * Revert service move if AJAX fails
+         * Revert network move if AJAX fails
          */
         revertServiceMove: function(serviceName, action) {
             const $item = $(`.socialicon[data-service="${serviceName}"]`);
@@ -231,7 +231,7 @@
         },
 
         /**
-         * Update "no services" messages based on list contents
+         * Update "no networks" messages based on list contents
          */
         updateNoServicesMessages: function() {
             // Check enabled services list
@@ -241,7 +241,7 @@
             
             if ($enabledItems.length === 0) {
                 if ($enabledMessage.length === 0) {
-                    $enabledMessage = $('<li class="no-services-message">No services enabled. Drag services from the available list to enable them.</li>');
+                    $enabledMessage = $('<li class="no-services-message">No networks enabled. Drag networks from the inactive list to enable them.</li>');
                     $enabledList.append($enabledMessage);
                 }
                 $enabledMessage.show();
@@ -256,7 +256,7 @@
             
             if ($availableItems.length === 0) {
                 if ($availableMessage.length === 0) {
-                    $availableMessage = $('<li class="no-services-message">All services are enabled. Drag services from the enabled list to disable them.</li>');
+                    $availableMessage = $('<li class="no-services-message">All networks are active. Drag networks from the active list to disable them.</li>');
                     $availableList.append($availableMessage);
                 }
                 $availableMessage.show();
@@ -575,6 +575,11 @@
             if ($('body').hasClass('bp-activity-share-admin')) {
                 $('body').addClass('bp-share-admin-loaded');
             }
+            
+            // Initialize services messages on first load
+            setTimeout(function() {
+                BPShareAdmin.updateNoServicesMessages();
+            }, 100);
             
             // BuddyPress Share Admin initialized successfully
         } catch (error) {

@@ -142,6 +142,17 @@
     animation: wbcomFadeIn 0.3s ease;
 }
 
+/* BuddyPress Share specific tab content */
+.bp-share-tab-content {
+    background: #fff;
+    padding: 30px;
+    min-height: 400px;
+    animation: wbcomFadeIn 0.3s ease;
+    border: 1px solid #e1e5e9;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+}
+
 @keyframes wbcomFadeIn {
     from {
         opacity: 0;

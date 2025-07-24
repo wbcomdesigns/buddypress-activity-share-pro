@@ -1,0 +1,272 @@
+/**
+ * BuddyPress Activity Share Pro - License Tab Styles
+ * 
+ * Modern styling for the license management interface.
+ * 
+ * @package    Buddypress_Share
+ * @subpackage Buddypress_Share/license
+ * @since      1.5.2
+ */
+
+/* ===================================================================
+   LICENSE TAB STYLING
+   =================================================================== */
+
+/* License section wrapper */
+.bp_activity_share_plugin-license-section {
+	max-width: 800px;
+}
+
+.bp_activity_share_plugin-license-section .form-table {
+	background: #fff;
+	border: 1px solid #e1e5e9;
+	border-radius: 8px;
+	margin: 24px 0;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.bp_activity_share_plugin-license-section .form-table th {
+	padding: 20px;
+	width: 200px;
+	background: #f8f9fa;
+	border-bottom: 1px solid #e1e5e9;
+	border-right: 1px solid #e1e5e9;
+	font-weight: 600;
+	color: #1d2327;
+	vertical-align: middle;
+}
+
+.bp_activity_share_plugin-license-section .form-table td {
+	padding: 20px;
+	border-bottom: 1px solid #e1e5e9;
+	background: #fff;
+}
+
+.bp_activity_share_plugin-license-section .form-table tr:last-child th,
+.bp_activity_share_plugin-license-section .form-table tr:last-child td {
+	border-bottom: none;
+}
+
+/* License key display */
+.wbcom-license-key-display {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.wbcom-license-key-display code {
+	padding: 8px 16px;
+	background: #f8f9fa;
+	border: 1px solid #e1e5e9;
+	border-radius: 4px;
+	font-size: 14px;
+	font-family: monospace;
+	color: #1d2327;
+}
+
+/* License status styling */
+.bp_activity_share_plugin-license-status {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-weight: 600;
+	font-size: 14px;
+	padding: 6px 12px;
+	border-radius: 4px;
+}
+
+.bp_activity_share_plugin-license-status .dashicons {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.bp_activity_share_plugin-license-valid {
+	color: #0e7a0d;
+	background: #d7f7d7;
+	border: 1px solid #0e7a0d;
+}
+
+.bp_activity_share_plugin-license-expired {
+	color: #996800;
+	background: #fff3cd;
+	border: 1px solid #ffeaa7;
+}
+
+.bp_activity_share_plugin-license-invalid {
+	color: #dc3232;
+	background: #ffebee;
+	border: 1px solid #ffcdd2;
+}
+
+.bp_activity_share_plugin-license-inactive {
+	color: #646970;
+	background: #f8f9fa;
+	border: 1px solid #e1e5e9;
+}
+
+/* License actions */
+.bp_activity_share_plugin-license-actions {
+	margin: 24px 0;
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.bp_activity_share_plugin-license-actions .button {
+	padding: 8px 20px;
+	height: auto;
+	font-weight: 500;
+	border-radius: 6px;
+	transition: all 0.2s ease;
+}
+
+.bp_activity_share_plugin-license-actions .button-primary {
+	background: #1d76da;
+	border-color: #1d76da;
+	box-shadow: 0 1px 3px rgba(29, 118, 218, 0.3);
+}
+
+.bp_activity_share_plugin-license-actions .button-primary:hover {
+	background: #135e96;
+	border-color: #135e96;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 8px rgba(29, 118, 218, 0.3);
+}
+
+/* License message */
+.bp_activity_share_plugin-license-message {
+	margin-top: 16px;
+}
+
+.bp_activity_share_plugin-license-message .notice {
+	margin: 0;
+}
+
+/* License info box */
+.bp_activity_share_plugin-license-info-box {
+	margin-top: 32px;
+	padding: 24px;
+	background: #fff;
+	border: 1px solid #e1e5e9;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+	position: relative;
+	overflow: hidden;
+}
+
+.bp_activity_share_plugin-license-info-box:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 4px;
+	height: 100%;
+	background: #1d76da;
+}
+
+.bp_activity_share_plugin-license-info-box h4 {
+	margin: 0 0 16px 0;
+	color: #1d2327;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.bp_activity_share_plugin-license-info-box ul {
+	list-style: none;
+	padding: 0;
+	margin: 0 0 20px 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 12px;
+}
+
+.bp_activity_share_plugin-license-info-box li {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 0;
+	color: #50575e;
+	font-size: 14px;
+}
+
+.bp_activity_share_plugin-license-info-box .dashicons {
+	color: #1d76da;
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+}
+
+/* License header styling */
+.bp_activity_share_plugin-license-info h3 {
+	margin: 0 0 8px 0;
+	font-size: 20px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.bp_activity_share_plugin-license-info > p {
+	margin: 0 0 24px 0;
+	color: #646970;
+	font-size: 14px;
+	line-height: 1.6;
+}
+
+/* License input styling */
+#bp_activity_share_plugin_license_key {
+	width: 100%;
+	max-width: 400px;
+	padding: 8px 12px;
+	border: 1px solid #e1e5e9;
+	border-radius: 4px;
+	font-size: 14px;
+	font-family: monospace;
+}
+
+#bp_activity_share_plugin_license_key:focus {
+	border-color: #1d76da;
+	box-shadow: 0 0 0 1px #1d76da;
+	outline: none;
+}
+
+/* License input wrapper */
+#bp_activity_share_plugin-license-input-wrapper {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+/* Button styling */
+.button-small {
+	padding: 4px 12px;
+	font-size: 13px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 782px) {
+	.bp_activity_share_plugin-license-section .form-table th,
+	.bp_activity_share_plugin-license-section .form-table td {
+		display: block;
+		width: 100%;
+		border-right: none;
+	}
+	
+	.bp_activity_share_plugin-license-section .form-table th {
+		border-bottom: none;
+		padding-bottom: 8px;
+	}
+	
+	.bp_activity_share_plugin-license-section .form-table td {
+		padding-top: 0;
+	}
+	
+	#bp_activity_share_plugin_license_key {
+		max-width: 100%;
+	}
+	
+	.bp_activity_share_plugin-license-info-box ul {
+		grid-template-columns: 1fr;
+	}
+}

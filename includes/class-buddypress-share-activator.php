@@ -54,23 +54,30 @@ class Buddypress_Share_Activator {
 	 * @access   private
 	 */
 	private static function setup_default_options() {
+		// Clean up obsolete options first
+		self::cleanup_obsolete_options();
+		
 		// Set default social services if not already configured
-		if ( false === get_site_option( 'bp_share_services' ) ) {
+		$current_services = get_site_option( 'bp_share_services' );
+		if ( false === $current_services || empty( $current_services ) || ! is_array( $current_services ) ) {
 			$default_services = array(
 				'Facebook'  => 'Facebook',
 				'X'         => 'X (Twitter)',
 				'LinkedIn'  => 'LinkedIn',
-				'E-mail'    => 'E-mail',
 				'WhatsApp'  => 'WhatsApp',
-				'Pinterest' => 'Pinterest',
+				'E-mail'    => 'E-mail',
 				'Copy-Link' => 'Copy Link',
 			);
 			update_site_option( 'bp_share_services', $default_services );
-		}
-
-		// Set default service state if not configured
-		if ( false === get_site_option( 'bp_share_all_services_disable' ) ) {
-			update_site_option( 'bp_share_all_services_disable', 'enable' );
+		} else {
+			// Migrate Twitter to X if needed
+			self::migrate_twitter_to_x();
+			
+			// Ensure Copy-Link is available
+			if ( ! isset( $current_services['Copy-Link'] ) ) {
+				$current_services['Copy-Link'] = 'Copy Link';
+				update_site_option( 'bp_share_services', $current_services );
+			}
 		}
 
 		// Enable services by default if not configured
@@ -86,7 +93,10 @@ class Buddypress_Share_Activator {
 		// Set default icon settings if not configured
 		if ( false === get_site_option( 'bpas_icon_color_settings' ) ) {
 			$icon_settings = array(
-				'icon_style' => 'circle',
+				'icon_style'  => 'circle',
+				'bg_color'    => '#667eea',
+				'text_color'  => '#ffffff',
+				'hover_color' => '#5a6fd8',
 			);
 			update_site_option( 'bpas_icon_color_settings', $icon_settings );
 		}
@@ -102,7 +112,14 @@ class Buddypress_Share_Activator {
 		// Set default reshare settings if not configured
 		if ( false === get_site_option( 'bp_reshare_settings' ) ) {
 			$reshare_settings = array(
-				'reshare_share_activity' => 'parent',
+				'reshare_share_activity'               => 'parent',
+				'enable_share_count'                   => 1,
+				'prevent_self_share'                   => 0,
+				'respect_privacy'                      => 1,
+				// Content types - all enabled by default (0 = not disabled)
+				'disable_post_reshare_activity'        => 0,
+				'disable_my_profile_reshare_activity'  => 0,
+				'disable_group_reshare_activity'       => 0,
 			);
 			update_site_option( 'bp_reshare_settings', $reshare_settings );
 		}
@@ -327,6 +344,48 @@ class Buddypress_Share_Activator {
 	}
 
 	/**
+	 * Clean up obsolete options.
+	 *
+	 * @since    1.5.3
+	 * @access   private
+	 */
+	private static function cleanup_obsolete_options() {
+		// Remove obsolete options
+		delete_site_option( 'bp_share_all_services_disable' );
+		delete_site_option( 'bp_social_share_activation_date' );
+		delete_site_option( 'bp_social_share_no_bug' );
+		
+		// Clean up friend sharing from reshare settings if exists
+		$reshare_settings = get_site_option( 'bp_reshare_settings' );
+		if ( is_array( $reshare_settings ) && isset( $reshare_settings['disable_friends_reshare_activity'] ) ) {
+			unset( $reshare_settings['disable_friends_reshare_activity'] );
+			update_site_option( 'bp_reshare_settings', $reshare_settings );
+		}
+	}
+
+	/**
+	 * Migrate Twitter to X in services.
+	 *
+	 * @since    1.5.3
+	 * @access   private
+	 */
+	private static function migrate_twitter_to_x() {
+		$services = get_site_option( 'bp_share_services', array() );
+		
+		if ( isset( $services['Twitter'] ) ) {
+			$new_services = array();
+			foreach ( $services as $key => $value ) {
+				if ( $key === 'Twitter' ) {
+					$new_services['X'] = 'X (Twitter)';
+				} else {
+					$new_services[ $key ] = $value;
+				}
+			}
+			update_site_option( 'bp_share_services', $new_services );
+		}
+	}
+
+	/**
 	 * Uninstall cleanup (called from uninstall hook).
 	 *
 	 * @since    1.5.2
@@ -335,17 +394,23 @@ class Buddypress_Share_Activator {
 	public static function uninstall() {
 		// Remove plugin options
 		$options_to_remove = array(
+			// Core options
 			'bp_share_services',
 			'bp_share_services_enable',
 			'bp_share_services_logout_enable',
 			'bp_share_services_extra',
 			'bp_reshare_settings',
 			'bpas_icon_color_settings',
+			// Version tracking
 			'bp_share_plugin_version',
 			'bp_share_install_date',
 			'bp_share_db_version',
+			// License options
+			'bp_activity_share_plugin_license_key',
+			'bp_activity_share_plugin_license_status',
+			'bp_activity_share_plugin_license_data',
+			// Legacy/obsolete options
 			'bp_share_all_services_disable',
-			// Clean up any legacy feedback options
 			'bp_social_share_activation_date',
 			'bp_social_share_no_bug',
 		);

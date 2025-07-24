@@ -92,8 +92,19 @@ class Buddypress_Share_Admin {
 		}
 		
 		// WordPress Color Picker for icon settings
-		if ( isset( $_GET['section'] ) && 'icons' === $_GET['section'] ) {
+		if ( isset( $_GET['section'] ) && in_array( $_GET['section'], array( 'icons', 'display' ) ) ) {
 			wp_enqueue_style( 'wp-color-picker' );
+		}
+		
+		// License tab styles
+		if ( isset( $_GET['section'] ) && 'license' === $_GET['section'] ) {
+			wp_enqueue_style(
+				'bp-share-license-admin',
+				$plugin_url . 'license/license-admin.css',
+				array(),
+				$this->version,
+				'all'
+			);
 		}
 
 		// Modern shared tab styles - Use centralized version from WBCom Essential if available
@@ -147,7 +158,7 @@ class Buddypress_Share_Admin {
 		wp_enqueue_script( 'jquery-ui-droppable' );
 		
 		// WordPress Color Picker for icon settings
-		if ( isset( $_GET['section'] ) && 'icons' === $_GET['section'] ) {
+		if ( isset( $_GET['section'] ) && in_array( $_GET['section'], array( 'icons', 'display' ) ) ) {
 			wp_enqueue_script( 'wp-color-picker' );
 		}
 
@@ -269,13 +280,13 @@ class Buddypress_Share_Admin {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'buddypress-share' ) );
 		}
 
-		// Get current section
-		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : 'general';
+		// Get current section - default to empty string for first tab
+		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : '';
 		
 		?>
-		<div class="wrap">
-			<h1>
-				<span class="dashicons dashicons-share" style="font-size: 36px; width: 36px; height: 36px; margin-right: 10px; vertical-align: middle; color: #646970;"></span>
+		<div class="wrap bp-share-admin-wrap">
+			<h1 class="bp-share-admin-title">
+				<span class="dashicons dashicons-share"></span>
 				<?php esc_html_e( 'BuddyPress Activity Share Pro Settings', 'buddypress-share' ); ?>
 			</h1>
 			
@@ -317,44 +328,51 @@ class Buddypress_Share_Admin {
 			}
 			?>
 
-			<!-- Modern WBCom Tab Navigation -->
+			<!-- WBCom Shared Tab Navigation -->
 			<div class="wbcom-tab-wrapper">
-				<nav class="wbcom-nav-tab-wrapper nav-tab-wrapper">
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=general' ) ); ?>" 
-					   class="wbcom-nav-tab nav-tab <?php echo 'general' === $current_section ? 'nav-tab-active' : ''; ?>">
+				<nav class="wbcom-nav-tab-wrapper">
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share' ) ); ?>" 
+					   class="wbcom-nav-tab <?php echo in_array( $current_section, array( '', 'general', 'services' ) ) ? 'nav-tab-active' : ''; ?>">
+						<span class="dashicons dashicons-share-alt2"></span>
+						<?php esc_html_e( 'Social Networks', 'buddypress-share' ); ?>
+					</a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=display' ) ); ?>" 
+					   class="wbcom-nav-tab <?php echo in_array( $current_section, array( 'display', 'icons' ) ) ? 'nav-tab-active' : ''; ?>">
+						<span class="dashicons dashicons-art"></span>
+						<?php esc_html_e( 'Display Settings', 'buddypress-share' ); ?>
+					</a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=restrictions' ) ); ?>" 
+					   class="wbcom-nav-tab <?php echo in_array( $current_section, array( 'restrictions', 'sharing' ) ) ? 'nav-tab-active' : ''; ?>">
 						<span class="dashicons dashicons-admin-settings"></span>
-						<?php esc_html_e( 'General Settings', 'buddypress-share' ); ?>
-					</a>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=sharing' ) ); ?>" 
-					   class="wbcom-nav-tab nav-tab <?php echo 'sharing' === $current_section ? 'nav-tab-active' : ''; ?>">
-						<span class="dashicons dashicons-share"></span>
-						<?php esc_html_e( 'Sharing Options', 'buddypress-share' ); ?>
-					</a>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=icons' ) ); ?>" 
-					   class="wbcom-nav-tab nav-tab <?php echo 'icons' === $current_section ? 'nav-tab-active' : ''; ?>">
-						<span class="dashicons dashicons-admin-appearance"></span>
-						<?php esc_html_e( 'Icon Styles', 'buddypress-share' ); ?>
+						<?php esc_html_e( 'Restrictions', 'buddypress-share' ); ?>
 					</a>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=license' ) ); ?>" 
-					   class="wbcom-nav-tab nav-tab <?php echo 'license' === $current_section ? 'nav-tab-active' : ''; ?>">
+					   class="wbcom-nav-tab <?php echo 'license' === $current_section ? 'nav-tab-active' : ''; ?>">
 						<span class="dashicons dashicons-admin-network"></span>
 						<?php esc_html_e( 'License', 'buddypress-share' ); ?>
 					</a>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=faq' ) ); ?>" 
-					   class="wbcom-nav-tab nav-tab <?php echo 'faq' === $current_section ? 'nav-tab-active' : ''; ?>">
+					   class="wbcom-nav-tab <?php echo 'faq' === $current_section ? 'nav-tab-active' : ''; ?>">
 						<span class="dashicons dashicons-editor-help"></span>
 						<?php esc_html_e( 'FAQ', 'buddypress-share' ); ?>
 					</a>
 				</nav>
 
-				<div class="wbcom-tab-content tab-content">
+				<div class="wbcom-tab-content">
 				<?php
 				switch ( $current_section ) {
-					case 'sharing':
-						$this->bp_share_services_settings_page();
+					case '':
+					case 'general':
+					case 'services':
+						$this->bp_share_social_networks_page();
 						break;
+					case 'display':
 					case 'icons':
-						$this->bp_share_icons_settings_page();
+						$this->bp_share_display_settings_page();
+						break;
+					case 'restrictions':
+					case 'sharing':
+						$this->bp_share_restrictions_page();
 						break;
 					case 'license':
 						$this->bp_share_license_settings_page();
@@ -363,23 +381,23 @@ class Buddypress_Share_Admin {
 						$this->bp_share_faq_page();
 						break;
 					default:
-						$this->bp_share_general_settings_page();
+						$this->bp_share_social_networks_page();
 						break;
 				}
 				?>
-				</div><!-- .wbcom-tab-content -->
-			</div><!-- .wbcom-tab-wrapper -->
+				</div><!-- .bp-share-tab-content -->
+			</div><!-- .bp-share-admin-wrapper -->
 		</div>
 		<?php
 	}
 
 	/**
-	 * Display general settings section.
+	 * Display social networks settings section.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function bp_share_general_settings_page() {
+	private function bp_share_social_networks_page() {
 		// Get current settings
 		$bp_share_services_enable = get_site_option( 'bp_share_services_enable', 1 );
 		$bp_share_services_logout_enable = get_site_option( 'bp_share_services_logout_enable', 1 );
@@ -406,17 +424,12 @@ class Buddypress_Share_Admin {
 			update_site_option( 'bp_share_services', $enabled_services );
 		}
 		
-		// Set default services if empty
+		// Services should already be set by activator, but handle edge case
 		if ( empty( $enabled_services ) ) {
-			$enabled_services = array(
-				'Facebook'  => 'Facebook',
-				'X'         => 'X (Twitter)',
-				'LinkedIn'  => 'LinkedIn',
-				'E-mail'    => 'E-mail',
-				'WhatsApp'  => 'WhatsApp',
-				'Pinterest' => 'Pinterest',
-				'Copy-Link' => 'Copy Link',
-			);
+			// Use the default services method
+			$enabled_services = $this->get_default_services();
+			// Save to database for consistency
+			update_site_option( 'bp_share_services', $enabled_services );
 		}
 		
 		$all_services = $this->get_all_available_services();
@@ -429,60 +442,68 @@ class Buddypress_Share_Admin {
 			do_settings_sections( 'bp_share_general_settings' );
 			?>
 
-			<table class="form-table" role="presentation">
-				<tbody>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Enable Social Sharing', 'buddypress-share' ); ?></th>
-						<td>
-							<label for="bp_share_services_enable">
+			<div class="bp-share-settings-grid">
+				<div class="bp-share-settings-card">
+					<div class="card-header">
+						<h3><?php esc_html_e( 'Sharing Settings', 'buddypress-share' ); ?></h3>
+					</div>
+					<div class="card-body">
+						<div class="bp-share-toggle-setting">
+							<label class="bp-share-toggle">
 								<input type="checkbox" 
 								       name="bp_share_services_enable" 
 								       id="bp_share_services_enable"
 								       value="1" 
 								       <?php checked( 1, $bp_share_services_enable ); ?> />
-								<?php esc_html_e( 'Enable social sharing on activities', 'buddypress-share' ); ?>
+								<span class="toggle-slider"></span>
 							</label>
-						</td>
-					</tr>
-					
-					<tr id="logout_sharing_row" style="<?php echo $bp_share_services_enable ? '' : 'display:none;'; ?>">
-						<th scope="row"><?php esc_html_e( 'Guest Sharing', 'buddypress-share' ); ?></th>
-						<td>
-							<label for="bp_share_services_logout_enable">
+							<div class="toggle-content">
+								<span class="toggle-label"><?php esc_html_e( 'Enable Social Sharing', 'buddypress-share' ); ?></span>
+								<p class="description"><?php esc_html_e( 'Allow users to share activities on social networks', 'buddypress-share' ); ?></p>
+							</div>
+						</div>
+						
+						<div class="bp-share-toggle-setting" id="logout_sharing_row" style="<?php echo $bp_share_services_enable ? '' : 'display:none;'; ?>">
+							<label class="bp-share-toggle">
 								<input type="checkbox" 
 								       name="bp_share_services_logout_enable" 
 								       id="bp_share_services_logout_enable"
 								       value="1" 
 								       <?php checked( 1, $bp_share_services_logout_enable ); ?> />
-								<?php esc_html_e( 'Allow logged-out users to share activities', 'buddypress-share' ); ?>
+								<span class="toggle-slider"></span>
 							</label>
-						</td>
-					</tr>
-					
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Popup Windows', 'buddypress-share' ); ?></th>
-						<td>
-							<label for="bp_share_services_open">
+							<div class="toggle-content">
+								<span class="toggle-label"><?php esc_html_e( 'Guest Sharing', 'buddypress-share' ); ?></span>
+								<p class="description"><?php esc_html_e( 'Allow visitors to share public activities', 'buddypress-share' ); ?></p>
+							</div>
+						</div>
+						
+						<div class="bp-share-toggle-setting">
+							<label class="bp-share-toggle">
 								<input type="checkbox" 
 								       name="bp_share_services_extra[bp_share_services_open]" 
 								       id="bp_share_services_open"
 								       value="on" 
 								       <?php checked( 'on', $bp_share_services_open ); ?> />
-								<?php esc_html_e( 'Open social sharing links in popup windows', 'buddypress-share' ); ?>
+								<span class="toggle-slider"></span>
 							</label>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+							<div class="toggle-content">
+								<span class="toggle-label"><?php esc_html_e( 'Popup Windows', 'buddypress-share' ); ?></span>
+								<p class="description"><?php esc_html_e( 'Open sharing links in small popup windows', 'buddypress-share' ); ?></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-			<h2><?php esc_html_e( 'Social Services', 'buddypress-share' ); ?></h2>
-			<p><?php esc_html_e( 'Drag social services between the lists to enable or disable them. Changes are saved automatically via AJAX.', 'buddypress-share' ); ?></p>
+			<h2><?php esc_html_e( 'Available Social Networks', 'buddypress-share' ); ?></h2>
+			<p><?php esc_html_e( 'Drag social networks between the lists to enable or disable them. Reorder enabled services by dragging them within the list.', 'buddypress-share' ); ?></p>
 			
 			<input type="hidden" name="bp_share_services_serialized" id="bp_share_services_serialized" value="<?php echo esc_attr( serialize( $enabled_services ) ); ?>" />
 			
 			<div class="social_icon_section">
 				<div class="social-services-list enabled-services">
-					<h3><?php esc_html_e( 'Enabled Services', 'buddypress-share' ); ?></h3>
+					<h3><?php esc_html_e( 'Active Networks', 'buddypress-share' ); ?></h3>
 					<ul id="drag_icon_ul" class="enabled-services-list">
 						<?php if ( ! empty( $enabled_services ) ) : ?>
 							<?php foreach ( $enabled_services as $service_key => $service_name ) : ?>
@@ -497,14 +518,14 @@ class Buddypress_Share_Admin {
 							<?php endforeach; ?>
 						<?php else : ?>
 							<li class="no-services-message">
-								<?php esc_html_e( 'No services enabled. Drag services from the available list to enable them.', 'buddypress-share' ); ?>
+								<?php esc_html_e( 'No networks enabled. Drag networks from the inactive list to enable them.', 'buddypress-share' ); ?>
 							</li>
 						<?php endif; ?>
 					</ul>
 				</div>
 
 				<div class="social-services-list disabled-services">
-					<h3><?php esc_html_e( 'Available Services', 'buddypress-share' ); ?></h3>
+					<h3><?php esc_html_e( 'Inactive Networks', 'buddypress-share' ); ?></h3>
 					<ul id="drag_social_icon" class="disabled-services-list">
 						<?php if ( ! empty( $disabled_services ) ) : ?>
 							<?php foreach ( $disabled_services as $service_key => $service_name ) : ?>
@@ -519,14 +540,14 @@ class Buddypress_Share_Admin {
 							<?php endforeach; ?>
 						<?php else : ?>
 							<li class="no-services-message">
-								<?php esc_html_e( 'All services are enabled. Drag services from the enabled list to disable them.', 'buddypress-share' ); ?>
+								<?php esc_html_e( 'All networks are active. Drag networks from the active list to disable them.', 'buddypress-share' ); ?>
 							</li>
 						<?php endif; ?>
 					</ul>
 				</div>
 			</div>
 
-			<?php submit_button( __( 'Save General Settings', 'buddypress-share' ) ); ?>
+			<?php submit_button( __( 'Save Settings', 'buddypress-share' ) ); ?>
 		</form>
 		
 		<script type="text/javascript">
@@ -581,7 +602,7 @@ class Buddypress_Share_Admin {
 				
 				if ($enabledItems.length === 0) {
 					if ($enabledMessage.length === 0) {
-						$enabledList.append('<li class="no-services-message">No services enabled. Drag services from the available list to enable them.</li>');
+						$enabledList.append('<li class="no-services-message">No networks enabled. Drag networks from the inactive list to enable them.</li>');
 					}
 				} else {
 					$enabledMessage.remove();
@@ -593,7 +614,7 @@ class Buddypress_Share_Admin {
 				
 				if ($availableItems.length === 0) {
 					if ($availableMessage.length === 0) {
-						$availableList.append('<li class="no-services-message">All services are enabled. Drag services from the enabled list to disable them.</li>');
+						$availableList.append('<li class="no-services-message">All networks are active. Drag networks from the active list to disable them.</li>');
 					}
 				} else {
 					$availableMessage.remove();
@@ -607,12 +628,12 @@ class Buddypress_Share_Admin {
 	}
 
 	/**
-	 * Display share services settings section.
+	 * Display restrictions page for content sharing controls.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function bp_share_services_settings_page() {
+	private function bp_share_restrictions_page() {
 		// Get current settings
 		$bp_reshare_settings = get_site_option( 'bp_reshare_settings', array() );
 		$bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
@@ -624,93 +645,105 @@ class Buddypress_Share_Admin {
 			do_settings_sections( 'bp_reshare_settings' );
 			?>
 
-			<h2><?php esc_html_e( 'Content Type Controls', 'buddypress-share' ); ?></h2>
-			<p><?php esc_html_e( 'Control which types of content can be shared within your BuddyPress community.', 'buddypress-share' ); ?></p>
+			<h2><?php esc_html_e( 'Sharing Restrictions', 'buddypress-share' ); ?></h2>
+			<p><?php esc_html_e( 'Control which types of content can be shared and how they are displayed.', 'buddypress-share' ); ?></p>
 
-			<table class="form-table" role="presentation">
-				<tbody>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Disable Sharing For', 'buddypress-share' ); ?></th>
-						<td>
-							<fieldset>
-								<label for="disable_post_reshare_activity">
-									<input type="checkbox" 
-									       name="bp_reshare_settings[disable_post_reshare_activity]" 
-									       id="disable_post_reshare_activity"
-									       value="1" 
-									       <?php checked( 1, isset( $bp_reshare_settings['disable_post_reshare_activity'] ) ? $bp_reshare_settings['disable_post_reshare_activity'] : 0 ); ?> />
+			<div class="bp-share-settings-grid">
+				<div class="bp-share-settings-card">
+					<div class="card-header">
+						<h3><?php esc_html_e( 'Content Restrictions', 'buddypress-share' ); ?></h3>
+					</div>
+					<div class="card-body">
+						<p class="card-description"><?php esc_html_e( 'Disable sharing for specific content types', 'buddypress-share' ); ?></p>
+						
+						<div class="bp-share-checkbox-group">
+							<label class="bp-share-checkbox-item">
+								<input type="checkbox" 
+								       name="bp_reshare_settings[disable_post_reshare_activity]" 
+								       id="disable_post_reshare_activity"
+								       value="1" 
+								       <?php checked( 1, isset( $bp_reshare_settings['disable_post_reshare_activity'] ) ? $bp_reshare_settings['disable_post_reshare_activity'] : 0 ); ?> />
+								<span class="checkbox-label">
+									<span class="checkbox-icon dashicons dashicons-admin-post"></span>
 									<?php esc_html_e( 'Blog Posts', 'buddypress-share' ); ?>
-								</label><br>
-								
-								<label for="disable_my_profile_reshare_activity">
-									<input type="checkbox" 
-									       name="bp_reshare_settings[disable_my_profile_reshare_activity]" 
-									       id="disable_my_profile_reshare_activity"
-									       value="1" 
-									       <?php checked( 1, isset( $bp_reshare_settings['disable_my_profile_reshare_activity'] ) ? $bp_reshare_settings['disable_my_profile_reshare_activity'] : 0 ); ?> />
-									<?php esc_html_e( 'Profile Sharing', 'buddypress-share' ); ?>
-								</label><br>
-								
-								<label for="disable_group_reshare_activity">
-									<input type="checkbox" 
-									       name="bp_reshare_settings[disable_group_reshare_activity]" 
-									       id="disable_group_reshare_activity"
-									       value="1" 
-									       <?php checked( 1, isset( $bp_reshare_settings['disable_group_reshare_activity'] ) ? $bp_reshare_settings['disable_group_reshare_activity'] : 0 ); ?> />
+								</span>
+							</label>
+							
+							<label class="bp-share-checkbox-item">
+								<input type="checkbox" 
+								       name="bp_reshare_settings[disable_my_profile_reshare_activity]" 
+								       id="disable_my_profile_reshare_activity"
+								       value="1" 
+								       <?php checked( 1, isset( $bp_reshare_settings['disable_my_profile_reshare_activity'] ) ? $bp_reshare_settings['disable_my_profile_reshare_activity'] : 0 ); ?> />
+								<span class="checkbox-label">
+									<span class="checkbox-icon dashicons dashicons-admin-users"></span>
+									<?php esc_html_e( 'User Profiles', 'buddypress-share' ); ?>
+								</span>
+							</label>
+							
+							<label class="bp-share-checkbox-item">
+								<input type="checkbox" 
+								       name="bp_reshare_settings[disable_group_reshare_activity]" 
+								       id="disable_group_reshare_activity"
+								       value="1" 
+								       <?php checked( 1, isset( $bp_reshare_settings['disable_group_reshare_activity'] ) ? $bp_reshare_settings['disable_group_reshare_activity'] : 0 ); ?> />
+								<span class="checkbox-label">
+									<span class="checkbox-icon dashicons dashicons-groups"></span>
 									<?php esc_html_e( 'Groups', 'buddypress-share' ); ?>
-								</label><br>
-								
-								<label for="disable_friends_reshare_activity">
-									<input type="checkbox" 
-									       name="bp_reshare_settings[disable_friends_reshare_activity]" 
-									       id="disable_friends_reshare_activity"
-									       value="1" 
-									       <?php checked( 1, isset( $bp_reshare_settings['disable_friends_reshare_activity'] ) ? $bp_reshare_settings['disable_friends_reshare_activity'] : 0 ); ?> />
-									<?php esc_html_e( 'Friends', 'buddypress-share' ); ?>
-								</label>
-							</fieldset>
-						</td>
-					</tr>
-					
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Activity Display', 'buddypress-share' ); ?></th>
-						<td>
-							<fieldset>
-								<label for="reshare_share_activity_parent">
-									<input type="radio" 
-									       name="bp_reshare_settings[reshare_share_activity]" 
-									       id="reshare_share_activity_parent"
-									       value="parent" 
-									       <?php checked( 'parent', $bp_reshare_settings_activity ); ?> />
-									<?php esc_html_e( 'Show original activity only', 'buddypress-share' ); ?>
-								</label><br>
-								
-								<label for="reshare_share_activity_child">
-									<input type="radio" 
-									       name="bp_reshare_settings[reshare_share_activity]" 
-									       id="reshare_share_activity_child"
-									       value="child" 
-									       <?php checked( 'child', $bp_reshare_settings_activity ); ?> />
-									<?php esc_html_e( 'Show complete activity with nested content', 'buddypress-share' ); ?>
-								</label>
-							</fieldset>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+								</span>
+							</label>
+						</div>
+					</div>
+				</div>
 
-			<?php submit_button( __( 'Save Sharing Settings', 'buddypress-share' ) ); ?>
+				<div class="bp-share-settings-card">
+					<div class="card-header">
+						<h3><?php esc_html_e( 'Display Options', 'buddypress-share' ); ?></h3>
+					</div>
+					<div class="card-body">
+						<p class="card-description"><?php esc_html_e( 'Choose how shared activities appear in the feed', 'buddypress-share' ); ?></p>
+						
+						<div class="bp-share-radio-group">
+							<label class="bp-share-radio-item">
+								<input type="radio" 
+								       name="bp_reshare_settings[reshare_share_activity]" 
+								       id="reshare_share_activity_parent"
+								       value="parent" 
+								       <?php checked( 'parent', $bp_reshare_settings_activity ); ?> />
+								<span class="radio-label">
+									<strong><?php esc_html_e( 'Simple View', 'buddypress-share' ); ?></strong>
+									<span class="radio-description"><?php esc_html_e( 'Show only the original activity content', 'buddypress-share' ); ?></span>
+								</span>
+							</label>
+							
+							<label class="bp-share-radio-item">
+								<input type="radio" 
+								       name="bp_reshare_settings[reshare_share_activity]" 
+								       id="reshare_share_activity_child"
+								       value="child" 
+								       <?php checked( 'child', $bp_reshare_settings_activity ); ?> />
+								<span class="radio-label">
+									<strong><?php esc_html_e( 'Detailed View', 'buddypress-share' ); ?></strong>
+									<span class="radio-description"><?php esc_html_e( 'Include nested content and full context', 'buddypress-share' ); ?></span>
+								</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<?php submit_button( __( 'Save Restrictions', 'buddypress-share' ) ); ?>
 		</form>
 		<?php
 	}
 
 	/**
-	 * Display icon style settings section.
+	 * Display settings page combining icon styles and visual settings.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function bp_share_icons_settings_page() {
+	private function bp_share_display_settings_page() {
 		// Get current icon settings
 		$bpas_icon_color_settings = get_option( 'bpas_icon_color_settings', array() );
 		$current_style = isset( $bpas_icon_color_settings['icon_style'] ) ? $bpas_icon_color_settings['icon_style'] : 'circle';
@@ -730,65 +763,76 @@ class Buddypress_Share_Admin {
 			do_settings_sections( 'bpas_icon_color_settings' );
 			?>
 
-			<table class="form-table" role="presentation">
-				<tbody>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Icon Style', 'buddypress-share' ); ?></th>
-						<td>
-							<fieldset>
-								<?php foreach ( $icon_styles as $style_key => $style_name ) : ?>
-									<label for="icon_style_<?php echo esc_attr( $style_key ); ?>">
-										<input type="radio" 
-										       name="bpas_icon_color_settings[icon_style]" 
-										       id="icon_style_<?php echo esc_attr( $style_key ); ?>"
-										       value="<?php echo esc_attr( $style_key ); ?>" 
-										       <?php checked( $style_key, $current_style ); ?> />
-										<?php echo esc_html( $style_name ); ?>
-									</label><br>
-								<?php endforeach; ?>
-							</fieldset>
-						</td>
-					</tr>
-					
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Background Color', 'buddypress-share' ); ?></th>
-						<td>
-							<input type="text" 
-							       name="bpas_icon_color_settings[bg_color]" 
-							       id="bg_color"
-							       value="<?php echo esc_attr( $bpas_icon_color_settings['bg_color'] ?? '#667eea' ); ?>" 
-							       class="bp-share-color-picker" />
-							<p class="description"><?php esc_html_e( 'Choose the background color for sharing icons.', 'buddypress-share' ); ?></p>
-						</td>
-					</tr>
-					
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Text Color', 'buddypress-share' ); ?></th>
-						<td>
-							<input type="text" 
-							       name="bpas_icon_color_settings[text_color]" 
-							       id="text_color"
-							       value="<?php echo esc_attr( $bpas_icon_color_settings['text_color'] ?? '#ffffff' ); ?>" 
-							       class="bp-share-color-picker" />
-							<p class="description"><?php esc_html_e( 'Choose the text/icon color for sharing buttons.', 'buddypress-share' ); ?></p>
-						</td>
-					</tr>
-					
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Hover Color', 'buddypress-share' ); ?></th>
-						<td>
-							<input type="text" 
-							       name="bpas_icon_color_settings[hover_color]" 
-							       id="hover_color"
-							       value="<?php echo esc_attr( $bpas_icon_color_settings['hover_color'] ?? '#5a6fd8' ); ?>" 
-							       class="bp-share-color-picker" />
-							<p class="description"><?php esc_html_e( 'Choose the hover color for sharing icons.', 'buddypress-share' ); ?></p>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<h2><?php esc_html_e( 'Display Settings', 'buddypress-share' ); ?></h2>
+			<p><?php esc_html_e( 'Customize how the sharing buttons appear on your site.', 'buddypress-share' ); ?></p>
 
-			<?php submit_button( __( 'Save Icon Settings', 'buddypress-share' ) ); ?>
+			<div class="bp-share-settings-grid">
+				<div class="bp-share-settings-card">
+					<div class="card-header">
+						<h3><?php esc_html_e( 'Icon Style', 'buddypress-share' ); ?></h3>
+					</div>
+					<div class="card-body">
+						<div class="bp-share-style-selector">
+							<?php foreach ( $icon_styles as $style_key => $style_name ) : ?>
+								<label class="style-option <?php echo $current_style === $style_key ? 'selected' : ''; ?>">
+									<input type="radio" 
+									       name="bpas_icon_color_settings[icon_style]" 
+									       id="icon_style_<?php echo esc_attr( $style_key ); ?>"
+									       value="<?php echo esc_attr( $style_key ); ?>" 
+									       <?php checked( $style_key, $current_style ); ?> />
+									<span class="style-preview <?php echo esc_attr( $style_key ); ?>"></span>
+									<span class="style-name"><?php echo esc_html( $style_name ); ?></span>
+								</label>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="bp-share-settings-card color-settings-card">
+					<div class="card-header">
+						<h3><?php esc_html_e( 'Color Settings', 'buddypress-share' ); ?></h3>
+					</div>
+					<div class="card-body">
+						<div class="color-setting-group">
+							<label for="bg_color"><?php esc_html_e( 'Background Color', 'buddypress-share' ); ?></label>
+							<div class="color-input-wrapper">
+								<input type="text" 
+								       name="bpas_icon_color_settings[bg_color]" 
+								       id="bg_color"
+								       value="<?php echo esc_attr( $bpas_icon_color_settings['bg_color'] ?? '#667eea' ); ?>" 
+								       class="bp-share-color-picker" />
+								<p class="description"><?php esc_html_e( 'Primary background color for sharing icons', 'buddypress-share' ); ?></p>
+							</div>
+						</div>
+						
+						<div class="color-setting-group">
+							<label for="text_color"><?php esc_html_e( 'Icon Color', 'buddypress-share' ); ?></label>
+							<div class="color-input-wrapper">
+								<input type="text" 
+								       name="bpas_icon_color_settings[text_color]" 
+								       id="text_color"
+								       value="<?php echo esc_attr( $bpas_icon_color_settings['text_color'] ?? '#ffffff' ); ?>" 
+								       class="bp-share-color-picker" />
+								<p class="description"><?php esc_html_e( 'Color for icons and text', 'buddypress-share' ); ?></p>
+							</div>
+						</div>
+						
+						<div class="color-setting-group">
+							<label for="hover_color"><?php esc_html_e( 'Hover Color', 'buddypress-share' ); ?></label>
+							<div class="color-input-wrapper">
+								<input type="text" 
+								       name="bpas_icon_color_settings[hover_color]" 
+								       id="hover_color"
+								       value="<?php echo esc_attr( $bpas_icon_color_settings['hover_color'] ?? '#5a6fd8' ); ?>" 
+								       class="bp-share-color-picker" />
+								<p class="description"><?php esc_html_e( 'Color when hovering over icons', 'buddypress-share' ); ?></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<?php submit_button( __( 'Save Display Settings', 'buddypress-share' ) ); ?>
 		</form>
 		<?php
 	}
@@ -931,85 +975,6 @@ class Buddypress_Share_Admin {
 			});
 		});
 		</script>
-		
-		<style>
-		.bp-share-license-section {
-			background: #fff;
-			padding: 20px;
-			border: 1px solid #ccd0d4;
-			border-radius: 4px;
-			margin-top: 20px;
-		}
-		
-		.bp-share-license-info h3 {
-			margin-top: 0;
-			color: #23282d;
-		}
-		
-		.bp-share-license-actions {
-			margin-top: 20px;
-		}
-		
-		.bp-share-license-actions .button {
-			margin-right: 10px;
-		}
-		
-		.bp-share-license-message {
-			margin-top: 15px;
-		}
-		
-		.bp-share-license-info-box {
-			margin-top: 30px;
-			padding: 20px;
-			background: #f8f9fa;
-			border-left: 4px solid #0073aa;
-		}
-		
-		.bp-share-license-info-box h4 {
-			margin-top: 0;
-			color: #0073aa;
-		}
-		
-		.bp-share-license-info-box ul {
-			list-style: none;
-			padding: 0;
-		}
-		
-		.bp-share-license-info-box li {
-			padding: 5px 0;
-		}
-		
-		.bp-share-license-info-box .dashicons {
-			color: #0073aa;
-			margin-right: 5px;
-		}
-		
-		.bp-share-license-status {
-			display: inline-flex;
-			align-items: center;
-			font-weight: 600;
-		}
-		
-		.bp-share-license-status .dashicons {
-			margin-right: 5px;
-		}
-		
-		.bp-share-license-valid {
-			color: #46b450;
-		}
-		
-		.bp-share-license-expired {
-			color: #ffb900;
-		}
-		
-		.bp-share-license-invalid {
-			color: #dc3232;
-		}
-		
-		.bp-share-license-inactive {
-			color: #666;
-		}
-		</style>
 		<?php
 	}
 
@@ -1139,6 +1104,7 @@ class Buddypress_Share_Admin {
 	 * @return   array All available social services.
 	 */
 	private function get_all_available_services() {
+		// Define all available services in one place
 		return array(
 			'Facebook'  => 'Facebook',
 			'X'         => 'X (Twitter)',
@@ -1149,6 +1115,24 @@ class Buddypress_Share_Admin {
 			'Pocket'    => 'Pocket',
 			'Telegram'  => 'Telegram',
 			'Bluesky'   => 'Bluesky',
+			'WhatsApp'  => 'WhatsApp',
+			'E-mail'    => 'E-mail',
+			'Copy-Link' => 'Copy Link',
+		);
+	}
+	
+	/**
+	 * Get default enabled services for first install.
+	 *
+	 * @since    1.5.3
+	 * @access   private
+	 * @return   array Default enabled services.
+	 */
+	private function get_default_services() {
+		return array(
+			'Facebook'  => 'Facebook',
+			'X'         => 'X (Twitter)',
+			'LinkedIn'  => 'LinkedIn',
 			'WhatsApp'  => 'WhatsApp',
 			'E-mail'    => 'E-mail',
 			'Copy-Link' => 'Copy Link',
@@ -1308,7 +1292,6 @@ class Buddypress_Share_Admin {
 			'disable_post_reshare_activity',
 			'disable_my_profile_reshare_activity',
 			'disable_group_reshare_activity',
-			'disable_friends_reshare_activity',
 		);
 		
 		foreach ( $boolean_fields as $field ) {
@@ -1337,17 +1320,17 @@ class Buddypress_Share_Admin {
 			
 			<div class="faq-item">
 				<h3><?php esc_html_e( 'How do I enable social sharing on BuddyPress activities?', 'buddypress-share' ); ?></h3>
-				<p><?php esc_html_e( 'Social sharing is enabled by default. You can toggle it on/off from the General Settings tab. Make sure at least one social service is enabled in the social services section.', 'buddypress-share' ); ?></p>
+				<p><?php esc_html_e( 'Social sharing is enabled by default. You can toggle it on/off from the Social Networks tab. Make sure at least one social service is enabled in the services section.', 'buddypress-share' ); ?></p>
 			</div>
 
 			<div class="faq-item">
 				<h3><?php esc_html_e( 'Can users share activities without being logged in?', 'buddypress-share' ); ?></h3>
-				<p><?php esc_html_e( 'Yes! Enable "Guest Sharing" in the General Settings tab to allow logged-out users to share public activities on social media platforms.', 'buddypress-share' ); ?></p>
+				<p><?php esc_html_e( 'Yes! Enable "Guest Sharing" in the Social Networks tab to allow logged-out users to share public activities on social media platforms.', 'buddypress-share' ); ?></p>
 			</div>
 
 			<div class="faq-item">
 				<h3><?php esc_html_e( 'How do I customize the sharing button appearance?', 'buddypress-share' ); ?></h3>
-				<p><?php esc_html_e( 'Navigate to the Icon Styles tab where you can choose from different icon styles (Circle, Rectangle, Black & White, Bar) and customize colors for background, text, and hover states.', 'buddypress-share' ); ?></p>
+				<p><?php esc_html_e( 'Navigate to the Display Settings tab where you can choose from different icon styles (Circle, Rectangle, Black & White, Bar) and customize colors for background, text, and hover states.', 'buddypress-share' ); ?></p>
 			</div>
 
 			<div class="faq-item">
@@ -1357,17 +1340,17 @@ class Buddypress_Share_Admin {
 
 			<div class="faq-item">
 				<h3><?php esc_html_e( 'Can I disable sharing for specific activity types?', 'buddypress-share' ); ?></h3>
-				<p><?php esc_html_e( 'Yes! In the Sharing Options tab, you can disable sharing for Blog Posts, Profile Sharing, Groups, and Friends activities.', 'buddypress-share' ); ?></p>
+				<p><?php esc_html_e( 'Yes! In the Restrictions tab, you can disable sharing for Blog Posts, User Profiles, and Groups activities.', 'buddypress-share' ); ?></p>
 			</div>
 
 			<div class="faq-item">
 				<h3><?php esc_html_e( 'How does the reshare functionality work?', 'buddypress-share' ); ?></h3>
-				<p><?php esc_html_e( 'When a user reshares an activity, you can choose to display either just the original activity or the complete activity with nested content. Configure this in the Sharing Options tab.', 'buddypress-share' ); ?></p>
+				<p><?php esc_html_e( 'When a user reshares an activity, you can choose to display either just the original activity or the complete activity with nested content. Configure this in the Restrictions tab.', 'buddypress-share' ); ?></p>
 			</div>
 
 			<div class="faq-item">
 				<h3><?php esc_html_e( 'Do sharing links open in popup windows?', 'buddypress-share' ); ?></h3>
-				<p><?php esc_html_e( 'By default, yes. Social sharing links open in popup windows for a better user experience. You can disable this behavior in the General Settings tab.', 'buddypress-share' ); ?></p>
+				<p><?php esc_html_e( 'By default, yes. Social sharing links open in popup windows for a better user experience. You can disable this behavior in the Social Networks tab.', 'buddypress-share' ); ?></p>
 			</div>
 
 			<div class="faq-item">
@@ -1395,42 +1378,6 @@ class Buddypress_Share_Admin {
 				<p><?php esc_html_e( 'Go to the License tab, enter your license key, and click "Activate License". An active license ensures you receive automatic updates and premium support.', 'buddypress-share' ); ?></p>
 			</div>
 		</div>
-
-		<style>
-		.bp-share-faq-section {
-			max-width: 800px;
-		}
-		
-		.faq-item {
-			background: #f8f9fa;
-			border: 1px solid #e5e7eb;
-			border-radius: 8px;
-			padding: 20px;
-			margin-bottom: 20px;
-		}
-		
-		.faq-item h3 {
-			margin-top: 0;
-			margin-bottom: 10px;
-			color: #1e293b;
-			font-size: 16px;
-		}
-		
-		.faq-item p {
-			margin: 0;
-			color: #4b5563;
-			line-height: 1.6;
-		}
-		
-		.faq-item a {
-			color: #2271b1;
-			text-decoration: none;
-		}
-		
-		.faq-item a:hover {
-			text-decoration: underline;
-		}
-		</style>
 		<?php
 	}
 }
