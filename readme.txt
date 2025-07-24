@@ -5,7 +5,7 @@ Donate link: https://wbcomdesigns.com
 Tags: buddypress, activity, share
 Requires at least: 4.0
 Tested up to: 6.8.2
-Stable tag: 1.5.1
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,7 +49,24 @@ Yes, this plugin requires the  BuddyPress plugin.
 
 == Changelog ==
 
-== Changelog ==
+= 2.0.0 =
+* Major Update: Complete overhaul with new tracking foundation for analytics and gamification
+* Added: Share tracking system for internal reshares and external social shares
+* Added: New hook `bp_share_user_reshared_activity` for point/reward system integration
+* Added: UTM and custom tracking parameters to all external share links
+* Added: Automatic statistics tracking (user stats, activity stats, visit stats)
+* Added: New `Buddypress_Share_Tracker` class for tracking functionality
+* Added: Multiple new hooks and filters for developer extensibility
+* Added: Comprehensive user and developer documentation
+* Fixed: All PHP 8.0+ compatibility issues (replaced FILTER_SANITIZE_STRING)
+* Fixed: All undefined variable and array index warnings
+* Fixed: array_key_first() compatibility for PHP < 7.3
+* Fixed: License table spacing and CSS issues
+* Improved: Moved inline styles to external CSS files
+* Improved: Better error handling without suppression operators
+* Enhanced: Type safety and proper validation throughout
+* Required: Minimum PHP version now 7.4+
+
 = 1.5.1 =
 * Fixed: Fatal error on plugin activation and several PHP warnings.
 * Fixed: Issues with translation loading and incorrect text domains.

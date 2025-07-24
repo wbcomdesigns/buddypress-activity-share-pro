@@ -69,7 +69,7 @@ class Buddypress_Share {
 	 */
 	public function __construct() {
 		$this->plugin_name = 'buddypress-share';
-		$this->version     = defined( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION' ) ? BP_ACTIVITY_SHARE_PLUGIN_VERSION : '1.5.1';
+		$this->version     = defined( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION' ) ? BP_ACTIVITY_SHARE_PLUGIN_VERSION : '2.0.0';
 
 		// Only proceed if BuddyPress or BuddyBoss Platform is available
 		if ( ! class_exists( 'BuddyPress' ) && ! defined( 'BP_PLATFORM_VERSION' ) ) {
@@ -150,6 +150,11 @@ class Buddypress_Share {
 		 * The class responsible for Wbcom integration.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wbcom-integration.php';
+		
+		/**
+		 * The class responsible for share tracking foundation.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-buddypress-share-tracker.php';
 
 		$this->loader = new Buddypress_Share_Loader();
 	}

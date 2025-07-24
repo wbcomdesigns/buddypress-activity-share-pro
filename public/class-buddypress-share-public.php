@@ -562,8 +562,9 @@ class Buddypress_Share_Public {
 
 		// Add copy link button if enabled
 		if ( ! empty( $social_service['Copy-Link'] ) ) {
+			$tracked_copy_link = $this->add_share_tracking_params( $activity_link, 'copy-link' );
 			echo '<div class="bp-share-wrapper bp-copy-wrapper">';
-			echo '<a class="button bp-share bp-copy" href="#" data-href="' . esc_attr( $activity_link ) . '" attr-display="no-popup">';
+			echo '<a class="button bp-share bp-copy" href="#" data-href="' . esc_attr( $tracked_copy_link ) . '" attr-display="no-popup">';
 			echo '<i class="fas fa-link"></i>';
 			echo '<span class="bp-share-label">' . esc_html__( 'Copy Link', 'buddypress-share' ) . '</span>';
 			echo '</a>';
@@ -583,54 +584,57 @@ class Buddypress_Share_Public {
 	 * @return   array Sharing services configuration.
 	 */
 	private function get_sharing_services_config( $activity_link, $activity_title, $mail_subject ) {
+		// Store original link for non-tracked services
+		$original_link = $activity_link;
+		
 		$services = array(
 			'Facebook' => array(
-				'url'   => 'https://www.facebook.com/sharer.php?u=' . urlencode( $activity_link ),
+				'url'   => 'https://www.facebook.com/sharer.php?u=' . urlencode( $this->add_share_tracking_params( $activity_link, 'facebook' ) ),
 				'icon'  => 'fab fa-facebook-f',
 				'label' => __( 'Facebook', 'buddypress-share' )
 			),
 			'X' => array(
-				'url'   => 'https://twitter.com/share?url=' . urlencode( $activity_link ) . '&text=' . urlencode( $activity_title ),
+				'url'   => 'https://twitter.com/share?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'x-twitter' ) ) . '&text=' . urlencode( $activity_title ),
 				'icon'  => 'fab fa-twitter',
 				'label' => __( 'X', 'buddypress-share' )
 			),
 			'LinkedIn' => array(
-				'url'   => 'http://www.linkedin.com/shareArticle?mini=true&url=' . urlencode( $activity_link ) . '&text=' . urlencode( $activity_title ),
+				'url'   => 'http://www.linkedin.com/shareArticle?mini=true&url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'linkedin' ) ) . '&text=' . urlencode( $activity_title ),
 				'icon'  => 'fab fa-linkedin-in',
 				'label' => __( 'LinkedIn', 'buddypress-share' )
 			),
 			'Pinterest' => array(
-				'url'   => 'https://pinterest.com/pin/create/bookmarklet/?url=' . urlencode( $activity_link ) . '&description=' . urlencode( $activity_title ),
+				'url'   => 'https://pinterest.com/pin/create/bookmarklet/?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'pinterest' ) ) . '&description=' . urlencode( $activity_title ),
 				'icon'  => 'fab fa-pinterest-p',
 				'label' => __( 'Pinterest', 'buddypress-share' )
 			),
 			'Reddit' => array(
-				'url'   => 'http://reddit.com/submit?url=' . urlencode( $activity_link ) . '&title=' . urlencode( $activity_title ),
+				'url'   => 'http://reddit.com/submit?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'reddit' ) ) . '&title=' . urlencode( $activity_title ),
 				'icon'  => 'fab fa-reddit-alien',
 				'label' => __( 'Reddit', 'buddypress-share' )
 			),
 			'WordPress' => array(
-				'url'   => 'https://wordpress.com/wp-admin/press-this.php?u=' . urlencode( $activity_link ) . '&t=' . urlencode( $activity_title ),
+				'url'   => 'https://wordpress.com/wp-admin/press-this.php?u=' . urlencode( $this->add_share_tracking_params( $activity_link, 'wordpress' ) ) . '&t=' . urlencode( $activity_title ),
 				'icon'  => 'fab fa-wordpress',
 				'label' => __( 'WordPress', 'buddypress-share' )
 			),
 			'Pocket' => array(
-				'url'   => 'https://getpocket.com/save?url=' . urlencode( $activity_link ) . '&title=' . urlencode( $activity_title ),
+				'url'   => 'https://getpocket.com/save?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'pocket' ) ) . '&title=' . urlencode( $activity_title ),
 				'icon'  => 'fab fa-get-pocket',
 				'label' => __( 'Pocket', 'buddypress-share' )
 			),
 			'Telegram' => array(
-				'url'   => 'https://t.me/share/url?url=' . urlencode( $activity_link ) . '&title=' . urlencode( $activity_title ),
+				'url'   => 'https://t.me/share/url?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'telegram' ) ) . '&title=' . urlencode( $activity_title ),
 				'icon'  => 'fab fa-telegram-plane',
 				'label' => __( 'Telegram', 'buddypress-share' )
 			),
 			'Bluesky' => array(
-				'url'   => 'https://bsky.app/intent/compose?text=' . urlencode( 'Check this out! ' . $activity_title . ' ' . $activity_link ),
+				'url'   => 'https://bsky.app/intent/compose?text=' . urlencode( 'Check this out! ' . $activity_title . ' ' . $this->add_share_tracking_params( $activity_link, 'bluesky' ) ),
 				'icon'  => 'fas fa-bluesky',
 				'label' => __( 'Bluesky', 'buddypress-share' )
 			),
 			'WhatsApp' => array(
-				'url'   => 'https://wa.me/?text=' . urlencode( $activity_link ),
+				'url'   => 'https://wa.me/?text=' . urlencode( $this->add_share_tracking_params( $activity_link, 'whatsapp' ) ),
 				'icon'  => 'fab fa-whatsapp',
 				'label' => __( 'WhatsApp', 'buddypress-share' )
 			),
@@ -643,7 +647,8 @@ class Buddypress_Share_Public {
 			$site_url = home_url();
 
 			$email_subject = 'New Activity on ' . esc_html( $site_title ) . ': ' . esc_html( $mail_subject );
-			$email_body = "Hi,\n\nI wanted to share this activity with you from " . esc_html( $site_title ) . ":\n\n" . esc_url( $activity_link ) . "\n\nYou can explore more activities here: " . esc_url( $site_url ) . "\n\nBest regards,\nThe " . esc_html( $site_title ) . ' Team';
+			$tracked_email_link = $this->add_share_tracking_params( $activity_link, 'email' );
+			$email_body = "Hi,\n\nI wanted to share this activity with you from " . esc_html( $site_title ) . ":\n\n" . esc_url( $tracked_email_link ) . "\n\nYou can explore more activities here: " . esc_url( $site_url ) . "\n\nBest regards,\nThe " . esc_html( $site_title ) . ' Team';
 
 			$services['E-mail'] = array(
 				'url'   => 'mailto:?subject=' . rawurlencode( $email_subject ) . '&body=' . rawurlencode( $email_body ),
@@ -662,6 +667,55 @@ class Buddypress_Share_Public {
 		 * @param string $mail_subject   The mail subject.
 		 */
 		return apply_filters( 'bp_share_services_config', $services, $activity_link, $activity_title, $mail_subject );
+	}
+
+	/**
+	 * Add tracking parameters to share links for analytics.
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @param    string $url     The URL to add tracking parameters to.
+	 * @param    string $service Optional. The service name for specific tracking.
+	 * @return   string URL with tracking parameters.
+	 */
+	private function add_share_tracking_params( $url, $service = '' ) {
+		// Get current user ID (0 if not logged in)
+		$user_id = get_current_user_id();
+		
+		// Get current activity ID from the global template
+		global $activities_template;
+		$activity_id = isset( $activities_template->activity->id ) ? $activities_template->activity->id : 0;
+		
+		// Build tracking parameters
+		$tracking_params = array(
+			'utm_source'   => 'buddypress_share',
+			'utm_medium'   => 'social',
+			'utm_campaign' => 'activity_share',
+			'bps_aid'      => $activity_id,  // BuddyPress Share Activity ID
+			'bps_uid'      => $user_id,      // BuddyPress Share User ID
+			'bps_time'     => time(),        // Timestamp for tracking
+		);
+		
+		// Add service-specific tracking if provided
+		if ( ! empty( $service ) ) {
+			$tracking_params['utm_content'] = sanitize_key( $service );
+			$tracking_params['bps_service'] = sanitize_key( $service );
+		}
+		
+		/**
+		 * Filter the tracking parameters before adding to URL.
+		 *
+		 * @since 2.0.0
+		 * @param array  $tracking_params Array of tracking parameters.
+		 * @param string $url            The original URL.
+		 * @param string $service        The service name.
+		 * @param int    $activity_id    The activity being shared.
+		 * @param int    $user_id        The user sharing the activity.
+		 */
+		$tracking_params = apply_filters( 'bp_share_tracking_parameters', $tracking_params, $url, $service, $activity_id, $user_id );
+		
+		// Add parameters to URL
+		return add_query_arg( $tracking_params, $url );
 	}
 
 	/**
@@ -932,6 +986,24 @@ class Buddypress_Share_Public {
 		 * @param array $reshare_data    The reshare data array.
 		 */
 		do_action( 'bp_share_after_create_reshare', $new_activity_id, $reshare_data );
+		
+		/**
+		 * Specific trigger for point/reward systems after reshare.
+		 * This hook is designed for integration with point systems, gamification plugins,
+		 * or custom tagging systems.
+		 *
+		 * @since 2.0.0
+		 * @param int    $user_id           The user who performed the reshare.
+		 * @param string $reshare_type      Type of reshare (profile, group, friend).
+		 * @param int    $original_activity The original activity ID that was reshared.
+		 * @param int    $new_activity_id   The newly created share activity ID.
+		 */
+		do_action( 'bp_share_user_reshared_activity', 
+			$reshare_data['user_id'], 
+			$reshare_data['destination_type'], 
+			$reshare_data['activity_id'],
+			$new_activity_id
+		);
 
 		// Update share count
 		$new_count = $this->update_share_count( $activity_id, $activity_type );

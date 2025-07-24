@@ -5,10 +5,11 @@
 2. [Architecture Overview](#architecture-overview)
 3. [Hooks Reference](#hooks-reference)
 4. [Filters Reference](#filters-reference)
-5. [Custom Services](#custom-services)
-6. [API Reference](#api-reference)
-7. [Code Examples](#code-examples)
-8. [Best Practices](#best-practices)
+5. [Share Tracking System](#share-tracking-system)
+6. [Custom Services](#custom-services)
+7. [API Reference](#api-reference)
+8. [Code Examples](#code-examples)
+9. [Best Practices](#best-practices)
 
 ## Introduction
 
@@ -36,6 +37,7 @@ buddypress-activity-share-pro/
 - `Buddypress_Share_Admin`: Admin functionality
 - `Buddypress_Share_Public`: Frontend functionality
 - `Buddypress_Share_License_Manager`: License handling
+- `Buddypress_Share_Tracker`: Share tracking and analytics (v2.0.0+)
 
 ## Hooks Reference
 
@@ -123,6 +125,72 @@ add_action( 'bp_share_user_services', function( $args, $activity_link, $activity
     </div>
     <?php
 }, 10, 3 );
+```
+
+#### `bp_share_user_reshared_activity` (v2.0.0+)
+Specific trigger for point/reward systems after reshare. Perfect for gamification integrations.
+
+```php
+do_action( 'bp_share_user_reshared_activity', int $user_id, string $reshare_type, int $original_activity, int $new_activity_id );
+```
+
+**Parameters:**
+- `$user_id` (int): The user who performed the reshare
+- `$reshare_type` (string): Type of reshare (profile, group, friend)
+- `$original_activity` (int): Original activity ID that was reshared
+- `$new_activity_id` (int): The newly created share activity ID
+
+**Example - Award Points:**
+```php
+add_action( 'bp_share_user_reshared_activity', function( $user_id, $reshare_type, $original_activity, $new_activity_id ) {
+    // Award different points based on share type
+    $points = array(
+        'profile' => 10,
+        'group'   => 15,
+        'friend'  => 20
+    );
+    
+    $award_points = isset( $points[$reshare_type] ) ? $points[$reshare_type] : 10;
+    
+    // Integration with myCRED
+    if ( function_exists( 'mycred_add' ) ) {
+        mycred_add( 
+            'reshare_activity',
+            $user_id,
+            $award_points,
+            'Reshared activity to %s',
+            $reshare_type,
+            array( 'ref_type' => 'post', 'ref_id' => $original_activity )
+        );
+    }
+}, 10, 4 );
+```
+
+#### Tracking System Hooks (v2.0.0+)
+
+**`bp_share_internal_share_tracked`** - Fired when internal share is tracked
+```php
+do_action( 'bp_share_internal_share_tracked', array $share_data, int $user_id );
+```
+
+**`bp_share_external_share_tracked`** - Fired when external share is tracked
+```php
+do_action( 'bp_share_external_share_tracked', array $share_data );
+```
+
+**`bp_share_external_visit_tracked`** - Fired when someone visits a tracked link
+```php
+do_action( 'bp_share_external_visit_tracked', array $visit_data );
+```
+
+**`bp_share_user_stats_updated`** - Fired after user share statistics are updated
+```php
+do_action( 'bp_share_user_stats_updated', int $user_id, array $stats );
+```
+
+**`bp_share_activity_stats_updated`** - Fired after activity share statistics are updated
+```php
+do_action( 'bp_share_activity_stats_updated', int $activity_id, array $stats );
 ```
 
 ## Filters Reference
@@ -258,6 +326,239 @@ add_filter( 'bp_share_sanitized_extra_settings', function( $sanitized, $input ) 
     
     return $sanitized;
 }, 10, 2 );
+```
+
+#### `bp_share_tracking_parameters` (v2.0.0+)
+Customize tracking parameters added to external share links.
+
+```php
+apply_filters( 'bp_share_tracking_parameters', array $tracking_params, string $url, string $service, int $activity_id, int $user_id );
+```
+
+**Parameters:**
+- `$tracking_params` (array): Default tracking parameters
+- `$url` (string): The original URL
+- `$service` (string): The service name (facebook, x-twitter, etc.)
+- `$activity_id` (int): The activity being shared
+- `$user_id` (int): The user sharing the activity
+
+**Default Parameters:**
+- `utm_source`: 'buddypress_share'
+- `utm_medium`: 'social'
+- `utm_campaign`: 'activity_share'
+- `utm_content`: Service name
+- `bps_aid`: Activity ID
+- `bps_uid`: User ID
+- `bps_service`: Service name
+- `bps_time`: Timestamp
+
+**Example - Add Custom Campaign:**
+```php
+add_filter( 'bp_share_tracking_parameters', function( $params, $url, $service, $activity_id, $user_id ) {
+    // Add seasonal campaign
+    $params['utm_campaign'] = 'summer_2024_share';
+    
+    // Add user segment
+    $user_data = get_userdata( $user_id );
+    if ( $user_data ) {
+        $params['user_role'] = $user_data->roles[0] ?? 'member';
+    }
+    
+    // Remove user ID for privacy
+    unset( $params['bps_uid'] );
+    
+    return $params;
+}, 10, 5 );
+```
+
+## Share Tracking System
+
+### Overview (v2.0.0+)
+
+The share tracking system provides comprehensive analytics for both internal reshares and external social media shares. It automatically tracks user behavior, activity metrics, and provides hooks for integration with point systems and analytics platforms.
+
+### Tracking Features
+
+#### 1. Internal Reshare Tracking
+Automatically tracks when users reshare activities within the community:
+- User statistics (total shares, breakdown by type)
+- Activity statistics (shares per activity, unique sharers)
+- Timestamp and destination tracking
+
+#### 2. External Share Tracking
+All external share links include tracking parameters:
+- Standard UTM parameters for analytics platforms
+- Custom BuddyPress parameters for detailed tracking
+- Service-specific tracking for each social platform
+
+#### 3. Visit Tracking
+Tracks when users click on shared links:
+- Total visits per activity
+- Breakdown by service/platform
+- Referrer tracking
+
+### Tracker Class API
+
+```php
+// Get user share statistics
+$user_stats = Buddypress_Share_Tracker::get_user_stats( $user_id );
+/*
+Returns:
+array(
+    'total_shares' => 42,
+    'internal_shares' => 30,
+    'external_shares' => 12,
+    'last_share_date' => '2024-01-15 10:30:00',
+    'share_breakdown' => array(
+        'profile' => 20,
+        'group' => 10,
+        'facebook' => 5,
+        'x-twitter' => 7
+    )
+)
+*/
+
+// Get activity share statistics
+$activity_stats = Buddypress_Share_Tracker::get_activity_stats( $activity_id );
+/*
+Returns:
+array(
+    'total_shares' => 15,
+    'internal_shares' => 10,
+    'external_shares' => 5,
+    'unique_sharers' => array( 1, 5, 8, 12 ),
+    'last_share_date' => '2024-01-15 10:30:00'
+)
+*/
+
+// Get activity visit statistics
+$visit_stats = Buddypress_Share_Tracker::get_activity_visit_stats( $activity_id );
+/*
+Returns:
+array(
+    'total_visits' => 150,
+    'service_visits' => array(
+        'facebook' => 80,
+        'x-twitter' => 50,
+        'linkedin' => 20
+    ),
+    'last_visit_date' => '2024-01-15 10:30:00'
+)
+*/
+```
+
+### Integration Examples
+
+#### GamiPress Points Integration
+```php
+add_action( 'bp_share_user_reshared_activity', function( $user_id, $reshare_type ) {
+    if ( function_exists( 'gamipress_award_points' ) ) {
+        // Award points based on share type
+        $points = ( 'group' === $reshare_type ) ? 15 : 10;
+        gamipress_award_points( $user_id, $points, 'reshare_activity' );
+    }
+}, 10, 2 );
+```
+
+#### Achievement System
+```php
+add_action( 'bp_share_user_stats_updated', function( $user_id, $stats ) {
+    // Award achievement for 10 reshares
+    if ( $stats['internal_shares'] == 10 ) {
+        // Award "Social Butterfly" achievement
+        do_action( 'bp_share_award_achievement', $user_id, 'social_butterfly' );
+    }
+    
+    // Award achievement for 50 total shares
+    if ( $stats['total_shares'] == 50 ) {
+        // Award "Share Master" achievement
+        do_action( 'bp_share_award_achievement', $user_id, 'share_master' );
+    }
+}, 10, 2 );
+```
+
+#### Analytics Dashboard
+```php
+// Display share statistics in user profile
+add_action( 'bp_before_member_header_meta', function() {
+    $user_id = bp_displayed_user_id();
+    $stats = Buddypress_Share_Tracker::get_user_stats( $user_id );
+    
+    if ( $stats && $stats['total_shares'] > 0 ) {
+        ?>
+        <div class="share-stats">
+            <span class="stat-item">
+                <strong><?php echo $stats['total_shares']; ?></strong> 
+                <?php _e( 'Total Shares', 'buddypress-share' ); ?>
+            </span>
+            <span class="stat-item">
+                <strong><?php echo count( $stats['share_breakdown'] ); ?></strong> 
+                <?php _e( 'Platforms Used', 'buddypress-share' ); ?>
+            </span>
+        </div>
+        <?php
+    }
+});
+```
+
+#### Google Analytics Integration
+```php
+// Track reshares in Google Analytics
+add_action( 'bp_share_internal_share_tracked', function( $share_data ) {
+    if ( ! is_admin() ) {
+        ?>
+        <script>
+        if ( typeof gtag !== 'undefined' ) {
+            gtag('event', 'share', {
+                'event_category': 'social',
+                'event_action': 'reshare',
+                'event_label': '<?php echo $share_data['destination_type']; ?>',
+                'user_id': <?php echo $share_data['user_id']; ?>,
+                'activity_id': <?php echo $share_data['activity_id']; ?>
+            });
+        }
+        </script>
+        <?php
+    }
+});
+```
+
+### Privacy Controls
+
+```php
+// Remove user ID from tracking parameters
+add_filter( 'bp_share_tracking_parameters', function( $params ) {
+    unset( $params['bps_uid'] );
+    return $params;
+});
+
+// Anonymize IP addresses
+add_filter( 'bp_share_internal_share_tracked', function( $share_data ) {
+    // Hash IP instead of storing raw
+    if ( isset( $share_data['ip_address'] ) ) {
+        $share_data['ip_address'] = hash( 'sha256', $share_data['ip_address'] );
+    }
+    return $share_data;
+});
+```
+
+### Performance Optimization
+
+```php
+// Cache user statistics
+add_action( 'bp_share_user_stats_updated', function( $user_id, $stats ) {
+    set_transient( 'bp_share_user_stats_' . $user_id, $stats, HOUR_IN_SECONDS );
+}, 10, 2 );
+
+// Batch process share tracking
+add_action( 'bp_share_user_reshared_activity', function( $user_id, $reshare_type, $original_activity, $new_activity_id ) {
+    // Queue for batch processing instead of real-time
+    as_schedule_single_action( time() + 60, 'process_share_batch', array(
+        'user_id' => $user_id,
+        'type' => $reshare_type,
+        'activity_id' => $original_activity
+    ));
+}, 10, 4 );
 ```
 
 ## Custom Services
