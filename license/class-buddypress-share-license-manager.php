@@ -432,7 +432,7 @@ class BP_ACTIVITY_SHARE_PLUGIN_License_Manager {
             wp_send_json_error( array( 'message' => __( 'Insufficient permissions', 'buddypress-share' ) ) );
         }
         
-        $license = trim( get_option( 'bp_activity_share_plugin_license_key' ) );
+        $license = trim( get_option( 'bp_activity_share_plugin_license_key', '' ) );
         
         if ( empty( $license ) ) {
             wp_send_json_error( array( 'message' => __( 'No license key found', 'buddypress-share' ) ) );
@@ -537,7 +537,7 @@ class BP_ACTIVITY_SHARE_PLUGIN_License_Manager {
      * Deactivate license via API
      */
     private function deactivate_license_api() {
-        $license = trim( get_option( 'bp_activity_share_plugin_license_key' ) );
+        $license = trim( get_option( 'bp_activity_share_plugin_license_key', '' ) );
         
         // data to send in our API request
         $api_params = array(
@@ -622,7 +622,7 @@ class BP_ACTIVITY_SHARE_PLUGIN_License_Manager {
         }
         
         // Retrieve the license from the database
-        $license = trim( get_option( 'bp_activity_share_plugin_license_key' ) );
+        $license = trim( get_option( 'bp_activity_share_plugin_license_key', '' ) );
         if ( ! $license ) {
             $license = ! empty( $_POST['bp_activity_share_plugin_license_key'] ) ? sanitize_text_field( $_POST['bp_activity_share_plugin_license_key'] ) : '';
         }

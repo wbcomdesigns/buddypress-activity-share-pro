@@ -49,9 +49,9 @@ class Buddypress_Share_Admin {
 	 * @access   private
 	 * @var      array    CDN asset URLs for admin.
 	 */
-	const ADMIN_CDN_ASSETS = [
+	const ADMIN_CDN_ASSETS = array(
 		'font_awesome' => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
-	];
+	);
 
 	/**
 	 * Initialize the class and set its properties.
@@ -217,7 +217,7 @@ class Buddypress_Share_Admin {
 		}
 
 		// Check for various Font Awesome handles
-		$fa_handles = [
+		$fa_handles = array(
 			'font-awesome',
 			'fontawesome', 
 			'fa',
@@ -226,7 +226,7 @@ class Buddypress_Share_Admin {
 			'wp-fontawesome',
 			'elementor-icons-fa-solid',
 			'elementor-icons-fa-brands'
-		];
+		);
 
 		foreach ( $fa_handles as $handle ) {
 			if ( wp_style_is( $handle, 'enqueued' ) || wp_style_is( $handle, 'registered' ) ) {

@@ -337,7 +337,7 @@ function bp_activity_share_pro_check_config() {
 		'network_status' => true,
 	);
 
-	if ( get_current_blog_id() == bp_get_root_blog_id() ) {
+	if ( get_current_blog_id() === bp_get_root_blog_id() ) {
 		$config['blog_status'] = true;
 	}
 
@@ -550,7 +550,7 @@ add_filter( 'bp_activity_reshare_post_type', 'bp_activity_reshare_post_disable' 
  */
 function bp_activity_reshare_post_disable( $post_type ) {
 	$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
-	if ( isset( $bp_reshare_settings['disable_post_reshare_activity'] ) && $bp_reshare_settings['disable_post_reshare_activity'] == 1 ) {
+	if ( isset( $bp_reshare_settings['disable_post_reshare_activity'] ) && 1 === $bp_reshare_settings['disable_post_reshare_activity'] ) {
 
 		if ( ( $key = array_search( 'post', $post_type ) ) !== false ) {
 			unset( $post_type[ $key ] );

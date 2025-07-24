@@ -56,13 +56,13 @@ class Buddypress_Share_Public {
 	 * @access   private
 	 * @var      array    CDN asset URLs.
 	 */
-	const CDN_ASSETS = [
+	const CDN_ASSETS = array(
 		'font_awesome' => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
 		'bootstrap_css' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css',
 		'bootstrap_js' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js',
 		'select2_css' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css',
 		'select2_js' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js',
-	];
+	);
 
 	/**
 	 * Initialize the class and set its properties.
@@ -225,7 +225,7 @@ class Buddypress_Share_Public {
 		}
 
 		// Check for various Font Awesome handles
-		$fa_handles = [
+		$fa_handles = array(
 			'font-awesome',
 			'fontawesome', 
 			'fa',
@@ -234,7 +234,7 @@ class Buddypress_Share_Public {
 			'wp-fontawesome',
 			'elementor-icons-fa-solid',
 			'elementor-icons-fa-brands'
-		];
+		);
 
 		foreach ( $fa_handles as $handle ) {
 			if ( wp_style_is( $handle, 'enqueued' ) || wp_style_is( $handle, 'registered' ) ) {
@@ -254,11 +254,11 @@ class Buddypress_Share_Public {
 	 */
 	private function has_bootstrap_conflict() {
 		// Known conflicting plugins/themes
-		$conflicts = [
+		$conflicts = array(
 			class_exists( 'WeDevs_Dokan' ) && function_exists( 'dokan_is_seller_dashboard' ) && dokan_is_seller_dashboard(),
 			wp_style_is( 'bootstrap', 'enqueued' ),
 			wp_style_is( 'bootstrap-css', 'enqueued' ),
-		];
+		);
 
 		return in_array( true, $conflicts, true );
 	}
@@ -1238,7 +1238,7 @@ class Buddypress_Share_Public {
 		// Prepare title
 		$content = ! empty( $activity_obj->action ) ? $activity_obj->action : $activity_obj->content;
 		$content = explode( '<span', $content );
-		$title = wp_strip_all_tags( ent2ncr( trim( convert_chars( $content[0] ) ) ) );
+		$title = wp_strip_all_tags( ent2ncr( trim( convert_chars( $content[0] ?? '' ) ) ) );
 		
 		if ( ':' === substr( $title, -1 ) ) {
 			$title = substr( $title, 0, -1 );
@@ -1386,7 +1386,7 @@ class Buddypress_Share_Public {
 		$activity_type = $activities_template->activity->type;
 		$secondary_item_id = $activities_template->activity->secondary_item_id;
 
-		if ( 0 == $secondary_item_id ) {
+		if ( 0 === $secondary_item_id ) {
 			return;
 		}
 

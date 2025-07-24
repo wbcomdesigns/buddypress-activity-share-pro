@@ -121,14 +121,16 @@ class Buddypress_Share_Tracker {
 	 */
 	public function process_tracking_parameters() {
 		// Check if we have tracking parameters
-		if ( ! isset( $_GET['bps_aid'] ) || ! isset( $_GET['bps_service'] ) ) {
+		$activity_id = filter_input( INPUT_GET, 'bps_aid', FILTER_VALIDATE_INT );
+		$service = filter_input( INPUT_GET, 'bps_service', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		
+		if ( ! $activity_id || ! $service ) {
 			return;
 		}
 		
-		$activity_id = absint( $_GET['bps_aid'] );
-		$service = sanitize_key( $_GET['bps_service'] );
-		$user_id = isset( $_GET['bps_uid'] ) ? absint( $_GET['bps_uid'] ) : 0;
-		$timestamp = isset( $_GET['bps_time'] ) ? absint( $_GET['bps_time'] ) : 0;
+		$service = sanitize_key( $service );
+		$user_id = filter_input( INPUT_GET, 'bps_uid', FILTER_VALIDATE_INT ) ?: 0;
+		$timestamp = filter_input( INPUT_GET, 'bps_time', FILTER_VALIDATE_INT ) ?: 0;
 		
 		// Validate activity exists
 		if ( ! bp_activity_get_specific( array( 'activity_ids' => $activity_id ) ) ) {
@@ -169,8 +171,9 @@ class Buddypress_Share_Tracker {
 			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'buddypress-share' ) ) );
 		}
 		
-		$activity_id = isset( $_POST['activity_id'] ) ? absint( $_POST['activity_id'] ) : 0;
-		$service = isset( $_POST['service'] ) ? sanitize_key( $_POST['service'] ) : '';
+		$activity_id = filter_input( INPUT_POST, 'activity_id', FILTER_VALIDATE_INT ) ?: 0;
+		$service = filter_input( INPUT_POST, 'service', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		$service = $service ? sanitize_key( $service ) : '';
 		$user_id = get_current_user_id();
 		
 		if ( ! $activity_id || ! $service ) {
@@ -347,12 +350,20 @@ class Buddypress_Share_Tracker {
 	private function get_user_ip() {
 		$ip = '';
 		
-		if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
-			$ip = $_SERVER['HTTP_CLIENT_IP'];
-		} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		} elseif ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
-			$ip = $_SERVER['REMOTE_ADDR'];
+		// Try different methods to get IP address
+		$ip_keys = array( 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR' );
+		
+		foreach ( $ip_keys as $key ) {
+			if ( array_key_exists( $key, $_SERVER ) && ! empty( $_SERVER[ $key ] ) ) {
+				$ip = $_SERVER[ $key ];
+				break;
+			}
+		}
+		
+		// Handle multiple IPs (from proxy)
+		if ( strpos( $ip, ',' ) !== false ) {
+			$ip = explode( ',', $ip );
+			$ip = trim( $ip[0] );
 		}
 		
 		return sanitize_text_field( $ip );
