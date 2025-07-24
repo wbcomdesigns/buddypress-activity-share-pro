@@ -47,7 +47,13 @@ if ( ! defined( 'BP_ACTIVITY_SHARE_STORE_URL' ) ) {
 }
 
 /**
- * Load license system early with proper loading order
+ * Load license system early with proper loading order.
+ *
+ * Loads the EDD license system components in the correct order to prevent
+ * class dependency issues. Only loads for users with manage_options capability.
+ *
+ * @since 1.5.2
+ * @return void
  */
 function bp_share_load_license_system() {
 	// Only load if user has permissions
@@ -121,11 +127,13 @@ function bp_share_load_license_system() {
 
 /**
  * The code that runs during plugin activation.
+ * 
+ * Deactivates the free version if active and runs activation tasks.
  * This action is documented in includes/class-buddypress-share-activator.php
  *
- * @access public
- * @author   Wbcom Designs
  * @since    1.0.0
+ * @access   public
+ * @return   void
  */
 function activate_buddypress_share_pro() {
 	// Deactivate free version if active
@@ -141,9 +149,11 @@ register_activation_hook( __FILE__, 'activate_buddypress_share_pro' );
 /**
  * The code that runs during plugin deactivation.
  *
- * @access public
- * @author   Wbcom Designs
+ * Runs cleanup tasks on plugin deactivation.
+ *
  * @since    1.5.2
+ * @access   public
+ * @return   void
  */
 function deactivate_buddypress_share_pro() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-buddypress-share-activator.php';
@@ -165,11 +175,12 @@ if ( ! class_exists( 'Buddypress_Share' ) ) {
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bp_activity_share_pro_plugin_actions', 10, 2 );
 
 /**
- * Adds the Settings link to the plugin activate/deactivate page
+ * Adds the Settings link to the plugin activate/deactivate page.
  *
- * @param array $links Plugin action links.
- * @param string $file Plugin file.
- * @return array Modified action links.
+ * @since    1.0.0
+ * @param    array  $links Plugin action links.
+ * @param    string $file  Plugin file.
+ * @return   array  Modified action links.
  */
 function bp_activity_share_pro_plugin_actions( $links, $file ) {
 	if ( class_exists( 'BuddyPress' ) && current_user_can( 'manage_options' ) ) {
@@ -188,6 +199,7 @@ function bp_activity_share_pro_plugin_actions( $links, $file ) {
  * not affect the page life cycle.
  *
  * @since    1.0.0
+ * @return   void
  */
 function run_buddypress_share_pro() {
 	$plugin = new Buddypress_Share();
@@ -201,7 +213,12 @@ function run_buddypress_share_pro() {
 add_action( 'bp_loaded', 'bpshare_pro_plugin_init' );
 
 /**
- * Plugin init
+ * Initialize the plugin when BuddyPress is loaded.
+ *
+ * Checks for BuddyPress or BuddyBoss Platform and runs the plugin if requirements are met.
+ *
+ * @since    1.0.0
+ * @return   void
  */
 function bpshare_pro_plugin_init() {
 	// Check if either BuddyPress or BuddyBoss Platform is active
@@ -214,7 +231,12 @@ function bpshare_pro_plugin_init() {
 }
 
 /**
- * Initialize WBCom integration
+ * Initialize WBCom integration.
+ *
+ * Integrates the plugin with WBCom shared admin interface if available.
+ *
+ * @since    1.5.0
+ * @return   void
  */
 function bp_share_init_wbcom_integration() {
 	// Only register if we have the requirements
@@ -245,7 +267,12 @@ function bp_share_init_wbcom_integration() {
 }
 
 /**
- * Fallback integration if primary fails
+ * Fallback integration if primary fails.
+ *
+ * Provides fallback integration method if the primary WBCom integration is not available.
+ *
+ * @since    1.5.0
+ * @return   void
  */
 function bp_share_init_fallback_integration() {
 	// Only run if not already integrated
@@ -257,7 +284,12 @@ function bp_share_init_fallback_integration() {
 }
 
 /**
- * Render admin page for shared wrapper
+ * Render admin page for shared wrapper.
+ *
+ * Callback function for WBCom integration to render the admin page.
+ *
+ * @since    1.5.0
+ * @return   void
  */
 function bp_share_render_admin_page() {
 	// Make sure admin class is loaded
@@ -284,7 +316,13 @@ if ( is_admin() ) {
 add_action( 'plugins_loaded', 'bp_share_load_license_system', 5 );
 
 /**
- * Check config
+ * Check plugin configuration.
+ *
+ * Verifies that the plugin is activated on the correct blog and with the correct
+ * network configuration when used in multisite.
+ *
+ * @since    1.0.0
+ * @return   bool True if configuration is valid, false otherwise.
  */
 function bp_activity_share_pro_check_config() {
 	global $bp;
@@ -331,7 +369,12 @@ function bp_activity_share_pro_check_config() {
 }
 
 /**
- * Same Blog
+ * Display admin notice for incorrect blog activation.
+ *
+ * Shows an error message when the plugin is not activated on the same blog as BuddyPress.
+ *
+ * @since    1.0.0
+ * @return   void
  */
 function bpshare_pro_same_blog() {
 	echo '<div class="error"><p>'
@@ -340,7 +383,12 @@ function bpshare_pro_same_blog() {
 }
 
 /**
- * Network config
+ * Display admin notice for network configuration mismatch.
+ *
+ * Shows an error message when the plugin and BuddyPress have different network configurations.
+ *
+ * @since    1.0.0
+ * @return   void
  */
 function bpshare_pro_same_network_config() {
 	echo '<div class="error"><p>'
@@ -350,6 +398,11 @@ function bpshare_pro_same_network_config() {
 
 /**
  * Check if BuddyPress or BuddyBoss Platform is active.
+ *
+ * Deactivates the plugin if neither BuddyPress nor BuddyBoss Platform is active.
+ *
+ * @since    1.0.0
+ * @return   void
  */
 function bpshare_pro_check_requirements() {
 	// Check if in the admin area and current user has permission to manage options.
@@ -366,19 +419,23 @@ function bpshare_pro_check_requirements() {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
 		add_action( 'admin_notices', 'bpshare_pro_required_plugin_admin_notice' );
 
-		// Safely unset 'activate' parameter to prevent activation notice.
-		if ( isset( $_GET['activate'] ) ) { // phpcs:ignore
-			unset( $_GET['activate'] ); // phpcs:ignore
+		// Safely handle 'activate' parameter to prevent activation notice.
+		if ( filter_input( INPUT_GET, 'activate' ) !== null ) {
+			// Clear the activation parameter without modifying superglobal.
+			wp_safe_redirect( remove_query_arg( 'activate' ) );
+			exit;
 		}
 	}
 }
 add_action( 'admin_init', 'bpshare_pro_check_requirements' );
 
 /**
- * Throw an Alert to tell the Admin why it didn't activate.
+ * Display admin notice when required plugins are missing.
  *
- * @author wbcomdesigns
- * @since  2.2.2
+ * Shows an error message when neither BuddyPress nor BuddyBoss Platform is active.
+ *
+ * @since    2.2.2
+ * @return   void
  */
 function bpshare_pro_required_plugin_admin_notice() {
 	$plugin_name = esc_html__( 'BuddyPress Activity Share Pro', 'buddypress-share' );
@@ -389,16 +446,20 @@ function bpshare_pro_required_plugin_admin_notice() {
 		'<strong>' . esc_html( $plugin_name ) . '</strong>'
 	);
 	echo '</p></div>';
-	if ( isset( $_GET['activate'] ) ) { //phpcs:ignore
-		unset( $_GET['activate'] ); //phpcs:ignore
+	if ( filter_input( INPUT_GET, 'activate' ) !== null ) {
+		// Clear the activation parameter properly.
+		wp_safe_redirect( remove_query_arg( 'activate' ) );
+		exit;
 	}
 }
 
 /**
- * Add notice with youzify plugin.
+ * Check for Youzify plugin compatibility.
  *
- * @author wbcomdesigns
- * @since  1.1.0
+ * Deactivates the plugin if Youzify is active due to compatibility issues.
+ *
+ * @since    1.1.0
+ * @return   void
  */
 function bpshare_pro_youzify() {
 	// Check if Youzify is active and the user has permissions to manage plugins.
@@ -408,19 +469,23 @@ function bpshare_pro_youzify() {
 		// Admin notice with a descriptive message.
 		add_action( 'admin_notices', 'bpshare_pro_youzify_plugin_admin_notice' );
 
-		// Safely unset the 'activate' query parameter to prevent confusion.
-		if ( isset( $_GET['activate'] ) ) { // phpcs:ignore
-            unset( $_GET['activate'] ); // phpcs:ignore
+		// Safely handle the 'activate' query parameter to prevent confusion.
+		if ( filter_input( INPUT_GET, 'activate' ) !== null ) {
+			// Clear the activation parameter properly.
+			wp_safe_redirect( remove_query_arg( 'activate' ) );
+			exit;
 		}
 	}
 }
 add_action( 'admin_init', 'bpshare_pro_youzify' );
 
 /**
- * Throw an Alert to tell the Admin why it didn't activate.
+ * Display admin notice for Youzify incompatibility.
  *
- * @author wbcomdesigns
- * @since  1.1.0
+ * Shows an error message when the plugin cannot be used with Youzify.
+ *
+ * @since    1.1.0
+ * @return   void
  */
 function bpshare_pro_youzify_plugin_admin_notice() {
 	$bpsharepro_plugin = esc_html__( 'BuddyPress Activity Share Pro', 'buddypress-share' );
@@ -429,14 +494,22 @@ function bpshare_pro_youzify_plugin_admin_notice() {
 	/* translators: %s: */
 	printf( esc_html__( '%1$s plugin can not be use with %2$s plugin.', 'buddypress-share' ), '<strong>' . esc_html( $bpsharepro_plugin ) . '</strong>', '<strong>' . esc_html( $youzify_plugin ) . '</strong>' );
 	echo '</p></div>';
-	if ( isset( $_GET['activate'] ) ) { //phpcs:ignore
-		unset( $_GET['activate'] ); //phpcs:ignore
+	if ( filter_input( INPUT_GET, 'activate' ) !== null ) {
+		// Clear the activation parameter properly.
+		wp_safe_redirect( remove_query_arg( 'activate' ) );
+		exit;
 	}
 }
 
 add_action( 'activated_plugin', 'bpshare_pro_activation_redirect_settings' );
 /**
- * Redirect to plugin settings page after activation
+ * Redirect to plugin settings page after activation.
+ *
+ * Automatically redirects to the plugin settings page after successful activation.
+ *
+ * @since    1.0.0
+ * @param    string $plugin Path to the plugin file relative to the plugins directory.
+ * @return   void
  */
 function bpshare_pro_activation_redirect_settings( $plugin ) {
 	// If Youzify is active, no need to proceed further.
@@ -445,16 +518,19 @@ function bpshare_pro_activation_redirect_settings( $plugin ) {
 	}
 
 	// Only proceed if BuddyPress is active and 'page' is not set in the URL.
-	if ( class_exists( 'BuddyPress' ) && ! isset( $_GET['page'] ) ) { // phpcs:ignore
+	$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+	if ( class_exists( 'BuddyPress' ) && ! $page ) {
 
 		// Sanitize input and check if the correct plugin is being activated.
 		if ( sanitize_text_field( $plugin ) === plugin_basename( __FILE__ ) ) {
 
 			// Check if action and plugin match the expected values, ensuring they are sanitized.
-			if ( isset( $_REQUEST['action'] ) && 'activate' === sanitize_text_field( $_REQUEST['action'] ) && isset( $_REQUEST['plugin'] ) && sanitize_text_field( $_REQUEST['plugin'] ) === $plugin ) { // phpcs:ignore
-
+			$action = filter_input( INPUT_REQUEST, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			$request_plugin = filter_input( INPUT_REQUEST, 'plugin', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			
+			if ( 'activate' === $action && $request_plugin === $plugin ) {
 				// Redirect to the settings page after plugin activation.
-				wp_redirect( admin_url( 'admin.php?page=wbcom-buddypress-share' ) );
+				wp_safe_redirect( admin_url( 'admin.php?page=wbcom-buddypress-share' ) );
 				exit;
 			}
 		}
@@ -464,11 +540,13 @@ function bpshare_pro_activation_redirect_settings( $plugin ) {
 add_filter( 'bp_activity_reshare_post_type', 'bp_activity_reshare_post_disable' );
 
 /**
- * Function to disable post sharing if the respective option is disabled
- * @param $post_type array Array of post types.
- * 
- * @since 1.0.0
- * @return $post_type array Modified array of post types.
+ * Disable post sharing if the respective option is disabled.
+ *
+ * Removes 'post' from the array of shareable post types if post resharing is disabled.
+ *
+ * @since    1.0.0
+ * @param    array $post_type Array of post types.
+ * @return   array Modified array of post types.
  */
 function bp_activity_reshare_post_disable( $post_type ) {
 	$bp_reshare_settings = get_site_option( 'bp_reshare_settings' );
@@ -492,13 +570,15 @@ function bp_activity_reshare_post_disable( $post_type ) {
 add_filter( 'wbcom_submenu_label', 'bp_share_customize_submenu_label', 10, 3 );
 
 /**
- * Customize submenu label for BuddyPress Activity Share Pro
+ * Customize submenu label for BuddyPress Activity Share Pro.
  *
- * @since 1.5.2
- * @param string $label Current menu label
- * @param string $slug Plugin slug
- * @param array $plugin Plugin data
- * @return string Modified menu label
+ * Filters the WBCom submenu label to provide a custom label for this plugin.
+ *
+ * @since    1.5.2
+ * @param    string $label  Current menu label.
+ * @param    string $slug   Plugin slug.
+ * @param    array  $plugin Plugin data.
+ * @return   string Modified menu label.
  */
 function bp_share_customize_submenu_label( $label, $slug, $plugin ) {
 	// Change menu label for this plugin

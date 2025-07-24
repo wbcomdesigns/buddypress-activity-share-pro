@@ -82,22 +82,35 @@ class Buddypress_Share_Admin {
 
 		// Font Awesome 5.15.4 - Only if not already loaded
 		if ( ! $this->is_fontawesome_loaded() ) {
-			wp_enqueue_style( 
-				'bp-share-admin-fontawesome', 
-				self::ADMIN_CDN_ASSETS['font_awesome'],
-				array(), 
-				'5.15.4', 
-				'all' 
-			);
+			// Use asset manager for icon library
+			if ( class_exists( 'Buddypress_Share_Assets' ) ) {
+				Buddypress_Share_Assets::enqueue_icon_library();
+			} else {
+				// Fallback to CDN if asset manager not available
+				$use_cdn = apply_filters( 'bp_share_use_cdn_assets', false );
+				if ( $use_cdn ) {
+					wp_enqueue_style( 
+						'bp-share-admin-fontawesome', 
+						self::ADMIN_CDN_ASSETS['font_awesome'],
+						array(), 
+						'5.15.4', 
+						'all' 
+					);
+				} else {
+					// Use dashicons as ultimate fallback
+					wp_enqueue_style( 'dashicons' );
+				}
+			}
 		}
 		
 		// WordPress Color Picker for icon settings
-		if ( isset( $_GET['section'] ) && in_array( $_GET['section'], array( 'icons', 'display' ) ) ) {
+		$section = filter_input( INPUT_GET, 'section', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( $section && in_array( $section, array( 'icons', 'display' ), true ) ) {
 			wp_enqueue_style( 'wp-color-picker' );
 		}
 		
 		// License tab styles
-		if ( isset( $_GET['section'] ) && 'license' === $_GET['section'] ) {
+		if ( 'license' === $section ) {
 			wp_enqueue_style(
 				'bp-share-license-admin',
 				$plugin_url . 'license/license-admin.css',
@@ -158,7 +171,8 @@ class Buddypress_Share_Admin {
 		wp_enqueue_script( 'jquery-ui-droppable' );
 		
 		// WordPress Color Picker for icon settings
-		if ( isset( $_GET['section'] ) && in_array( $_GET['section'], array( 'icons', 'display' ) ) ) {
+		$section = filter_input( INPUT_GET, 'section', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( $section && in_array( $section, array( 'icons', 'display' ), true ) ) {
 			wp_enqueue_script( 'wp-color-picker' );
 		}
 
@@ -281,7 +295,7 @@ class Buddypress_Share_Admin {
 		}
 
 		// Get current section - default to empty string for first tab
-		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : '';
+		$current_section = filter_input( INPUT_GET, 'section', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ?: '';
 		
 		?>
 		<div class="wrap bp-share-admin-wrap">
@@ -292,7 +306,8 @@ class Buddypress_Share_Admin {
 			
 			<?php
 			// Show success message if settings were updated
-			if ( isset( $_GET['settings-updated'] ) && 'true' === $_GET['settings-updated'] ) {
+			$settings_updated = filter_input( INPUT_GET, 'settings-updated', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			if ( 'true' === $settings_updated ) {
 				?>
 				<div class="notice notice-success is-dismissible">
 					<p><?php esc_html_e( 'Settings saved successfully!', 'buddypress-share' ); ?></p>
@@ -300,8 +315,12 @@ class Buddypress_Share_Admin {
 				<?php
 			}
 			
-			// Show license activation success message
-			if ( isset( $_GET['sl_activation'] ) && 'true' === $_GET['sl_activation'] ) {
+			// Show license activation messages
+			$sl_activation = filter_input( INPUT_GET, 'sl_activation', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			$sl_deactivation = filter_input( INPUT_GET, 'sl_deactivation', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			$message = filter_input( INPUT_GET, 'message', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			
+			if ( 'true' === $sl_activation ) {
 				?>
 				<div class="notice notice-success is-dismissible">
 					<p><?php esc_html_e( 'License activated successfully!', 'buddypress-share' ); ?></p>
@@ -310,7 +329,7 @@ class Buddypress_Share_Admin {
 			}
 			
 			// Show license deactivation success message
-			if ( isset( $_GET['sl_deactivation'] ) && 'true' === $_GET['sl_deactivation'] ) {
+			if ( 'true' === $sl_deactivation ) {
 				?>
 				<div class="notice notice-success is-dismissible">
 					<p><?php esc_html_e( 'License deactivated successfully!', 'buddypress-share' ); ?></p>
@@ -319,10 +338,10 @@ class Buddypress_Share_Admin {
 			}
 			
 			// Show license error message
-			if ( isset( $_GET['sl_activation'] ) && 'false' === $_GET['sl_activation'] && isset( $_GET['message'] ) ) {
+			if ( 'false' === $sl_activation && $message ) {
 				?>
 				<div class="notice notice-error is-dismissible">
-					<p><?php echo esc_html( rawurldecode( $_GET['message'] ) ); ?></p>
+					<p><?php echo esc_html( $message ); ?></p>
 				</div>
 				<?php
 			}
@@ -463,7 +482,7 @@ class Buddypress_Share_Admin {
 							</div>
 						</div>
 						
-						<div class="bp-share-toggle-setting" id="logout_sharing_row" style="<?php echo $bp_share_services_enable ? '' : 'display:none;'; ?>">
+						<div class="bp-share-toggle-setting" id="logout_sharing_row" style="<?php echo esc_attr( $bp_share_services_enable ? '' : 'display:none;' ); ?>">
 							<label class="bp-share-toggle">
 								<input type="checkbox" 
 								       name="bp_share_services_logout_enable" 
@@ -774,7 +793,7 @@ class Buddypress_Share_Admin {
 					<div class="card-body">
 						<div class="bp-share-style-selector">
 							<?php foreach ( $icon_styles as $style_key => $style_name ) : ?>
-								<label class="style-option <?php echo $current_style === $style_key ? 'selected' : ''; ?>">
+								<label class="style-option <?php echo esc_attr( $current_style === $style_key ? 'selected' : '' ); ?>">
 									<input type="radio" 
 									       name="bpas_icon_color_settings[icon_style]" 
 									       id="icon_style_<?php echo esc_attr( $style_key ); ?>"
@@ -1007,7 +1026,9 @@ class Buddypress_Share_Admin {
 	 * @access   public
 	 */
 	public function wss_social_icons() {
-		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'bp_share_admin_nonce' ) ) {
+		// Verify nonce
+		$nonce = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( ! wp_verify_nonce( $nonce, 'bp_share_admin_nonce' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Security nonce check failed.', 'buddypress-share' ) ) );
 		}
 		
@@ -1015,7 +1036,7 @@ class Buddypress_Share_Admin {
 			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'buddypress-share' ) ) );
 		}
 		
-		$service_name = sanitize_text_field( wp_unslash( $_POST['term_name'] ?? '' ) );
+		$service_name = filter_input( INPUT_POST, 'term_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		
 		if ( empty( $service_name ) ) {
 			wp_send_json_error( array( 'message' => __( 'Service name is required.', 'buddypress-share' ) ) );
@@ -1056,7 +1077,9 @@ class Buddypress_Share_Admin {
 	 * @access   public
 	 */
 	public function wss_social_remove_icons() {
-		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'bp_share_admin_nonce' ) ) {
+		// Verify nonce
+		$nonce = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( ! wp_verify_nonce( $nonce, 'bp_share_admin_nonce' ) ) {
 			wp_send_json_error( array( 'message' => __( 'Security nonce check failed.', 'buddypress-share' ) ) );
 		}
 		
@@ -1064,7 +1087,7 @@ class Buddypress_Share_Admin {
 			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'buddypress-share' ) ) );
 		}
 		
-		$service_name = sanitize_text_field( wp_unslash( $_POST['icon_name'] ?? '' ) );
+		$service_name = filter_input( INPUT_POST, 'icon_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		
 		if ( empty( $service_name ) ) {
 			wp_send_json_error( array( 'message' => __( 'Service name is required.', 'buddypress-share' ) ) );
@@ -1148,8 +1171,9 @@ class Buddypress_Share_Admin {
 	 * @return   bool True if plugin admin page, false otherwise.
 	 */
 	private function is_plugin_admin_page( $hook ) {
+		$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		return ( $hook === 'wbcom-designs_page_wbcom-buddypress-share' || 
-		         ( isset( $_GET['page'] ) && $_GET['page'] === 'wbcom-buddypress-share' ) );
+		         'wbcom-buddypress-share' === $page );
 	}
 
 	/**
@@ -1174,14 +1198,35 @@ class Buddypress_Share_Admin {
 		update_site_option( $option, $value );
 	}
 
+	/**
+	 * Sync extra settings to site option.
+	 *
+	 * @since    1.5.2
+	 * @access   public
+	 * @param    mixed  $old_value The old option value.
+	 * @param    mixed  $value     The new option value.
+	 * @param    string $option    The option name.
+	 * @return   void
+	 */
 	public function sync_extra_to_site_option( $old_value, $value, $option ) {
 		update_site_option( 'bp_share_services_extra', $value );
 	}
 
+	/**
+	 * Sync services to site option.
+	 *
+	 * @since    1.5.2
+	 * @access   public
+	 * @param    mixed  $old_value The old option value.
+	 * @param    mixed  $value     The new option value.
+	 * @param    string $option    The option name.
+	 * @return   void
+	 */
 	public function sync_services_to_site_option( $old_value, $value, $option ) {
 		$services = json_decode( $value, true );
-		if ( ! is_array( $services ) ) {
-			$services = @unserialize( $value );
+		if ( ! is_array( $services ) && is_string( $value ) ) {
+			// Safely attempt to unserialize without error suppression
+			$services = maybe_unserialize( $value );
 		}
 		
 		if ( is_array( $services ) ) {
@@ -1190,15 +1235,27 @@ class Buddypress_Share_Admin {
 		}
 	}
 
+	/**
+	 * Sync reshare settings to site option.
+	 *
+	 * @since    1.5.2
+	 * @access   public
+	 * @param    mixed  $old_value The old option value.
+	 * @param    mixed  $value     The new option value.
+	 * @param    string $option    The option name.
+	 * @return   void
+	 */
 	public function sync_reshare_to_site_option( $old_value, $value, $option ) {
 		update_site_option( 'bp_reshare_settings', $value );
 	}
 
 	/**
-	 * Sanitization methods.
+	 * Sanitize extra settings input.
 	 *
 	 * @since    1.5.2
 	 * @access   public
+	 * @param    array $input The settings input to sanitize.
+	 * @return   array Sanitized settings.
 	 */
 	public function sanitize_extra_settings( $input ) {
 		if ( ! is_array( $input ) ) {
@@ -1256,6 +1313,14 @@ class Buddypress_Share_Admin {
 		return $sanitized;
 	}
 
+	/**
+	 * Sanitize icon color settings.
+	 *
+	 * @since    1.5.2
+	 * @access   public
+	 * @param    array $settings The icon settings input to sanitize.
+	 * @return   array Sanitized icon settings.
+	 */
 	public function sanitize_icon_settings( $settings ) {
 		if ( ! is_array( $settings ) ) {
 			return array( 'icon_style' => 'circle' );
@@ -1281,6 +1346,14 @@ class Buddypress_Share_Admin {
 		return $sanitized;
 	}
 
+	/**
+	 * Sanitize reshare settings.
+	 *
+	 * @since    1.5.2
+	 * @access   public
+	 * @param    array $settings The reshare settings input to sanitize.
+	 * @return   array Sanitized reshare settings.
+	 */
 	public function sanitize_reshare_settings( $settings ) {
 		if ( ! is_array( $settings ) ) {
 			return array( 'reshare_share_activity' => 'parent' );

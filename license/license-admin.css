@@ -17,6 +17,12 @@
 	max-width: 800px;
 }
 
+/* Override WordPress default table styles for better spacing */
+.bp_activity_share_plugin-license-section table.form-table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
 .bp_activity_share_plugin-license-section .form-table {
 	background: #fff;
 	border: 1px solid #e1e5e9;
@@ -26,25 +32,43 @@
 }
 
 .bp_activity_share_plugin-license-section .form-table th {
-	padding: 20px;
-	width: 200px;
+	padding: 28px 15px;
+	width: 220px;
 	background: #f8f9fa;
 	border-bottom: 1px solid #e1e5e9;
 	border-right: 1px solid #e1e5e9;
 	font-weight: 600;
 	color: #1d2327;
 	vertical-align: middle;
+	line-height: 1.5;
 }
 
 .bp_activity_share_plugin-license-section .form-table td {
-	padding: 20px;
+	padding: 28px 15px;
 	border-bottom: 1px solid #e1e5e9;
 	background: #fff;
+	line-height: 1.6;
 }
 
 .bp_activity_share_plugin-license-section .form-table tr:last-child th,
 .bp_activity_share_plugin-license-section .form-table tr:last-child td {
 	border-bottom: none;
+}
+
+/* Add spacing between table rows */
+.bp_activity_share_plugin-license-section .form-table tr {
+	border-bottom: 1px solid #e1e5e9;
+}
+
+.bp_activity_share_plugin-license-section .form-table tr:last-child {
+	border-bottom: none;
+}
+
+/* Force padding on table cells with higher specificity */
+.bp_activity_share_plugin-license-section table.form-table > tbody > tr > th,
+.bp_activity_share_plugin-license-section table.form-table > tbody > tr > td {
+	padding-left: 15px !important;
+	padding-right: 15px !important;
 }
 
 /* License key display */
@@ -242,6 +266,25 @@
 .button-small {
 	padding: 4px 12px;
 	font-size: 13px;
+}
+
+/* License button visibility and spacing */
+#bp_activity_share_plugin-save-change {
+	display: none;
+}
+
+#bp_activity_share_plugin-save-change.has-license-key {
+	display: inline-block;
+	margin-left: 10px;
+}
+
+#bp_activity_share_plugin-cancel-change {
+	display: none;
+}
+
+#bp_activity_share_plugin-cancel-change.has-license-key {
+	display: inline-block;
+	margin-left: 5px;
 }
 
 /* Responsive adjustments */

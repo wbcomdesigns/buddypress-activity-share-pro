@@ -92,13 +92,25 @@ class Buddypress_Share_Public {
 
 		// Font Awesome 5.15.4 - Load only if not already loaded
 		if ( ! $this->is_fontawesome_loaded() ) {
-			wp_enqueue_style( 
-				'bp-share-fontawesome', 
-				self::CDN_ASSETS['font_awesome'],
-				array(), 
-				'5.15.4', 
-				'all' 
-			);
+			// Use asset manager for icon library
+			if ( class_exists( 'Buddypress_Share_Assets' ) ) {
+				Buddypress_Share_Assets::enqueue_icon_library();
+			} else {
+				// Fallback to CDN if asset manager not available
+				$use_cdn = apply_filters( 'bp_share_use_cdn_assets', false );
+				if ( $use_cdn ) {
+					wp_enqueue_style( 
+						'bp-share-fontawesome', 
+						self::CDN_ASSETS['font_awesome'],
+						array(), 
+						'5.15.4', 
+						'all' 
+					);
+				} else {
+					// Use dashicons as ultimate fallback
+					wp_enqueue_style( 'dashicons' );
+				}
+			}
 		}
 
 		// Bootstrap CSS - Load only if not conflicting
@@ -333,8 +345,9 @@ class Buddypress_Share_Public {
 	 */
 	public function bp_activity_share_button_dis() {
 		$settings = $this->get_plugin_settings();
+		$logout_enable = isset( $settings['logout_enable'] ) ? $settings['logout_enable'] : 1;
 
-		if ( is_user_logged_in() || ( ! is_user_logged_in() && $settings['logout_enable'] ) ) {
+		if ( is_user_logged_in() || ( ! is_user_logged_in() && $logout_enable ) ) {
 			add_action( 'bp_activity_entry_meta', array( $this, 'bp_share_inner_activity_filter' ) );
 		}
 	}
@@ -350,8 +363,9 @@ class Buddypress_Share_Public {
 	public function add_bp_share_services_logout_body_class( $classes ) {
 		if ( ! is_user_logged_in() ) {
 			$settings = $this->get_plugin_settings();
+			$logout_enable = isset( $settings['logout_enable'] ) ? $settings['logout_enable'] : 1;
 			
-			if ( $settings['logout_enable'] ) {
+			if ( $logout_enable ) {
 				$classes[] = 'bpss-logout-enabled';
 			}
 		}
@@ -384,9 +398,9 @@ class Buddypress_Share_Public {
 		
 		// Use cached plugin settings
 		$settings = $this->get_plugin_settings();
-		$social_service = $settings['services'];
-		$extra_options = $settings['extra_options'];
-		$bp_reshare_settings = $settings['reshare_settings'];
+		$social_service = isset( $settings['services'] ) ? $settings['services'] : array();
+		$extra_options = isset( $settings['extra_options'] ) ? $settings['extra_options'] : array();
+		$bp_reshare_settings = isset( $settings['reshare_settings'] ) ? $settings['reshare_settings'] : array();
 		
 		$activity_type  = bp_share_get_activity_type();
 		
@@ -403,7 +417,7 @@ class Buddypress_Share_Public {
 			echo '<div class="activity-meta">';
 		}
 
-		$icon_settings = $settings['icon_settings'];
+		$icon_settings = isset( $settings['icon_settings'] ) ? $settings['icon_settings'] : array();
 		$style = isset( $icon_settings['icon_style'] ) ? $icon_settings['icon_style'] : 'circle';
 		?>
 	
@@ -421,7 +435,7 @@ class Buddypress_Share_Public {
 					<?php $this->bp_share_user_services_button( $bp_reshare_settings ); ?>
 				<?php endif; ?>
 				
-				<?php if ( $settings['services_enable'] ) : ?>
+				<?php if ( isset( $settings['services_enable'] ) && $settings['services_enable'] ) : ?>
 					<div class="bp-share-activity-share-to-wrapper">
 						<?php
 						if ( ! empty( $social_service ) ) {
@@ -1120,8 +1134,12 @@ class Buddypress_Share_Public {
 			}
 			
 			if ( ! empty( $media_ids ) && is_array( $media_ids ) ) {
-				$media_id = array_key_first( $media_ids );
-				$og_image = wp_get_attachment_image_url( $media_id, 'full' );
+				// PHP 5.6+ compatible way to get first array key
+				reset( $media_ids );
+				$media_id = key( $media_ids );
+				if ( $media_id !== null ) {
+					$og_image = wp_get_attachment_image_url( $media_id, 'full' );
+				}
 			}
 		}
 
@@ -1172,7 +1190,7 @@ class Buddypress_Share_Public {
 	 */
 	public function bp_activity_post_share_button_action( $content ) {
 		$settings = $this->get_plugin_settings();
-		$bp_reshare_settings = $settings['reshare_settings'];
+		$bp_reshare_settings = isset( $settings['reshare_settings'] ) ? $settings['reshare_settings'] : array();
 
 		if ( ! is_single() || 'post' !== get_post_type() || isset( $bp_reshare_settings['disable_post_reshare_activity'] ) ) {
 			return $content;

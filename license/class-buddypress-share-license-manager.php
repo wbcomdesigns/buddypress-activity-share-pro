@@ -132,10 +132,10 @@ class BP_ACTIVITY_SHARE_PLUGIN_License_Manager {
                                            value="" 
                                            class="regular-text" 
                                            placeholder="<?php esc_attr_e( 'Enter your license key', 'buddypress-share' ); ?>" />
-                                    <button type="button" id="bp_activity_share_plugin-save-change" class="button button-primary button-small" <?php echo $has_key ? 'style="margin-left: 10px;"' : 'style="display:none;"'; ?>>
+                                    <button type="button" id="bp_activity_share_plugin-save-change" class="button button-primary button-small<?php echo $has_key ? ' has-license-key' : ''; ?>">
                                         <?php esc_html_e( 'Save', 'buddypress-share' ); ?>
                                     </button>
-                                    <button type="button" id="bp_activity_share_plugin-cancel-change" class="button button-small" <?php echo $has_key ? 'style="margin-left: 5px;"' : 'style="display:none;"'; ?>>
+                                    <button type="button" id="bp_activity_share_plugin-cancel-change" class="button button-small<?php echo $has_key ? ' has-license-key' : ''; ?>">
                                         <?php esc_html_e( 'Cancel', 'buddypress-share' ); ?>
                                     </button>
                                 </div>
