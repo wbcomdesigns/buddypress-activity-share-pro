@@ -1128,7 +1128,7 @@ class Buddypress_Share_Admin {
 	 */
 	private function get_all_available_services() {
 		// Define all available services in one place
-		return array(
+		$services = array(
 			'Facebook'  => 'Facebook',
 			'X'         => 'X (Twitter)',
 			'LinkedIn'  => 'LinkedIn',
@@ -1142,6 +1142,14 @@ class Buddypress_Share_Admin {
 			'E-mail'    => 'E-mail',
 			'Copy-Link' => 'Copy Link',
 		);
+		
+		/**
+		 * Filter the available social sharing services.
+		 *
+		 * @since 1.5.2
+		 * @param array $services Array of available services (key => label).
+		 */
+		return apply_filters( 'bp_share_available_services', $services );
 	}
 	
 	/**
@@ -1262,12 +1270,38 @@ class Buddypress_Share_Admin {
 			$input = array();
 		}
 		
+		/**
+		 * Action before sanitizing extra settings.
+		 *
+		 * @since 1.5.2
+		 * @param array $input The raw input data.
+		 */
+		do_action( 'bp_share_before_sanitize_extra_settings', $input );
+		
 		$sanitized = array();
 		if ( isset( $input['bp_share_services_open'] ) ) {
 			$sanitized['bp_share_services_open'] = sanitize_text_field( $input['bp_share_services_open'] );
 		} else {
 			$sanitized['bp_share_services_open'] = '';
 		}
+		
+		/**
+		 * Filter the sanitized extra settings.
+		 *
+		 * @since 1.5.2
+		 * @param array $sanitized The sanitized settings.
+		 * @param array $input     The raw input data.
+		 */
+		$sanitized = apply_filters( 'bp_share_sanitized_extra_settings', $sanitized, $input );
+		
+		/**
+		 * Action after sanitizing extra settings.
+		 *
+		 * @since 1.5.2
+		 * @param array $sanitized The sanitized settings.
+		 * @param array $input     The raw input data.
+		 */
+		do_action( 'bp_share_after_sanitize_extra_settings', $sanitized, $input );
 		
 		return $sanitized;
 	}

@@ -413,6 +413,28 @@ class Buddypress_Share_Public {
 		$activity_title = bp_share_get_activity_title();
 		$mail_subject   = isset( $activities_template->activity->action ) ? wp_strip_all_tags( $activities_template->activity->action ) : '';
 		
+		/**
+		 * Filter the activity share data before rendering.
+		 *
+		 * @since 1.5.2
+		 * @param array $share_data {
+		 *     Array of share data.
+		 *     @type string $activity_link  The activity permalink URL.
+		 *     @type string $activity_title The activity title for sharing.
+		 *     @type string $mail_subject   The email subject for mail sharing.
+		 * }
+		 * @param object $activity The current activity object.
+		 */
+		$share_data = apply_filters( 'bp_share_activity_data', array(
+			'activity_link'  => $activity_link,
+			'activity_title' => $activity_title,
+			'mail_subject'   => $mail_subject,
+		), $activities_template->activity );
+		
+		$activity_link  = $share_data['activity_link'];
+		$activity_title = $share_data['activity_title'];
+		$mail_subject   = $share_data['mail_subject'];
+		
 		if ( ! is_user_logged_in() ) {
 			echo '<div class="activity-meta">';
 		}
@@ -518,12 +540,23 @@ class Buddypress_Share_Public {
 				$service_key = ( 'E-mail' === $service ) ? 'Email' : $service;
 				$button_id = "bp_" . strtolower( str_replace( '-', '_', $service_key ) ) . "_share";
 				
-				echo '<div class="bp-share-wrapper">';
-				echo '<a class="button bp-share" id="' . esc_attr( $button_id ) . '" href="' . esc_url( $details['url'] ) . '" target="_blank">';
-				echo '<i class="' . esc_attr( $details['icon'] ) . '"></i>';
-				echo '<span class="bp-share-label">' . esc_html( $details['label'] ) . '</span>';
-				echo '</a>';
-				echo '</div>';
+				$button_html = '<div class="bp-share-wrapper">';
+				$button_html .= '<a class="button bp-share" id="' . esc_attr( $button_id ) . '" href="' . esc_url( $details['url'] ) . '" target="_blank">';
+				$button_html .= '<i class="' . esc_attr( $details['icon'] ) . '"></i>';
+				$button_html .= '<span class="bp-share-label">' . esc_html( $details['label'] ) . '</span>';
+				$button_html .= '</a>';
+				$button_html .= '</div>';
+				
+				/**
+				 * Filter the social share button HTML.
+				 *
+				 * @since 1.5.2
+				 * @param string $button_html The HTML for the share button.
+				 * @param string $service     The service name (Facebook, Twitter, etc.).
+				 * @param array  $details     The service configuration details.
+				 * @param string $activity_link The activity permalink.
+				 */
+				echo apply_filters( 'bp_share_social_button_html', $button_html, $service, $details, $activity_link );
 			}
 		}
 
@@ -619,7 +652,16 @@ class Buddypress_Share_Public {
 			);
 		}
 
-		return $services;
+		/**
+		 * Filter the sharing services configuration.
+		 *
+		 * @since 1.5.2
+		 * @param array  $services       Array of sharing services configuration.
+		 * @param string $activity_link  The activity permalink.
+		 * @param string $activity_title The activity title.
+		 * @param string $mail_subject   The mail subject.
+		 */
+		return apply_filters( 'bp_share_services_config', $services, $activity_link, $activity_title, $mail_subject );
 	}
 
 	/**
@@ -845,13 +887,51 @@ class Buddypress_Share_Public {
 		if ( $activity_in > 0 && ! $this->user_can_post_to_group( $user_id, $activity_in ) ) {
 			wp_send_json_error( array( 'message' => __( 'You do not have permission to post in this group.', 'buddypress-share' ) ) );
 		}
+		
+		/**
+		 * Filter to allow modification of reshare data before creating activity.
+		 *
+		 * @since 1.5.2
+		 * @param array $reshare_data {
+		 *     Array of reshare data.
+		 *     @type int    $user_id         The user creating the reshare.
+		 *     @type int    $activity_id     The original activity ID.
+		 *     @type string $activity_type   The type of share (activity_share, post_share).
+		 *     @type string $activity_content The reshare content/message.
+		 *     @type int    $activity_in     The group ID if sharing to a group, 0 otherwise.
+		 *     @type string $destination_type The destination type (profile, group).
+		 * }
+		 */
+		$reshare_data = apply_filters( 'bp_share_before_create_reshare', array(
+			'user_id'         => $user_id,
+			'activity_id'     => $activity_id,
+			'activity_type'   => $activity_type,
+			'activity_content' => $activity_content,
+			'activity_in'     => $activity_in,
+			'destination_type' => $destination_type,
+		) );
 
 		// Create activity
-		$new_activity_id = $this->create_share_activity( $user_id, $activity_id, $activity_type, $activity_content, $activity_in );
+		$new_activity_id = $this->create_share_activity( 
+			$reshare_data['user_id'], 
+			$reshare_data['activity_id'], 
+			$reshare_data['activity_type'], 
+			$reshare_data['activity_content'], 
+			$reshare_data['activity_in'] 
+		);
 
 		if ( ! $new_activity_id ) {
 			wp_send_json_error( array( 'message' => __( 'Failed to create activity.', 'buddypress-share' ) ) );
 		}
+		
+		/**
+		 * Action hook fired after a successful reshare.
+		 *
+		 * @since 1.5.2
+		 * @param int   $new_activity_id The ID of the newly created share activity.
+		 * @param array $reshare_data    The reshare data array.
+		 */
+		do_action( 'bp_share_after_create_reshare', $new_activity_id, $reshare_data );
 
 		// Update share count
 		$new_count = $this->update_share_count( $activity_id, $activity_type );
