@@ -64,7 +64,7 @@
         .exclusive-notice {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
-            padding: 30px;
+            padding: 40px;
             text-align: center;
             margin: 40px 0;
             border-radius: 15px;
@@ -72,51 +72,32 @@
         }
         
         .exclusive-notice h2 {
-            font-size: 2em;
-            margin-bottom: 15px;
+            font-size: 2.5em;
+            margin-bottom: 20px;
         }
         
-        .exclusive-notice .packages {
+        .exclusive-notice p {
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .theme-badges {
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin-top: 25px;
+            gap: 40px;
+            margin-top: 30px;
             flex-wrap: wrap;
         }
         
-        .package-card {
+        .theme-badge {
             background: white;
             color: #333;
-            padding: 25px;
+            padding: 20px 40px;
             border-radius: 10px;
-            min-width: 250px;
+            font-size: 1.3em;
+            font-weight: bold;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        
-        .package-card h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        
-        .package-card .price {
-            font-size: 2em;
-            font-weight: bold;
-            color: #f5576c;
-        }
-        
-        .package-card ul {
-            list-style: none;
-            margin-top: 15px;
-        }
-        
-        .package-card li {
-            padding: 5px 0;
-        }
-        
-        .package-card li:before {
-            content: "✓ ";
-            color: #4caf50;
-            font-weight: bold;
         }
         
         /* Features Section */
@@ -278,34 +259,6 @@
             font-size: 1.3em;
         }
         
-        /* Developer Section */
-        .developer-section {
-            background: #2d2d2d;
-            color: white;
-            padding: 60px 0;
-            margin-top: 40px;
-        }
-        
-        .developer-section h2 {
-            text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 50px;
-        }
-        
-        .code-example {
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            overflow-x: auto;
-        }
-        
-        .code-example pre {
-            color: #f8f8f2;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-        }
-        
         /* CTA Section */
         .cta-section {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
@@ -435,35 +388,12 @@
     <!-- Exclusive Notice -->
     <div class="container">
         <div class="exclusive-notice">
-            <h2>🎯 Exclusively Available With</h2>
-            <p>BuddyPress Activity Share Pro is a premium plugin included ONLY with these packages:</p>
-            <div class="packages">
-                <div class="package-card">
-                    <h3>Reign Theme</h3>
-                    <div class="price">$59</div>
-                    <ul>
-                        <li>Premium BuddyPress Theme</li>
-                        <li>Activity Share Pro Included</li>
-                        <li>Elementor Support</li>
-                        <li>Lifetime Updates</li>
-                        <li>Premium Support</li>
-                    </ul>
-                </div>
-                <div class="package-card">
-                    <h3>BuddyX Pro</h3>
-                    <div class="price">$49</div>
-                    <ul>
-                        <li>Premium BuddyPress Theme</li>
-                        <li>Activity Share Pro Included</li>
-                        <li>Multiple Demos</li>
-                        <li>Lifetime Updates</li>
-                        <li>Premium Support</li>
-                    </ul>
-                </div>
+            <h2>🎯 Premium Plugin Exclusively Available With</h2>
+            <p>BuddyPress Activity Share Pro is a premium plugin that comes bundled exclusively with our flagship themes. This powerful social sharing solution is not available as a standalone purchase.</p>
+            <div class="theme-badges">
+                <div class="theme-badge">🎨 Reign Theme</div>
+                <div class="theme-badge">🎨 BuddyX Pro</div>
             </div>
-            <p style="margin-top: 20px; font-size: 1.1em;">
-                ⚠️ This plugin is NOT available for individual purchase
-            </p>
         </div>
     </div>
 
@@ -738,89 +668,15 @@
         </div>
     </section>
 
-    <!-- Developer Section -->
-    <section class="developer-section">
-        <div class="container">
-            <h2>Developer Paradise 🛠️</h2>
-            <p style="text-align: center; margin-bottom: 40px;">Extensive hooks, filters, and APIs for complete customization</p>
-            
-            <div class="code-example">
-                <pre>
-// Award points when user reshares an activity
-add_action( 'bp_share_user_reshared_activity', function( $user_id, $reshare_type, $original_activity, $new_activity_id ) {
-    // Award 10 points for resharing
-    if ( function_exists( 'mycred_add' ) ) {
-        mycred_add( 'activity_reshare', $user_id, 10, 'Reshared an activity' );
-    }
-    
-    // Trigger achievement check
-    do_action( 'gamipress_trigger_event', 'bp_reshare_activity', $user_id );
-}, 10, 4 );
-
-// Customize share tracking parameters
-add_filter( 'bp_share_tracking_parameters', function( $params, $activity_id, $service ) {
-    $params['custom_campaign'] = 'summer_2024';
-    $params['user_segment'] = get_user_meta( get_current_user_id(), 'segment', true );
-    return $params;
-}, 10, 3 );
-
-// Add custom social service
-add_filter( 'bp_share_services', function( $services ) {
-    $services['custom_platform'] = array(
-        'name' => 'Custom Platform',
-        'icon' => 'fa-custom',
-        'url'  => 'https://custom.com/share?url={url}&text={title}'
-    );
-    return $services;
-});
-                </pre>
-            </div>
-            
-            <h3 style="margin-top: 40px; margin-bottom: 20px;">Available Hooks & Filters</h3>
-            <div class="new-feature-grid">
-                <div class="new-feature-item">
-                    <h4>Action Hooks</h4>
-                    <ul style="list-style: none; padding: 0;">
-                        <li>• bp_share_user_reshared_activity</li>
-                        <li>• bp_share_before_buttons</li>
-                        <li>• bp_share_after_buttons</li>
-                        <li>• bp_share_external_share_tracked</li>
-                        <li>• bp_share_internal_share_tracked</li>
-                    </ul>
-                </div>
-                <div class="new-feature-item">
-                    <h4>Filter Hooks</h4>
-                    <ul style="list-style: none; padding: 0;">
-                        <li>• bp_share_services</li>
-                        <li>• bp_share_button_html</li>
-                        <li>• bp_share_tracking_parameters</li>
-                        <li>• bp_share_reshare_content</li>
-                        <li>• bp_share_enabled_for_activity</li>
-                    </ul>
-                </div>
-                <div class="new-feature-item">
-                    <h4>Statistics API</h4>
-                    <ul style="list-style: none; padding: 0;">
-                        <li>• get_user_share_stats()</li>
-                        <li>• get_activity_share_count()</li>
-                        <li>• get_popular_shared_activities()</li>
-                        <li>• get_share_analytics_data()</li>
-                        <li>• export_share_statistics()</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="container">
-            <h2>Get BuddyPress Activity Share Pro Today!</h2>
-            <p style="font-size: 1.2em; margin-bottom: 10px;">Choose your package and transform your community engagement</p>
-            <p style="font-size: 1.1em; opacity: 0.95;">Both packages include lifetime updates and premium support</p>
+            <h2>Transform Your Community Engagement Today!</h2>
+            <p style="font-size: 1.2em; margin-bottom: 10px;">Get BuddyPress Activity Share Pro with our premium themes</p>
+            <p style="font-size: 1.1em; opacity: 0.95;">Includes lifetime updates, premium support, and comprehensive documentation</p>
             <div class="cta-buttons">
-                <a href="https://wbcomdesigns.com/downloads/reign-buddypress-theme/" class="btn">Get Reign Theme + Plugin</a>
-                <a href="https://wbcomdesigns.com/downloads/buddyx-pro/" class="btn">Get BuddyX Pro + Plugin</a>
+                <a href="https://wbcomdesigns.com/downloads/reign-buddypress-theme/" class="btn">Learn More About Reign Theme</a>
+                <a href="https://wbcomdesigns.com/downloads/buddyx-pro/" class="btn">Learn More About BuddyX Pro</a>
                 <a href="#" class="btn btn-secondary">View Documentation</a>
             </div>
         </div>
