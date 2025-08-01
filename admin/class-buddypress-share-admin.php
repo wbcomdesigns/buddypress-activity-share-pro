@@ -109,16 +109,7 @@ class Buddypress_Share_Admin {
 			wp_enqueue_style( 'wp-color-picker' );
 		}
 		
-		// License tab styles
-		if ( 'license' === $section ) {
-			wp_enqueue_style(
-				'bp-share-license-admin',
-				$plugin_url . 'license/license-admin.css',
-				array(),
-				$this->version,
-				'all'
-			);
-		}
+		// License tab removed - plugin runs without restrictions
 
 		// Modern shared tab styles - Use centralized version from WBCom Essential if available
 		if ( defined( 'WBCOM_ESSENTIAL_URL' ) && file_exists( WP_PLUGIN_DIR . '/wbcom-essential/includes/shared-admin/wbcom-shared-tabs.css' ) ) {
@@ -315,36 +306,7 @@ class Buddypress_Share_Admin {
 				<?php
 			}
 			
-			// Show license activation messages
-			$sl_activation = filter_input( INPUT_GET, 'sl_activation', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-			$sl_deactivation = filter_input( INPUT_GET, 'sl_deactivation', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-			$message = filter_input( INPUT_GET, 'message', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-			
-			if ( 'true' === $sl_activation ) {
-				?>
-				<div class="notice notice-success is-dismissible">
-					<p><?php esc_html_e( 'License activated successfully!', 'buddypress-share' ); ?></p>
-				</div>
-				<?php
-			}
-			
-			// Show license deactivation success message
-			if ( 'true' === $sl_deactivation ) {
-				?>
-				<div class="notice notice-success is-dismissible">
-					<p><?php esc_html_e( 'License deactivated successfully!', 'buddypress-share' ); ?></p>
-				</div>
-				<?php
-			}
-			
-			// Show license error message
-			if ( 'false' === $sl_activation && $message ) {
-				?>
-				<div class="notice notice-error is-dismissible">
-					<p><?php echo esc_html( $message ); ?></p>
-				</div>
-				<?php
-			}
+			// License messages removed - plugin runs without restrictions
 			?>
 
 			<!-- WBCom Shared Tab Navigation -->
@@ -364,11 +326,6 @@ class Buddypress_Share_Admin {
 					   class="wbcom-nav-tab <?php echo in_array( $current_section, array( 'restrictions', 'sharing' ) ) ? 'nav-tab-active' : ''; ?>">
 						<span class="dashicons dashicons-admin-settings"></span>
 						<?php esc_html_e( 'Restrictions', 'buddypress-share' ); ?>
-					</a>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=license' ) ); ?>" 
-					   class="wbcom-nav-tab <?php echo 'license' === $current_section ? 'nav-tab-active' : ''; ?>">
-						<span class="dashicons dashicons-admin-network"></span>
-						<?php esc_html_e( 'License', 'buddypress-share' ); ?>
 					</a>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=faq' ) ); ?>" 
 					   class="wbcom-nav-tab <?php echo 'faq' === $current_section ? 'nav-tab-active' : ''; ?>">
@@ -392,9 +349,6 @@ class Buddypress_Share_Admin {
 					case 'restrictions':
 					case 'sharing':
 						$this->bp_share_restrictions_page();
-						break;
-					case 'license':
-						$this->bp_share_license_settings_page();
 						break;
 					case 'faq':
 						$this->bp_share_faq_page();
@@ -856,146 +810,7 @@ class Buddypress_Share_Admin {
 		<?php
 	}
 
-	/**
-	 * Display license settings section.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 */
-	private function bp_share_license_settings_page() {
-		if ( ! class_exists( 'BP_ACTIVITY_SHARE_PLUGIN_License_Manager' ) ) {
-			?>
-			<div class="notice notice-warning">
-				<p><?php esc_html_e( 'License management is not available. Please contact support.', 'buddypress-share' ); ?></p>
-			</div>
-			<?php
-			return;
-		}
-
-		$license_manager = BP_ACTIVITY_SHARE_PLUGIN_License_Manager::get_instance();
-		$license_manager->render_license_tab();
-		
-		// Enqueue license scripts
-		$this->enqueue_license_scripts();
-	}
-
-	/**
-	 * Enqueue license management scripts.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 */
-	private function enqueue_license_scripts() {
-		?>
-		<script type="text/javascript">
-		jQuery(document).ready(function($) {
-			// Handle license activation
-			$('#activate-license').on('click', function(e) {
-				e.preventDefault();
-				var licenseKey = $('#bp_share_license_key').val().trim();
-				
-				if (!licenseKey) {
-					$('#license-message').html('<div class="notice notice-error"><p><?php esc_html_e( "Please enter a license key", "buddypress-share" ); ?></p></div>');
-					return;
-				}
-				
-				$(this).prop('disabled', true).text('<?php esc_html_e( "Activating...", "buddypress-share" ); ?>');
-				
-				$.ajax({
-					url: ajaxurl,
-					type: 'POST',
-					data: {
-						action: 'bp_share_activate_license',
-						license_key: licenseKey,
-						nonce: bp_share_admin_vars.nonce
-					},
-					success: function(response) {
-						if (response.success) {
-							$('#license-message').html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
-							setTimeout(function() {
-								location.reload();
-							}, 1500);
-						} else {
-							$('#license-message').html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
-							$('#activate-license').prop('disabled', false).text('<?php esc_html_e( "Activate License", "buddypress-share" ); ?>');
-						}
-					},
-					error: function() {
-						$('#license-message').html('<div class="notice notice-error"><p><?php esc_html_e( "An error occurred. Please try again.", "buddypress-share" ); ?></p></div>');
-						$('#activate-license').prop('disabled', false).text('<?php esc_html_e( "Activate License", "buddypress-share" ); ?>');
-					}
-				});
-			});
-			
-			// Handle license deactivation
-			$('#deactivate-license').on('click', function(e) {
-				e.preventDefault();
-				
-				if (!confirm('<?php esc_html_e( "Are you sure you want to deactivate your license?", "buddypress-share" ); ?>')) {
-					return;
-				}
-				
-				$(this).prop('disabled', true).text('<?php esc_html_e( "Deactivating...", "buddypress-share" ); ?>');
-				
-				$.ajax({
-					url: ajaxurl,
-					type: 'POST',
-					data: {
-						action: 'bp_share_deactivate_license',
-						nonce: bp_share_admin_vars.nonce
-					},
-					success: function(response) {
-						if (response.success) {
-							$('#license-message').html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
-							setTimeout(function() {
-								location.reload();
-							}, 1500);
-						} else {
-							$('#license-message').html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
-							$('#deactivate-license').prop('disabled', false).text('<?php esc_html_e( "Deactivate License", "buddypress-share" ); ?>');
-						}
-					},
-					error: function() {
-						$('#license-message').html('<div class="notice notice-error"><p><?php esc_html_e( "An error occurred. Please try again.", "buddypress-share" ); ?></p></div>');
-						$('#deactivate-license').prop('disabled', false).text('<?php esc_html_e( "Deactivate License", "buddypress-share" ); ?>');
-					}
-				});
-			});
-			
-			// Handle license check
-			$('#check-license').on('click', function(e) {
-				e.preventDefault();
-				
-				$(this).prop('disabled', true).text('<?php esc_html_e( "Checking...", "buddypress-share" ); ?>');
-				
-				$.ajax({
-					url: ajaxurl,
-					type: 'POST',
-					data: {
-						action: 'bp_share_check_license',
-						nonce: bp_share_admin_vars.nonce
-					},
-					success: function(response) {
-						if (response.success) {
-							$('#license-message').html('<div class="notice notice-success"><p>' + response.data.message + '</p></div>');
-							setTimeout(function() {
-								location.reload();
-							}, 1500);
-						} else {
-							$('#license-message').html('<div class="notice notice-error"><p>' + response.data.message + '</p></div>');
-						}
-						$('#check-license').prop('disabled', false).text('<?php esc_html_e( "Check License", "buddypress-share" ); ?>');
-					},
-					error: function() {
-						$('#license-message').html('<div class="notice notice-error"><p><?php esc_html_e( "An error occurred. Please try again.", "buddypress-share" ); ?></p></div>');
-						$('#check-license').prop('disabled', false).text('<?php esc_html_e( "Check License", "buddypress-share" ); ?>');
-					}
-				});
-			});
-		});
-		</script>
-		<?php
-	}
+	// License functions removed - plugin runs without restrictions
 
 	/**
 	 * Register plugin settings.
@@ -1480,10 +1295,6 @@ class Buddypress_Share_Admin {
 				</p>
 			</div>
 
-			<div class="faq-item">
-				<h3><?php esc_html_e( 'How do I update my license key?', 'buddypress-share' ); ?></h3>
-				<p><?php esc_html_e( 'Go to the License tab, enter your license key, and click "Activate License". An active license ensures you receive automatic updates and premium support.', 'buddypress-share' ); ?></p>
-			</div>
 		</div>
 		<?php
 	}
