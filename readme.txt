@@ -1,24 +1,32 @@
-=== Wbcom Designs - BuddyPress Activity Share Pro ===
+=== BuddyPress Activity Share Pro (License-Free Edition) ===
 
 Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com
-Tags: buddypress, activity, share
-Requires at least: 4.0
+Tags: buddypress, activity, share, social, reshare
+Requires at least: 5.0
 Tested up to: 6.8.2
 Stable tag: 2.0.0
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Free WordPress plugin allows anyone to easily share BuddyPress Activities on major social media (Facebook, Twitter, Linkedin ).
+Premium WordPress plugin for sharing BuddyPress Activities on social media with advanced tracking and analytics. License-free edition with all features unlocked.
 
 == Description ==
 
-BuddyPress Activity Social Share allows users to share activities on their social networking profiles.
+**License-Free Edition** - All premium features unlocked without restrictions!
 
-A perfect plugin to make your user activities on your website social-share-friendly and dramatically increase your members' social reach!
+BuddyPress Activity Share Pro enables comprehensive social sharing for BuddyPress activities with advanced tracking and analytics capabilities.
 
-[Live demo >](https://bb-free.buddyxtheme.com/)
-[Additional Details >](https://wbcomdesigns.com/downloads/buddypress-activity-social-share/)
+Key Features:
+• Share activities on Facebook, Twitter/X, LinkedIn, WhatsApp, Telegram, Bluesky, and more
+• Internal resharing to profiles, groups, and friends
+• Advanced share tracking and analytics foundation
+• UTM parameters for external link tracking
+• Gamification-ready with hooks for point systems
+• Full PHP 8+ compatibility
+• Dark mode support
+• RTL language support
 
 **If you like the plugin functionality, please leave a review to help the plugin grow!**
 
@@ -49,7 +57,9 @@ Yes, this plugin requires the  BuddyPress plugin.
 
 == Changelog ==
 
-= 2.0.0 =
+= 2.0.0 (License-Free Edition) =
+* Special Release: All premium features unlocked without license requirements
+* Removed: License validation and activation system
 * Major Update: Complete overhaul with new tracking foundation for analytics and gamification
 * Added: Share tracking system for internal reshares and external social shares
 * Added: New hook `bp_share_user_reshared_activity` for point/reward system integration
