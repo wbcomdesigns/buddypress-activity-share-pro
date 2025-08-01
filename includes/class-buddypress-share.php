@@ -80,6 +80,7 @@ class Buddypress_Share {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+		$this->init_post_type_sharing();
 	}
 
 	/**
@@ -291,6 +292,43 @@ class Buddypress_Share {
 		}
 		
 		return $classes;
+	}
+
+	/**
+	 * Initialize post type sharing functionality.
+	 *
+	 * @since    2.1.0
+	 * @access   private
+	 */
+	private function init_post_type_sharing() {
+		// For development/testing - enable by default
+		// In production, this should be controlled via settings or filter
+		$is_enabled = apply_filters( 'bp_share_enable_post_type_sharing', true );
+		
+		if ( ! $is_enabled ) {
+			return;
+		}
+		
+		// Load post type sharing classes
+		$post_type_files = array(
+			'class-bp-share-post-type-settings.php',
+			'class-bp-share-post-type-controller.php',
+			'class-bp-share-post-type-frontend.php',
+			'class-bp-share-post-type-tracker.php'
+		);
+		
+		foreach ( $post_type_files as $file ) {
+			$file_path = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/post-types/' . $file;
+			if ( file_exists( $file_path ) ) {
+				require_once $file_path;
+			}
+		}
+		
+		// Initialize controller if classes are loaded
+		if ( class_exists( 'BP_Share_Post_Type_Controller' ) ) {
+			// Get instance immediately instead of waiting for init
+			BP_Share_Post_Type_Controller::get_instance();
+		}
 	}
 
 	/**

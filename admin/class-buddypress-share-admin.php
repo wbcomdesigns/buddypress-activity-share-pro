@@ -327,6 +327,11 @@ class Buddypress_Share_Admin {
 						<span class="dashicons dashicons-admin-settings"></span>
 						<?php esc_html_e( 'Restrictions', 'buddypress-share' ); ?>
 					</a>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=post-types' ) ); ?>" 
+					   class="wbcom-nav-tab <?php echo 'post-types' === $current_section ? 'nav-tab-active' : ''; ?>">
+						<span class="dashicons dashicons-admin-post"></span>
+						<?php esc_html_e( 'Post Type Sharing', 'buddypress-share' ); ?>
+					</a>
 					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=faq' ) ); ?>" 
 					   class="wbcom-nav-tab <?php echo 'faq' === $current_section ? 'nav-tab-active' : ''; ?>">
 						<span class="dashicons dashicons-editor-help"></span>
@@ -349,6 +354,9 @@ class Buddypress_Share_Admin {
 					case 'restrictions':
 					case 'sharing':
 						$this->bp_share_restrictions_page();
+						break;
+					case 'post-types':
+						$this->bp_share_post_types_page();
 						break;
 					case 'faq':
 						$this->bp_share_faq_page();
@@ -1297,5 +1305,86 @@ class Buddypress_Share_Admin {
 
 		</div>
 		<?php
+	}
+
+	/**
+	 * Display post type sharing settings section.
+	 *
+	 * @since    2.1.0
+	 * @access   private
+	 */
+	private function bp_share_post_types_page() {
+		// Check if settings classes exist
+		if ( ! class_exists( 'BP_Share_Post_Type_Settings' ) ) {
+			// Try to include the required files
+			$base_path = plugin_dir_path( dirname( __FILE__ ) );
+			$files = array(
+				$base_path . 'includes/post-types/class-bp-share-post-type-settings.php',
+				$base_path . 'includes/post-types/class-bp-share-post-type-controller.php',
+				$base_path . 'includes/post-types/class-bp-share-post-type-frontend.php'
+			);
+			
+			foreach ( $files as $file ) {
+				if ( file_exists( $file ) ) {
+					require_once $file;
+				}
+			}
+		}
+		
+		// Handle form submission
+		if ( isset( $_POST['bp_share_nonce'] ) && wp_verify_nonce( $_POST['bp_share_nonce'], 'bp_share_post_type_settings' ) ) {
+			if ( class_exists( 'BP_Share_Post_Type_Settings' ) ) {
+				$settings_manager = BP_Share_Post_Type_Settings::get_instance();
+				
+				// Prepare settings data
+				$settings_data = array(
+					'enabled_post_types' => isset( $_POST['bp_share_settings']['enabled_post_types'] ) ? $_POST['bp_share_settings']['enabled_post_types'] : array(),
+					'post_type_services' => isset( $_POST['bp_share_settings']['post_type_services'] ) ? $_POST['bp_share_settings']['post_type_services'] : array(),
+					'display_position' => isset( $_POST['bp_share_settings']['display_position'] ) ? $_POST['bp_share_settings']['display_position'] : 'right',
+					'display_style' => isset( $_POST['bp_share_settings']['display_style'] ) ? $_POST['bp_share_settings']['display_style'] : 'floating',
+					'mobile_behavior' => isset( $_POST['bp_share_settings']['mobile_behavior'] ) ? $_POST['bp_share_settings']['mobile_behavior'] : 'bottom',
+					'default_services' => isset( $_POST['bp_share_settings']['default_services'] ) ? $_POST['bp_share_settings']['default_services'] : array()
+				);
+				
+				$result = $settings_manager->save_settings( $settings_data );
+				
+				if ( $result ) {
+					echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__( 'Settings saved successfully!', 'buddypress-share' ) . '</p></div>';
+				} else {
+					echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'Error saving settings. Please try again.', 'buddypress-share' ) . '</p></div>';
+				}
+			}
+		}
+		
+		// Include the settings template
+		$template_file = plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/bp-share-post-type-settings.php';
+		
+		if ( file_exists( $template_file ) ) {
+			include $template_file;
+		} else {
+			?>
+			<div class="bp-share-post-type-settings">
+				<h2><?php esc_html_e( 'Post Type Sharing Settings', 'buddypress-share' ); ?></h2>
+				<div class="notice notice-info">
+					<p><?php esc_html_e( 'Post type sharing functionality is coming soon in version 3.0!', 'buddypress-share' ); ?></p>
+					<p><?php esc_html_e( 'This feature will allow you to:', 'buddypress-share' ); ?></p>
+					<ul style="list-style: disc; margin-left: 30px;">
+						<li><?php esc_html_e( 'Enable sharing buttons on any WordPress post type', 'buddypress-share' ); ?></li>
+						<li><?php esc_html_e( 'Configure different social services for each post type', 'buddypress-share' ); ?></li>
+						<li><?php esc_html_e( 'Display a floating share widget on posts and pages', 'buddypress-share' ); ?></li>
+						<li><?php esc_html_e( 'Track sharing analytics per post type', 'buddypress-share' ); ?></li>
+						<li><?php esc_html_e( 'Customize the appearance and position of share buttons', 'buddypress-share' ); ?></li>
+					</ul>
+				</div>
+				
+				<div style="margin-top: 30px; padding: 20px; background: #f5f5f5; border-radius: 5px;">
+					<h3><?php esc_html_e( 'Preview: Admin Interface', 'buddypress-share' ); ?></h3>
+					<img src="<?php echo esc_url( BP_ACTIVITY_SHARE_PLUGIN_URL . 'admin/images/post-type-sharing-preview.png' ); ?>" 
+					     alt="<?php esc_attr_e( 'Post Type Sharing Preview', 'buddypress-share' ); ?>" 
+					     style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 5px;">
+				</div>
+			</div>
+			<?php
+		}
 	}
 }

@@ -1,0 +1,14 @@
+Post Type Sharing Preview Image
+================================
+
+This is a placeholder for the post type sharing preview image.
+
+The actual image should show:
+1. The admin interface with post types listed
+2. Checkboxes to enable/disable each post type
+3. Service configuration options
+4. Display settings section
+
+Dimensions: 800x600px
+Format: PNG
+Background: White with subtle gray borders

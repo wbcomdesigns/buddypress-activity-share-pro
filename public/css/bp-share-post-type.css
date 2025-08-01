@@ -1,0 +1,554 @@
+/**
+ * BuddyPress Share Pro - Post Type Sharing Styles
+ * Version: 2.1.0
+ */
+
+/* ========================================
+   Floating Wrapper Styles
+   ======================================== */
+
+.bp-share-floating-wrapper {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 9999;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Position variations */
+.bp-share-floating-wrapper.bp-share-position-right {
+    right: 20px;
+}
+
+.bp-share-floating-wrapper.bp-share-position-left {
+    left: 20px;
+}
+
+/* Hidden state for scroll behavior with smooth transition */
+.bp-share-floating-wrapper.bp-share-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%) translateX(20px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bp-share-floating-wrapper.bp-share-position-left.bp-share-hidden {
+    transform: translateY(-50%) translateX(-20px);
+}
+
+/* Toggle button - Light color scheme */
+.bp-share-toggle {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 30px;
+    padding: 12px 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.bp-share-toggle:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+    border-color: #c7cbd1;
+}
+
+/* Professional pulse animation */
+.bp-share-toggle::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 32px;
+    background: linear-gradient(45deg, rgba(107, 114, 128, 0.1), rgba(107, 114, 128, 0.05));
+    animation: bp-share-pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes bp-share-pulse {
+    0%, 100% {
+        opacity: 0.4;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0;
+        transform: scale(1.15);
+    }
+}
+
+.bp-share-floating-wrapper:hover .bp-share-toggle::before {
+    display: none;
+}
+
+.bp-share-icon svg {
+    width: 20px;
+    height: 20px;
+    color: #6b7280;
+}
+
+.bp-share-count {
+    font-size: 14px;
+    font-weight: 500;
+    color: #4b5563;
+    background: #f3f4f6;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+/* Services container - Smooth reveal animation */
+.bp-share-services {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.98);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 0;
+    overflow: hidden;
+    width: 100%;
+}
+
+.bp-share-floating-wrapper.bp-share-active .bp-share-services {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    max-height: 500px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1), max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bp-share-services-inner {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 48px;
+}
+
+/* Service buttons - Light theme with smooth transitions */
+.bp-share-service {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #4b5563;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Smooth background transition on hover */
+.bp-share-service::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f9fafb;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+}
+
+.bp-share-service:hover::before {
+    transform: translateX(0);
+}
+
+.bp-share-service:hover {
+    color: #1f2937;
+}
+
+/* Smooth directional slide - removed to prevent shift */
+.bp-share-position-right .bp-share-service {
+    transform: translateX(0);
+}
+
+.bp-share-position-right .bp-share-service:hover {
+    transform: translateX(0);
+    background: #f3f4f6;
+}
+
+.bp-share-position-left .bp-share-service {
+    transform: translateX(0);
+}
+
+.bp-share-position-left .bp-share-service:hover {
+    transform: translateX(0);
+    background: #f3f4f6;
+}
+
+.bp-share-service i {
+    width: 20px;
+    text-align: center;
+    font-size: 16px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+}
+
+.bp-share-service:hover i {
+    transform: scale(1.1);
+}
+
+.bp-share-service .service-name {
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.bp-share-floating-wrapper:hover .service-name {
+    opacity: 1;
+    max-width: 150px;
+    margin-left: 8px;
+}
+
+/* Service specific colors */
+.bp-share-service-facebook i { color: #1877f2; }
+.bp-share-service-twitter i { color: #1da1f2; }
+.bp-share-service-linkedin i { color: #0077b5; }
+.bp-share-service-whatsapp i { color: #25d366; }
+.bp-share-service-telegram i { color: #0088cc; }
+.bp-share-service-pinterest i { color: #bd081c; }
+.bp-share-service-reddit i { color: #ff4500; }
+.bp-share-service-wordpress i { color: #21759b; }
+.bp-share-service-pocket i { color: #ef4056; }
+.bp-share-service-bluesky i { color: #00a8e8; }
+.bp-share-service-email i { color: #667eea; }
+.bp-share-service-print i { color: #666; }
+.bp-share-service-copy i { color: #667eea; }
+
+/* Professional tooltip with smooth animation */
+.bp-share-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(5px);
+    background: #1f2937;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    margin-bottom: 12px;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bp-share-tooltip.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.bp-share-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1f2937;
+}
+
+/* ========================================
+   Mobile Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+    /* Reset desktop positioning for mobile */
+    .bp-share-floating-wrapper {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    /* Bottom bar style for mobile */
+    .bp-share-floating-wrapper.bp-share-mobile-bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: auto;
+        transform: none;
+        background: #fff;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        border-radius: 0;
+        animation: none;
+    }
+    
+    .bp-share-mobile-bottom .bp-share-toggle {
+        display: none;
+    }
+    
+    .bp-share-mobile-bottom .bp-share-services {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        max-height: none;
+    }
+    
+    .bp-share-mobile-bottom .bp-share-services-inner {
+        flex-direction: row;
+        justify-content: space-around;
+        box-shadow: none;
+        padding: 0;
+        background: transparent;
+    }
+    
+    .bp-share-mobile-bottom .bp-share-service {
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px;
+    }
+    
+    .bp-share-mobile-bottom .service-name {
+        display: none;
+    }
+    
+    /* Hidden on mobile */
+    .bp-share-floating-wrapper.bp-share-mobile-hidden {
+        display: none;
+    }
+}
+
+/* ========================================
+   Inline Share Buttons
+   ======================================== */
+
+.bp-share-inline-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.bp-share-inline-count {
+    text-align: center;
+    padding: 10px 15px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.bp-share-inline-count .count-number {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+}
+
+.bp-share-inline-count .count-label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.bp-share-inline-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.bp-share-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #f5f5f5;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.bp-share-button:hover {
+    background: #e5e5e5;
+    transform: translateY(-2px);
+}
+
+.bp-share-button i {
+    font-size: 16px;
+}
+
+/* Button style variations */
+.bp-share-style-buttons .bp-share-button {
+    background: #667eea;
+    color: #fff;
+}
+
+.bp-share-style-buttons .bp-share-button:hover {
+    background: #5a67d8;
+}
+
+.bp-share-style-icons .bp-share-button {
+    background: transparent;
+    padding: 8px;
+    font-size: 20px;
+}
+
+.bp-share-style-icons .button-label {
+    display: none;
+}
+
+/* Size variations */
+.bp-share-size-small .bp-share-button {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.bp-share-size-large .bp-share-button {
+    padding: 12px 24px;
+    font-size: 16px;
+}
+
+/* ========================================
+   Dark Mode Support - Light approach
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+    .bp-share-floating-wrapper .bp-share-toggle,
+    .bp-share-floating-wrapper .bp-share-services-inner {
+        background: #f9fafb;
+        border-color: #e5e7eb;
+        color: #374151;
+    }
+    
+    .bp-share-service {
+        color: #4b5563;
+    }
+    
+    .bp-share-service:hover {
+        background: #f3f4f6;
+        color: #1f2937;
+    }
+    
+    .bp-share-count {
+        background: #e5e7eb;
+        color: #374151;
+    }
+    
+    .bp-share-tooltip {
+        background: #374151;
+        color: #f9fafb;
+    }
+    
+    .bp-share-tooltip::after {
+        border-top-color: #374151;
+    }
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+/* Subtle bounce animation */
+@keyframes bp-share-bounce {
+    0%, 100% { 
+        transform: translateY(0);
+    }
+    30% { 
+        transform: translateY(-3px);
+    }
+    60% { 
+        transform: translateY(-1px);
+    }
+}
+
+.bp-share-toggle:hover .bp-share-icon svg {
+    animation: bp-share-bounce 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Professional slide-in animations */
+@keyframes bp-share-slide-in-right {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+@keyframes bp-share-slide-in-left {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+.bp-share-floating-wrapper.bp-share-position-right {
+    animation: bp-share-slide-in-right 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.bp-share-floating-wrapper.bp-share-position-left {
+    animation: bp-share-slide-in-left 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Loading state animation */
+@keyframes bp-share-loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.bp-share-loading {
+    position: relative;
+}
+
+.bp-share-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid #e5e7eb;
+    border-top-color: #6b7280;
+    border-radius: 50%;
+    animation: bp-share-loading 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* ========================================
+   Print Styles
+   ======================================== */
+
+@media print {
+    .bp-share-floating-wrapper,
+    .bp-share-inline-wrapper {
+        display: none !important;
+    }
+}

@@ -305,6 +305,120 @@
             color: white;
         }
         
+        /* Upcoming Features Section */
+        .upcoming-features {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e9ecef 100%);
+            padding: 60px 0;
+            margin-top: 40px;
+        }
+        
+        .upcoming-features h2 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .upcoming-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .upcoming-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border-top: 4px solid #667eea;
+        }
+        
+        .upcoming-card h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+        
+        .upcoming-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .upcoming-card li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .upcoming-card li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+        }
+        
+        .upcoming-preview {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .upcoming-preview h4 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            color: #333;
+        }
+        
+        .preview-box {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .preview-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .preview-content {
+            padding: 20px;
+        }
+        
+        .preview-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .preview-item:last-child {
+            border-bottom: none;
+        }
+        
+        .preview-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        
+        .configure-link {
+            color: #0073aa;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+        
+        .preview-services {
+            background: #f0f0f0;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .header h1 {
@@ -317,6 +431,10 @@
             
             .platform-grid {
                 grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+            
+            .upcoming-grid {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -665,6 +783,71 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </section>
+
+    <!-- Upcoming Features Section -->
+    <section class="upcoming-features">
+        <div class="container">
+            <h2>🚀 Coming Soon: Post Type Sharing Extension</h2>
+            <p style="text-align: center; font-size: 1.2em; margin-bottom: 40px;">
+                Extend sharing functionality beyond BuddyPress activities to all WordPress content types
+            </p>
+            
+            <div class="upcoming-grid">
+                <div class="upcoming-card">
+                    <h3>📌 Floating Share Widget</h3>
+                    <ul>
+                        <li>Sticky right-side floating wrapper</li>
+                        <li>Smart scroll behavior</li>
+                        <li>Mobile-responsive bottom bar</li>
+                        <li>Collapsible design</li>
+                    </ul>
+                </div>
+                
+                <div class="upcoming-card">
+                    <h3>⚙️ Granular Control</h3>
+                    <ul>
+                        <li>Enable/disable per post type</li>
+                        <li>Service selection for each type</li>
+                        <li>Default services configuration</li>
+                        <li>Position & style options</li>
+                    </ul>
+                </div>
+                
+                <div class="upcoming-card">
+                    <h3>📊 Enhanced Analytics</h3>
+                    <ul>
+                        <li>Post-level share tracking</li>
+                        <li>Service performance metrics</li>
+                        <li>Content type insights</li>
+                        <li>Export capabilities</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="upcoming-preview">
+                <h4>Admin Interface Preview</h4>
+                <div class="preview-box">
+                    <div class="preview-header">Post Type Sharing Settings</div>
+                    <div class="preview-content">
+                        <div class="preview-item">
+                            <input type="checkbox" checked> <strong>Posts</strong> 
+                            <span class="configure-link">Configure Services ▼</span>
+                        </div>
+                        <div class="preview-services">
+                            ✓ Facebook &nbsp; ✓ Twitter/X &nbsp; ✓ Copy Link &nbsp; ☐ WhatsApp
+                        </div>
+                        <div class="preview-item">
+                            <input type="checkbox"> <strong>Pages</strong>
+                        </div>
+                        <div class="preview-item">
+                            <input type="checkbox" checked> <strong>Products</strong>
+                            <span class="configure-link">Configure Services ▼</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
