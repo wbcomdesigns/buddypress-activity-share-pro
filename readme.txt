@@ -1,4 +1,4 @@
-=== BuddyPress Activity Share Pro (License-Free Edition) ===
+=== BuddyPress Activity Share Pro ===
 
 Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com
