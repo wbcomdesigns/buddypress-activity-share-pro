@@ -1,4 +1,4 @@
-=== BuddyPress Activity Share Pro (License-Free Edition) ===
+=== Wbcom Designs - BuddyPress Activity Share Pro ===
 
 Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com
@@ -10,13 +10,11 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Premium WordPress plugin for sharing BuddyPress Activities on social media with advanced tracking and analytics. License-free edition with all features unlocked.
+Premium WordPress plugin for sharing BuddyPress Activities on social media with advanced tracking and analytics.
 
 == Description ==
 
-**License-Free Edition** - All premium features unlocked without restrictions!
-
-BuddyPress Activity Share Pro enables comprehensive social sharing for BuddyPress activities with advanced tracking and analytics capabilities.
+BuddyPress Activity Share Pro enables comprehensive social sharing for BuddyPress activities with advanced tracking and analytics capabilities. This premium plugin is exclusively available with Reign Theme and BuddyX Pro.
 
 Key Features:
 • Share activities on Facebook, Twitter/X, LinkedIn, WhatsApp, Telegram, Bluesky, and more
@@ -57,9 +55,7 @@ Yes, this plugin requires the  BuddyPress plugin.
 
 == Changelog ==
 
-= 2.0.0 (License-Free Edition) =
-* Special Release: All premium features unlocked without license requirements
-* Removed: License validation and activation system
+= 2.0.0 =
 * Major Update: Complete overhaul with new tracking foundation for analytics and gamification
 * Added: Share tracking system for internal reshares and external social shares
 * Added: New hook `bp_share_user_reshared_activity` for point/reward system integration
