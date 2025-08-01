@@ -42,6 +42,21 @@ if ( ! defined( 'BP_SHARE' ) ) {
 // License system disabled - plugin runs without restrictions
 
 /**
+ * Initialize the plugin update checker for automatic updates.
+ *
+ * @since 2.0.0
+ */
+require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';
+
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
+$myUpdateChecker = PucFactory::buildUpdateChecker(
+    'https://demos.wbcomdesigns.com/exporter/free-plugins/buddypress-activity-share-pro.json',
+    __FILE__,
+    'buddypress-activity-share-pro'
+);
+
+/**
  * The code that runs during plugin activation.
  * 
  * Deactivates the free version if active and runs activation tasks.
