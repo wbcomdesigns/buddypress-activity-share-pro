@@ -452,8 +452,8 @@ function bpshare_pro_activation_redirect_settings( $plugin ) {
 		if ( sanitize_text_field( $plugin ) === plugin_basename( __FILE__ ) ) {
 
 			// Check if action and plugin match the expected values, ensuring they are sanitized.
-			$action = filter_input( INPUT_REQUEST, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-			$request_plugin = filter_input( INPUT_REQUEST, 'plugin', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
+			$request_plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : '';
 			
 			if ( 'activate' === $action && $request_plugin === $plugin ) {
 				// Redirect to the settings page after plugin activation.

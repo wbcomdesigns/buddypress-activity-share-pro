@@ -150,10 +150,8 @@ class BP_Share_Post_Type_Settings {
 	 */
 	private function get_default_settings() {
 		return array(
-			'enabled_post_types' => array( 'post' ), // Enable posts by default for testing
-			'post_type_services' => array(
-				'post' => array( 'facebook', 'twitter', 'linkedin', 'whatsapp', 'copy' )
-			),
+			'enabled_post_types' => array(), // No post types enabled by default
+			'post_type_services' => array(),
 			'display_position' => 'right',
 			'display_style' => 'floating',
 			'mobile_behavior' => 'bottom',

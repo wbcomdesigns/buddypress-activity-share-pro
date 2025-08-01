@@ -5,7 +5,7 @@ Donate link: https://wbcomdesigns.com
 Tags: buddypress, activity, share, social, reshare
 Requires at least: 5.0
 Tested up to: 6.8.2
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,22 @@ If you need additional help, contact us for [Custom Development](https://wbcomde
 Yes, this plugin requires the  BuddyPress plugin.
 
 == Changelog ==
+
+= 2.1.0 =
+* Added: Post Type Sharing functionality - share buttons can now be added to any WordPress post type
+* Added: Flexible service configuration per post type with customizable social networks
+* Added: Smart post type detection - automatically excludes internal/system post types
+* Added: Display position and style options for post type share buttons
+* Added: Mobile-specific behavior settings for better responsive experience
+* Added: New settings page for managing post type sharing options
+* Fixed: PHP 8.2+ compatibility - replaced undefined constant INPUT_REQUEST
+* Fixed: Plugin activation error with proper request parameter handling
+* Enhanced: Default settings - post types are now disabled by default for better control
+* Enhanced: Admin interface with improved settings organization
+* Enhanced: Security with proper nonce verification and input sanitization
+* Improved: Build process with optimized CSS/JS minification
+* Improved: RTL support with generated RTL stylesheets
+* Updated: Translation files with new strings for post type functionality
 
 = 2.0.0 =
 * Major Update: Complete overhaul with new tracking foundation for analytics and gamification
