@@ -41,14 +41,17 @@
 
 /* Toggle button - Light color scheme */
 .bp-share-toggle {
+    width: 50px;
+    height: 50px;
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 30px;
-    padding: 12px 16px;
+    padding: 0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 10px;
