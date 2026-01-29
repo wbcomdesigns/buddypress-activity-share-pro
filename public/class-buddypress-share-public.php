@@ -380,6 +380,19 @@ class Buddypress_Share_Public {
 	 * @access   public
 	 */
 	public function bp_share_inner_activity_filter() {
+		$settings      			= $this->get_plugin_settings();
+		$bp_reshare_settings 	= isset( $settings['reshare_settings'] ) ? $settings['reshare_settings'] : array();
+
+		$disable_profile_reshare = isset( $bp_reshare_settings['disable_my_profile_reshare_activity'] ) ? $bp_reshare_settings['disable_my_profile_reshare_activity'] : 0;
+		$disable_group_reshare   = isset( $bp_reshare_settings['disable_group_reshare_activity'] ) ? $bp_reshare_settings['disable_group_reshare_activity'] : 0;
+
+		// Check if reshare is disabled for profile or group pages
+		if (
+			( bp_is_user() && $disable_profile_reshare ) ||
+			( bp_is_group() && $disable_group_reshare )
+		) {
+			return; // Do not show reshare button
+		}
 		// Check if BP functions are available
 		if ( ! bp_share_is_bp_active() ) {
 			return;
