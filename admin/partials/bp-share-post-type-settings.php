@@ -303,6 +303,25 @@ $post_types = $settings->get_valid_post_types();
 	font-size: 16px;
 }
 
+.service-icon i.fa-bluesky,
+.service-icon i.fas.fa-bluesky {
+    content: "";
+    background-image: url("<?php echo plugins_url('../admin/images/bluesky-fill.svg', dirname(__FILE__)); ?>");
+    background-size: 17px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    speak: none;
+}
+
+.service-icon i.fa-bluesky::before,
+.service-icon i.fas.fa-bluesky::before {
+    content: "";
+    display: none;
+}
+
 /* Service Colors */
 .service-item .fa-facebook-f,
 .service-default-item .fa-facebook-f { color: #1877f2; }
