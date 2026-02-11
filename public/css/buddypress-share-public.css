@@ -699,7 +699,7 @@ body.admin-bar .activity-share-modal .modal-dialog {
     pointer-events: none;
     transform: translateY(15px);
     transition: opacity 0.3s, transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1);
-    z-index: 999;
+    z-index: 99;
     overflow: hidden;
     max-height: 400px;
     overflow-y: auto;
