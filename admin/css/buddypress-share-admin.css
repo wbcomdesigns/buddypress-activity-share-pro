@@ -578,9 +578,9 @@
 	box-shadow: 0 4px 8px rgba(29, 118, 218, 0.1);
 }
 
-.style-option.selected {
-	background: #e8f3ff;
-	border-color: #1d76da;
+.style-option:has(input[type="radio"]:checked) {
+    background: #e8f3ff;
+    border-color: #1d76da;
 }
 
 .style-option input[type="radio"] {
