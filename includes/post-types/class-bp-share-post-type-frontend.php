@@ -187,7 +187,7 @@ class BP_Share_Post_Type_Frontend {
 				</div>
 			<?php endif; ?>
 			
-			<div class="bp-share-inline-buttons">
+			<div id="bp-share-inline-buttons" class="bp-share-inline-buttons">
 				<?php foreach ( $services as $service_key ) : 
 					$service = $settings->get_service_info( $service_key );
 					if ( ! $service ) continue;

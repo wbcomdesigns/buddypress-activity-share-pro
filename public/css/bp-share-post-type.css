@@ -400,12 +400,12 @@
 }
 
 /* Button style variations */
-.bp-share-style-buttons .bp-share-button {
+.bp-share-style-buttons #bp-share-inline-buttons .bp-share-button {
     background: var(--bp-share-btn-bg, #667eea);
     color: var(--bp-share-btn-color, #fff);
 }
 
-.bp-share-style-buttons .bp-share-button:hover {
+.bp-share-style-buttons #bp-share-inline-buttons .bp-share-button:hover {
     background: var(--bp-share-btn-hover, #5a67d8);
     color: var(--bp-share-btn-color, #fff);
 }
@@ -440,19 +440,29 @@
     border-radius: 6px;
 }
 
-.bp-share-icon-style-blackwhite .bp-share-button {
+.bp-share-icon-style-blackwhite #bp-share-inline-buttons .bp-share-button {
+    background: transparent;
+    color: #000;
+    border: 1px solid #000;
     border-radius: 0;
-    background: #000;
-    color: #fff;
 }
 
-.bp-share-icon-style-blackwhite .bp-share-button:hover {
-    background: #333;
-    color: #fff;
+.bp-share-icon-style-blackwhite #bp-share-inline-buttons .bp-share-button:hover {
+    background: var(--bp-share-btn-hover, #5a67d8);
+    color: var(--bp-share-btn-color, #fff);
 }
 
-.bp-share-icon-style-baricon .bp-share-button {
+.bp-share-icon-style-baricon #bp-share-inline-buttons .bp-share-button {
+    background: transparent;
+    color: var(--bp-share-btn-bg, #667eea);
+    border-top: 3px solid var(--bp-share-btn-bg, #667eea);
     border-radius: 0;
+}
+
+.bp-share-icon-style-baricon #bp-share-inline-buttons .bp-share-button:hover {
+    background: var(--bp-share-btn-hover, #5a67d8);
+    color: var(--bp-share-btn-color, #fff);
+    border-top: 3px solid var(--bp-share-btn-hover, #5a67d8);
 }
 
 /* ========================================

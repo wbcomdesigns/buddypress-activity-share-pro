@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-11T06:51:24+00:00\n"
+"POT-Creation-Date: 2026-02-12T10:26:14+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-share\n"
@@ -582,52 +582,52 @@ msgstr ""
 msgid "Settings saved successfully."
 msgstr ""
 
-#: includes/post-types/class-bp-share-post-type-controller.php:181
+#: includes/post-types/class-bp-share-post-type-controller.php:247
 msgid "You do not have permission to share."
 msgstr ""
 
-#: includes/post-types/class-bp-share-post-type-controller.php:194
+#: includes/post-types/class-bp-share-post-type-controller.php:260
 msgid "You've reached the sharing limit. Please wait a moment before sharing again."
 msgstr ""
 
-#: includes/post-types/class-bp-share-post-type-controller.php:202
+#: includes/post-types/class-bp-share-post-type-controller.php:268
 msgid "Unable to process your share request. Please try again."
 msgstr ""
 
-#: includes/post-types/class-bp-share-post-type-controller.php:210
+#: includes/post-types/class-bp-share-post-type-controller.php:276
 msgid "This content is no longer available for sharing."
 msgstr ""
 
-#: includes/post-types/class-bp-share-post-type-controller.php:221
+#: includes/post-types/class-bp-share-post-type-controller.php:287
 msgid "Your content was shared, but we couldn't track the statistics."
 msgstr ""
 
-#: includes/post-types/class-bp-share-post-type-controller.php:234
+#: includes/post-types/class-bp-share-post-type-controller.php:300
 msgid "Content shared successfully!"
 msgstr ""
 
-#: includes/post-types/class-bp-share-post-type-controller.php:281
+#: includes/post-types/class-bp-share-post-type-controller.php:347
 #: public/class-buddypress-share-public.php:464
 #: public/class-buddypress-share-public.php:1378
 #: public/class-buddypress-share-public.php:1843
 msgid "Share"
 msgstr ""
 
-#: includes/post-types/class-bp-share-post-type-controller.php:282
+#: includes/post-types/class-bp-share-post-type-controller.php:348
 msgid "Link copied!"
 msgstr ""
 
-#: includes/post-types/class-bp-share-post-type-controller.php:283
+#: includes/post-types/class-bp-share-post-type-controller.php:349
 msgid "Unable to share at this time"
 msgstr ""
 
 #: includes/post-types/class-bp-share-post-type-frontend.php:99
-#: includes/post-types/class-bp-share-post-type-frontend.php:244
+#: includes/post-types/class-bp-share-post-type-frontend.php:273
 #, php-format
 msgid "Share on %s"
 msgstr ""
 
-#: includes/post-types/class-bp-share-post-type-frontend.php:157
+#: includes/post-types/class-bp-share-post-type-frontend.php:186
 msgid "Shares"
 msgstr ""
 
