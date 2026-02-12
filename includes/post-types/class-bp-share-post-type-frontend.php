@@ -140,14 +140,43 @@ class BP_Share_Post_Type_Frontend {
 			$args['services'] : 
 			$settings->get_services_for_post_type( $post_type );
 		
+		// Get color settings from Display Settings
+		$icon_settings = get_option( 'bpas_icon_color_settings', array() );
+		$bg_color = isset( $icon_settings['bg_color'] ) ? $icon_settings['bg_color'] : '#667eea';
+		$text_color = isset( $icon_settings['text_color'] ) ? $icon_settings['text_color'] : '#ffffff';
+		$hover_color = isset( $icon_settings['hover_color'] ) ? $icon_settings['hover_color'] : '#5a6fd8';
+		$icon_style = isset( $icon_settings['icon_style'] ) ? $icon_settings['icon_style'] : 'circle';
+		
 		$wrapper_classes = array(
 			'bp-share-inline-wrapper',
 			'bp-share-style-' . $args['style'],
-			'bp-share-size-' . $args['size']
+			'bp-share-size-' . $args['size'],
+			'bp-share-icon-style-' . $icon_style
 		);
 		
+		// Build inline styles
+		$wrapper_style = '';
+		$button_style = '';
+		$button_hover_style = '';
+		
+		// Apply color settings
+		$wrapper_style .= '--bp-share-btn-bg:' . esc_attr( $bg_color ) . ';';
+		$wrapper_style .= '--bp-share-btn-color:' . esc_attr( $text_color ) . ';';
+		$wrapper_style .= '--bp-share-btn-hover:' . esc_attr( $hover_color ) . ';';
+		
+		// Apply border-radius based on icon style
+		if ( 'circle' === $icon_style ) {
+			$wrapper_style .= '--bp-share-btn-radius:30px;';
+		} elseif ( 'rec' === $icon_style ) {
+			$wrapper_style .= '--bp-share-btn-radius:6px;';
+		} elseif ( 'blackwhite' === $icon_style ) {
+			$wrapper_style .= '--bp-share-btn-radius:0;';
+		} else {
+			$wrapper_style .= '--bp-share-btn-radius:0;';
+		}
+		
 		?>
-		<div class="<?php echo esc_attr( implode( ' ', $wrapper_classes ) ); ?>">
+		<div class="<?php echo esc_attr( implode( ' ', $wrapper_classes ) ); ?>" <?php if ( $wrapper_style ) : ?>style="<?php echo esc_attr( $wrapper_style ); ?>"<?php endif; ?>>
 			<?php if ( $args['show_count'] ) : 
 				$controller = BP_Share_Post_Type_Controller::get_instance();
 				$count = $controller->get_share_count( $args['post_id'] );

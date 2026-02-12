@@ -381,17 +381,18 @@
     align-items: center;
     gap: 8px;
     padding: 8px 16px;
-    background: #f5f5f5;
-    border-radius: 6px;
-    text-decoration: none;
-    color: #333;
+    background: var(--bp-share-btn-bg, #f5f5f5);
+    color: var(--bp-share-btn-color, #333);
     font-size: 14px;
     transition: all 0.2s ease;
+    border-radius: var(--bp-share-btn-radius, 6px);
+    text-decoration: none;
 }
 
 .bp-share-button:hover {
-    background: #e5e5e5;
+    background: var(--bp-share-btn-hover, #e5e5e5);
     transform: translateY(-2px);
+    color: var(--bp-share-btn-color, #333);
 }
 
 .bp-share-button i {
@@ -400,12 +401,13 @@
 
 /* Button style variations */
 .bp-share-style-buttons .bp-share-button {
-    background: #667eea;
-    color: #fff;
+    background: var(--bp-share-btn-bg, #667eea);
+    color: var(--bp-share-btn-color, #fff);
 }
 
 .bp-share-style-buttons .bp-share-button:hover {
-    background: #5a67d8;
+    background: var(--bp-share-btn-hover, #5a67d8);
+    color: var(--bp-share-btn-color, #fff);
 }
 
 .bp-share-style-icons .bp-share-button {
@@ -427,6 +429,30 @@
 .bp-share-size-large .bp-share-button {
     padding: 12px 24px;
     font-size: 16px;
+}
+
+/* Icon style variations */
+.bp-share-icon-style-circle .bp-share-button {
+    border-radius: 30px;
+}
+
+.bp-share-icon-style-rec .bp-share-button {
+    border-radius: 6px;
+}
+
+.bp-share-icon-style-blackwhite .bp-share-button {
+    border-radius: 0;
+    background: #000;
+    color: #fff;
+}
+
+.bp-share-icon-style-blackwhite .bp-share-button:hover {
+    background: #333;
+    color: #fff;
+}
+
+.bp-share-icon-style-baricon .bp-share-button {
+    border-radius: 0;
 }
 
 /* ========================================

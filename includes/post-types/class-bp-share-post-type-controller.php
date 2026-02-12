@@ -52,8 +52,11 @@ class BP_Share_Post_Type_Controller {
 		// Initialize post type support
 		add_action( 'init', array( $this, 'register_post_type_support' ), 20 );
 		
-		// Frontend rendering
+		// Frontend rendering - floating style
 		add_action( 'wp_footer', array( $this, 'maybe_render_floating_wrapper' ) );
+		
+		// Frontend rendering - inline style (after content)
+		add_filter( 'the_content', array( $this, 'maybe_render_inline_buttons' ), 999 );
 		
 		// AJAX handlers
 		add_action( 'wp_ajax_bp_share_post', array( $this, 'handle_ajax_share' ) );
@@ -94,8 +97,71 @@ class BP_Share_Post_Type_Controller {
 			return;
 		}
 		
+		// Only render floating wrapper if style is 'floating'
+		$style = $settings->get_display_style();
+		if ( 'floating' !== $style ) {
+			return;
+		}
+		
 		$frontend = BP_Share_Post_Type_Frontend::get_instance();
 		$frontend->render_sticky_wrapper();
+	}
+
+	/**
+	 * Maybe render inline share buttons after content.
+	 *
+	 * @param string $content Post content.
+	 * @return string Modified content.
+	 */
+	public function maybe_render_inline_buttons( $content ) {
+		// Track which posts have already had buttons rendered to prevent duplicates
+		// BuddyBoss and other systems may run the_content filter multiple times
+		static $rendered_posts = array();
+		$post_id = get_the_ID();
+		
+		// Skip if already rendered for this post (prevents DOM corruption)
+		if ( isset( $rendered_posts[ $post_id ] ) ) {
+			return $content;
+		}
+		
+		// Skip in admin/backend context
+		if ( is_admin() ) {
+			return $content;
+		}
+		
+		// Skip if not singular post type
+		if ( ! is_singular() ) {
+			return $content;
+		}
+		
+		$post_type = get_post_type();
+		$settings = BP_Share_Post_Type_Settings::get_instance();
+		
+		if ( ! $settings->is_post_type_enabled( $post_type ) ) {
+			return $content;
+		}
+		
+		$style = $settings->get_display_style();
+		if ( 'inline' !== $style ) {
+			return $content;
+		}
+		
+		// Mark this post as rendered to prevent duplicate appends
+		$rendered_posts[ $post_id ] = true;
+		
+		$services = $settings->get_services_for_post_type( $post_type );
+		
+		$frontend = BP_Share_Post_Type_Frontend::get_instance();
+		ob_start();
+		$frontend->render_inline_buttons( array(
+			'post_id' => $post_id,
+			'services' => $services,
+			'show_count' => true,
+			'show_labels' => true
+		) );
+		$buttons_html = ob_get_clean();
+		
+		return $content . $buttons_html;
 	}
 
 	/**
