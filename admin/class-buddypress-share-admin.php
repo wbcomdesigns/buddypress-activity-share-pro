@@ -102,6 +102,18 @@ class Buddypress_Share_Admin {
 				}
 			}
 		}
+
+		// Additional Font Awesome for post-types section to ensure icons load
+		$section = filter_input( INPUT_GET, 'section', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
+		if ( $section === 'post-types' ) {
+			wp_enqueue_style( 
+				'bp-share-post-types-fontawesome', 
+				'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
+				array(), 
+				'5.15.4', 
+				'all' 
+			);
+		}
 		
 		// WordPress Color Picker for icon settings
 		$section = filter_input( INPUT_GET, 'section', FILTER_SANITIZE_FULL_SPECIAL_CHARS );

@@ -69,15 +69,6 @@ class Buddypress_Share_Assets {
 		// Add inline CSS for icon mapping
 		$icon_mapping = self::get_dashicon_mapping_css();
 		wp_add_inline_style( 'dashicons', $icon_mapping );
-
-		// Always load Font Awesome from CDN for admin to ensure icons work
-		wp_enqueue_style(
-			'bp-share-admin-fontawesome',
-			'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-			array(),
-			'6.4.0',
-			'all'
-		);
 	}
 
 	/**
