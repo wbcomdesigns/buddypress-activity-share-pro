@@ -113,6 +113,17 @@ class Buddypress_Share_Public {
 			}
 		}
 
+		// BuddyBoss theme compatibility - ensure Font Awesome loads
+		if ( function_exists( 'buddyboss_theme' ) || defined( 'BUDDYBOSS_THEME_VERSION' ) ) {
+			wp_enqueue_style( 
+				'bp-share-buddyboss-fa', 
+				'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
+				array(), 
+				'5.15.4', 
+				'all' 
+			);
+		}
+
 		// Bootstrap CSS - Load only if not conflicting
 		if ( ! $this->has_bootstrap_conflict() && ! wp_style_is( 'bootstrap', 'enqueued' ) ) {
 			wp_enqueue_style( 
@@ -224,16 +235,21 @@ class Buddypress_Share_Public {
 			return false;
 		}
 
-		// Check for various Font Awesome handles
+		// Check for various Font Awesome handles including BuddyBoss
 		$fa_handles = array(
 			'font-awesome',
 			'fontawesome', 
 			'fa',
 			'font-awesome-5',
 			'fontawesome-5',
+			'font-awesome-6',
+			'fontawesome-6',
 			'wp-fontawesome',
 			'elementor-icons-fa-solid',
-			'elementor-icons-fa-brands'
+			'elementor-icons-fa-brands',
+			'buddyboss-icons',
+			'buddyboss-fontawesome',
+			'buddyboss-theme-icons'
 		);
 
 		foreach ( $fa_handles as $handle ) {
@@ -393,6 +409,7 @@ class Buddypress_Share_Public {
 		) {
 			return; // Do not show reshare button
 		}
+		
 		// Check if BP functions are available
 		if ( ! bp_share_is_bp_active() ) {
 			return;

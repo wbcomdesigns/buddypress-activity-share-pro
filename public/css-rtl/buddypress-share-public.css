@@ -1422,4 +1422,12 @@ body.modal-open .activity-share-modal {
 .wb-reign-theme #bp-activity-share-widget-box-status-header .activity-content {
     padding: 0;
 }
+
+/* Buddyboss theme */
+.buddyboss-theme .bp-share-wrapper i.fa-link:before {
+    content: "\eec8";
+    font-family: 'bb-icons';
+    font-size: 18px;
+    font-weight: 400;
+}
 /*# sourceMappingURL=buddypress-share-public.css.map */
