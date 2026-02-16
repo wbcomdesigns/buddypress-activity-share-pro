@@ -1441,14 +1441,28 @@ class Buddypress_Share_Public {
 			return $content;
 		}
 
+		$requested_activity_id = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0;
+		if ( empty( $requested_activity_id ) || $requested_activity_id !== (int) $activity->id ) {
+			return $content;
+		}
+		
 		if ( ! empty( $activity->type ) && in_array( $activity->type, array( 'activity_share' ), true ) ) {
 			$original_activity_id = ! empty( $activity->secondary_item_id ) ? $activity->secondary_item_id : bp_activity_get_meta( $activity->id, 'shared_activity_id', true );
-			
-			if ( ! empty( $original_activity_id ) ) {
+
+			while ( ! empty( $original_activity_id ) ) {
 				$original_activity = new BP_Activity_Activity( $original_activity_id );
-				if ( ! empty( $original_activity->content ) ) {
-					return $original_activity->content;
+
+				if ( empty( $original_activity->id ) || $original_activity->type !== 'activity_share' ) {
+					break;
 				}
+
+				$original_activity_id = ! empty( $original_activity->secondary_item_id )
+					? $original_activity->secondary_item_id
+					: bp_activity_get_meta( $original_activity->id, 'shared_activity_id', true );
+			}
+
+			if ( ! empty( $original_activity->content ) ) {
+				return $original_activity->content;
 			}
 		}
 		

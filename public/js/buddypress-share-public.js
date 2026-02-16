@@ -358,7 +358,7 @@
             let activityHtml = '';
             const reshareShareActivity = bp_activity_share_vars.reshare_share_activity;
             const $button = $(e.currentTarget);
-
+           
             // Handle different activity types
             if ($button.closest('.bp-generic-meta.action').hasClass('photos-meta') ||
                 $button.closest('.bp-generic-meta.action').hasClass('videos-meta') ||
@@ -372,11 +372,9 @@
                 } else {
                     activityId = $button.data('activity-id');
                     activityHtml = $('#activity-' + activityId).html();
-
+                    
                     if (reshareShareActivity === 'child') {
-                        $('#activity-' + activityId + ' .activity-reshare-item-container').each(function() {
-                            const idParts = $(this).attr('id').split("bp-reshare-activity-");
-                            activityId = idParts[1];
+                        $( '.activity-reshare-item-container').each(function() {
                             activityHtml = $(this).html();
 
                             if ($(this).hasClass('post-reshare-item-container')) {
