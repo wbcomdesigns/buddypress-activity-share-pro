@@ -1155,7 +1155,7 @@ class Buddypress_Share_Public {
 		if ( ! $activity_id ) {
 			wp_send_json_error( array( 'message' => __( 'Invalid activity ID.', 'buddypress-share' ) ) );
 		}
-		
+
 		ob_start();
 		if ( bp_has_activities( 'include=' . $activity_id ) ) {
 			while ( bp_activities() ) {
@@ -1166,7 +1166,7 @@ class Buddypress_Share_Public {
 		$result = array( 'contents' => ob_get_clean() );
 		wp_send_json_success( $result );
 	}
-
+	
 	/**
 	 * AJAX handler for loading groups and friends dynamically.
 	 *
@@ -1426,6 +1426,36 @@ class Buddypress_Share_Public {
 			$this->bp_share_display_post( $secondary_item_id );
 		}
 	}
+
+	/**
+	 * Filter activity content to show original content for reshares.
+	 *
+	 * @since    2.1.1
+	 * @access   public
+	 * @param    string $content Activity content.
+	 * @param    object $activity Activity object.
+	 * @return   string Modified content.
+	 */
+	public function bp_share_filter_read_more_activity_content( $content, $activity ) {
+		if ( ! wp_doing_ajax() || empty( $_REQUEST['action'] ) || $_REQUEST['action'] !== 'get_single_activity_content' ) {
+			return $content;
+		}
+
+		if ( ! empty( $activity->type ) && in_array( $activity->type, array( 'activity_share' ), true ) ) {
+			$original_activity_id = ! empty( $activity->secondary_item_id ) ? $activity->secondary_item_id : bp_activity_get_meta( $activity->id, 'shared_activity_id', true );
+			
+			if ( ! empty( $original_activity_id ) ) {
+				$original_activity = new BP_Activity_Activity( $original_activity_id );
+				if ( ! empty( $original_activity->content ) ) {
+					return $original_activity->content;
+				}
+			}
+		}
+		
+		return $content;
+	}
+
+	
 
 	/**
 	 * Display shared BuddyPress activity.

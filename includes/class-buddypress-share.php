@@ -245,6 +245,9 @@ class Buddypress_Share {
 		// BuddyPress activity hooks
 		$this->loader->add_action( 'bp_register_activity_actions', $plugin_public, 'bp_share_register_activity_actions' );
 		$this->loader->add_action( 'bp_activity_entry_content', $plugin_public, 'bp_activity_share_entry_content' );
+		
+		// Filters to show original activity content for reshares
+		$this->loader->add_filter( 'bp_get_activity_content_body', $plugin_public, 'bp_share_filter_read_more_activity_content', 20, 2 );
 
 		// Shortcode registration
 		$this->loader->add_shortcode( 'bp_activity_post_reshare', $plugin_public, 'bp_activity_post_reshare' );
