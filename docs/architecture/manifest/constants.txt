@@ -1,0 +1,7 @@
+# Constants Index - BuddyPress Activity Share Pro
+
+BP_ACTIVITY_SHARE_PLUGIN_VERSION    Current plugin version (2.1.0)
+BP_SHARE                            Plugin text domain ('buddypress-share')
+BP_ACTIVITY_SHARE_PLUGIN_URL        Plugin directory URL
+BP_ACTIVITY_SHARE_PLUGIN_BASENAME   Plugin basename for WP functions
+BP_ACTIVITY_SHARE_PLUGIN_PATH       Plugin directory path

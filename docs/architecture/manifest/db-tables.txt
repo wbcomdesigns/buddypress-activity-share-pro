@@ -1,0 +1,33 @@
+# Database Tables Index - BuddyPress Activity Share Pro
+
+## Custom Tables
+{prefix}bp_share_post_tracking          Post type share events tracking (since 2.1.0)
+{prefix}bp_share_post_type_settings     Per-post-type settings (since 2.1.0)
+
+## Options (wp_options / wp_sitemeta)
+bp_share_services                       Enabled social services array
+bp_share_services_enable                Master enable/disable (1/0)
+bp_share_services_logout_enable         Guest sharing enable/disable (1/0)
+bp_share_services_extra                 Extra options (popup windows)
+bp_reshare_settings                     Reshare restrictions and display mode
+bpas_icon_color_settings                Icon style and colors
+bp_share_plugin_version                 Installed plugin version
+bp_share_install_date                   Installation timestamp
+bp_share_post_type_settings             Post type sharing configuration
+
+## Meta Keys (activity_meta)
+share_count                             Share count for activity
+shared_activity_id                      Reference to original activity
+bp_share_activity_stats                 Activity share statistics
+bp_share_visit_stats                    Visit tracking from shared links
+
+## Meta Keys (post_meta)
+share_count                             Share count for post
+_bp_share_visits                        Post visit tracking data
+
+## Meta Keys (user_meta)
+bp_share_user_stats                     User share statistics
+
+## Custom Database Indexes
+idx_bp_share_count                      activity_meta (meta_key, activity_id)
+idx_bp_post_share_count                 postmeta (meta_key, post_id)

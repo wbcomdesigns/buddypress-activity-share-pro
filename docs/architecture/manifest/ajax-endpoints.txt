@@ -1,0 +1,16 @@
+# AJAX Endpoints Index - BuddyPress Activity Share Pro
+
+## Admin AJAX
+wss_social_icons                    admin/class-buddypress-share-admin.php      Add social service
+wss_social_remove_icons             admin/class-buddypress-share-admin.php      Remove social service
+
+## Public AJAX (Logged-in only)
+bp_activity_create_reshare_ajax     public/class-buddypress-share-public.php    Create activity reshare
+bp_share_get_activity_content       public/class-buddypress-share-public.php    Load activity content
+bp_get_user_share_options           public/class-buddypress-share-public.php    Load groups/friends for sharing
+
+## Post Type AJAX (Public + Auth)
+bp_share_post                       includes/post-types/class-bp-share-post-type-controller.php    Track post share
+
+## Tracker AJAX (Public + Auth)
+bp_share_track_external             includes/class-buddypress-share-tracker.php                    Track external share

@@ -1,0 +1,3 @@
+# Shortcodes Index - BuddyPress Activity Share Pro
+
+[bp_activity_post_reshare]    public/class-buddypress-share-public.php    Renders post share button on single posts

@@ -1,0 +1,51 @@
+# Hooks Index - BuddyPress Activity Share Pro
+
+## Actions (do_action)
+bp_share_after_create_reshare           public/class-buddypress-share-public.php
+bp_share_user_reshared_activity         public/class-buddypress-share-public.php
+bp_share_internal_share_tracked         includes/class-buddypress-share-tracker.php
+bp_share_external_share_tracked         includes/class-buddypress-share-tracker.php
+bp_share_external_visit_tracked         includes/class-buddypress-share-tracker.php
+bp_share_user_stats_updated             includes/class-buddypress-share-tracker.php
+bp_share_activity_stats_updated         includes/class-buddypress-share-tracker.php
+bp_share_activity_visit_stats_updated   includes/class-buddypress-share-tracker.php
+bp_share_post_shared                    includes/post-types/class-bp-share-post-type-tracker.php
+bp_share_post_visit_tracked             includes/post-types/class-bp-share-post-type-controller.php
+bp_share_post_visit_tracked_data        includes/post-types/class-bp-share-post-type-tracker.php
+bp_share_clear_public_cache             admin/class-buddypress-share-admin.php
+bp_share_plugin_upgraded                includes/class-buddypress-share.php
+bp_share_deactivated                    includes/class-buddypress-share.php
+bp_share_uninstalled                    includes/class-buddypress-share.php
+bp_share_before_sanitize_extra_settings admin/class-buddypress-share-admin.php
+bp_share_after_sanitize_extra_settings  admin/class-buddypress-share-admin.php
+bp_activity_share_before_post_meta      public/class-buddypress-share-public.php
+bp_activity_share_after_post_meta       public/class-buddypress-share-public.php
+bp_share_user_services                  public/class-buddypress-share-public.php
+
+## Filters (apply_filters)
+bp_share_available_services             admin/class-buddypress-share-admin.php
+bp_share_use_cdn_assets                 includes/class-buddypress-share-assets.php
+bp_share_use_minified_assets            includes/bp-share-helpers.php
+bp_share_activity_data                  public/class-buddypress-share-public.php
+bp_share_social_button_html             public/class-buddypress-share-public.php
+bp_share_services_config                public/class-buddypress-share-public.php
+bp_share_tracking_parameters            public/class-buddypress-share-public.php
+bp_share_before_create_reshare          public/class-buddypress-share-public.php
+bp_share_enable_post_type_sharing       includes/class-buddypress-share.php
+bp_share_post_type_whitelist            includes/post-types/class-bp-share-post-type-settings.php
+bp_share_post_type_is_valid             includes/post-types/class-bp-share-post-type-settings.php
+bp_share_post_type_available_services   includes/post-types/class-bp-share-post-type-settings.php
+bp_share_valid_post_types               includes/post-types/class-bp-share-post-type-settings.php
+bp_share_rate_limit                     includes/post-types/class-bp-share-post-type-controller.php
+bp_share_allow_anonymous_sharing        includes/post-types/class-bp-share-post-type-controller.php
+bp_share_post_url                       includes/post-types/class-bp-share-post-type-controller.php
+bp_share_post_tracking_url              includes/post-types/class-bp-share-post-type-controller.php
+bp_share_disable_ip_tracking            includes/post-types/class-bp-share-post-type-tracker.php
+bp_share_anonymize_ip                   includes/post-types/class-bp-share-post-type-tracker.php
+bp_share_activity_classes               includes/bp-share-buddyboss-compat.php
+buddypress_share_theme_support          includes/class-buddypress-share.php
+bp_activity_reshare_post_type           buddypress-share.php
+bp_activity_share_load_assets           public/class-buddypress-share-public.php
+bp_activity_reshare_action              public/class-buddypress-share-public.php
+bp_share_sanitized_extra_settings       admin/class-buddypress-share-admin.php
+wbcom_submenu_label                     buddypress-share.php

@@ -1,0 +1,28 @@
+# Classes Index - BuddyPress Activity Share Pro
+
+## Core Classes
+Buddypress_Share                    includes/class-buddypress-share.php
+Buddypress_Share_Loader             includes/class-buddypress-share-loader.php
+Buddypress_Share_i18n               includes/class-buddypress-share-i18n.php
+Buddypress_Share_Activator          includes/class-buddypress-share-activator.php
+Buddypress_Share_Assets             includes/class-buddypress-share-assets.php
+Buddypress_Share_Tracker            includes/class-buddypress-share-tracker.php
+
+## Admin Classes
+Buddypress_Share_Admin              admin/class-buddypress-share-admin.php
+
+## Public Classes
+Buddypress_Share_Public             public/class-buddypress-share-public.php
+
+## Post Type Sharing Classes
+BP_Share_Post_Type_Controller       includes/post-types/class-bp-share-post-type-controller.php
+BP_Share_Post_Type_Settings         includes/post-types/class-bp-share-post-type-settings.php
+BP_Share_Post_Type_Frontend         includes/post-types/class-bp-share-post-type-frontend.php
+BP_Share_Post_Type_Tracker          includes/post-types/class-bp-share-post-type-tracker.php
+
+## Integration Classes
+BP_Activity_Share_Wbcom_Integration includes/class-wbcom-integration.php
+
+## Shared Admin Classes (WBCom)
+Wbcom_Shared_Loader                 includes/shared-admin/class-wbcom-shared-loader.php
+Wbcom_Shared_Dashboard              includes/shared-admin/class-wbcom-shared-dashboard.php
