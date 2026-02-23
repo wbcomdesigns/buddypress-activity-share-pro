@@ -716,6 +716,11 @@ body.admin-bar .activity-share-modal .modal-dialog {
     top: auto;
 }
 
+.bb-media-model-inner .bp-activity-share-dropdown-menu.position-top {
+    top: 35px;
+    bottom: auto;
+}
+
 /* Share Options Container */
 .bp-activity-share-dropdown-menu .bp-activity-share-btn,
 .bp-activity-share-dropdown-menu .bp-share-wrapper {
