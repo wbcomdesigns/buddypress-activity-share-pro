@@ -300,9 +300,9 @@ class Buddypress_Share_Public {
 	 */
 	private function should_load_assets() {
 		// Load on BP pages, single posts, or when explicitly requested
-		return bp_share_is_buddypress_page() 
-			|| is_single() 
-			|| apply_filters( 'bp_activity_share_load_assets', false );
+		global $post;
+		
+		return bp_share_is_buddypress_page() || is_single() || apply_filters( 'bp_activity_share_load_assets', false ) || has_shortcode($post->post_content, 'activity-listing');
 	}
 
 	/**
@@ -1648,8 +1648,8 @@ class Buddypress_Share_Public {
 	 */
 	public function bp_activity_share_popup_box() {
 		$reshare_post_type = apply_filters( 'bp_activity_reshare_post_type', array( 'post' ) );
-
-		if ( ! is_user_logged_in() || ! ( is_buddypress() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) || apply_filters( 'bp_activity_reshare_action', false ) ) ) {
+					
+		if ( ! is_user_logged_in() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) || apply_filters( 'bp_activity_reshare_action', false ) ) {
 			return;
 		}
 
