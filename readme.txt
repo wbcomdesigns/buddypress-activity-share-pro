@@ -5,7 +5,7 @@ Donate link: https://wbcomdesigns.com
 Tags: buddypress, activity, share, social, reshare
 Requires at least: 5.0
 Tested up to: 6.8.2
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,16 @@ If you need additional help, contact us for [Custom Development](https://wbcomde
 Yes, this plugin requires the  BuddyPress plugin.
 
 == Changelog ==
+
+= 2.2.0 =
+* Fixed: Reshare activity display options not working correctly
+* Fixed: Activity read more issue for reshared activities
+* Fixed: Share icons not showing with BuddyBoss theme
+* Fixed: Post types services FontAwesome icon not displaying
+* Fixed: Bootstrap CSS conflict with themes
+* Fixed: Elementor compatibility issue
+* Fixed: Post archive page share display issue
+* Improved: Icon style and color management
 
 = 2.1.0 =
 * Added: Post Type Sharing functionality - share buttons can now be added to any WordPress post type
