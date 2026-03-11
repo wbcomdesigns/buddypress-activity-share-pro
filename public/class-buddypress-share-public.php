@@ -1647,12 +1647,18 @@ class Buddypress_Share_Public {
 	 * @access public
 	 */
 	public function bp_activity_share_popup_box() {
+		global $post;
+		
 		$reshare_post_type = apply_filters( 'bp_activity_reshare_post_type', array( 'post' ) );
-					
-		if ( ! is_user_logged_in() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) || apply_filters( 'bp_activity_reshare_action', false ) ) {
-			return;
+		
+		if ( ! is_user_logged_in() || ! ( is_buddypress() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) || apply_filters( 'bp_activity_reshare_action', false ) ) ) {
+			
+			if( !( has_shortcode($post->post_content, 'activity-listing') ) ) {
+					return;
+			}
+			
 		}
-
+					
 		$user_name = $this->get_current_user_name();
 		$bp_reshare_settings = get_site_option( 'bp_reshare_settings', array() );
 		
