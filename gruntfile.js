@@ -212,8 +212,109 @@ module.exports = function(grunt) {
                 tasks: ['checktextdomain'], // Run text domain check
             },
         },
+        // Clean dist directory
+        clean: {
+            dist: {
+                src: ['dist']
+            },
+            temp: {
+                src: ['dist/buddypress-activity-share-pro']
+            }
+        },
+        // Copy files to dist
+        copy: {
+            dist: {
+                files: [{
+                    expand: true,
+                    src: [
+                        '**',
+                        '!node_modules/**',
+                        '!dist/**',
+                        '!docs/**',
+                        '!.git/**',
+                        '!.gitignore',
+                        '!.gitattributes',
+                        '!gruntfile.js',
+                        '!Gruntfile.js',
+                        '!package.json',
+                        '!package-lock.json',
+                        '!composer.json',
+                        '!composer.lock',
+                        '!phpcs.xml',
+                        '!CLAUDE.md',
+                        '!**/*.map',
+                        '!**/.DS_Store',
+                        '!admin/css/*.css',
+                        '!admin/css-rtl/*.css',
+                        '!public/css/*.css',
+                        '!public/css-rtl/*.css',
+                        '!admin/wbcom/assets/css/*.css',
+                        '!admin/wbcom/assets/css-rtl/*.css',
+                        '!admin/js/*.js',
+                        '!public/js/*.js',
+                        '!admin/wbcom/assets/js/*.js',
+                        'admin/css/*.min.css',
+                        'admin/css-rtl/*.min.css',
+                        'public/css/*.min.css',
+                        'public/css-rtl/*.min.css',
+                        'admin/wbcom/assets/css/*.min.css',
+                        'admin/wbcom/assets/css-rtl/*.min.css',
+                        'admin/js/*.min.js',
+                        'public/js/*.min.js',
+                        'admin/wbcom/assets/js/*.min.js'
+                    ],
+                    dest: 'dist/buddypress-activity-share-pro/'
+                }]
+            }
+        },
+        // Compress dist to ZIP
+        compress: {
+            dist: {
+                options: {
+                    archive: 'dist/buddypress-activity-share-pro-<%= grunt.file.readJSON("package.json").version %>.zip',
+                    mode: 'zip'
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'dist/',
+                    src: ['buddypress-activity-share-pro/**'],
+                    dest: '/'
+                }]
+            }
+        }
     });
 
-    // register task  'checktextdomain', 'makepot',
-    grunt.registerTask('default', ['checktextdomain', 'makepot', 'shell:makepot_js', 'rtlcss', 'cssmin', 'uglify', 'watch']);
+    // Load the plugins
+    grunt.loadNpmTasks('grunt-wp-i18n');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-checktextdomain');
+    grunt.loadNpmTasks('grunt-rtlcss');
+    grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-compress');
+
+    // Register default tasks
+    grunt.registerTask('default', ['cssmin', 'uglify', 'checktextdomain', 'rtlcss', 'shell:makepot_js', 'watch']);
+
+    // Build task - minify and prepare files
+    grunt.registerTask('build', [
+        'checktextdomain',
+        'cssmin',
+        'uglify',
+        'rtlcss',
+        'makepot',
+        'shell:makepot_js'
+    ]);
+
+    // Distribution task - create release ZIP
+    grunt.registerTask('dist', [
+        'build',
+        'clean:dist',
+        'copy:dist',
+        'compress:dist',
+        'clean:temp'
+    ]);
 };

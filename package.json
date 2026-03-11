@@ -1,12 +1,15 @@
 {
     "name": "buddypress-share",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "url": "https://github.com/wbcomdesigns/buddypress-activity-share-pro/",
     "license": "GPL-2.0+",
     "description": "Free WordPress plugin to allow anyone easily share BuddyPress Activites on major social media",
     "devDependencies": {
         "grunt": "^1.6.1",
         "grunt-checktextdomain": "^1.0.1",
+        "grunt-contrib-clean": "^2.0.1",
+        "grunt-contrib-compress": "^2.0.0",
+        "grunt-contrib-copy": "^1.0.0",
         "grunt-contrib-cssmin": "^5.0.0",
         "grunt-contrib-uglify": "^5.2.2",
         "grunt-contrib-watch": "^1.1.0",
