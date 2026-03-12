@@ -243,25 +243,7 @@ module.exports = function(grunt) {
                         '!phpcs.xml',
                         '!CLAUDE.md',
                         '!**/*.map',
-                        '!**/.DS_Store',
-                        '!admin/css/*.css',
-                        '!admin/css-rtl/*.css',
-                        '!public/css/*.css',
-                        '!public/css-rtl/*.css',
-                        '!admin/wbcom/assets/css/*.css',
-                        '!admin/wbcom/assets/css-rtl/*.css',
-                        '!admin/js/*.js',
-                        '!public/js/*.js',
-                        '!admin/wbcom/assets/js/*.js',
-                        'admin/css/*.min.css',
-                        'admin/css-rtl/*.min.css',
-                        'public/css/*.min.css',
-                        'public/css-rtl/*.min.css',
-                        'admin/wbcom/assets/css/*.min.css',
-                        'admin/wbcom/assets/css-rtl/*.min.css',
-                        'admin/js/*.min.js',
-                        'public/js/*.min.js',
-                        'admin/wbcom/assets/js/*.min.js'
+                        '!**/.DS_Store'
                     ],
                     dest: 'dist/buddypress-activity-share-pro/'
                 }]
