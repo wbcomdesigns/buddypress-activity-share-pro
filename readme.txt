@@ -4,7 +4,7 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com
 Tags: buddypress, activity, share, social, reshare
 Requires at least: 5.0
-Tested up to: 6.8.2
+Tested up to: 6.9
 Stable tag: 2.2.1
 Requires PHP: 7.4
 License: GPLv2 or later

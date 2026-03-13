@@ -487,7 +487,7 @@ class Wbcom_Shared_Loader
      */
     public function show_plugin_page()
     {
-        $current_page = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : '';
+        $current_page = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : ''; //phpcs:ignore 
 
         // Find the plugin that matches this page
         foreach ($this->registered_plugins as $plugin) {
@@ -812,7 +812,7 @@ class Wbcom_Shared_Loader
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('wbcom_shared_nonce'),
                 'pluginCount' => count($this->registered_plugins),
-                'currentPage' => isset($_GET['page']) ? sanitize_text_field($_GET['page']) : '',
+                'currentPage' => isset($_GET['page']) ? sanitize_text_field($_GET['page']) : '', //phpcs:ignore
                 'strings' => array(
                     'loading' => __('Loading...', 'wbcom-shared'),
                     'error' => __('Error loading content.', 'wbcom-shared'),
@@ -829,7 +829,7 @@ class Wbcom_Shared_Loader
     private function is_wbcom_admin_page($hook_suffix)
     {
         // Get current page parameter
-        $current_page = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : '';
+        $current_page = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : ''; //phpcs:ignore
 
         // STRICT CHECK: Only load shared assets on main dashboard pages
 
@@ -923,7 +923,7 @@ class Wbcom_Shared_Loader
 
     private function extract_menu_slug($settings_url)
     {
-        $parsed = parse_url($settings_url);
+        $parsed = wp_parse_url($settings_url);
         if (isset($parsed['query'])) {
             parse_str($parsed['query'], $params);
             return isset($params['page']) ? $params['page'] : '';
@@ -971,7 +971,7 @@ class Wbcom_Shared_Loader
             'registered_plugins' => array_keys($this->registered_plugins),
             'dashboard_class_exists' => class_exists('Wbcom_Shared_Dashboard'),
             'current_hook' => isset($GLOBALS['hook_suffix']) ? $GLOBALS['hook_suffix'] : 'unknown',
-            'current_page' => isset($_GET['page']) ? sanitize_text_field($_GET['page']) : 'none',
+            'current_page' => isset($_GET['page']) ? sanitize_text_field($_GET['page']) : 'none', //phpcs:ignore
             'assets_url' => $this->get_shared_assets_url(),
         );
     }

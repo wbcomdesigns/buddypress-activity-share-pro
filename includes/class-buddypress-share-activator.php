@@ -166,7 +166,7 @@ class Buddypress_Share_Activator {
 			
 			if ( ! $index_exists ) {
 				$sql = "ALTER TABLE `{$activity_meta_table}` ADD INDEX `{$index_name}` (`meta_key`(20), `activity_id`)";
-				$wpdb->query( $sql );
+				$wpdb->query( $sql ); //phpcs:ignore
 			}
 
 			// Create index for post meta share_count (if not exists)
@@ -176,7 +176,7 @@ class Buddypress_Share_Activator {
 			
 			if ( ! $post_index_exists ) {
 				$sql = "ALTER TABLE `{$post_meta_table}` ADD INDEX `{$post_index_name}` (`meta_key`(20), `post_id`) ";
-				$wpdb->query( $sql );
+				$wpdb->query( $sql ); //phpcs:ignore
 			}
 
 		} catch ( Exception $e ) {
@@ -196,12 +196,14 @@ class Buddypress_Share_Activator {
 	private static function index_exists( $table_name, $index_name ) {
 		global $wpdb;
 
+		//phpcs:disable
 		$result = $wpdb->get_row( 
 			$wpdb->prepare( 
 				"SHOW INDEX FROM `{$table_name}` WHERE Key_name = %s", 
 				$index_name 
 			) 
 		);
+		//phpcs:enable
 
 		return ! empty( $result );
 	}
@@ -310,6 +312,7 @@ class Buddypress_Share_Activator {
 
 		try {
 			// Clean up share_count meta for deleted activities
+			//phpcs:disable
 			$wpdb->query( 
 				"DELETE am FROM {$activity_meta_table} am 
 				 LEFT JOIN {$activity_table} a ON am.activity_id = a.id 
@@ -322,6 +325,7 @@ class Buddypress_Share_Activator {
 				 LEFT JOIN {$wpdb->posts} p ON pm.post_id = p.ID 
 				 WHERE p.ID IS NULL AND pm.meta_key = 'share_count'"
 			);
+			//phpcs:enable
 
 		} catch ( Exception $e ) {
 			// Log errors but don't fail

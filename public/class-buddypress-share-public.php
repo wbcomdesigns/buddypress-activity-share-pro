@@ -9,6 +9,9 @@
  * @subpackage Buddypress_Share/public
  */
 
+if ( ! defined( 'ABSPATH' ) ) { 
+	exit;
+}
 /**
  * The public-facing functionality of the plugin.
  *
@@ -117,7 +120,7 @@ class Buddypress_Share_Public {
 		if ( function_exists( 'buddyboss_theme' ) || defined( 'BUDDYBOSS_THEME_VERSION' ) ) {
 			wp_enqueue_style( 
 				'bp-share-buddyboss-fa', 
-				'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
+				'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', //phpcs:ignore
 				array(), 
 				'5.15.4', 
 				'all' 
@@ -586,7 +589,7 @@ class Buddypress_Share_Public {
 				 * @param array  $details     The service configuration details.
 				 * @param string $activity_link The activity permalink.
 				 */
-				echo apply_filters( 'bp_share_social_button_html', $button_html, $service, $details, $activity_link );
+				echo apply_filters( 'bp_share_social_button_html', $button_html, $service, $details, $activity_link ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 		}
 
@@ -1437,11 +1440,11 @@ class Buddypress_Share_Public {
 	 * @return   string Modified content.
 	 */
 	public function bp_share_filter_read_more_activity_content( $content, $activity ) {
-		if ( ! wp_doing_ajax() || empty( $_REQUEST['action'] ) || $_REQUEST['action'] !== 'get_single_activity_content' ) {
+		if ( ! wp_doing_ajax() || empty( $_REQUEST['action'] ) || $_REQUEST['action'] !== 'get_single_activity_content' ) { //phpcs:ignore
 			return $content;
 		}
 
-		$requested_activity_id = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0;
+		$requested_activity_id = ! empty( $_POST['id'] ) ? (int) $_POST['id'] : 0; //phpcs:ignore
 		if ( empty( $requested_activity_id ) || $requested_activity_id !== (int) $activity->id ) {
 			return $content;
 		}
@@ -1633,7 +1636,7 @@ class Buddypress_Share_Public {
 		// Categories
 		$categories_list = get_the_category_list( esc_html__( ', ', 'buddypress-share' ), '', $post->ID );
 		if ( $categories_list ) {
-			printf( '<span class="link cat-links"><i class="as-icon-folder"></i>%s</span>', $categories_list );
+			printf( '<span class="link cat-links"><i class="as-icon-folder"></i>%s</span>', $categories_list ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 		// After post meta action

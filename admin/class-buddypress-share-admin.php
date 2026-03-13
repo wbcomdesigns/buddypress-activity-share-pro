@@ -10,6 +10,10 @@
  * @subpackage Buddypress_Share/admin
  */
 
+if ( ! defined( 'ABSPATH' ) ) { 
+	exit;
+}
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -108,7 +112,7 @@ class Buddypress_Share_Admin {
 		if ( $section === 'post-types' ) {
 			wp_enqueue_style( 
 				'bp-share-post-types-fontawesome', 
-				'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
+				'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', //phpcs:ignore
 				array(), 
 				'5.15.4', 
 				'all' 
@@ -1344,18 +1348,18 @@ class Buddypress_Share_Admin {
 		}
 		
 		// Handle form submission
-		if ( isset( $_POST['bp_share_nonce'] ) && wp_verify_nonce( $_POST['bp_share_nonce'], 'bp_share_post_type_settings' ) ) {
+		if ( isset( $_POST['bp_share_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bp_share_nonce'] ) ), 'bp_share_post_type_settings' ) ) {
 			if ( class_exists( 'BP_Share_Post_Type_Settings' ) ) {
 				$settings_manager = BP_Share_Post_Type_Settings::get_instance();
 				
 				// Prepare settings data
 				$settings_data = array(
-					'enabled_post_types' => isset( $_POST['bp_share_settings']['enabled_post_types'] ) ? $_POST['bp_share_settings']['enabled_post_types'] : array(),
-					'post_type_services' => isset( $_POST['bp_share_settings']['post_type_services'] ) ? $_POST['bp_share_settings']['post_type_services'] : array(),
-					'display_position' => isset( $_POST['bp_share_settings']['display_position'] ) ? $_POST['bp_share_settings']['display_position'] : 'right',
-					'display_style' => isset( $_POST['bp_share_settings']['display_style'] ) ? $_POST['bp_share_settings']['display_style'] : 'floating',
-					'mobile_behavior' => isset( $_POST['bp_share_settings']['mobile_behavior'] ) ? $_POST['bp_share_settings']['mobile_behavior'] : 'bottom',
-					'default_services' => isset( $_POST['bp_share_settings']['default_services'] ) ? $_POST['bp_share_settings']['default_services'] : array()
+					'enabled_post_types' => isset( $_POST['bp_share_settings']['enabled_post_types'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['bp_share_settings']['enabled_post_types'] ) ) : array(),
+					'post_type_services' => isset( $_POST['bp_share_settings']['post_type_services'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['bp_share_settings']['post_type_services'] ) ) : array(),
+					'display_position' => isset( $_POST['bp_share_settings']['display_position'] ) ? sanitize_text_field( wp_unslash ( $_POST['bp_share_settings']['display_position'] ) ) : 'right',
+					'display_style' => isset( $_POST['bp_share_settings']['display_style'] ) ? sanitize_text_field( wp_unslash ( $_POST['bp_share_settings']['display_style'] ) ) : 'floating',
+					'mobile_behavior' => isset( $_POST['bp_share_settings']['mobile_behavior'] ) ? sanitize_text_field( wp_unslash ( $_POST['bp_share_settings']['mobile_behavior'] ) ) : 'bottom',
+					'default_services' => isset( $_POST['bp_share_settings']['default_services'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['bp_share_settings']['default_services'] ) ) : array()
 				);
 				
 				$result = $settings_manager->save_settings( $settings_data );

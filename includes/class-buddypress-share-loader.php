@@ -8,6 +8,10 @@
  * @subpackage Buddypress_Share/includes
  */
 
+if ( ! defined( 'ABSPATH' ) ) { 
+	exit;
+}
+
 /**
  * Register all actions and filters for the plugin.
  * Maintain a list of all hooks that are registered throughout

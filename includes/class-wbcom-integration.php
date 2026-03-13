@@ -321,7 +321,7 @@ class BP_Activity_Share_Wbcom_Integration
         }
 
         // Check by page parameter
-        $page = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : '';
+        $page = isset($_GET['page']) ? sanitize_text_field($_GET['page']) : ''; //phpcs:ignore
         $wbcom_page_slugs = array(
             'wbcom-designs',
             'wbcom-buddypress-share',

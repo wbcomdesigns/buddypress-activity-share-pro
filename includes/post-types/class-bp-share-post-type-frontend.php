@@ -82,7 +82,7 @@ class BP_Share_Post_Type_Frontend {
 					</svg>
 				</span>
 				<?php if ( $share_count > 0 ) : ?>
-					<span class="bp-share-count"><?php echo $this->format_count( $share_count ); ?></span>
+					<span class="bp-share-count"><?php echo esc_html( $this->format_count( $share_count ) ); ?></span>
 				<?php endif; ?>
 			</div>
 			
@@ -182,7 +182,7 @@ class BP_Share_Post_Type_Frontend {
 				$count = $controller->get_share_count( $args['post_id'] );
 				?>
 				<div class="bp-share-inline-count">
-					<span class="count-number"><?php echo $this->format_count( $count ); ?></span>
+					<span class="count-number"><?php echo esc_html( $this->format_count( $count ) ); ?></span>
 					<span class="count-label"><?php esc_html_e( 'Shares', 'buddypress-share' ); ?></span>
 				</div>
 			<?php endif; ?>

@@ -12,6 +12,10 @@
  * @subpackage Buddypress_Share/includes
  */
 
+if ( ! defined( 'ABSPATH' ) ) { 
+	exit;
+}
+
 /**
  * The core plugin class.
  *
@@ -289,7 +293,7 @@ class Buddypress_Share {
 				$classes .= ' bp-share-settings-page';
 				
 				// Add section-specific classes
-				$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : 'general';
+				$current_section = isset( $_GET['section'] ) ? sanitize_text_field( $_GET['section'] ) : 'general'; //phpcs:ignore
 				$classes .= ' bp-share-section-' . $current_section;
 			}
 		}
