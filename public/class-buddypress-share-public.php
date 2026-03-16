@@ -295,6 +295,23 @@ class Buddypress_Share_Public {
 	}
 
 	/**
+	 * Check whether current global post contains the activity-listing shortcode.
+	 *
+	 * @since    1.5.2
+	 * @access   private
+	 * @return   bool True when shortcode exists in current post content.
+	 */
+	private function current_post_has_activity_listing_shortcode() {
+		global $post;
+
+		if ( ! ( $post instanceof WP_Post ) || empty( $post->post_content ) ) {
+			return false;
+		}
+
+		return has_shortcode( $post->post_content, 'activity-listing' );
+	}
+
+	/**
 	 * Check if assets should be loaded on current page.
 	 *
 	 * @since    1.5.2
@@ -303,9 +320,7 @@ class Buddypress_Share_Public {
 	 */
 	private function should_load_assets() {
 		// Load on BP pages, single posts, or when explicitly requested
-		global $post;
-		
-		return bp_share_is_buddypress_page() || is_single() || apply_filters( 'bp_activity_share_load_assets', false ) || has_shortcode($post->post_content, 'activity-listing');
+		return bp_share_is_buddypress_page() || is_single() || apply_filters( 'bp_activity_share_load_assets', false ) || $this->current_post_has_activity_listing_shortcode();
 	}
 
 	/**
@@ -1650,16 +1665,14 @@ class Buddypress_Share_Public {
 	 * @access public
 	 */
 	public function bp_activity_share_popup_box() {
-		global $post;
-		
 		$reshare_post_type = apply_filters( 'bp_activity_reshare_post_type', array( 'post' ) );
 		
 		if ( ! is_user_logged_in() || ! ( is_buddypress() || ( is_single() && in_array( get_post_type(), $reshare_post_type ) ) || apply_filters( 'bp_activity_reshare_action', false ) ) ) {
-			
-			if( !( has_shortcode($post->post_content, 'activity-listing') ) ) {
-					return;
+
+			if ( ! $this->current_post_has_activity_listing_shortcode() ) {
+				return;
 			}
-			
+
 		}
 					
 		$user_name = $this->get_current_user_name();
