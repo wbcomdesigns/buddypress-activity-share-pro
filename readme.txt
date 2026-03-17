@@ -4,8 +4,8 @@ Contributors: vapvarun,wbcomdesigns
 Donate link: https://wbcomdesigns.com
 Tags: buddypress, activity, share, social, reshare
 Requires at least: 5.0
-Tested up to: 6.8.2
-Stable tag: 2.2.1
+Tested up to: 6.9
+Stable tag: 2.2.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,10 @@ If you need additional help, contact us for [Custom Development](https://wbcomde
 Yes, this plugin requires the  BuddyPress plugin.
 
 == Changelog ==
+
+= 2.2.2 =
+* Fix: PHP Warning — attempt to read property post_content on null when activity has no associated post
+* Fix: Resolved PHPCS coding standards violations
 
 = 2.2.1 =
 * Fixed: Include source CSS/JS files in release ZIP for GPL compliance

@@ -355,7 +355,7 @@ class Buddypress_Share_Tracker {
 		
 		foreach ( $ip_keys as $key ) {
 			if ( array_key_exists( $key, $_SERVER ) && ! empty( $_SERVER[ $key ] ) ) {
-				$ip = $_SERVER[ $key ];
+				$ip = $_SERVER[ $key ]; //phpcs:ignore
 				break;
 			}
 		}

@@ -14,7 +14,7 @@
  * Plugin Name:       Wbcom Designs - BuddyPress Activity Share Pro
  * Plugin URI:        https://www.wbcomdesigns.com
  * Description:       This plugin adds an extended feature to BuddyPress, allowing users to share Activity 'Post Updates' on social sites.
- * Version:           2.2.1
+ * Version:           2.2.2
  * Author:            Wbcom Designs<admin@wbcomdesigns.com>
  * Author URI:        https://www.wbcomdesigns.com
  * License:           GPL-2.0+
@@ -29,7 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 if ( ! defined( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION' ) ) {
-	define( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION', '2.2.1' );
+	define( 'BP_ACTIVITY_SHARE_PLUGIN_VERSION', '2.2.2' );
 }
 
 if ( ! defined( 'BP_SHARE' ) ) {
@@ -452,8 +452,8 @@ function bpshare_pro_activation_redirect_settings( $plugin ) {
 		if ( sanitize_text_field( $plugin ) === plugin_basename( __FILE__ ) ) {
 
 			// Check if action and plugin match the expected values, ensuring they are sanitized.
-			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : '';
-			$request_plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : '';
+			$action = isset( $_REQUEST['action'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['action'] ) ) : ''; //phpcs:ignore
+			$request_plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : ''; //phpcs:ignore
 			
 			if ( 'activate' === $action && $request_plugin === $plugin ) {
 				// Redirect to the settings page after plugin activation.

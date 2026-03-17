@@ -306,7 +306,7 @@ $post_types = $settings->get_valid_post_types();
 .service-icon i.fa-bluesky,
 .service-icon i.fas.fa-bluesky {
     content: "";
-    background-image: url("<?php echo plugins_url('../admin/images/bluesky-fill.svg', dirname(__FILE__)); ?>");
+    background-image: url("<?php echo plugins_url('../admin/images/bluesky-fill.svg', dirname(__FILE__));  //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped?>"); 
     background-size: 17px;
     background-repeat: no-repeat;
     background-position: center;

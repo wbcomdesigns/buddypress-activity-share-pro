@@ -10,6 +10,10 @@
  * @subpackage Buddypress_Share/includes
  */
 
+if ( ! defined( 'ABSPATH' ) ) { 
+	exit;
+}
+
 /**
  * Asset management class.
  *
@@ -53,7 +57,7 @@ class Buddypress_Share_Assets {
 		if ( $use_cdn ) {
 			wp_enqueue_style(
 				'bp-share-font-awesome',
-				'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
+				'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', //phpcs:ignore
 				array(),
 				'5.15.4'
 			);

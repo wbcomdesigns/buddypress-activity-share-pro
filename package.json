@@ -1,28 +1,28 @@
 {
-    "name": "buddypress-share",
-    "version": "2.2.1",
-    "url": "https://github.com/wbcomdesigns/buddypress-activity-share-pro/",
-    "license": "GPL-2.0+",
-    "description": "Free WordPress plugin to allow anyone easily share BuddyPress Activites on major social media",
-    "devDependencies": {
-        "grunt": "^1.6.1",
-        "grunt-checktextdomain": "^1.0.1",
-        "grunt-contrib-clean": "^2.0.1",
-        "grunt-contrib-compress": "^2.0.0",
-        "grunt-contrib-copy": "^1.0.0",
-        "grunt-contrib-cssmin": "^5.0.0",
-        "grunt-contrib-uglify": "^5.2.2",
-        "grunt-contrib-watch": "^1.1.0",
-        "grunt-rtlcss": "^2.0.2",
-        "grunt-shell": "^4.0.0",
-        "grunt-wp-i18n": "^1.0.3",
-        "load-grunt-tasks": "^5.1.0"
-    },
-    "engines": {
-        "node": ">=6.9.1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/wbcomdesigns/buddypress-activity-share-pro/"
-    }
+  "name": "buddypress-share",
+  "version": "2.2.2",
+  "url": "https://github.com/wbcomdesigns/buddypress-activity-share-pro/",
+  "license": "GPL-2.0+",
+  "description": "Free WordPress plugin to allow anyone easily share BuddyPress Activites on major social media",
+  "devDependencies": {
+    "grunt": "^1.6.1",
+    "grunt-checktextdomain": "^1.0.1",
+    "grunt-contrib-clean": "^2.0.1",
+    "grunt-contrib-compress": "^2.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^5.0.0",
+    "grunt-contrib-uglify": "^5.2.2",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-rtlcss": "^2.0.2",
+    "grunt-shell": "^4.0.0",
+    "grunt-wp-i18n": "^1.0.3",
+    "load-grunt-tasks": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=6.9.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wbcomdesigns/buddypress-activity-share-pro/"
+  }
 }
