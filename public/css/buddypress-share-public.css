@@ -80,6 +80,10 @@ body.dark .activity-share-modal {
     display: block;
 }
 
+header .dropdown-item {
+    white-space: normal;
+}
+
 /* ===================================================================
    BASE MODAL STYLING
    =================================================================== */

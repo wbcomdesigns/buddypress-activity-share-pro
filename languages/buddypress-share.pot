@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Wbcom Designs - BuddyPress Activity Share Pro 2.2.1\n"
+"Project-Id-Version: Wbcom Designs - BuddyPress Activity Share Pro 2.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/buddypress-activity-share-pro\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-12T05:28:40+00:00\n"
+"POT-Creation-Date: 2026-03-23T05:43:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-share\n"
@@ -35,397 +35,397 @@ msgstr ""
 msgid "Wbcom Designs<admin@wbcomdesigns.com>"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:199
+#: admin/class-buddypress-share-admin.php:203
 #: includes/class-wbcom-integration.php:297
 msgid "Loading..."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:200
+#: admin/class-buddypress-share-admin.php:204
 msgid "Saving..."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:201
-#: admin/class-buddypress-share-admin.php:316
-#: admin/class-buddypress-share-admin.php:1364
+#: admin/class-buddypress-share-admin.php:205
+#: admin/class-buddypress-share-admin.php:320
+#: admin/class-buddypress-share-admin.php:1368
 msgid "Settings saved successfully!"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:202
+#: admin/class-buddypress-share-admin.php:206
 msgid "An error occurred. Please try again."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:279
+#: admin/class-buddypress-share-admin.php:283
 msgid "BuddyPress Activity Share"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:280
-#: public/class-buddypress-share-public.php:827
-#: public/class-buddypress-share-public.php:848
+#: admin/class-buddypress-share-admin.php:284
+#: public/class-buddypress-share-public.php:845
+#: public/class-buddypress-share-public.php:866
 msgid "Activity Share"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:297
+#: admin/class-buddypress-share-admin.php:301
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:307
+#: admin/class-buddypress-share-admin.php:311
 msgid "BuddyPress Activity Share Pro Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:330
+#: admin/class-buddypress-share-admin.php:334
 msgid "Social Networks"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:335
-#: admin/class-buddypress-share-admin.php:759
+#: admin/class-buddypress-share-admin.php:339
+#: admin/class-buddypress-share-admin.php:763
 #: admin/partials/bp-share-post-type-settings.php:96
 msgid "Display Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:340
+#: admin/class-buddypress-share-admin.php:344
 msgid "Restrictions"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:345
+#: admin/class-buddypress-share-admin.php:349
 msgid "Post Type Sharing"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:350
+#: admin/class-buddypress-share-admin.php:354
 msgid "FAQ"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:441
+#: admin/class-buddypress-share-admin.php:445
 msgid "Sharing Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:454
+#: admin/class-buddypress-share-admin.php:458
 msgid "Enable Social Sharing"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:455
+#: admin/class-buddypress-share-admin.php:459
 msgid "Allow users to share activities on social networks"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:469
+#: admin/class-buddypress-share-admin.php:473
 msgid "Guest Sharing"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:470
+#: admin/class-buddypress-share-admin.php:474
 msgid "Allow visitors to share public activities"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:484
+#: admin/class-buddypress-share-admin.php:488
 msgid "Popup Windows"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:485
+#: admin/class-buddypress-share-admin.php:489
 msgid "Open sharing links in small popup windows"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:492
+#: admin/class-buddypress-share-admin.php:496
 msgid "Available Social Networks"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:493
+#: admin/class-buddypress-share-admin.php:497
 msgid "Drag social networks between the lists to enable or disable them. Reorder enabled services by dragging them within the list."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:499
+#: admin/class-buddypress-share-admin.php:503
 msgid "Active Networks"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:514
+#: admin/class-buddypress-share-admin.php:518
 msgid "No networks enabled. Drag networks from the inactive list to enable them."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:521
+#: admin/class-buddypress-share-admin.php:525
 msgid "Inactive Networks"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:536
+#: admin/class-buddypress-share-admin.php:540
 msgid "All networks are active. Drag networks from the active list to disable them."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:543
+#: admin/class-buddypress-share-admin.php:547
 #: admin/partials/bp-share-post-type-settings.php:184
 msgid "Save Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:641
+#: admin/class-buddypress-share-admin.php:645
 msgid "Sharing Restrictions"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:642
+#: admin/class-buddypress-share-admin.php:646
 msgid "Control which types of content can be shared and how they are displayed."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:647
+#: admin/class-buddypress-share-admin.php:651
 msgid "Content Restrictions"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:650
+#: admin/class-buddypress-share-admin.php:654
 msgid "Disable sharing for specific content types"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:661
+#: admin/class-buddypress-share-admin.php:665
 msgid "Blog Posts"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:673
+#: admin/class-buddypress-share-admin.php:677
 msgid "User Profiles"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:685
-#: public/class-buddypress-share-public.php:1699
+#: admin/class-buddypress-share-admin.php:689
+#: public/class-buddypress-share-public.php:1715
 msgid "Groups"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:694
+#: admin/class-buddypress-share-admin.php:698
 msgid "Display Options"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:697
+#: admin/class-buddypress-share-admin.php:701
 msgid "Choose how shared activities appear in the feed"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:707
+#: admin/class-buddypress-share-admin.php:711
 msgid "Simple View"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:708
+#: admin/class-buddypress-share-admin.php:712
 msgid "Show only the original activity content"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:719
+#: admin/class-buddypress-share-admin.php:723
 msgid "Detailed View"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:720
+#: admin/class-buddypress-share-admin.php:724
 msgid "Include nested content and full context"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:728
+#: admin/class-buddypress-share-admin.php:732
 msgid "Save Restrictions"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:746
+#: admin/class-buddypress-share-admin.php:750
 msgid "Circle Style"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:747
+#: admin/class-buddypress-share-admin.php:751
 msgid "Rectangle Style"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:748
+#: admin/class-buddypress-share-admin.php:752
 msgid "Black & White"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:749
+#: admin/class-buddypress-share-admin.php:753
 msgid "Bar Style"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:760
+#: admin/class-buddypress-share-admin.php:764
 msgid "Customize how the sharing buttons appear on your site."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:765
+#: admin/class-buddypress-share-admin.php:769
 msgid "Icon Style"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:786
+#: admin/class-buddypress-share-admin.php:790
 msgid "Color Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:790
+#: admin/class-buddypress-share-admin.php:794
 msgid "Background Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:797
+#: admin/class-buddypress-share-admin.php:801
 msgid "Primary background color for sharing icons"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:802
+#: admin/class-buddypress-share-admin.php:806
 msgid "Icon Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:809
+#: admin/class-buddypress-share-admin.php:813
 msgid "Color for icons and text"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:814
+#: admin/class-buddypress-share-admin.php:818
 msgid "Hover Color"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:821
+#: admin/class-buddypress-share-admin.php:825
 msgid "Color when hovering over icons"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:828
+#: admin/class-buddypress-share-admin.php:832
 msgid "Save Display Settings"
-msgstr ""
-
-#: admin/class-buddypress-share-admin.php:867
-#: admin/class-buddypress-share-admin.php:918
-msgid "Security nonce check failed."
 msgstr ""
 
 #: admin/class-buddypress-share-admin.php:871
 #: admin/class-buddypress-share-admin.php:922
+msgid "Security nonce check failed."
+msgstr ""
+
+#: admin/class-buddypress-share-admin.php:875
+#: admin/class-buddypress-share-admin.php:926
 msgid "Insufficient permissions."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:877
-#: admin/class-buddypress-share-admin.php:928
+#: admin/class-buddypress-share-admin.php:881
+#: admin/class-buddypress-share-admin.php:932
 msgid "Service name is required."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:883
+#: admin/class-buddypress-share-admin.php:887
 #, php-format
 msgid "Invalid service name: %s"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:899
+#: admin/class-buddypress-share-admin.php:903
 #, php-format
 msgid "Service \"%s\" added successfully."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:904
+#: admin/class-buddypress-share-admin.php:908
 msgid "Failed to add service to database."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:942
+#: admin/class-buddypress-share-admin.php:946
 #, php-format
 msgid "Service \"%s\" removed successfully."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:947
+#: admin/class-buddypress-share-admin.php:951
 msgid "Failed to remove service from database."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:951
+#: admin/class-buddypress-share-admin.php:955
 #, php-format
 msgid "Service \"%s\" not found in enabled services."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1261
+#: admin/class-buddypress-share-admin.php:1265
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1264
+#: admin/class-buddypress-share-admin.php:1268
 msgid "How do I enable social sharing on BuddyPress activities?"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1265
+#: admin/class-buddypress-share-admin.php:1269
 msgid "Social sharing is enabled by default. You can toggle it on/off from the Social Networks tab. Make sure at least one social service is enabled in the services section."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1269
+#: admin/class-buddypress-share-admin.php:1273
 msgid "Can users share activities without being logged in?"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1270
+#: admin/class-buddypress-share-admin.php:1274
 msgid "Yes! Enable \"Guest Sharing\" in the Social Networks tab to allow logged-out users to share public activities on social media platforms."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1274
+#: admin/class-buddypress-share-admin.php:1278
 msgid "How do I customize the sharing button appearance?"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1275
+#: admin/class-buddypress-share-admin.php:1279
 msgid "Navigate to the Display Settings tab where you can choose from different icon styles (Circle, Rectangle, Black & White, Bar) and customize colors for background, text, and hover states."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1279
+#: admin/class-buddypress-share-admin.php:1283
 msgid "Which social platforms are supported?"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1280
+#: admin/class-buddypress-share-admin.php:1284
 msgid "The plugin supports Facebook, X (Twitter), LinkedIn, Pinterest, Reddit, WordPress, Pocket, Telegram, Bluesky, WhatsApp, and Email sharing. You can enable/disable each service individually."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1284
+#: admin/class-buddypress-share-admin.php:1288
 msgid "Can I disable sharing for specific activity types?"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1285
+#: admin/class-buddypress-share-admin.php:1289
 msgid "Yes! In the Restrictions tab, you can disable sharing for Blog Posts, User Profiles, and Groups activities."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1289
+#: admin/class-buddypress-share-admin.php:1293
 msgid "How does the reshare functionality work?"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1290
+#: admin/class-buddypress-share-admin.php:1294
 msgid "When a user reshares an activity, you can choose to display either just the original activity or the complete activity with nested content. Configure this in the Restrictions tab."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1294
+#: admin/class-buddypress-share-admin.php:1298
 msgid "Do sharing links open in popup windows?"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1295
+#: admin/class-buddypress-share-admin.php:1299
 msgid "By default, yes. Social sharing links open in popup windows for a better user experience. You can disable this behavior in the Social Networks tab."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1299
+#: admin/class-buddypress-share-admin.php:1303
 msgid "Is the plugin compatible with BuddyBoss Platform?"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1300
+#: admin/class-buddypress-share-admin.php:1304
 msgid "Yes! The plugin automatically detects and adapts to work with both BuddyPress and BuddyBoss Platform."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1304
+#: admin/class-buddypress-share-admin.php:1308
 msgid "Where can I get support?"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1308
+#: admin/class-buddypress-share-admin.php:1312
 #, php-format
 msgid "For premium support, please visit our %1$ssupport portal%2$s. You can also check our %3$sdocumentation%4$s for detailed guides."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1366
+#: admin/class-buddypress-share-admin.php:1370
 msgid "Error saving settings. Please try again."
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1379
+#: admin/class-buddypress-share-admin.php:1383
 #: admin/partials/bp-share-post-type-settings.php:24
 msgid "Post Type Sharing Settings"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1381
+#: admin/class-buddypress-share-admin.php:1385
 msgid "Post type sharing functionality is coming soon in version 3.0!"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1382
+#: admin/class-buddypress-share-admin.php:1386
 msgid "This feature will allow you to:"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1384
+#: admin/class-buddypress-share-admin.php:1388
 msgid "Enable sharing buttons on any WordPress post type"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1385
+#: admin/class-buddypress-share-admin.php:1389
 msgid "Configure different social services for each post type"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1386
+#: admin/class-buddypress-share-admin.php:1390
 msgid "Display a floating share widget on posts and pages"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1387
+#: admin/class-buddypress-share-admin.php:1391
 msgid "Track sharing analytics per post type"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1388
+#: admin/class-buddypress-share-admin.php:1392
 msgid "Customize the appearance and position of share buttons"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1393
+#: admin/class-buddypress-share-admin.php:1397
 msgid "Preview: Admin Interface"
 msgstr ""
 
-#: admin/class-buddypress-share-admin.php:1395
+#: admin/class-buddypress-share-admin.php:1399
 msgid "Post Type Sharing Preview"
 msgstr ""
 
@@ -528,7 +528,7 @@ msgstr ""
 
 #: buddypress-share.php:368
 #: buddypress-share.php:418
-#: includes/class-buddypress-share.php:390
+#: includes/class-buddypress-share.php:394
 msgid "BuddyPress Activity Share Pro"
 msgstr ""
 
@@ -558,7 +558,7 @@ msgid "BuddyPress Activity Share Pro is running in %s compatibility mode."
 msgstr ""
 
 #: includes/class-buddypress-share-tracker.php:171
-#: public/class-buddypress-share-public.php:923
+#: public/class-buddypress-share-public.php:941
 msgid "Security check failed."
 msgstr ""
 
@@ -570,7 +570,7 @@ msgstr ""
 msgid "Share tracked successfully."
 msgstr ""
 
-#: includes/class-buddypress-share.php:392
+#: includes/class-buddypress-share.php:396
 msgid "Share BuddyPress activities on social media and within your community."
 msgstr ""
 
@@ -607,9 +607,9 @@ msgid "Content shared successfully!"
 msgstr ""
 
 #: includes/post-types/class-bp-share-post-type-controller.php:347
-#: public/class-buddypress-share-public.php:481
-#: public/class-buddypress-share-public.php:1395
-#: public/class-buddypress-share-public.php:1910
+#: public/class-buddypress-share-public.php:499
+#: public/class-buddypress-share-public.php:1413
+#: public/class-buddypress-share-public.php:1926
 msgid "Share"
 msgstr ""
 
@@ -631,165 +631,165 @@ msgstr ""
 msgid "Shares"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:496
+#: public/class-buddypress-share-public.php:514
 msgid "Please enable share services!"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:542
+#: public/class-buddypress-share-public.php:560
 msgid "Reshare Activity"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:547
+#: public/class-buddypress-share-public.php:565
 msgid "Reshare"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:599
+#: public/class-buddypress-share-public.php:617
 msgid "Copy Link"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:601
+#: public/class-buddypress-share-public.php:619
 msgid "Link Copied!"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:624
+#: public/class-buddypress-share-public.php:642
 msgid "Facebook"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:629
+#: public/class-buddypress-share-public.php:647
 msgid "X"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:634
+#: public/class-buddypress-share-public.php:652
 msgid "LinkedIn"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:639
+#: public/class-buddypress-share-public.php:657
 msgid "Pinterest"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:644
+#: public/class-buddypress-share-public.php:662
 msgid "Reddit"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:649
+#: public/class-buddypress-share-public.php:667
 msgid "WordPress"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:654
+#: public/class-buddypress-share-public.php:672
 msgid "Pocket"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:659
+#: public/class-buddypress-share-public.php:677
 msgid "Telegram"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:664
+#: public/class-buddypress-share-public.php:682
 msgid "Bluesky"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:669
+#: public/class-buddypress-share-public.php:687
 msgid "WhatsApp"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:686
+#: public/class-buddypress-share-public.php:704
 msgid "E-mail"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:825
-#: public/class-buddypress-share-public.php:846
+#: public/class-buddypress-share-public.php:843
+#: public/class-buddypress-share-public.php:864
 msgid "Shared an activity"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:835
-#: public/class-buddypress-share-public.php:855
+#: public/class-buddypress-share-public.php:853
+#: public/class-buddypress-share-public.php:873
 msgid "Shared a post"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:837
-#: public/class-buddypress-share-public.php:857
+#: public/class-buddypress-share-public.php:855
+#: public/class-buddypress-share-public.php:875
 msgid "Post Activity Share"
 msgstr ""
 
 #. translators: %s: user link
-#: public/class-buddypress-share-public.php:877
+#: public/class-buddypress-share-public.php:895
 #, php-format
 msgid "%s shared an activity"
 msgstr ""
 
 #. translators: 1: user link, 2: group link
-#: public/class-buddypress-share-public.php:908
+#: public/class-buddypress-share-public.php:926
 #, php-format
 msgid "%1$s shared an activity in the group %2$s"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:928
-#: public/class-buddypress-share-public.php:1180
+#: public/class-buddypress-share-public.php:946
+#: public/class-buddypress-share-public.php:1198
 msgid "User not logged in."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:939
+#: public/class-buddypress-share-public.php:957
 msgid "Missing required parameters."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:945
+#: public/class-buddypress-share-public.php:963
 msgid "Invalid activity type."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:972
+#: public/class-buddypress-share-public.php:990
 msgid "You do not have permission to post in this group."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1008
+#: public/class-buddypress-share-public.php:1026
 msgid "Failed to create activity."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1044
+#: public/class-buddypress-share-public.php:1062
 msgid "Activity shared successfully."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1156
+#: public/class-buddypress-share-public.php:1174
 msgid "Invalid activity ID."
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1605
-#: public/class-buddypress-share-public.php:1874
+#: public/class-buddypress-share-public.php:1623
+#: public/class-buddypress-share-public.php:1890
 msgid "Read More"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1634
+#: public/class-buddypress-share-public.php:1652
 msgid ", "
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1673
+#: public/class-buddypress-share-public.php:1689
 msgid "Share Activity"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1688
+#: public/class-buddypress-share-public.php:1704
 msgid "Status Update"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1694
+#: public/class-buddypress-share-public.php:1710
 msgid "Post in"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1697
+#: public/class-buddypress-share-public.php:1713
 msgid "My Profile"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1704
+#: public/class-buddypress-share-public.php:1720
 msgid "Friends"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1727
+#: public/class-buddypress-share-public.php:1743
 msgid "Discard"
 msgstr ""
 
-#: public/class-buddypress-share-public.php:1730
+#: public/class-buddypress-share-public.php:1746
 msgid "Post"
 msgstr ""
 
 #. translators: %s: username
-#: public/class-buddypress-share-public.php:1811
+#: public/class-buddypress-share-public.php:1827
 #, php-format
 msgid "Hi %s! Write something here. Use @ to mention someone..."
 msgstr ""
