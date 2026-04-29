@@ -5,7 +5,7 @@ Donate link: https://wbcomdesigns.com
 Tags: buddypress, activity, share, social, reshare
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,10 @@ If you need additional help, contact us for [Custom Development](https://wbcomde
 Yes, this plugin requires the  BuddyPress plugin.
 
 == Changelog ==
+
+= 2.2.3 =
+* Fix: Resolved unnecessary rendering of re-share modal on shortcode pages.
+* Fix: CSS conflict with notification dropdown items.
 
 = 2.2.2 =
 * Fix: PHP Warning — attempt to read property post_content on null when activity has no associated post
