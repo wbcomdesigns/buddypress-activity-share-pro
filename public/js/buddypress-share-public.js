@@ -89,6 +89,7 @@
             this.setupCopyLink();
             this.setupReshareOptions();
             this.setupDropdownPosition();
+            this.setupIOSSafariFix();
         },
 
         /**
@@ -779,6 +780,43 @@
             if (!$container.is(e.target) && $container.has(e.target).length === 0) {
                 $container.removeClass(reshareOptionTextClass);
             }
+        },
+
+        /**
+         * iOS Safari fix: prevent viewport displacement when virtual keyboard
+         * appears on input focus inside the share modal.
+         *
+         * On iOS Safari, even with font-size >= 16px, the scroll position can
+         * shift when the keyboard opens. This scrolls the focused element back
+         * into view after the keyboard animation settles.
+         */
+        setupIOSSafariFix: function() {
+            var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+            if (!isIOS) {
+                return;
+            }
+
+            var modalSelector = SELECTORS.shareModal;
+            var fieldSelector = modalSelector + ' textarea, ' +
+                                modalSelector + ' select, ' +
+                                modalSelector + ' input[type="text"], ' +
+                                modalSelector + ' input[type="search"], ' +
+                                modalSelector + ' input[type="email"]';
+
+            $(document).on('focusin', fieldSelector, function() {
+                var $field = $(this);
+                setTimeout(function() {
+                    $field[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 400);
+            });
+
+            // Restore scroll position when keyboard dismisses
+            $(document).on('focusout', fieldSelector, function() {
+                setTimeout(function() {
+                    window.scrollTo({ top: window.scrollY, behavior: 'instant' });
+                }, 100);
+            });
         },
 
         /**
