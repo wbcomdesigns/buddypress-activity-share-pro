@@ -1447,4 +1447,28 @@ body.modal-open .activity-share-modal {
     font-size: 18px;
     font-weight: 400;
 }
+
+/* ===================================================================
+   iOS SAFARI COMPATIBILITY - PREVENT AUTO-ZOOM ON INPUT FOCUS
+   ===================================================================
+   iOS Safari auto-zooms form fields with font-size < 16px on focus,
+   causing the modal to be displaced outside the viewport. This fix
+   enforces 16px minimum on all interactive fields inside the share
+   modal for iOS/Safari touch devices only.
+   =================================================================== */
+
+@supports (-webkit-touch-callout: none) {
+    @media (hover: none) and (pointer: coarse) {
+        .activity-share-modal .form-textarea textarea,
+        .activity-share-modal textarea,
+        .activity-share-modal select,
+        .activity-share-modal input[type="text"],
+        .activity-share-modal input[type="search"],
+        .activity-share-modal input[type="email"],
+        .bp-activity-share-filter select,
+        .bp-activity-share-filter #post-in {
+            font-size: 16px !important;
+        }
+    }
+}
 /*# sourceMappingURL=buddypress-share-public.css.map */

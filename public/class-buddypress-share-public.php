@@ -1705,7 +1705,7 @@ class Buddypress_Share_Public {
 		// Get modal classes with platform compatibility
 		$modal_classes = function_exists( 'bp_share_get_modal_classes' ) ? bp_share_get_modal_classes() : 'activity-share-modal modal fade';
 		?>
-		<div class="<?php echo esc_attr( $modal_classes ); ?>" id="activity-share-modal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="activity-share-modal-title">
+		<div class="<?php echo esc_attr( $modal_classes ); ?>" id="activity-share-modal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="activity-share-modal-title" style="display: none;">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<!-- Close button with proper Bootstrap 4 attributes -->
