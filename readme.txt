@@ -5,7 +5,7 @@ Donate link: https://wbcomdesigns.com
 Tags: buddypress, activity, share, social, reshare
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 2.2.3
+Stable tag: 2.2.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,10 @@ If you need additional help, contact us for [Custom Development](https://wbcomde
 Yes, this plugin requires the  BuddyPress plugin.
 
 == Changelog ==
+
+= 2.2.4 - June 2026 =
+* Fix      - Re-share modal no longer appears unintentionally on pages across the site outside activity streams.
+* Fix      - Prevented iOS Safari from auto-zooming when focusing form fields in the share modal.
 
 = 2.2.3 =
 * Fix: Resolved unnecessary rendering of re-share modal on shortcode pages.

@@ -242,6 +242,7 @@ module.exports = function(grunt) {
                         '!composer.lock',
                         '!phpcs.xml',
                         '!CLAUDE.md',
+                        '!**/*.md',
                         '!**/*.map',
                         '!**/.DS_Store'
                     ],
