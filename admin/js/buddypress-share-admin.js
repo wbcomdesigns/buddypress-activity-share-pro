@@ -26,6 +26,7 @@
             this.setupFormHandling();
             this.setupToggleDependencies();
             this.setupNotifications();
+            this.setupOnboarding();
         },
 
         /**
@@ -561,6 +562,52 @@
             }
             
             return false;
+        },
+
+        /**
+         * First-run onboarding: mark complete then continue.
+         *
+         * Both CTAs and the step links call bpas_complete_onboarding so the
+         * welcome screen never auto-shows again, then navigate on.
+         */
+        setupOnboarding: function() {
+            const $onboarding = $('.bpas-onboarding');
+            if (!$onboarding.length) {
+                return;
+            }
+
+            const complete = function(redirectUrl) {
+                $.ajax({
+                    url: bp_share_admin_vars.ajax_url,
+                    type: 'POST',
+                    data: {
+                        action: 'bpas_complete_onboarding',
+                        nonce: bp_share_admin_vars.nonce
+                    }
+                }).always(function(response) {
+                    let target = redirectUrl;
+                    if (!target && response && response.data && response.data.redirect) {
+                        target = response.data.redirect;
+                    }
+                    window.location.href = target || window.location.pathname + window.location.search.replace(/[?&]onboarding=1/, '');
+                });
+            };
+
+            $('#bpas-onboarding-start').on('click', function(e) {
+                e.preventDefault();
+                complete();
+            });
+
+            $('#bpas-onboarding-skip').on('click', function(e) {
+                e.preventDefault();
+                complete();
+            });
+
+            // Clicking a step link marks onboarding done, then follows the link.
+            $onboarding.on('click', '[data-bpas-onboarding-go]', function(e) {
+                e.preventDefault();
+                complete($(this).attr('href'));
+            });
         }
     };
 

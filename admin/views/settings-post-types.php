@@ -28,8 +28,9 @@ if ( ! class_exists( 'BP_Share_Post_Type_Settings' ) ) {
 	}
 }
 
-// Handle form submission (nonce + handler preserved byte-for-byte).
-if ( isset( $_POST['bp_share_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bp_share_nonce'] ) ), 'bp_share_post_type_settings' ) ) {
+// Handle form submission (nonce + handler preserved byte-for-byte). The
+// capability check authorizes the save; the nonce only proves intent.
+if ( current_user_can( 'manage_options' ) && isset( $_POST['bp_share_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bp_share_nonce'] ) ), 'bp_share_post_type_settings' ) ) {
 	if ( class_exists( 'BP_Share_Post_Type_Settings' ) ) {
 		$bpas_settings_manager = BP_Share_Post_Type_Settings::get_instance();
 
