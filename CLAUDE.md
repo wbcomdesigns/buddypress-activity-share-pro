@@ -3,13 +3,13 @@
 ## Quick Reference
 - **Slug**: `buddypress-activity-share-pro`
 - **Main File**: `buddypress-share.php`
-- **Version**: 2.1.0
+- **Version**: 2.3.0
 - **Text Domain**: `buddypress-share`
 - **Requires**: BuddyPress 8.0+ or BuddyBoss Platform
 - **PHP**: 7.4+
 - **WordPress**: 5.0+
 - **Author**: Wbcom Designs
-- **Settings URL**: `admin.php?page=wbcom-buddypress-share`
+- **Settings URL**: `admin.php?page=buddypress-share` (under the shared WB Plugins / `wbcomplugins` hub; the legacy `wbcom-buddypress-share` slug was removed in 2.3.0)
 
 ## Architecture Docs
 Full documentation in `docs/architecture/`:
@@ -19,7 +19,8 @@ Full documentation in `docs/architecture/`:
 ## Key Entry Points
 - **Main File**: `buddypress-share.php` - Bootstrap, constants, activation hooks
 - **Core Class**: `includes/class-buddypress-share.php` - Orchestrator, loads dependencies, defines hooks
-- **Admin**: `admin/class-buddypress-share-admin.php` - Settings UI (5 tabs), AJAX handlers
+- **Admin chrome (2.3.0+)**: `admin/class-bpas-admin-panel.php` - card-panel menu under the `wbcomplugins` hub, scoped enqueue, shell + view router, onboarding. Views live in `admin/views/` (shell, hub, overview, onboarding, settings-networks/display/restrictions/post-types, faq).
+- **Admin data contract**: `admin/class-buddypress-share-admin.php` - `sanitize_*` methods, the `wss_social_icons` / `wss_social_remove_icons` AJAX handlers, and the tab field-body methods (now thin includes of the views). Menu/enqueue/wrapper chrome removed in 2.3.0.
 - **Public**: `public/class-buddypress-share-public.php` - Frontend rendering, share buttons, reshare modal, AJAX
 - **Post Types**: `includes/post-types/class-bp-share-post-type-controller.php` - Post type sharing entry point
 
@@ -124,6 +125,7 @@ BP_ACTIVITY_SHARE_PLUGIN_BASENAME // Plugin basename
 ## Recent Changes
 | Date | Type | Description | Files |
 |------|------|-------------|-------|
+| 2026-06-03 | Refactor | 2.3.0 admin UX revamp: card-panel shell + sidebar under the `wbcomplugins` hub (legacy wrapper removed, clean `buddypress-share` slug), 5 tab bodies extracted to `admin/views/`, Overview + first-run onboarding (`bpas_onboarding_complete` site option), `bpasToast`/`bpasConfirm`, RTL rebuild, plain-language copy. UX-only — all option keys/scopes, AJAX actions, nonces, meta, cron, hooks preserved. | admin/class-bpas-admin-panel.php, admin/views/*, admin/css*/*, admin/js/*, includes/class-buddypress-share.php, includes/class-buddypress-share-activator.php, buddypress-share.php |
 | 2025-08-01 | Feature | Post type sharing with floating/inline widgets | includes/post-types/*, public/css/bp-share-post-type.css, public/js/bp-share-post-type.js |
 | 2025-08-01 | Feature | Share tracking database with analytics | includes/post-types/class-bp-share-post-type-tracker.php |
 | 2025-08-01 | Feature | Admin post type settings tab | admin/partials/bp-share-post-type-settings.php |

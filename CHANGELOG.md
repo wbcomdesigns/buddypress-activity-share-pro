@@ -2,6 +2,24 @@
 
 All notable changes to BuddyPress Activity Share Pro will be documented in this file.
 
+## [2.3.0] - 2026-06-03
+
+### Added
+- Modern card-based admin settings screen with a left-hand sidebar menu, unified under the shared WB Plugins hub (single submenu, clean `admin.php?page=buddypress-share` slug).
+- First-run onboarding: a dismissible welcome screen with three quick-start steps, shown once on a fresh activation and never again. Existing installs are auto-marked complete on upgrade and never see it.
+- Overview page with cached `COUNT(*)` sharing stats (total / today), a current-setup summary, and quick actions.
+- Scoped admin design tokens (`--bpas-admin-*`), generic toast + accessible confirm modal (`window.bpasToast` / `window.bpasConfirm`), and a generic `[data-bpas-confirm]` handler that yields to elements owning their own `data-action`.
+
+### Changed
+- Each settings tab body moved into its own view under `admin/views/`; the legacy tab methods are now thin includes. RTL stylesheet rebuilt; a11y pass (`:focus-visible` rings, 40px tap targets, ARIA on nav + decorative icons). Plain-language copy throughout the admin.
+
+### Removed
+- The legacy Wbcom admin wrapper (shared loader hub registration, wrapper CSS/JS, integration class). The admin now lives natively under the WB Plugins hub.
+- Dead admin auto-save JS path that had no server handler.
+
+### Preserved (no data migration)
+- All option keys, storage scopes, AJAX action names, nonces, meta keys, cron hooks, and `do_action`/`apply_filters` names are unchanged. Frontend share dropdown, reshare modal, and post-type buttons are untouched.
+
 ## [2.1.0] - 2025-08-01
 
 ### Added
