@@ -99,6 +99,18 @@ $icon_styles = array(
 						<p class="description"><?php esc_html_e( 'Color shown when a visitor hovers over a button.', 'buddypress-share' ); ?></p>
 					</div>
 				</div>
+
+				<div class="color-setting-group">
+					<label for="border_color"><?php esc_html_e( 'Border color', 'buddypress-share' ); ?></label>
+					<div class="color-input-wrapper">
+						<input type="text"
+							name="bpas_icon_color_settings[border_color]"
+							id="border_color"
+							value="<?php echo esc_attr( $bpas_icon_color_settings['border_color'] ?? '' ); ?>"
+							class="bp-share-color-picker" />
+						<p class="description"><?php esc_html_e( 'Outline color around the share buttons and dropdown. Leave empty to use the default border.', 'buddypress-share' ); ?></p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

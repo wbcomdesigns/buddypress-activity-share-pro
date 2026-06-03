@@ -120,8 +120,19 @@ class Buddypress_Share_Activator {
 				'disable_post_reshare_activity'       => 0,
 				'disable_my_profile_reshare_activity' => 0,
 				'disable_group_reshare_activity'      => 0,
+				// Friends reshare destination - enabled by default (0 = not disabled).
+				'disable_friends_reshare_activity'    => 0,
 			);
 			update_site_option( 'bp_reshare_settings', $reshare_settings );
+		} else {
+			// Backfill the friends-reshare default for existing installs that
+			// pre-date its re-exposure. array_key_exists guard preserves an
+			// admin's explicit 0 (or 1) without overwriting it.
+			$reshare_settings = get_site_option( 'bp_reshare_settings', array() );
+			if ( is_array( $reshare_settings ) && ! array_key_exists( 'disable_friends_reshare_activity', $reshare_settings ) ) {
+				$reshare_settings['disable_friends_reshare_activity'] = 0;
+				update_site_option( 'bp_reshare_settings', $reshare_settings );
+			}
 		}
 	}
 
@@ -370,12 +381,11 @@ class Buddypress_Share_Activator {
 		delete_site_option( 'bp_social_share_activation_date' );
 		delete_site_option( 'bp_social_share_no_bug' );
 
-		// Clean up friend sharing from reshare settings if exists.
-		$reshare_settings = get_site_option( 'bp_reshare_settings' );
-		if ( is_array( $reshare_settings ) && isset( $reshare_settings['disable_friends_reshare_activity'] ) ) {
-			unset( $reshare_settings['disable_friends_reshare_activity'] );
-			update_site_option( 'bp_reshare_settings', $reshare_settings );
-		}
+		// Note: disable_friends_reshare_activity is intentionally NOT removed
+		// here. It is a supported reshare-destination toggle (re-exposed on the
+		// Restrictions tab in 2.3.0) and is consumed by the reshare modal.
+		// A sensible default is ensured in setup_default_options() with an
+		// array_key_exists guard so an admin's explicit 0 is preserved.
 	}
 
 	/**

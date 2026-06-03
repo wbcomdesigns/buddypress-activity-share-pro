@@ -465,12 +465,16 @@ class Buddypress_Share_Public {
 		$share_count = $share_count ? $share_count : '';
 
 		global $activities_template;
-		
+
 		// Use cached plugin settings
 		$settings = $this->get_plugin_settings();
 		$social_service = isset( $settings['services'] ) ? $settings['services'] : array();
 		$extra_options = isset( $settings['extra_options'] ) ? $settings['extra_options'] : array();
 		$bp_reshare_settings = isset( $settings['reshare_settings'] ) ? $settings['reshare_settings'] : array();
+
+		// Whether the reshare count should be displayed. Default ON when the
+		// setting has never been saved, so existing behaviour is unchanged.
+		$show_share_count = ! array_key_exists( 'enable_share_count', $bp_reshare_settings ) || ! empty( $bp_reshare_settings['enable_share_count'] );
 		
 		$activity_type  = bp_share_get_activity_type();
 		
@@ -512,16 +516,18 @@ class Buddypress_Share_Public {
 		$icon_settings = isset( $settings['icon_settings'] ) ? $settings['icon_settings'] : array();
 		$style = isset( $icon_settings['icon_style'] ) ? $icon_settings['icon_style'] : 'circle';
 		?>
-	
+
 		<div class="generic-button bp-activity-share-dropdown-toggle">
 			<a class="button dropdown-toggle" rel="nofollow">
-				<span class="bp-activity-reshare-icon">	
+				<span class="bp-activity-reshare-icon">
 					<i class="as-icon as-icon-share-square"></i>
 				</span>
 				<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
-				<span id="bp-activity-reshare-count-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html( $share_count ); ?></span>
+				<?php if ( $show_share_count ) : ?>
+					<span id="bp-activity-reshare-count-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html( $share_count ); ?></span>
+				<?php endif; ?>
 			</a>
-			
+
 			<div class="bp-activity-share-dropdown-menu activity-share-dropdown-menu-container <?php echo esc_attr( $activity_type . ' ' . $style ); ?>">
 				<?php if ( is_user_logged_in() ) : ?>
 					<?php $this->bp_share_user_services_button( $bp_reshare_settings ); ?>
@@ -561,6 +567,15 @@ class Buddypress_Share_Public {
 	 * @param    array $bp_reshare_settings Reshare settings.
 	 */
 	private function bp_share_user_services_button( $bp_reshare_settings ) {
+		// Hide the reshare affordance on a member's own activity when
+		// "prevent self-share" is enabled (mirrors the AJAX-side guard).
+		if ( ! empty( $bp_reshare_settings['prevent_self_share'] )
+			&& function_exists( 'bp_get_activity_user_id' )
+			&& (int) bp_get_activity_user_id() === (int) get_current_user_id()
+		) {
+			return;
+		}
+
 		// Check if any reshare option is enabled
 		$reshare_enabled = false;
 		$reshare_types = array(
@@ -568,14 +583,14 @@ class Buddypress_Share_Public {
 			'disable_group_reshare_activity',
 			'disable_friends_reshare_activity'
 		);
-		
+
 		foreach ( $reshare_types as $type ) {
 			if ( ! isset( $bp_reshare_settings[ $type ] ) || ! $bp_reshare_settings[ $type ] ) {
 				$reshare_enabled = true;
 				break;
 			}
 		}
-		
+
 		// Render single reshare button if any option is enabled
 		if ( $reshare_enabled ) {
 			?>
@@ -985,6 +1000,16 @@ class Buddypress_Share_Public {
 			wp_send_json_error( array( 'message' => __( 'Invalid activity type.', 'buddypress-share' ) ) );
 		}
 
+		// Enforce "prevent self-share": block a user from resharing their own
+		// activity when the setting is enabled. Applies to activity reshares
+		// only; post shares are not authored within the activity stream.
+		if ( 'activity_share' === $activity_type && $this->is_self_share( $user_id, $activity_id ) ) {
+			$reshare_settings = get_site_option( 'bp_reshare_settings', array() );
+			if ( ! empty( $reshare_settings['prevent_self_share'] ) ) {
+				wp_send_json_error( array( 'message' => __( 'You cannot reshare your own activity.', 'buddypress-share' ) ) );
+			}
+		}
+
 		// Handle different share destinations
 		$destination_type = 'profile'; // default
 		
@@ -1114,6 +1139,31 @@ class Buddypress_Share_Public {
 	}
 
 	/**
+	 * Determine whether the given user is the author of the given activity.
+	 *
+	 * Used to enforce the "prevent self-share" setting and to hide the reshare
+	 * affordance on a member's own activity.
+	 *
+	 * @since    2.3.0
+	 * @access   private
+	 * @param    int $user_id     The acting user ID.
+	 * @param    int $activity_id The original activity ID being reshared.
+	 * @return   bool True when the user authored the activity.
+	 */
+	private function is_self_share( $user_id, $activity_id ) {
+		if ( ! $user_id || ! $activity_id || ! function_exists( 'bp_activity_get_specific' ) ) {
+			return false;
+		}
+
+		$activity = bp_activity_get_specific( array( 'activity_ids' => array( $activity_id ) ) );
+		if ( empty( $activity['activities'][0] ) ) {
+			return false;
+		}
+
+		return (int) $activity['activities'][0]->user_id === (int) $user_id;
+	}
+
+	/**
 	 * Create share activity.
 	 *
 	 * @since    1.5.2
@@ -1144,7 +1194,24 @@ class Buddypress_Share_Public {
 				$activity_args['hide_sitewide'] = true;
 			}
 		}
-		
+
+		// Respect privacy: when enabled, the reshare must never be more visible
+		// than the activity it reshares. If the original activity is hidden from
+		// the sitewide stream, the reshare inherits that visibility so private
+		// content cannot be surfaced to a public profile. This only ever
+		// tightens visibility — it never relaxes the group rule above.
+		if ( 'activity_share' === $activity_type ) {
+			$reshare_settings = get_site_option( 'bp_reshare_settings', array() );
+			$respect_privacy  = ! array_key_exists( 'respect_privacy', $reshare_settings ) || ! empty( $reshare_settings['respect_privacy'] );
+
+			if ( $respect_privacy && function_exists( 'bp_activity_get_specific' ) ) {
+				$original = bp_activity_get_specific( array( 'activity_ids' => array( $activity_id ) ) );
+				if ( ! empty( $original['activities'][0] ) && ! empty( $original['activities'][0]->hide_sitewide ) ) {
+					$activity_args['hide_sitewide'] = true;
+				}
+			}
+		}
+
 		// Add the activity
 		$new_activity_id = bp_activity_add( $activity_args );
 		

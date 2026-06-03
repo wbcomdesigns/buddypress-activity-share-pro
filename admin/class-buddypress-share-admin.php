@@ -471,28 +471,35 @@ class Buddypress_Share_Admin {
 	 * @return   array Sanitized reshare settings.
 	 */
 	public function sanitize_reshare_settings( $settings ) {
+		// Start from the currently-stored settings so keys that have no field on
+		// the Restrictions form (e.g. enable_share_count, prevent_self_share,
+		// respect_privacy) survive a save instead of being wiped. The
+		// authoritative store is the site option (see sync_reshare_to_site_option).
+		$existing  = get_site_option( 'bp_reshare_settings', array() );
+		$sanitized = is_array( $existing ) ? $existing : array();
+
 		if ( ! is_array( $settings ) ) {
-			return array( 'reshare_share_activity' => 'parent' );
+			$sanitized['reshare_share_activity'] = isset( $sanitized['reshare_share_activity'] ) ? $sanitized['reshare_share_activity'] : 'parent';
+			return $sanitized;
 		}
-		
-		$sanitized = array();
-		
+
+		// Boolean "disable" toggles. Each is rendered on the Restrictions form,
+		// so an unchecked box (absent from POST) is a definite 0, not "leave as-is".
 		$boolean_fields = array(
 			'disable_post_reshare_activity',
 			'disable_my_profile_reshare_activity',
 			'disable_group_reshare_activity',
+			'disable_friends_reshare_activity',
 		);
-		
+
 		foreach ( $boolean_fields as $field ) {
-			if ( isset( $settings[ $field ] ) ) {
-				$sanitized[ $field ] = (bool) $settings[ $field ];
-			}
+			$sanitized[ $field ] = ! empty( $settings[ $field ] ) ? 1 : 0;
 		}
-		
+
 		$allowed_modes = array( 'parent', 'child' );
 		$reshare_mode = isset( $settings['reshare_share_activity'] ) ? $settings['reshare_share_activity'] : 'parent';
 		$sanitized['reshare_share_activity'] = in_array( $reshare_mode, $allowed_modes, true ) ? $reshare_mode : 'parent';
-		
+
 		return $sanitized;
 	}
 

@@ -385,6 +385,7 @@
     color: var(--bp-share-btn-color, #333);
     font-size: 14px;
     transition: all 0.2s ease;
+    border: 1px solid var(--bp-share-btn-border, transparent);
     border-radius: var(--bp-share-btn-radius, 6px);
     text-decoration: none;
 }

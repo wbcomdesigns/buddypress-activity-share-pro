@@ -145,6 +145,7 @@ class BP_Share_Post_Type_Frontend {
 		$bg_color = isset( $icon_settings['bg_color'] ) ? $icon_settings['bg_color'] : '#667eea';
 		$text_color = isset( $icon_settings['text_color'] ) ? $icon_settings['text_color'] : '#ffffff';
 		$hover_color = isset( $icon_settings['hover_color'] ) ? $icon_settings['hover_color'] : '#5a6fd8';
+		$border_color = ! empty( $icon_settings['border_color'] ) ? $icon_settings['border_color'] : '';
 		$icon_style = isset( $icon_settings['icon_style'] ) ? $icon_settings['icon_style'] : 'circle';
 		
 		$wrapper_classes = array(
@@ -163,6 +164,9 @@ class BP_Share_Post_Type_Frontend {
 		$wrapper_style .= '--bp-share-btn-bg:' . esc_attr( $bg_color ) . ';';
 		$wrapper_style .= '--bp-share-btn-color:' . esc_attr( $text_color ) . ';';
 		$wrapper_style .= '--bp-share-btn-hover:' . esc_attr( $hover_color ) . ';';
+		if ( $border_color ) {
+			$wrapper_style .= '--bp-share-btn-border:' . esc_attr( $border_color ) . ';';
+		}
 		
 		// Apply border-radius based on icon style
 		if ( 'circle' === $icon_style ) {

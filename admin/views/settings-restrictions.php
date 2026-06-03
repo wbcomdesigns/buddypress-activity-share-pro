@@ -69,7 +69,21 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 							<?php esc_html_e( 'Groups', 'buddypress-share' ); ?>
 						</span>
 					</label>
+
+					<label class="bp-share-checkbox-item">
+						<input type="checkbox"
+							name="bp_reshare_settings[disable_friends_reshare_activity]"
+							id="disable_friends_reshare_activity"
+							value="1"
+							<?php checked( 1, isset( $bp_reshare_settings['disable_friends_reshare_activity'] ) ? $bp_reshare_settings['disable_friends_reshare_activity'] : 0 ); ?> />
+						<span class="checkbox-label">
+							<span class="checkbox-icon dashicons dashicons-buddicons-friends" aria-hidden="true"></span>
+							<?php esc_html_e( 'Friends', 'buddypress-share' ); ?>
+						</span>
+					</label>
 				</div>
+
+				<p class="card-description"><?php esc_html_e( 'Tick a content type to remove it as a reshare destination. The Friends option is only shown to members when the Friends component is active.', 'buddypress-share' ); ?></p>
 			</div>
 		</div>
 
