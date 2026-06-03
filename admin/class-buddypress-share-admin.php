@@ -47,17 +47,6 @@ class Buddypress_Share_Admin {
 	private $version;
 
 	/**
-	 * Admin CDN assets (lighter than frontend).
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @var      array    CDN asset URLs for admin.
-	 */
-	const ADMIN_CDN_ASSETS = array(
-		'font_awesome' => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
-	);
-
-	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -70,331 +59,12 @@ class Buddypress_Share_Admin {
 	}
 
 	/**
-	 * Register the stylesheets for the admin area.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 * @param    string $hook The current admin page hook.
-	 */
-	public function enqueue_styles( $hook ) {
-		// Only load on plugin pages
-		if ( ! $this->is_plugin_admin_page( $hook ) ) {
-			return;
-		}
-
-		$plugin_url = $this->get_plugin_url();
-
-		// Font Awesome 5.15.4 - Only if not already loaded
-		if ( ! $this->is_fontawesome_loaded() ) {
-			// Use asset manager for icon library
-			if ( class_exists( 'Buddypress_Share_Assets' ) ) {
-				Buddypress_Share_Assets::enqueue_icon_library();
-			} else {
-				// Fallback to CDN if asset manager not available
-				$use_cdn = apply_filters( 'bp_share_use_cdn_assets', false );
-				if ( $use_cdn ) {
-					wp_enqueue_style( 
-						'bp-share-admin-fontawesome', 
-						self::ADMIN_CDN_ASSETS['font_awesome'],
-						array(), 
-						'5.15.4', 
-						'all' 
-					);
-				} else {
-					// Use dashicons as ultimate fallback
-					wp_enqueue_style( 'dashicons' );
-				}
-			}
-		}
-
-		// Additional Font Awesome for post-types section to ensure icons load
-		$section = filter_input( INPUT_GET, 'section', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( $section === 'post-types' ) {
-			wp_enqueue_style( 
-				'bp-share-post-types-fontawesome', 
-				'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', //phpcs:ignore
-				array(), 
-				'5.15.4', 
-				'all' 
-			);
-		}
-		
-		// WordPress Color Picker for icon settings
-		$section = filter_input( INPUT_GET, 'section', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( $section && in_array( $section, array( 'icons', 'display' ), true ) ) {
-			wp_enqueue_style( 'wp-color-picker' );
-		}
-		
-		// License tab removed - plugin runs without restrictions
-
-		// Modern shared tab styles - Use centralized version from WBCom Essential if available
-		if ( defined( 'WBCOM_ESSENTIAL_URL' ) && file_exists( WP_PLUGIN_DIR . '/wbcom-essential/includes/shared-admin/wbcom-shared-tabs.css' ) ) {
-			wp_enqueue_style(
-				'wbcom-shared-tabs',
-				WBCOM_ESSENTIAL_URL . 'includes/shared-admin/wbcom-shared-tabs.css',
-				array(),
-				defined( 'WBCOM_ESSENTIAL_VERSION' ) ? WBCOM_ESSENTIAL_VERSION : $this->version,
-				'all'
-			);
-		} else {
-			// Fallback to local copy
-			wp_enqueue_style(
-				'wbcom-shared-tabs',
-				$plugin_url . 'includes/shared-admin/wbcom-shared-tabs.css',
-				array(),
-				$this->version,
-				'all'
-			);
-		}
-
-		// Main admin stylesheet with auto min/RTL support
-		bp_share_enqueue_style(
-			$this->plugin_name . '-admin',
-			$plugin_url . 'admin/css/buddypress-share-admin', // Without .css
-			array(),
-			$this->version,
-			'all'
-		);
-	}
-
-	/**
-	 * Register the JavaScript for the admin area.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 * @param    string $hook The current admin page hook.
-	 */
-	public function enqueue_scripts( $hook ) {
-		// Only load on plugin pages
-		if ( ! $this->is_plugin_admin_page( $hook ) ) {
-			return;
-		}
-
-		$plugin_url = $this->get_plugin_url();
-
-		// jQuery UI components for drag/drop
-		wp_enqueue_script( 'jquery-ui-sortable' );
-		wp_enqueue_script( 'jquery-ui-draggable' );
-		wp_enqueue_script( 'jquery-ui-droppable' );
-		
-		// WordPress Color Picker for icon settings
-		$section = filter_input( INPUT_GET, 'section', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		if ( $section && in_array( $section, array( 'icons', 'display' ), true ) ) {
-			wp_enqueue_script( 'wp-color-picker' );
-		}
-
-		// Main admin script with auto minification
-		bp_share_enqueue_script(
-			$this->plugin_name . '-admin',
-			$plugin_url . 'admin/js/buddypress-share-admin', // Without .js
-			array( 'jquery', 'jquery-ui-sortable' ),
-			$this->version,
-			true
-		);
-
-		// Localize script
-		wp_localize_script(
-			$this->plugin_name . '-admin',
-			'bp_share_admin_vars',
-			array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'nonce'    => wp_create_nonce( 'bp_share_admin_nonce' ),
-				'strings'  => array(
-					'loading' => __( 'Loading...', 'buddypress-share' ),
-					'saving'  => __( 'Saving...', 'buddypress-share' ),
-					'saved'   => __( 'Settings saved successfully!', 'buddypress-share' ),
-					'error'   => __( 'An error occurred. Please try again.', 'buddypress-share' ),
-				),
-			)
-		);
-	}
-
-	/**
-	 * Check if Font Awesome is already loaded by other plugins/themes.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @return   bool True if Font Awesome is already loaded, false otherwise.
-	 */
-	private function is_fontawesome_loaded() {
-		global $wp_styles;
-		
-		if ( ! $wp_styles ) {
-			return false;
-		}
-
-		// Check for various Font Awesome handles
-		$fa_handles = array(
-			'font-awesome',
-			'fontawesome', 
-			'fa',
-			'font-awesome-5',
-			'fontawesome-5',
-			'wp-fontawesome',
-			'elementor-icons-fa-solid',
-			'elementor-icons-fa-brands'
-		);
-
-		foreach ( $fa_handles as $handle ) {
-			if ( wp_style_is( $handle, 'enqueued' ) || wp_style_is( $handle, 'registered' ) ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Get plugin URL dynamically.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @return   string Plugin URL.
-	 */
-	private function get_plugin_url() {
-		$plugin_folder = basename( dirname( dirname( __FILE__ ) ) );
-		return plugins_url( $plugin_folder ) . '/';
-	}
-
-	/**
-	 * Hide admin notices on plugin pages.
-	 * 
-	 * @since    1.0.0
-	 * @access   public
-	 */
-	public function wbcom_hide_all_admin_notices_from_setting_page() {
-		$current_page = filter_input( INPUT_GET, 'page' );
-		if ( $current_page && 'buddypress-share' === $current_page ) {
-			remove_all_actions( 'admin_notices' );
-			remove_all_actions( 'all_admin_notices' );
-		}
-	}
-
-	/**
-	 * Add plugin menu - Single page under Settings.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 */
-	public function bp_share_plugin_menu() {
-		// Only add menu if shared wrapper is not active
-		if ( ! class_exists( 'Wbcom_Shared_Loader' ) ) {
-			add_options_page(
-				__( 'BuddyPress Activity Share', 'buddypress-share' ),
-				__( 'Activity Share', 'buddypress-share' ),
-				'manage_options',
-				'buddypress-share',
-				array( $this, 'bp_share_plugin_options' )
-			);
-		}
-	}
-
-	/**
-	 * Main admin page with native WordPress UI.
-	 *
-	 * @since    1.0.0
-	 * @access   public
-	 */
-	public function bp_share_plugin_options() {
-		// Security check
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'buddypress-share' ) );
-		}
-
-		// Get current section - default to empty string for first tab
-		$current_section = filter_input( INPUT_GET, 'section', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ?: '';
-		
-		?>
-		<div class="wrap bp-share-admin-wrap">
-			<h1 class="bp-share-admin-title">
-				<span class="dashicons dashicons-share"></span>
-				<?php esc_html_e( 'BuddyPress Activity Share Pro Settings', 'buddypress-share' ); ?>
-			</h1>
-			
-			<?php
-			// Show success message if settings were updated
-			$settings_updated = filter_input( INPUT_GET, 'settings-updated', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-			if ( 'true' === $settings_updated ) {
-				?>
-				<div class="notice notice-success is-dismissible">
-					<p><?php esc_html_e( 'Settings saved successfully!', 'buddypress-share' ); ?></p>
-				</div>
-				<?php
-			}
-			
-			// License messages removed - plugin runs without restrictions
-			?>
-
-			<!-- WBCom Shared Tab Navigation -->
-			<div class="wbcom-tab-wrapper">
-				<nav class="wbcom-nav-tab-wrapper">
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share' ) ); ?>" 
-					   class="wbcom-nav-tab <?php echo in_array( $current_section, array( '', 'general', 'services' ) ) ? 'nav-tab-active' : ''; ?>">
-						<span class="dashicons dashicons-share-alt2"></span>
-						<?php esc_html_e( 'Social Networks', 'buddypress-share' ); ?>
-					</a>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=display' ) ); ?>" 
-					   class="wbcom-nav-tab <?php echo in_array( $current_section, array( 'display', 'icons' ) ) ? 'nav-tab-active' : ''; ?>">
-						<span class="dashicons dashicons-art"></span>
-						<?php esc_html_e( 'Display Settings', 'buddypress-share' ); ?>
-					</a>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=restrictions' ) ); ?>" 
-					   class="wbcom-nav-tab <?php echo in_array( $current_section, array( 'restrictions', 'sharing' ) ) ? 'nav-tab-active' : ''; ?>">
-						<span class="dashicons dashicons-admin-settings"></span>
-						<?php esc_html_e( 'Restrictions', 'buddypress-share' ); ?>
-					</a>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=post-types' ) ); ?>" 
-					   class="wbcom-nav-tab <?php echo 'post-types' === $current_section ? 'nav-tab-active' : ''; ?>">
-						<span class="dashicons dashicons-admin-post"></span>
-						<?php esc_html_e( 'Post Type Sharing', 'buddypress-share' ); ?>
-					</a>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=faq' ) ); ?>" 
-					   class="wbcom-nav-tab <?php echo 'faq' === $current_section ? 'nav-tab-active' : ''; ?>">
-						<span class="dashicons dashicons-editor-help"></span>
-						<?php esc_html_e( 'FAQ', 'buddypress-share' ); ?>
-					</a>
-				</nav>
-
-				<div class="wbcom-tab-content">
-				<?php
-				switch ( $current_section ) {
-					case '':
-					case 'general':
-					case 'services':
-						$this->bp_share_social_networks_page();
-						break;
-					case 'display':
-					case 'icons':
-						$this->bp_share_display_settings_page();
-						break;
-					case 'restrictions':
-					case 'sharing':
-						$this->bp_share_restrictions_page();
-						break;
-					case 'post-types':
-						$this->bp_share_post_types_page();
-						break;
-					case 'faq':
-						$this->bp_share_faq_page();
-						break;
-					default:
-						$this->bp_share_social_networks_page();
-						break;
-				}
-				?>
-				</div><!-- .bp-share-tab-content -->
-			</div><!-- .bp-share-admin-wrapper -->
-		</div>
-		<?php
-	}
-
-	/**
 	 * Display social networks settings section.
 	 *
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function bp_share_social_networks_page() {
+	public function bp_share_social_networks_page() {
 		// Get current settings
 		$bp_share_services_enable = get_site_option( 'bp_share_services_enable', 1 );
 		$bp_share_services_logout_enable = get_site_option( 'bp_share_services_logout_enable', 1 );
@@ -630,7 +300,7 @@ class Buddypress_Share_Admin {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function bp_share_restrictions_page() {
+	public function bp_share_restrictions_page() {
 		// Get current settings
 		$bp_reshare_settings = get_site_option( 'bp_reshare_settings', array() );
 		$bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
@@ -740,7 +410,7 @@ class Buddypress_Share_Admin {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function bp_share_display_settings_page() {
+	public function bp_share_display_settings_page() {
 		// Get current icon settings
 		$bpas_icon_color_settings = get_option( 'bpas_icon_color_settings', array() );
 		$current_style = isset( $bpas_icon_color_settings['icon_style'] ) ? $bpas_icon_color_settings['icon_style'] : 'circle';
@@ -1010,20 +680,6 @@ class Buddypress_Share_Admin {
 	}
 
 	/**
-	 * Check if current page is a plugin admin page.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @param    string $hook Current admin page hook.
-	 * @return   bool True if plugin admin page, false otherwise.
-	 */
-	private function is_plugin_admin_page( $hook ) {
-		$page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-		return ( $hook === 'wbcom-designs_page_wbcom-buddypress-share' || 
-		         'wbcom-buddypress-share' === $page );
-	}
-
-	/**
 	 * Clear public settings cache when admin settings are updated.
 	 *
 	 * @since    1.5.1
@@ -1259,7 +915,7 @@ class Buddypress_Share_Admin {
 	 * @since    1.5.2
 	 * @access   private
 	 */
-	private function bp_share_faq_page() {
+	public function bp_share_faq_page() {
 		?>
 		<div class="bp-share-faq-section">
 			<h2><?php esc_html_e( 'Frequently Asked Questions', 'buddypress-share' ); ?></h2>
@@ -1329,7 +985,7 @@ class Buddypress_Share_Admin {
 	 * @since    2.1.0
 	 * @access   private
 	 */
-	private function bp_share_post_types_page() {
+	public function bp_share_post_types_page() {
 		// Check if settings classes exist
 		if ( ! class_exists( 'BP_Share_Post_Type_Settings' ) ) {
 			// Try to include the required files

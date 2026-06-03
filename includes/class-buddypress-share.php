@@ -122,6 +122,15 @@ class Buddypress_Share {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-buddypress-share-admin.php';
 
 		/**
+		 * The new card-panel admin chrome (menu, shell, enqueue, view router).
+		 * Owns the UI; the legacy admin class above keeps only the data
+		 * contract (sanitizers + the two service AJAX handlers).
+		 *
+		 * @since 2.3.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-bpas-admin-panel.php';
+
+		/**
 		 * The class responsible for display admin notice for review after 7 days.
 		 * FIXED: Make this optional if file doesn't exist
 		 */
@@ -151,11 +160,6 @@ class Buddypress_Share {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/bp-share-buddyboss-compat.php';
 
-		/**
-		 * The class responsible for Wbcom integration.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wbcom-integration.php';
-		
 		/**
 		 * The class responsible for share tracking foundation.
 		 */
@@ -193,19 +197,25 @@ class Buddypress_Share {
 	private function define_admin_hooks() {
 		$plugin_admin = new Buddypress_Share_Admin( $this->get_plugin_name(), $this->get_version() );
 
-		// Core admin hooks
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		
-		// Use standard admin_menu hook instead of bp_core_admin_hook for independent menu
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'bp_share_plugin_menu' );
-		
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'wbcom_hide_all_admin_notices_from_setting_page' );
+		// New card-panel admin chrome: menu under the wbcomplugins hub,
+		// scoped enqueue, shell + view router, hub takeover, foreign-notice
+		// suppression. Replaces the legacy admin's menu/enqueue methods and
+		// the removed Wbcom wrapper integration.
+		$admin_panel = new Bpas_Admin_Panel( $plugin_admin, $this->get_version() );
+		$admin_panel->register();
+
+		// Data contract only — the Settings API registration + the two
+		// service AJAX handlers + sanitizers stay on the legacy admin class
+		// (playbook Part 3). Its menu/enqueue/render methods are intentionally
+		// NOT wired; the panel owns the chrome.
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'bpas_register_setting' );
 
-		// AJAX handlers for admin
+		// AJAX handlers for admin (service add/remove drag-drop).
 		$this->loader->add_action( 'wp_ajax_wss_social_icons', $plugin_admin, 'wss_social_icons' );
 		$this->loader->add_action( 'wp_ajax_wss_social_remove_icons', $plugin_admin, 'wss_social_remove_icons' );
+
+		// First-run onboarding completion (additive — new handler/option).
+		$this->loader->add_action( 'wp_ajax_bpas_complete_onboarding', $admin_panel, 'complete_onboarding' );
 
 		// Cache clearing hooks for performance optimization
 		$this->loader->add_action( 'update_site_option_bp_share_services', $plugin_admin, 'clear_public_settings_cache' );

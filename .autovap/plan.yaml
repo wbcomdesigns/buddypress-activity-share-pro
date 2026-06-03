@@ -1,0 +1,336 @@
+# ─────────────────────────────────────────────────────────────────────────
+# AutoVAP v2 — Migration Manifest
+# Target: buddypress-activity-share-pro
+# Goal:   Admin-UX revamp + first-run onboarding (wbcom-wrapper → card-panel)
+#
+# Spine:  docs/ADMIN_UX_REVAMP_PLAN.md  (the approved plan this manifest serializes)
+# HOW:    wp-plugin-development/references/wbcom-wrapper-migration.md (Parts 0–18)
+#         ux-foundation (16 admin rules, tokens, 6 page patterns, a11y/responsive)
+# Refs:   buddypress-contact-me 1.5.0 · Sticky Post 2.3.7 · Auto Friends 1.8.2
+#
+# SCOPE IS UX-ONLY. Every contract below is NON-NEGOTIABLE: a breach is a
+# HARD HALT (migrations: [] — nothing is sanctioned to change). The engine
+# diffs live state vs. these at every wave's functional tier.
+# ─────────────────────────────────────────────────────────────────────────
+version: 1
+
+target:
+  type: plugin
+  slug: buddypress-activity-share-pro
+  path: /Users/varundubey/Local Sites/wbcom-pro/app/public/wp-content/plugins/buddypress-activity-share-pro
+  repo: wbcomdesigns/buddypress-activity-share-pro
+  local_wp_site: wbcom-pro
+  site_url: https://wbcom-pro.local
+  basecamp_project_id: "37939219"
+
+goal: >
+  Replace the native-WP top-tab Settings screen with the modern card + left-sidebar
+  shell used by buddypress-contact-me, driven by scoped design tokens (--bpas-admin-*),
+  unify the split menu under the shared `wbcomplugins` hub, and add a real dismissible
+  first-run onboarding that auto-shows once. UX layer only — frontend share dropdown,
+  reshare modal, post-type buttons, all option keys/scopes, AJAX actions, nonces, meta
+  keys, cron hooks, and do_action/apply_filters names are preserved byte-for-byte.
+  Version 2.2.4 → 2.3.0.
+
+# ── CONTRACTS ──────────────────────────────────────────────────────────────
+# Seeded from the Wave-0 grep inventory (playbook Part 1). This is the regression
+# safety net. NOTHING here may be renamed, moved, or rescoped by this migration.
+contracts:
+  hooks:
+    actions:
+      - bp_activity_share_after_post_meta
+      - bp_activity_share_before_post_meta
+      - bp_share_activity_stats_updated
+      - bp_share_activity_visit_stats_updated
+      - bp_share_after_create_reshare
+      - bp_share_after_sanitize_extra_settings
+      - bp_share_before_sanitize_extra_settings
+      - bp_share_clear_public_cache
+      - bp_share_deactivated
+      - bp_share_external_share_tracked
+      - bp_share_external_visit_tracked
+      - bp_share_internal_share_tracked
+      - bp_share_plugin_upgraded
+      - bp_share_post_shared
+      - bp_share_post_visit_tracked
+      - bp_share_post_visit_tracked_data
+      - bp_share_uninstalled
+      - bp_share_user_reshared_activity
+      - bp_share_user_services
+      - bp_share_user_stats_updated
+      # cron hook — scheduled in the activator, must remain registered
+      - bp_share_weekly_cleanup
+    filters:
+      - bp_activity_reshare_action
+      - bp_activity_reshare_post_type
+      - bp_activity_share_load_assets
+      - bp_share_activity_classes
+      - bp_share_activity_data
+      - bp_share_allow_anonymous_sharing
+      - bp_share_anonymize_ip
+      - bp_share_available_services
+      - bp_share_before_create_reshare
+      - bp_share_disable_ip_tracking
+      - bp_share_enable_post_type_sharing
+      - bp_share_post_tracking_url
+      - bp_share_post_type_available_services
+      - bp_share_post_type_is_valid
+      - bp_share_post_type_whitelist
+      - bp_share_post_url
+      - bp_share_rate_limit
+      - bp_share_sanitized_extra_settings
+      - bp_share_services_config
+      - bp_share_social_button_html
+      - bp_share_tracking_parameters
+      - bp_share_use_cdn_assets
+      - bp_share_use_minified_assets
+      - bp_share_valid_post_types
+      - buddypress_reactions_theme_support
+      - buddypress_share_theme_support
+      - wbcom_submenu_label
+  # All persisted keys + their EXACT current storage function. The migration must
+  # preserve whatever each call site uses today (see rationale: icon-settings is
+  # split-scope by current code — DO NOT "fix" it in a UX release).
+  options:
+    - bp_share_services            # site_option
+    - bp_share_services_enable     # site_option (group: bp_share_general_settings)
+    - bp_share_services_logout_enable # site_option (group: bp_share_general_settings)
+    - bp_share_services_extra      # site_option (sanitize_extra_settings)
+    - bp_share_services_serialized # registered in bp_share_general_settings (sanitize_text_field)
+    - bp_share_services_old        # site_option (read path)
+    - bp_reshare_settings          # site_option (group + key: bp_reshare_settings)
+    - bpas_icon_color_settings     # SPLIT SCOPE: written site_option, read get_option — preserve as-is
+    - bp_share_post_type_settings  # custom handler
+    - bp_share_general_settings    # Settings API group
+    - bp_share_plugin_version      # site_option (activator)
+    - bp_share_install_date        # site_option (activator) — upgrade-detection signal
+    - bp_share_db_version          # option (activator)
+    - bp_activity_share_plugin_license_key # legacy key (cleaned on uninstall) — preserve, no License tab
+    # New, additive only (allowed — additions are not breaches):
+    - bpas_onboarding_complete     # site_option, 0|1
+  db_schema:
+    - table: "bp_share_post_tracking"
+      columns: ["id", "post_id", "post_type", "service", "user_id", "ip_address", "user_agent", "referrer", "shared_at"]
+    - table: "bp_share_post_type_settings"
+      columns: ["id", "post_type", "enabled_services", "position", "style", "custom_settings", "created_at", "updated_at"]
+  shortcodes:
+    - bp_activity_post_reshare
+
+# Allow-list of sanctioned contract changes. EMPTY = nothing may change.
+# Hard-contract rule: this stays empty. Any required rename ships in a separate release.
+migrations: []
+
+# ── STANDARDS ────────────────────────────────────────────────────────────────
+standards:
+  build_skills:  [wp-plugin-development, ux-foundation]
+  audit_skills:  [ux-audit, action-audit]
+  phpstan_level: 6
+  wpcs_standard: WordPress-Extra
+
+# ── GATES ──────────────────────────────────────────────────────────────────
+gates:
+  default_static:     [php-lint, wpcs, phpstan]
+  default_functional: [browser-smoke, qa-suite]
+
+# ── JOURNEYS (functional verification — plan §12.9-14) ───────────────────────
+journeys:
+  - id: activate-onboarding-once
+    role: admin
+    steps:
+      - "Fresh install: activate the plugin with BuddyPress active"
+      - "Redirects to admin.php?page=buddypress-share&onboarding=1; full-width onboarding renders"
+      - "Click Skip (or Get Started); land on Overview"
+      - "Reload the settings page: onboarding does NOT show again (bpas_onboarding_complete = 1)"
+      - "Upgrade install (bp_share_install_date already set): onboarding never shows"
+      - "No JS console errors; correct at 390px and 1280px"
+  - id: settings-roundtrip-multisite
+    role: admin
+    steps:
+      - "Open each sidebar tab: Networks, Display, Restrictions, Post Type Sharing, FAQ"
+      - "Change a value on each savable tab and save"
+      - "Verify via wp site option get: every key in contracts.options persists with identical key + scope"
+      - "bpas_icon_color_settings still reads back exactly as before (split scope preserved)"
+      - "site_option scope remains network-wide on multisite"
+  - id: services-drag-drop
+    role: admin
+    steps:
+      - "On the Networks tab, drag a service from Inactive to Active; AJAX wss_social_icons fires"
+      - "Drag a service from Active to Inactive; AJAX wss_social_remove_icons fires"
+      - "Reorder enabled services; save"
+      - "bp_share_services + bp_share_services_serialized persist; reload reflects the new order"
+      - "No console errors; nonces unchanged"
+  - id: frontend-reshare-unchanged
+    role: subscriber
+    steps:
+      - "On the activity stream, open the share dropdown and reshare an activity"
+      - "Reshare modal opens, submits, creates a reshared activity"
+      - "share_count + shared_activity_id meta written with the old keys"
+      - "Post-type share buttons still render and track on a single post"
+  - id: old-bookmark-resolves
+    role: admin
+    steps:
+      - "Visit admin.php?page=wbcom-buddypress-share (legacy bookmark)"
+      - "Resolves to the new shell (alias/redirect), not a dead page"
+      - "Visit admin.php?page=buddypress-share; also resolves"
+      - "Exactly ONE submenu appears under the WB Plugins hub (no double entry)"
+
+# ── WAVES ────────────────────────────────────────────────────────────────────
+# 9-phase ordering collapsed to the plan's build sequence (§14). Same-wave
+# directions keep DISJOINT scope (validator-enforced; run in parallel, worktree-isolated).
+waves:
+
+  # Wave 0 — inventory pre-pass (read-only recon → recorded findings the build relies on).
+  # Single direction: no parallel work, produces the regression net + two go/no-go decisions.
+  - id: wave-0-inventory
+    depends_on: []
+    functional_gates: []
+    journeys: []
+    directions:
+      - id: "0.1"
+        title: "Identifier inventory + License-tab and split-option decisions (playbook Part 1)"
+        journey: audit
+        scope: ["docs/**", "includes/**", "admin/**", "public/**", "buddypress-share.php", "readme.txt"]
+        skills: [action-audit, wp-plugin-development]
+        static_gates: []
+        depends_on: []
+
+  # Wave 1 — shell + tokens + hub + menu unification. Foundation; no UI extraction yet.
+  - id: wave-1-shell
+    depends_on: [wave-0-inventory]
+    functional_gates: [browser-smoke, qa-suite]
+    journeys: [old-bookmark-resolves]
+    directions:
+      - id: "1.1"
+        title: "Card shell + sidebar nav + body slot; token CSS (--bpas-admin-*); enqueue gating"
+        journey: improve
+        scope: ["admin/views/shell.php", "admin/views/hub.php", "admin/css/buddypress-share-admin.css", "admin/css/buddypress-share-admin.min.css"]
+        skills: [ux-foundation, wp-plugin-development]
+        static_gates: [php-lint, wpcs, ux-audit]
+        depends_on: []
+      - id: "1.2"
+        title: "Menu → wbcomplugins hub + takeover@999 + legacy slug alias; retain admin class for sanitizers/AJAX"
+        journey: improve
+        scope: ["admin/class-buddypress-share-admin.php", "buddypress-share.php"]
+        skills: [wp-plugin-development, action-audit]
+        static_gates: [php-lint, wpcs, wiring]
+        depends_on: []
+
+  # Wave 2 — extract the 5 tab bodies into views. Methods become thin includes.
+  # Each direction owns ONE view file + its slice of the admin class — disjoint.
+  - id: wave-2-views
+    depends_on: [wave-1-shell]
+    functional_gates: [browser-smoke, qa-suite]
+    journeys: [settings-roundtrip-multisite, services-drag-drop]
+    directions:
+      - id: "2.1"
+        title: "Extract Social Networks tab → views/settings-networks.php (drag-drop DOM kept verbatim)"
+        journey: improve
+        scope: ["admin/views/settings-networks.php"]
+        skills: [ux-foundation, wp-plugin-development, action-audit]
+        static_gates: [php-lint, wpcs, ux-audit, wiring]
+        depends_on: []
+      - id: "2.2"
+        title: "Extract Display tab → views/settings-display.php (color picker kept)"
+        journey: improve
+        scope: ["admin/views/settings-display.php"]
+        skills: [ux-foundation, wp-plugin-development]
+        static_gates: [php-lint, wpcs, ux-audit, wiring]
+        depends_on: []
+      - id: "2.3"
+        title: "Extract Restrictions tab → views/settings-restrictions.php"
+        journey: improve
+        scope: ["admin/views/settings-restrictions.php"]
+        skills: [ux-foundation, wp-plugin-development]
+        static_gates: [php-lint, wpcs, ux-audit, wiring]
+        depends_on: []
+      - id: "2.4"
+        title: "Extract Post Type Sharing tab → views/settings-post-types.php (reuse partials)"
+        journey: improve
+        scope: ["admin/views/settings-post-types.php"]
+        skills: [ux-foundation, wp-plugin-development]
+        static_gates: [php-lint, wpcs, ux-audit, wiring]
+        depends_on: []
+      - id: "2.5"
+        title: "Extract FAQ tab → views/faq.php (static, plain-language)"
+        journey: improve
+        scope: ["admin/views/faq.php"]
+        skills: [ux-foundation]
+        static_gates: [php-lint, wpcs, ux-audit]
+        depends_on: []
+      - id: "2.6"
+        title: "Convert bp_share_*_page() methods to thin includes; render_page() sets template vars"
+        journey: improve
+        scope: ["admin/class-buddypress-share-admin.php"]
+        skills: [wp-plugin-development, action-audit]
+        static_gates: [php-lint, wpcs, wiring]
+        depends_on: []
+
+  # Wave 3 — Overview + first-run onboarding (depends on shell + view router being live).
+  - id: wave-3-onboarding
+    depends_on: [wave-2-views]
+    functional_gates: [browser-smoke, qa-suite]
+    journeys: [activate-onboarding-once]
+    directions:
+      - id: "3.1"
+        title: "Overview view: cached COUNT(*) stats + config summary + quick actions"
+        journey: develop
+        scope: ["admin/views/overview.php"]
+        skills: [ux-foundation, wp-plugin-development, database]
+        static_gates: [php-lint, wpcs, ux-audit, wiring]
+        depends_on: []
+      - id: "3.2"
+        title: "Onboarding view + bpas_complete_onboarding handler + activation redirect + upgrade-safety preset"
+        journey: develop
+        scope: ["admin/views/onboarding.php", "includes/class-buddypress-share-activator.php"]
+        skills: [ux-foundation, wp-plugin-development, action-audit]
+        static_gates: [php-lint, wpcs, ux-audit, wiring]
+        depends_on: []
+
+  # Wave 4 — JS toast/confirm. Touches only the admin JS (disjoint from PHP waves).
+  - id: wave-4-js
+    depends_on: [wave-3-onboarding]
+    functional_gates: [browser-smoke, qa-suite]
+    journeys: [services-drag-drop, activate-onboarding-once]
+    directions:
+      - id: "4.1"
+        title: "bpasToast/bpasConfirm; generic [data-bpas-confirm] yields to data-action buttons (playbook 11.1)"
+        journey: improve
+        scope: ["admin/js/buddypress-share-admin.js", "admin/js/buddypress-share-admin.min.js"]
+        skills: [ux-foundation, wp-plugin-development, action-audit]
+        static_gates: [php-lint, wpcs, ux-audit, wiring]
+        depends_on: []
+
+  # Wave 5 — polish + release prep. Disjoint scopes: RTL/CSS, drop-CDN, copy/privacy, version/docs.
+  - id: wave-5-polish
+    depends_on: [wave-4-js]
+    functional_gates: [browser-smoke, qa-suite]
+    journeys: [frontend-reshare-unchanged, settings-roundtrip-multisite, old-bookmark-resolves]
+    directions:
+      - id: "5.1"
+        title: "RTL rebuild (grunt rtlcss) + a11y pass (:focus-visible, aria-labels, 40px tap targets)"
+        journey: improve
+        scope: ["admin/css-rtl/buddypress-share-admin.css", "admin/css-rtl/buddypress-share-admin.min.css"]
+        skills: [ux-foundation, ux-audit]
+        static_gates: [php-lint, wpcs, ux-audit]
+        depends_on: []
+      - id: "5.2"
+        title: "Drop Bootstrap/Select2/FontAwesome CDN enqueues (bundle locally or WP core); keep Dashicons"
+        journey: improve
+        scope: ["includes/class-buddypress-share.php", "public/class-buddypress-share-public.php"]
+        skills: [wp-plugin-development, ux-foundation, action-audit]
+        static_gates: [php-lint, wpcs, wiring]
+        depends_on: []
+      - id: "5.3"
+        title: "Plain-language copy pass (Part 17) + privacy audit of non-owner data exposure (Part 18)"
+        journey: improve
+        scope: ["admin/views/**", "admin/partials/**"]
+        skills: [ux-foundation, ux-audit]
+        static_gates: [php-lint, wpcs, ux-audit]
+        depends_on: []
+      - id: "5.4"
+        title: "Version bump 2.2.4→2.3.0 (header+const+readme+package+CLAUDE), changelog, QA-MANUAL.md"
+        journey: customer-docs
+        scope: ["buddypress-share.php", "readme.txt", "package.json", "CHANGELOG.md", "CLAUDE.md", "docs/QA-MANUAL.md"]
+        skills: [wp-plugin-development]
+        static_gates: [php-lint, wpcs]
+        depends_on: []

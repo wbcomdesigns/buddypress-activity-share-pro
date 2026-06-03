@@ -115,7 +115,7 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'bp_activity_s
  */
 function bp_activity_share_pro_plugin_actions( $links, $file ) {
 	if ( class_exists( 'BuddyPress' ) && current_user_can( 'manage_options' ) ) {
-		$settings_link = '<a href="' . esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share' ) ) . '">' . esc_html__( 'Settings', 'buddypress-share' ) . '</a>';
+		$settings_link = '<a href="' . esc_url( admin_url( 'admin.php?page=buddypress-share' ) ) . '">' . esc_html__( 'Settings', 'buddypress-share' ) . '</a>';
 		array_unshift( $links, $settings_link ); // before other links.
 	}
 	return $links;
@@ -160,85 +160,10 @@ function bpshare_pro_plugin_init() {
 	}
 }
 
-/**
- * Initialize WBCom integration.
- *
- * Integrates the plugin with WBCom shared admin interface if available.
- *
- * @since    1.5.0
- * @return   void
- */
-function bp_share_init_wbcom_integration() {
-	// Only register if we have the requirements
-	$has_buddypress = class_exists( 'BuddyPress' );
-	$has_buddyboss = defined( 'BP_PLATFORM_VERSION' );
-	
-	if ( ( $has_buddypress || $has_buddyboss ) && bp_activity_share_pro_check_config() ) {
-		// First check if wbcom_integrate_plugin is already available (from wbcom-essential or another plugin)
-		if ( function_exists( 'wbcom_integrate_plugin' ) ) {
-			// Use the existing integration function
-			wbcom_integrate_plugin( __FILE__, array(
-				'name'         => 'BP Activity Share Pro',
-				'menu_title'   => 'BP Activity Share Pro',
-				'slug'         => 'buddypress-share',
-				'priority'     => 15,
-				'icon'         => 'dashicons-share',
-				'callback'     => 'bp_share_render_admin_page',
-				'settings_url' => admin_url( 'admin.php?page=wbcom-buddypress-share' ),
-			) );
-			return;
-		}
-		
-		// Otherwise, load our own integration
-		if ( class_exists( 'BP_Activity_Share_Wbcom_Integration' ) ) {
-			new BP_Activity_Share_Wbcom_Integration();
-		}
-	}
-}
-
-/**
- * Fallback integration if primary fails.
- *
- * Provides fallback integration method if the primary WBCom integration is not available.
- *
- * @since    1.5.0
- * @return   void
- */
-function bp_share_init_fallback_integration() {
-	// Only run if not already integrated
-	if ( ! function_exists( 'wbcom_integrate_plugin' ) && 
-	     class_exists( 'BP_Activity_Share_Wbcom_Integration' ) &&
-	     bp_activity_share_pro_check_config() ) {
-		new BP_Activity_Share_Wbcom_Integration();
-	}
-}
-
-/**
- * Render admin page for shared wrapper.
- *
- * Callback function for WBCom integration to render the admin page.
- *
- * @since    1.5.0
- * @return   void
- */
-function bp_share_render_admin_page() {
-	// Make sure admin class is loaded
-	if ( ! class_exists( 'Buddypress_Share_Admin' ) ) {
-		require_once plugin_dir_path( __FILE__ ) . 'admin/class-buddypress-share-admin.php';
-	}
-	
-	// Create an instance and call the method
-	$admin = new Buddypress_Share_Admin( 'buddypress-share', BP_ACTIVITY_SHARE_PLUGIN_VERSION );
-	$admin->bp_share_plugin_options();
-}
-
-/**
- * Initialize WBCom integration
- */
-if ( is_admin() ) {
-	add_action( 'init', 'bp_share_init_wbcom_integration', 1 );
-	add_action( 'plugins_loaded', 'bp_share_init_fallback_integration', 20 );
-}
+// Admin menu + chrome are registered by Bpas_Admin_Panel (loaded via the
+// core class). The legacy Wbcom shared-loader wrapper integration was
+// removed in 2.3.0 — the admin now lives under the wbcomplugins hub with
+// a clean canonical slug (admin.php?page=buddypress-share).
 
 // License system removed - plugin runs without restrictions
 
@@ -456,8 +381,12 @@ function bpshare_pro_activation_redirect_settings( $plugin ) {
 			$request_plugin = isset( $_REQUEST['plugin'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['plugin'] ) ) : ''; //phpcs:ignore
 			
 			if ( 'activate' === $action && $request_plugin === $plugin ) {
-				// Redirect to the settings page after plugin activation.
-				wp_safe_redirect( admin_url( 'admin.php?page=wbcom-buddypress-share' ) );
+				// Redirect to the settings page after activation. Fresh
+				// installs get the first-run onboarding (onboarding=1); the
+				// render router decides whether to show it based on the
+				// bpas_onboarding_complete site option (preset to 1 for
+				// upgrades, so existing installs never see it).
+				wp_safe_redirect( admin_url( 'admin.php?page=buddypress-share&onboarding=1' ) );
 				exit;
 			}
 		}
