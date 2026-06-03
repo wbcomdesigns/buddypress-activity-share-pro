@@ -12,6 +12,122 @@
 (function($) {
     'use strict';
 
+    var bpasI18n = (window.bpasAdmin && window.bpasAdmin.i18n) || {};
+
+    /* ─── Toast ───────────────────────────────────────────────
+     * window.bpasToast(message, tone) — non-blocking feedback.
+     * Replaces native alert(); ux-foundation Rule 10.
+     */
+    function bpasGetToastHost() {
+        var host = document.querySelector('.bpas-toast-host');
+        if (!host) {
+            host = document.createElement('div');
+            host.className = 'bpas-toast-host';
+            document.body.appendChild(host);
+        }
+        return host;
+    }
+
+    function bpasToast(message, tone) {
+        tone = tone || 'info';
+        var host = bpasGetToastHost();
+        var el = document.createElement('div');
+        el.className = 'bpas-toast bpas-toast--' + tone;
+        el.setAttribute('role', 'status');
+        el.textContent = String(message);
+        host.appendChild(el);
+
+        requestAnimationFrame(function() {
+            el.classList.add('bpas-toast--visible');
+        });
+
+        window.setTimeout(function() {
+            el.classList.remove('bpas-toast--visible');
+            window.setTimeout(function() {
+                if (el.parentNode) {
+                    el.parentNode.removeChild(el);
+                }
+            }, 250);
+        }, 3600);
+    }
+
+    window.bpasToast = bpasToast;
+
+    /* ─── Confirm modal (returns a Promise) ───────────────────
+     * window.bpasConfirm({ title, message, tone, confirmLabel, cancelLabel })
+     * Replaces native confirm(); ESC = cancel, Enter = confirm, focus trap
+     * on the confirm button, click-outside cancels.
+     */
+    function bpasConfirm(opts) {
+        opts = opts || {};
+        return new Promise(function(resolve) {
+            var backdrop = document.createElement('div');
+            backdrop.className = 'bpas-confirm-backdrop';
+
+            var card = document.createElement('div');
+            card.className = 'bpas-confirm';
+            card.setAttribute('role', 'dialog');
+            card.setAttribute('aria-modal', 'true');
+
+            if (opts.title) {
+                var title = document.createElement('h2');
+                title.className = 'bpas-confirm__title';
+                title.textContent = opts.title;
+                card.appendChild(title);
+            }
+
+            var message = opts.message || bpasI18n.confirmDanger || '';
+            if (message) {
+                var desc = document.createElement('p');
+                desc.className = 'bpas-confirm__desc';
+                desc.textContent = message;
+                card.appendChild(desc);
+            }
+
+            var actions = document.createElement('div');
+            actions.className = 'bpas-confirm__actions';
+
+            var cancelBtn = document.createElement('button');
+            cancelBtn.type = 'button';
+            cancelBtn.className = 'bpas-btn bpas-btn-secondary';
+            cancelBtn.textContent = opts.cancelLabel || bpasI18n.confirmCancel || 'Cancel';
+
+            var confirmBtn = document.createElement('button');
+            confirmBtn.type = 'button';
+            confirmBtn.className = 'bpas-btn ' + ('danger' === opts.tone ? 'bpas-btn-danger' : 'bpas-btn-primary');
+            confirmBtn.textContent = opts.confirmLabel || bpasI18n.confirmContinue || 'Continue';
+
+            actions.appendChild(cancelBtn);
+            actions.appendChild(confirmBtn);
+            card.appendChild(actions);
+            backdrop.appendChild(card);
+            document.body.appendChild(backdrop);
+
+            function cleanup(result) {
+                document.removeEventListener('keydown', onKey);
+                if (backdrop.parentNode) {
+                    backdrop.parentNode.removeChild(backdrop);
+                }
+                resolve(result);
+            }
+
+            function onKey(e) {
+                if ('Escape' === e.key) { cleanup(false); }
+                if ('Enter' === e.key) { cleanup(true); }
+            }
+
+            cancelBtn.addEventListener('click', function() { cleanup(false); });
+            confirmBtn.addEventListener('click', function() { cleanup(true); });
+            backdrop.addEventListener('click', function(e) {
+                if (e.target === backdrop) { cleanup(false); }
+            });
+            document.addEventListener('keydown', onKey);
+            confirmBtn.focus();
+        });
+    }
+
+    window.bpasConfirm = bpasConfirm;
+
     /**
      * Admin functionality controller
      */
@@ -27,6 +143,64 @@
             this.setupToggleDependencies();
             this.setupNotifications();
             this.setupOnboarding();
+            this.setupGenericConfirm();
+        },
+
+        /**
+         * Generic destructive-action confirm.
+         *
+         * Any element that opts in with data-bpas-confirm gets a modal
+         * confirmation before its default action. Playbook 11.1: this MUST
+         * yield to elements that own a specific data-action handler (the
+         * drag-drop service buttons, etc.) — those manage their own flow, so
+         * we skip them here to avoid double-handling.
+         */
+        setupGenericConfirm: function() {
+            $(document).on('click', '[data-bpas-confirm]', function(e) {
+                var $el = $(this);
+
+                // Yield to elements with their own data-action handler.
+                if (typeof $el.attr('data-action') !== 'undefined') {
+                    return;
+                }
+
+                // Allow the second click through once confirmed.
+                if ($el.data('bpas-confirm-ok')) {
+                    return;
+                }
+
+                e.preventDefault();
+
+                var msg = $el.data('bpas-confirm') || bpasI18n.confirmDanger;
+                var tone = $el.data('bpas-confirm-tone') || 'danger';
+
+                bpasConfirm({ message: msg, tone: tone }).then(function(ok) {
+                    if (!ok) {
+                        return;
+                    }
+                    $el.data('bpas-confirm-ok', true);
+                    if ($el.is('a') && $el.attr('href')) {
+                        window.location.href = $el.attr('href');
+                    } else if ($el.is('button') || $el.is('input')) {
+                        var form = $el.closest('form').get(0);
+                        if (!form) {
+                            return;
+                        }
+                        // Preserve the clicked submit button's name/value so
+                        // PHP handlers keyed off the button name still fire.
+                        var btnName = $el.attr('name') || '';
+                        var btnValue = $el.attr('value') || '1';
+                        if (btnName) {
+                            var hidden = document.createElement('input');
+                            hidden.type = 'hidden';
+                            hidden.name = btnName;
+                            hidden.value = btnValue;
+                            form.appendChild(hidden);
+                        }
+                        form.submit();
+                    }
+                });
+            });
         },
 
         /**
@@ -339,57 +513,31 @@
                 }, 10000);
             });
 
-            // Handle settings reset
+            // Handle settings reset via the shared confirm modal (no native
+            // confirm()). The reset link opts in with .reset-settings; it
+            // does not own a data-action handler, so the generic
+            // [data-bpas-confirm] path is not involved here.
             $(document).on('click', '.reset-settings', function(e) {
-                if (!confirm('Are you sure you want to reset all settings? This action cannot be undone.')) {
-                    e.preventDefault();
-                    return false;
+                var $el = $(this);
+                if ($el.data('bpas-confirm-ok')) {
+                    return;
                 }
-            });
-
-            // Auto-save functionality for certain fields
-            this.setupAutoSave();
-        },
-
-        /**
-         * Setup auto-save functionality
-         */
-        setupAutoSave: function() {
-            let autoSaveTimeout;
-            
-            $('.auto-save').on('change input', function() {
-                clearTimeout(autoSaveTimeout);
-                const $field = $(this);
-                
-                autoSaveTimeout = setTimeout(function() {
-                    BPShareAdmin.autoSaveField($field);
-                }, 2000);
-            });
-        },
-
-        /**
-         * Auto-save individual field
-         */
-        autoSaveField: function($field) {
-            const fieldName = $field.attr('name');
-            const fieldValue = $field.val();
-            
-            if (!fieldName) return;
-            
-            $.ajax({
-                url: bp_share_admin_vars.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'bp_share_auto_save',
-                    field_name: fieldName,
-                    field_value: fieldValue,
-                    nonce: bp_share_admin_vars.nonce
-                },
-                success: function(response) {
-                    if (response.success) {
-                        BPShareAdmin.showNotice('Settings auto-saved', 'info', 2000);
+                e.preventDefault();
+                bpasConfirm({
+                    message: bpasI18n.confirmDanger || 'Are you sure you want to reset all settings? This cannot be undone.',
+                    tone: 'danger'
+                }).then(function(ok) {
+                    if (!ok) {
+                        return;
                     }
-                }
+                    $el.data('bpas-confirm-ok', true);
+                    if ($el.is('a') && $el.attr('href')) {
+                        window.location.href = $el.attr('href');
+                    } else {
+                        var form = $el.closest('form').get(0);
+                        if (form) { form.submit(); }
+                    }
+                });
             });
         },
 
