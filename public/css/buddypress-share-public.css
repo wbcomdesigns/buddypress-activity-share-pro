@@ -823,6 +823,66 @@ body.admin-bar .activity-share-modal .modal-dialog {
     justify-content: center;
 }
 
+/* ===================================================================
+   MODERN DROPDOWN RESTYLE (2.3.0 UX refresh)
+   Tighter rows, normalised icon circles, full-row hover, focus ring,
+   and a divider separating the internal "Reshare" row from the social
+   "share to" group. Scoped under #buddypress .activity-list to win
+   over theme (BuddyBoss/BuddyX) row + icon inflation.
+   =================================================================== */
+#buddypress .activity-list .bp-activity-share-dropdown-menu {
+    width: 264px;
+    padding: 6px;
+}
+
+#buddypress .activity-list .bp-activity-share-dropdown-menu .bp-activity-share-btn,
+#buddypress .activity-list .bp-activity-share-dropdown-menu .bp-share-wrapper {
+    min-height: 0;
+    padding: 3px 10px;
+    margin: 0;
+    border-radius: var(--bp-share-radius);
+    line-height: 1.2;
+}
+
+/* Inner link/button must not re-introduce min-height or padding. */
+#buddypress .activity-list .bp-activity-share-dropdown-menu .bp-activity-share-btn .button,
+#buddypress .activity-list .bp-activity-share-dropdown-menu .bp-activity-share-btn a,
+#buddypress .activity-list .bp-activity-share-dropdown-menu .bp-share-wrapper .button,
+#buddypress .activity-list .bp-activity-share-dropdown-menu .bp-share-wrapper a {
+    min-height: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+#buddypress .activity-list .bp-activity-share-dropdown-menu .bp-activity-share-btn:hover,
+#buddypress .activity-list .bp-activity-share-dropdown-menu .bp-share-wrapper:hover {
+    background-color: var(--bp-share-bg-secondary);
+    border-radius: var(--bp-share-radius);
+}
+
+#buddypress .activity-list .bp-activity-share-dropdown-menu a:focus-visible {
+    outline: 2px solid var(--bp-share-border-focus);
+    outline-offset: 2px;
+    border-radius: var(--bp-share-radius);
+}
+
+/* Normalise every icon circle to a compact 28px regardless of style or theme. */
+#buddypress .activity-list .activity-share-dropdown-menu-container a i.as-icon,
+#buddypress .activity-list .activity-share-dropdown-menu-container a i[class*=" fa-"],
+#buddypress .activity-list .bp-activity-share-dropdown-menu .bp-activity-reshare-icon {
+    width: 22px;
+    min-width: 22px;
+    height: 22px;
+    font-size: 11px;
+}
+
+/* Divider: visually group the social "share to" buttons below the Reshare row. */
+#buddypress .activity-list .bp-activity-share-dropdown-menu .bp-share-activity-share-to-wrapper {
+    margin-top: 4px;
+    padding-top: 6px;
+    border-top: 1px solid var(--bp-share-border);
+}
+
 /* Share Button Main Toggle */
 .bp-activity-share-dropdown-toggle a.dropdown-toggle {
     cursor: pointer;
