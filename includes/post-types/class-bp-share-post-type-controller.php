@@ -323,17 +323,9 @@ class BP_Share_Post_Type_Controller {
 			return;
 		}
 		
-		// Enqueue Font Awesome if not already loaded
-		if ( ! wp_style_is( 'font-awesome', 'enqueued' ) && ! wp_style_is( 'fontawesome', 'enqueued' ) ) {
-			wp_enqueue_style(
-				'bp-share-font-awesome',
-				'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', //phpcs:ignore
-				array(),
-				'5.15.4'
-			);
-		}
-		
-		wp_enqueue_style( 
+		// Icons are inline SVGs as of 2.3.0 — no Font Awesome / CDN required.
+
+		wp_enqueue_style(
 			'bp-share-post-type', 
 			BP_ACTIVITY_SHARE_PLUGIN_URL . 'public/css/bp-share-post-type.css',
 			array(),

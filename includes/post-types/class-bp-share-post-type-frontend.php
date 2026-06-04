@@ -101,7 +101,7 @@ class BP_Share_Post_Type_Frontend {
 						   target="_blank"
 						   rel="noopener noreferrer"
 						   <?php endif; ?>>
-							<i class="<?php echo esc_attr( $service['icon'] ); ?>"></i>
+							<?php echo bp_share_service_icon( $service_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset. ?>
 							<span class="service-name"><?php echo esc_html( $service['name'] ); ?></span>
 						</a>
 					<?php endforeach; ?>
@@ -206,7 +206,7 @@ class BP_Share_Post_Type_Frontend {
 					   target="_blank" 
 					   rel="noopener noreferrer"
 					   <?php endif; ?>>
-						<i class="<?php echo esc_attr( $service['icon'] ); ?>"></i>
+						<?php echo bp_share_service_icon( $service_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset. ?>
 						<?php if ( $args['show_labels'] ) : ?>
 							<span class="button-label"><?php echo esc_html( $service['name'] ); ?></span>
 						<?php endif; ?>
@@ -279,7 +279,7 @@ class BP_Share_Post_Type_Frontend {
 		   target="_blank" 
 		   rel="noopener noreferrer"
 		   <?php endif; ?>>
-			<i class="<?php echo esc_attr( $service_info['icon'] ); ?>"></i>
+			<?php echo bp_share_service_icon( $service ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset. ?>
 			<?php if ( $args['show_label'] ) : ?>
 				<span class="bp-share-label"><?php echo esc_html( $service_info['name'] ); ?></span>
 			<?php endif; ?>

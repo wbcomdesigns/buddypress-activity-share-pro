@@ -60,7 +60,6 @@ class Buddypress_Share_Public {
 	 * @var      array    CDN asset URLs.
 	 */
 	const CDN_ASSETS = array(
-		'font_awesome' => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
 		'bootstrap_css' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css',
 		'bootstrap_js' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js',
 		'select2_css' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css',
@@ -93,39 +92,9 @@ class Buddypress_Share_Public {
 
 		$plugin_url = $this->get_plugin_url();
 
-		// Font Awesome 5.15.4 - Load only if not already loaded
-		if ( ! $this->is_fontawesome_loaded() ) {
-			// Use asset manager for icon library
-			if ( class_exists( 'Buddypress_Share_Assets' ) ) {
-				Buddypress_Share_Assets::enqueue_icon_library();
-			} else {
-				// Fallback to CDN if asset manager not available
-				$use_cdn = apply_filters( 'bp_share_use_cdn_assets', false );
-				if ( $use_cdn ) {
-					wp_enqueue_style( 
-						'bp-share-fontawesome', 
-						self::CDN_ASSETS['font_awesome'],
-						array(), 
-						'5.15.4', 
-						'all' 
-					);
-				} else {
-					// Use dashicons as ultimate fallback
-					wp_enqueue_style( 'dashicons' );
-				}
-			}
-		}
-
-		// BuddyBoss theme compatibility - ensure Font Awesome loads
-		if ( function_exists( 'buddyboss_theme' ) || defined( 'BUDDYBOSS_THEME_VERSION' ) ) {
-			wp_enqueue_style( 
-				'bp-share-buddyboss-fa', 
-				'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', //phpcs:ignore
-				array(), 
-				'5.15.4', 
-				'all' 
-			);
-		}
+		// Icons are now bundled as inline Lucide chrome SVGs + bundled brand
+		// SVGs (see bp_share_icon() / bp_share_brand_svg()). No Font Awesome,
+		// no icon-font, no CDN enqueue is needed on the frontend anymore.
 
 		// Bootstrap CSS - Load only if not conflicting
 		if ( ! $this->has_bootstrap_conflict() && ! wp_style_is( 'bootstrap', 'enqueued' ) ) {
@@ -147,20 +116,12 @@ class Buddypress_Share_Public {
 			'all' 
 		);
 
-		// Custom AS-Icons font with auto min/RTL support
-		bp_share_enqueue_style(
-			'bp-share-as-icons',
-			$plugin_url . 'public/css/as-icons', // Without .css
-			array(),
-			$this->version,
-			'all'
-		);
-		
-		// Main plugin CSS with auto min/RTL support
+		// Main plugin CSS with auto min/RTL support. The as-icons icon font was
+		// retired in 2.3.0 in favour of inline Lucide / brand SVGs.
 		bp_share_enqueue_style(
 			$this->plugin_name,
 			$plugin_url . 'public/css/buddypress-share-public', // Without .css
-			array( 'bp-share-as-icons' ),
+			array(),
 			$this->version,
 			'all'
 		);
@@ -223,46 +184,6 @@ class Buddypress_Share_Public {
 		$this->localize_script();
 	}
 
-
-	/**
-	 * Check if Font Awesome is already loaded by other plugins/themes.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @return   bool True if Font Awesome is already loaded, false otherwise.
-	 */
-	private function is_fontawesome_loaded() {
-		global $wp_styles;
-		
-		if ( ! $wp_styles ) {
-			return false;
-		}
-
-		// Check for various Font Awesome handles including BuddyBoss
-		$fa_handles = array(
-			'font-awesome',
-			'fontawesome', 
-			'fa',
-			'font-awesome-5',
-			'fontawesome-5',
-			'font-awesome-6',
-			'fontawesome-6',
-			'wp-fontawesome',
-			'elementor-icons-fa-solid',
-			'elementor-icons-fa-brands',
-			'buddyboss-icons',
-			'buddyboss-fontawesome',
-			'buddyboss-theme-icons'
-		);
-
-		foreach ( $fa_handles as $handle ) {
-			if ( wp_style_is( $handle, 'enqueued' ) || wp_style_is( $handle, 'registered' ) ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	/**
 	 * Check for Bootstrap conflicts with other plugins/themes.
@@ -520,7 +441,7 @@ class Buddypress_Share_Public {
 		<div class="generic-button bp-activity-share-dropdown-toggle">
 			<a class="button dropdown-toggle" rel="nofollow">
 				<span class="bp-activity-reshare-icon">
-					<i class="as-icon as-icon-share-square"></i>
+					<?php bp_share_the_icon( 'share-2' ); ?>
 				</span>
 				<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
 				<?php if ( $show_share_count ) : ?>
@@ -602,8 +523,8 @@ class Buddypress_Share_Public {
 			?>
 			<div class="bp-activity-share-btn bp-activity-reshare-btn" data-reshare="all" data-title="<?php esc_attr_e( 'Reshare Activity', 'buddypress-share' ); ?>">
 				<a class="button item-button bp-secondary-action bp-activity-share-button" data-toggle="modal" data-target="#activity-share-modal" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
-					<span class="bp-activity-reshare-icon">	
-						<i class="as-icon as-icon-share-square"></i>
+					<span class="bp-activity-reshare-icon">
+						<?php bp_share_the_icon( 'share-2' ); ?>
 					</span>
 					<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
 				</a>
@@ -633,7 +554,7 @@ class Buddypress_Share_Public {
 				
 				$button_html = '<div class="bp-share-wrapper">';
 				$button_html .= '<a class="button bp-share" id="' . esc_attr( $button_id ) . '" href="' . esc_url( $details['url'] ) . '" target="_blank">';
-				$button_html .= '<i class="' . esc_attr( $details['icon'] ) . '"></i>';
+				$button_html .= bp_share_service_icon( $service );
 				$button_html .= '<span class="bp-share-label">' . esc_html( $details['label'] ) . '</span>';
 				$button_html .= '</a>';
 				$button_html .= '</div>';
@@ -656,7 +577,7 @@ class Buddypress_Share_Public {
 			$tracked_copy_link = $this->add_share_tracking_params( $activity_link, 'copy-link' );
 			echo '<div class="bp-share-wrapper bp-copy-wrapper">';
 			echo '<a class="button bp-share bp-copy" href="#" data-href="' . esc_attr( $tracked_copy_link ) . '" attr-display="no-popup">';
-			echo '<i class="fas fa-link"></i>';
+			echo bp_share_icon( 'link' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset.
 			echo '<span class="bp-share-label">' . esc_html__( 'Copy Link', 'buddypress-share' ) . '</span>';
 			echo '</a>';
 			echo '<span class="tooltiptext tooltip-hide">' . esc_attr__( 'Link Copied!', 'buddypress-share' ) . '</span>';
@@ -678,55 +599,58 @@ class Buddypress_Share_Public {
 		// Store original link for non-tracked services
 		$original_link = $activity_link;
 		
+		// The 'icon' value is the stable service slug; the rendered glyph comes
+		// from bp_share_service_icon() (bundled brand SVG or Lucide chrome icon).
+		// Font Awesome class strings were removed in 2.3.0.
 		$services = array(
 			'Facebook' => array(
 				'url'   => 'https://www.facebook.com/sharer.php?u=' . urlencode( $this->add_share_tracking_params( $activity_link, 'facebook' ) ),
-				'icon'  => 'fab fa-facebook-f',
+				'icon'  => 'facebook',
 				'label' => __( 'Facebook', 'buddypress-share' )
 			),
 			'X' => array(
 				'url'   => 'https://twitter.com/share?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'x-twitter' ) ) . '&text=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-twitter',
+				'icon'  => 'x',
 				'label' => __( 'X', 'buddypress-share' )
 			),
 			'LinkedIn' => array(
 				'url'   => 'http://www.linkedin.com/shareArticle?mini=true&url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'linkedin' ) ) . '&text=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-linkedin-in',
+				'icon'  => 'linkedin',
 				'label' => __( 'LinkedIn', 'buddypress-share' )
 			),
 			'Pinterest' => array(
 				'url'   => 'https://pinterest.com/pin/create/bookmarklet/?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'pinterest' ) ) . '&description=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-pinterest-p',
+				'icon'  => 'pinterest',
 				'label' => __( 'Pinterest', 'buddypress-share' )
 			),
 			'Reddit' => array(
 				'url'   => 'http://reddit.com/submit?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'reddit' ) ) . '&title=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-reddit-alien',
+				'icon'  => 'reddit',
 				'label' => __( 'Reddit', 'buddypress-share' )
 			),
 			'WordPress' => array(
 				'url'   => 'https://wordpress.com/wp-admin/press-this.php?u=' . urlencode( $this->add_share_tracking_params( $activity_link, 'wordpress' ) ) . '&t=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-wordpress',
+				'icon'  => 'wordpress',
 				'label' => __( 'WordPress', 'buddypress-share' )
 			),
 			'Pocket' => array(
 				'url'   => 'https://getpocket.com/save?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'pocket' ) ) . '&title=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-get-pocket',
+				'icon'  => 'pocket',
 				'label' => __( 'Pocket', 'buddypress-share' )
 			),
 			'Telegram' => array(
 				'url'   => 'https://t.me/share/url?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'telegram' ) ) . '&title=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-telegram-plane',
+				'icon'  => 'telegram',
 				'label' => __( 'Telegram', 'buddypress-share' )
 			),
 			'Bluesky' => array(
 				'url'   => 'https://bsky.app/intent/compose?text=' . urlencode( 'Check this out! ' . $activity_title . ' ' . $this->add_share_tracking_params( $activity_link, 'bluesky' ) ),
-				'icon'  => 'fas fa-bluesky',
+				'icon'  => 'bluesky',
 				'label' => __( 'Bluesky', 'buddypress-share' )
 			),
 			'WhatsApp' => array(
 				'url'   => 'https://wa.me/?text=' . urlencode( $this->add_share_tracking_params( $activity_link, 'whatsapp' ) ),
-				'icon'  => 'fab fa-whatsapp',
+				'icon'  => 'whatsapp',
 				'label' => __( 'WhatsApp', 'buddypress-share' )
 			),
 		);
@@ -743,7 +667,7 @@ class Buddypress_Share_Public {
 
 			$services['E-mail'] = array(
 				'url'   => 'mailto:?subject=' . rawurlencode( $email_subject ) . '&body=' . rawurlencode( $email_body ),
-				'icon'  => 'fas fa-envelope',
+				'icon'  => 'email',
 				'label' => __( 'E-mail', 'buddypress-share' )
 			);
 		}
@@ -1566,8 +1490,8 @@ class Buddypress_Share_Public {
 			   data-bs-target="#activity-share-modal" 
 			   data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" 
 			   rel="nofollow">
-				<span class="bp-activity-reshare-icon">	
-					<i class="as-icon as-icon-share-square"></i>
+				<span class="bp-activity-reshare-icon">
+					<?php bp_share_the_icon( 'share-2' ); ?>
 				</span>
 				<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
 				<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() ); ?>" class="reshare-count bp-post-reshare-count"><?php echo esc_html( $share_count ); ?></span>
@@ -1801,16 +1725,17 @@ class Buddypress_Share_Public {
 		do_action( 'bp_activity_share_before_post_meta' );
 
 		// Post date
-		printf( 
-			'<span class="link date-links"><i class="as-icon-calendar"></i><a href="%s">%s</a></span>', 
-			esc_url( get_month_link( get_the_time( 'Y', $post ), get_the_time( 'm', $post ) ) ), 
-			get_the_date( '', $post )
+		printf(
+			'<span class="link date-links">%1$s<a href="%2$s">%3$s</a></span>',
+			bp_share_icon( 'calendar' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset.
+			esc_url( get_month_link( get_the_time( 'Y', $post ), get_the_time( 'm', $post ) ) ),
+			esc_html( get_the_date( '', $post ) )
 		);
 
 		// Categories
 		$categories_list = get_the_category_list( esc_html__( ', ', 'buddypress-share' ), '', $post->ID );
 		if ( $categories_list ) {
-			printf( '<span class="link cat-links"><i class="as-icon-folder"></i>%s</span>', $categories_list ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			printf( '<span class="link cat-links">%1$s%2$s</span>', bp_share_icon( 'folder' ), $categories_list ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 		// After post meta action
@@ -1848,8 +1773,8 @@ class Buddypress_Share_Public {
 					<!-- Close button with proper Bootstrap 4 attributes -->
 					<div class="modal-header">
 						<h5 class="modal-title" id="activity-share-modal-title"><?php esc_html_e( 'Share Activity', 'buddypress-share' ); ?></h5>
-						<button type="button" class="close activity-share-modal-close" data-dismiss="modal" aria-label="Close">
-							<i class="as-icon as-icon-times"></i>
+						<button type="button" class="close activity-share-modal-close" data-dismiss="modal" aria-label="<?php esc_attr_e( 'Close', 'buddypress-share' ); ?>">
+							<?php bp_share_the_icon( 'x' ); ?>
 						</button>
 					</div>
 					
@@ -2081,8 +2006,8 @@ class Buddypress_Share_Public {
 			   data-bs-target="#activity-share-modal" 
 			   data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" 
 			   rel="nofollow">
-				<span class="bp-activity-reshare-icon">	
-					<i class="as-icon as-icon-share-square"></i>
+				<span class="bp-activity-reshare-icon">
+					<?php bp_share_the_icon( 'share-2' ); ?>
 				</span>
 				<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
 				<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() ); ?>" class="reshare-count bp-post-reshare-count"><?php echo esc_html( $share_count ); ?></span>

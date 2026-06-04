@@ -4,6 +4,38 @@
  */
 
 /* ========================================
+   Inline Icon Base (Lucide chrome + brand SVGs)
+   ----------------------------------------
+   Icons render as <i class="bpas-icon"><svg class="bpas-svg"/></i>. The <i>
+   box replaces the retired Font Awesome <i>, so the legacy `.bp-share-service i`
+   sizing / brand-colour rules below keep working unchanged. The inner SVG is
+   sized to 1em and inherits currentColor.
+   ======================================== */
+.bpas-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    vertical-align: middle;
+}
+
+.bpas-icon .bpas-svg {
+    width: 1em;
+    height: 1em;
+    display: block;
+}
+
+.bpas-icon-brand .bpas-svg {
+    fill: currentColor;
+    stroke: none;
+}
+
+.bpas-icon:not(.bpas-icon-brand) .bpas-svg {
+    fill: none;
+    stroke: currentColor;
+}
+
+/* ========================================
    Floating Wrapper Styles
    ======================================== */
 

@@ -36,72 +36,76 @@ class BP_Share_Post_Type_Settings {
 	/**
 	 * Default services.
 	 *
+	 * The 'icon' value is the stable service slug consumed by
+	 * bp_share_service_icon() to render the bundled brand SVG (or Lucide
+	 * chrome glyph). Font Awesome class strings were removed in 2.3.0.
+	 *
 	 * @var array
 	 */
 	private $default_services = array(
 		'facebook' => array(
 			'name' => 'Facebook',
-			'icon' => 'fab fa-facebook-f',
+			'icon' => 'facebook',
 			'enabled_by_default' => true
 		),
 		'twitter' => array(
 			'name' => 'Twitter/X',
-			'icon' => 'fab fa-twitter',
+			'icon' => 'x',
 			'enabled_by_default' => true
 		),
 		'linkedin' => array(
 			'name' => 'LinkedIn',
-			'icon' => 'fab fa-linkedin-in',
+			'icon' => 'linkedin',
 			'enabled_by_default' => false
 		),
 		'whatsapp' => array(
 			'name' => 'WhatsApp',
-			'icon' => 'fab fa-whatsapp',
+			'icon' => 'whatsapp',
 			'enabled_by_default' => false
 		),
 		'telegram' => array(
 			'name' => 'Telegram',
-			'icon' => 'fab fa-telegram-plane',
+			'icon' => 'telegram',
 			'enabled_by_default' => false
 		),
 		'pinterest' => array(
 			'name' => 'Pinterest',
-			'icon' => 'fab fa-pinterest-p',
+			'icon' => 'pinterest',
 			'enabled_by_default' => false
 		),
 		'reddit' => array(
 			'name' => 'Reddit',
-			'icon' => 'fab fa-reddit-alien',
+			'icon' => 'reddit',
 			'enabled_by_default' => false
 		),
 		'wordpress' => array(
 			'name' => 'WordPress',
-			'icon' => 'fab fa-wordpress',
+			'icon' => 'wordpress',
 			'enabled_by_default' => false
 		),
 		'pocket' => array(
 			'name' => 'Pocket',
-			'icon' => 'fab fa-get-pocket',
+			'icon' => 'pocket',
 			'enabled_by_default' => false
 		),
 		'bluesky' => array(
 			'name' => 'Bluesky',
-			'icon' => 'fas fa-bluesky',
+			'icon' => 'bluesky',
 			'enabled_by_default' => false
 		),
 		'email' => array(
 			'name' => 'Email',
-			'icon' => 'fas fa-envelope',
+			'icon' => 'email',
 			'enabled_by_default' => false
 		),
 		'print' => array(
 			'name' => 'Print',
-			'icon' => 'fas fa-print',
+			'icon' => 'print',
 			'enabled_by_default' => false
 		),
 		'copy' => array(
 			'name' => 'Copy Link',
-			'icon' => 'fas fa-link',
+			'icon' => 'copy',
 			'enabled_by_default' => true
 		)
 	);
