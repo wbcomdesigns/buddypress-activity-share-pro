@@ -53,20 +53,6 @@ class Buddypress_Share_Public {
 	private $cached_settings = null;
 
 	/**
-	 * Modern CDN URLs for external libraries.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @var      array    CDN asset URLs.
-	 */
-	const CDN_ASSETS = array(
-		'bootstrap_css' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css',
-		'bootstrap_js' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js',
-		'select2_css' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css',
-		'select2_js' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js',
-	);
-
-	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -96,24 +82,24 @@ class Buddypress_Share_Public {
 		// SVGs (see bp_share_icon() / bp_share_brand_svg()). No Font Awesome,
 		// no icon-font, no CDN enqueue is needed on the frontend anymore.
 
-		// Bootstrap CSS - Load only if not conflicting
+		// Bootstrap CSS - bundled locally (no CDN). Load only if not conflicting.
 		if ( ! $this->has_bootstrap_conflict() && ! wp_style_is( 'bootstrap', 'enqueued' ) ) {
-			wp_enqueue_style( 
-				'bp-share-bootstrap', 
-				self::CDN_ASSETS['bootstrap_css'],
-				array(), 
-				'4.6.2', 
-				'all' 
+			wp_enqueue_style(
+				'bp-share-bootstrap',
+				$plugin_url . 'public/vendor/bootstrap/css/bootstrap.min.css',
+				array(),
+				'4.6.2',
+				'all'
 			);
 		}
-		
-		// Select2 CSS - For enhanced dropdowns
-		wp_enqueue_style( 
-			'bp-share-select2', 
-			self::CDN_ASSETS['select2_css'],
-			array(), 
-			'4.1.0', 
-			'all' 
+
+		// Select2 CSS - bundled locally (no CDN).
+		wp_enqueue_style(
+			'bp-share-select2',
+			$plugin_url . 'public/vendor/select2/css/select2.min.css',
+			array(),
+			'4.1.0',
+			'all'
 		);
 
 		// Main plugin CSS with auto min/RTL support. The as-icons icon font was
@@ -144,24 +130,24 @@ class Buddypress_Share_Public {
 		// jQuery UI tooltip
 		wp_enqueue_script( 'jquery-ui-tooltip' );
 		
-		// Bootstrap JS - Load only if not conflicting
+		// Bootstrap JS - bundled locally (no CDN). Load only if not conflicting.
 		if ( ! $this->has_bootstrap_conflict() && ! wp_script_is( 'bootstrap', 'enqueued' ) ) {
-			wp_enqueue_script( 
-				'bp-share-bootstrap', 
-				self::CDN_ASSETS['bootstrap_js'],
-				array( 'jquery' ), 
-				'4.6.2', 
-				true 
+			wp_enqueue_script(
+				'bp-share-bootstrap',
+				$plugin_url . 'public/vendor/bootstrap/js/bootstrap.bundle.min.js',
+				array( 'jquery' ),
+				'4.6.2',
+				true
 			);
 		}
-		
-		// Select2 JS - For enhanced dropdowns
-		wp_enqueue_script( 
-			'bp-share-select2', 
-			self::CDN_ASSETS['select2_js'],
-			array( 'jquery' ), 
-			'4.1.0', 
-			true 
+
+		// Select2 JS - bundled locally (no CDN).
+		wp_enqueue_script(
+			'bp-share-select2',
+			$plugin_url . 'public/vendor/select2/js/select2.min.js',
+			array( 'jquery' ),
+			'4.1.0',
+			true
 		);
 		
 		// Main plugin script with auto minification
@@ -275,6 +261,8 @@ class Buddypress_Share_Public {
 	private function localize_script() {
 		$settings = $this->get_plugin_settings();
 		$reshare_share_activity = isset( $settings['reshare_settings']['reshare_share_activity'] ) ? $settings['reshare_settings']['reshare_share_activity'] : 'parent';
+		$extra_options          = isset( $settings['extra_options'] ) ? $settings['extra_options'] : array();
+		$popup_active           = isset( $extra_options['bp_share_services_open'] ) ? $extra_options['bp_share_services_open'] : '';
 
 		wp_localize_script(
 			$this->plugin_name,
@@ -285,6 +273,14 @@ class Buddypress_Share_Public {
 				'reshare_share_activity' => $reshare_share_activity,
 				'ajax_nonce'             => wp_create_nonce( 'bp-activity-share-nonce' ),
 				'member_profile_url'     => function_exists('bp_loggedin_user_domain') ? bp_loggedin_user_domain() . 'messages/compose/' : '',
+				// Whether the "open in popup window" behaviour is enabled (was an inline script).
+				'popup_active'           => ( 'on' === $popup_active ) ? 1 : 0,
+				// Translatable button labels (were hardcoded English in the JS).
+				'i18n'                   => array(
+					'post'    => __( 'Post', 'buddypress-share' ),
+					'sharing' => __( 'Sharing…', 'buddypress-share' ),
+					'close'   => __( 'Close', 'buddypress-share' ),
+				),
 			)
 		);
 	}
@@ -390,7 +386,6 @@ class Buddypress_Share_Public {
 		// Use cached plugin settings
 		$settings = $this->get_plugin_settings();
 		$social_service = isset( $settings['services'] ) ? $settings['services'] : array();
-		$extra_options = isset( $settings['extra_options'] ) ? $settings['extra_options'] : array();
 		$bp_reshare_settings = isset( $settings['reshare_settings'] ) ? $settings['reshare_settings'] : array();
 
 		// Whether the reshare count should be displayed. Default ON when the
@@ -450,6 +445,13 @@ class Buddypress_Share_Public {
 			</a>
 
 			<div class="bp-activity-share-dropdown-menu activity-share-dropdown-menu-container <?php echo esc_attr( $activity_type . ' ' . $style ); ?>">
+				<?php // Mobile bottom-drawer dismiss affordance (visible only at <=640px). ?>
+				<div class="bp-share-drawer-header">
+					<span class="bp-share-drawer-handle" aria-hidden="true"></span>
+					<button type="button" class="bp-share-drawer-close" aria-label="<?php esc_attr_e( 'Close', 'buddypress-share' ); ?>">
+						<?php bp_share_the_icon( 'x' ); ?>
+					</button>
+				</div>
 				<?php if ( is_user_logged_in() ) : ?>
 					<?php $this->bp_share_user_services_button( $bp_reshare_settings ); ?>
 				<?php endif; ?>
@@ -470,10 +472,8 @@ class Buddypress_Share_Public {
 
 				<?php $this->bp_share_popup_overlay(); ?>
 			</div>
-			
-			<?php $this->bp_share_popup_script( $extra_options ); ?>
 		</div>
-		
+
 		<?php
 		if ( ! is_user_logged_in() ) {
 			echo '</div>';
@@ -780,27 +780,6 @@ class Buddypress_Share_Public {
 		if ( in_array( $theme_name->template, $theme_support ) ) {
 			echo '<div class="bp-share-service-popup-overlay"></div>';
 		}
-	}
-
-	/**
-	 * Output activity share popup script.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @param    array $extra_options Extra plugin options.
-	 */
-	private function bp_share_popup_script( $extra_options ) {
-		$popup_active = isset( $extra_options['bp_share_services_open'] ) ? $extra_options['bp_share_services_open'] : '';
-		?>
-		<script>
-			jQuery(document).ready(function() {
-				var popActive = '<?php echo esc_js( $popup_active ); ?>';
-				if (popActive === 'on') {
-					jQuery('.bp-share').not('#bp_whatsapp_share, #bp_email_share').addClass('has-popup');
-				}
-			});
-		</script>
-		<?php
 	}
 
 	/**
@@ -1793,9 +1772,11 @@ class Buddypress_Share_Public {
 							<div class="bp-activity-share-filter">
 								<div class="form-item">
 									<div class="form-select">
-										<label for="post-in"><?php esc_html_e( 'Post in', 'buddypress-share' ); ?></label>
-										<!-- Select2 dropdown with proper initialization -->
-										<select id="post-in" name="postIn" class="bp-share-select2" style="width: 100%;">
+										<label id="post-in-label" for="post-in"><?php esc_html_e( 'Post in', 'buddypress-share' ); ?></label>
+										<!-- Select2 replaces the native select and reassigns its id, so the
+										     <label for> link breaks. aria-labelledby keeps the accessible
+										     name attached to the visible label on the Select2 widget too. -->
+										<select id="post-in" name="postIn" class="bp-share-select2" style="width: 100%;" aria-labelledby="post-in-label" aria-label="<?php esc_attr_e( 'Post in', 'buddypress-share' ); ?>">
 											<option value="0"><?php esc_html_e( 'My Profile', 'buddypress-share' ); ?></option>
 											<?php if ( bp_is_active( 'groups' ) && empty( $bp_reshare_settings['disable_group_reshare_activity'] ) ) : ?>
 												<optgroup label="<?php esc_attr_e( 'Groups', 'buddypress-share' ); ?>" id="bp-share-groups-options">
@@ -1836,54 +1817,11 @@ class Buddypress_Share_Public {
 				</div>
 			</div>
 		</div>
-
-		<!-- Modal and Select2 initialization script -->
-		<script type="text/javascript">
-		jQuery(document).ready(function($) {
-			// Fix Bootstrap modal initialization
-			if (typeof $.fn.modal !== 'undefined') {
-				// Ensure modal is properly initialized
-				$('#activity-share-modal').modal({
-					show: false,
-					backdrop: true,
-					keyboard: true
-				});
-			}
-
-			// Fix Select2 initialization
-			if (typeof $.fn.select2 !== 'undefined') {
-				// Initialize Select2 with proper configuration
-				$('#post-in').select2({
-					dropdownParent: $('#activity-share-modal'),
-					placeholder: 'Select where to share...',
-					allowClear: false,
-					minimumResultsForSearch: 10,
-					width: '100%'
-				});
-			}
-
-			// Fix close button functionality
-			$(document).on('click', '.activity-share-modal-close, .bp-activity-share-close', function(e) {
-				e.preventDefault();
-				$('#activity-share-modal').modal('hide');
-			});
-
-			// Fix backdrop click to close
-			$('#activity-share-modal').on('click', function(e) {
-				if (e.target === this) {
-					$(this).modal('hide');
-				}
-			});
-
-			// Fix ESC key to close
-			$(document).on('keydown', function(e) {
-				if (e.keyCode === 27 && $('#activity-share-modal').hasClass('show')) {
-					$('#activity-share-modal').modal('hide');
-				}
-			});
-		});
-		</script>
 		<?php
+		// Modal init, Select2 binding, close / backdrop / ESC handling all live in
+		// public/js/buddypress-share-public.js (enqueued). The previous inline
+		// <script> here duplicated that logic and caused a double-initialisation;
+		// it was removed in 2.3.0.
 	}
 
 	/**

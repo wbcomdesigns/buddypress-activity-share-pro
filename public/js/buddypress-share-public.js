@@ -100,6 +100,23 @@
             $(document).on('click', SELECTORS.popupOverlay, this.closeDropdown.bind(this));
             $('body').on('mouseup', this.handleOutsideClick.bind(this));
             $(document).on('click', '.bp-share-activity-share-to-wrapper .bp-share', this.handleShareButtonClick.bind(this));
+
+            // Mobile bottom-drawer dismiss (visible close button / drag handle).
+            $(document).on('click', '.bp-share-drawer-close, .bp-share-drawer-handle', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const $dropdown = $(e.currentTarget).closest(SELECTORS.shareDropdown);
+                $dropdown.removeClass('selected');
+                $dropdown.find(SELECTORS.serviceButtons).hide();
+                $('body').removeClass('bp-share-popup-active');
+            });
+
+            // ESC closes the open dropdown / drawer.
+            $(document).on('keydown', (e) => {
+                if (e.key === 'Escape' || e.keyCode === 27) {
+                    $(SELECTORS.shareDropdown + '.selected').removeClass('selected');
+                }
+            });
         },
 
         handleDropdownToggle: function(e) {
@@ -542,12 +559,28 @@
 
         bpShareButtonLoading: function() {
             const $button = $('.bp-activity-share-activity');
-            $button.prop('disabled', true).text('Sharing...');
+            $button.prop('disabled', true).text(this.i18n('sharing', 'Sharing…'));
         },
 
         bpShareButtonReset: function() {
             const $button = $('.bp-activity-share-activity');
-            $button.prop('disabled', false).text('Post');
+            $button.prop('disabled', false).text(this.i18n('post', 'Post'));
+        },
+
+        /**
+         * Resolve a localized UI string (falls back to the English default).
+         *
+         * @param {string} key      Key under bp_activity_share_vars.i18n.
+         * @param {string} fallback Default English string.
+         * @return {string} The translated (or fallback) string.
+         */
+        i18n: function(key, fallback) {
+            if (typeof bp_activity_share_vars !== 'undefined' &&
+                bp_activity_share_vars.i18n &&
+                bp_activity_share_vars.i18n[key]) {
+                return bp_activity_share_vars.i18n[key];
+            }
+            return fallback;
         },
 
         handleShareSuccess: function(activityId, data) {
@@ -648,6 +681,12 @@
          * Setup social sharing functionality
          */
         setupSocialSharing: function() {
+            // Apply the "open in popup window" affordance when the admin enabled it.
+            // (Previously an inline <script> in the PHP template — moved here in 2.3.0.)
+            if (typeof bp_activity_share_vars !== 'undefined' && bp_activity_share_vars.popup_active) {
+                $('.bp-share').not('#bp_whatsapp_share, #bp_email_share').addClass('has-popup');
+            }
+
             $(document).on('click', '.bp-share.has-popup', (e) => {
                 const displayAttr = $(e.currentTarget).attr('attr-display');
                 if (displayAttr !== 'no-popup') {

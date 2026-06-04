@@ -104,6 +104,7 @@
         toggleWrapper(state = null) {
             this.isActive = state !== null ? state : !this.isActive;
             this.wrapper.toggleClass('bp-share-active', this.isActive);
+            this.wrapper.find('.bp-share-toggle').attr('aria-expanded', this.isActive ? 'true' : 'false');
         }
 
         /**

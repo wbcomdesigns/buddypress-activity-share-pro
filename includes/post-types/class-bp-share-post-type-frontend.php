@@ -71,20 +71,14 @@ class BP_Share_Post_Type_Frontend {
 		     data-post-id="<?php echo esc_attr( $post_id ); ?>" 
 		     data-post-type="<?php echo esc_attr( $post_type ); ?>">
 			
-			<div class="bp-share-toggle">
+			<button type="button" class="bp-share-toggle" aria-expanded="false" aria-label="<?php esc_attr_e( 'Share this post', 'buddypress-share' ); ?>">
 				<span class="bp-share-icon">
-					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<circle cx="18" cy="5" r="3"></circle>
-						<circle cx="6" cy="12" r="3"></circle>
-						<circle cx="18" cy="19" r="3"></circle>
-						<line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-						<line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-					</svg>
+					<?php bp_share_the_icon( 'share-2' ); ?>
 				</span>
 				<?php if ( $share_count > 0 ) : ?>
 					<span class="bp-share-count"><?php echo esc_html( $this->format_count( $share_count ) ); ?></span>
 				<?php endif; ?>
-			</div>
+			</button>
 			
 			<div class="bp-share-services">
 				<div class="bp-share-services-inner">

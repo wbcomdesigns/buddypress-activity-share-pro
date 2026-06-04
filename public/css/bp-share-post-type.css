@@ -1,7 +1,79 @@
 /**
  * BuddyPress Share Pro - Post Type Sharing Styles
- * Version: 2.1.0
+ * Version: 2.3.0
+ *
+ * This stylesheet is enqueued standalone on singular posts, so it re-declares
+ * the shared --bp-share-* / --bpas-brand-* token layer (3-layer model with
+ * --wp--preset--* fallback). Dark mode is driven by the THEME BODY CLASS only.
  */
+
+:root {
+    /* Base palette. */
+    --bp-share-white: #ffffff;
+    --bp-share-black: #000000;
+    --bp-share-gray-50: #f9fafb;
+    --bp-share-gray-100: #f3f4f6;
+    --bp-share-gray-200: #e5e7eb;
+    --bp-share-gray-300: #d1d5db;
+    --bp-share-gray-400: #9ca3af;
+    --bp-share-gray-500: #6b7280;
+    --bp-share-gray-600: #4b5563;
+    --bp-share-gray-700: #374151;
+    --bp-share-gray-800: #1f2937;
+    --bp-share-gray-900: #111827;
+
+    /* Primary (3-layer: brand → theme.json preset → hex fallback). */
+    --bp-share-primary: var(--wp--preset--color--primary, #2563eb);
+    --bp-share-primary-hover: var(--wp--preset--color--primary-dark, #1d4ed8);
+
+    /* Semantic surfaces. */
+    --bp-share-bg: var(--wp--preset--color--base, var(--bp-share-white));
+    --bp-share-bg-secondary: var(--bp-share-gray-50);
+    --bp-share-text: var(--wp--preset--color--contrast, var(--bp-share-gray-800));
+    --bp-share-text-muted: var(--bp-share-gray-500);
+    --bp-share-border: var(--bp-share-gray-200);
+    --bp-share-shadow: rgba(0, 0, 0, 0.05);
+    --bp-share-shadow-lg: rgba(0, 0, 0, 0.1);
+
+    /* Inline / floating share-button surface (unified to primary). */
+    --bpas-inline-btn-bg: var(--bp-share-primary);
+    --bpas-inline-btn-hover: var(--bp-share-primary-hover);
+
+    /* Network brand-identity colours. */
+    --bpas-brand-facebook: #1877f2;
+    --bpas-brand-x: #1da1f2;
+    --bpas-brand-linkedin: #0077b5;
+    --bpas-brand-whatsapp: #25d366;
+    --bpas-brand-telegram: #0088cc;
+    --bpas-brand-pinterest: #bd081c;
+    --bpas-brand-reddit: #ff4500;
+    --bpas-brand-wordpress: #21759b;
+    --bpas-brand-pocket: #ef4056;
+    --bpas-brand-bluesky: #00a8e8;
+    --bpas-brand-blackwhite-fg: var(--bp-share-black);
+
+    /* Sizing. */
+    --bp-share-radius: 6px;
+    --bp-share-radius-lg: 12px;
+    --bp-share-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark mode via THEME BODY CLASS only (never prefers-color-scheme). */
+body.dark-mode,
+body.bb-dark-mode,
+body.bx-dark-theme,
+body.buddyx-dark-mode,
+body.dark-theme,
+body.dark,
+body[data-theme="dark"] {
+    --bp-share-bg: var(--bp-share-gray-900);
+    --bp-share-bg-secondary: var(--bp-share-gray-800);
+    --bp-share-text: var(--bp-share-gray-100);
+    --bp-share-text-muted: var(--bp-share-gray-400);
+    --bp-share-border: var(--bp-share-gray-700);
+    --bp-share-shadow: rgba(0, 0, 0, 0.3);
+    --bp-share-shadow-lg: rgba(0, 0, 0, 0.5);
+}
 
 /* ========================================
    Inline Icon Base (Lucide chrome + brand SVGs)
@@ -44,7 +116,7 @@
     top: 50%;
     transform: translateY(-50%);
     z-index: 9999;
-    transition: all 0.3s ease;
+    transition: var(--bp-share-transition);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,11 +124,11 @@
 
 /* Position variations */
 .bp-share-floating-wrapper.bp-share-position-right {
-    right: 20px;
+    inset-inline-end: 20px;
 }
 
 .bp-share-floating-wrapper.bp-share-position-left {
-    left: 20px;
+    inset-inline-start: 20px;
 }
 
 /* Hidden state for scroll behavior with smooth transition */
@@ -71,15 +143,17 @@
     transform: translateY(-50%) translateX(-20px);
 }
 
-/* Toggle button - Light color scheme */
+/* Toggle button */
 .bp-share-toggle {
     width: 50px;
     height: 50px;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
+    min-width: 50px;
+    min-height: 50px;
+    background: var(--bp-share-bg);
+    border: 1px solid var(--bp-share-border);
     border-radius: 30px;
     padding: 0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px var(--bp-share-shadow);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -88,12 +162,12 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 10px;
     position: relative;
+    color: var(--bp-share-text-muted);
 }
 
-.bp-share-toggle:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
-    border-color: #c7cbd1;
+.bp-share-toggle:focus-visible {
+    outline: 2px solid var(--bp-share-primary);
+    outline-offset: 2px;
 }
 
 /* Professional pulse animation */
@@ -101,8 +175,8 @@
     content: '';
     position: absolute;
     top: -2px;
-    left: -2px;
-    right: -2px;
+    inset-inline-start: -2px;
+    inset-inline-end: -2px;
     bottom: -2px;
     border-radius: 32px;
     background: linear-gradient(45deg, rgba(107, 114, 128, 0.1), rgba(107, 114, 128, 0.05));
@@ -126,17 +200,23 @@
     display: none;
 }
 
+.bp-share-icon {
+    display: inline-flex;
+    font-size: 20px;
+    color: var(--bp-share-text-muted);
+}
+
 .bp-share-icon svg {
     width: 20px;
     height: 20px;
-    color: #6b7280;
+    color: var(--bp-share-text-muted);
 }
 
 .bp-share-count {
     font-size: 14px;
     font-weight: 500;
-    color: #4b5563;
-    background: #f3f4f6;
+    color: var(--bp-share-gray-600);
+    background: var(--bp-share-gray-100);
     padding: 2px 8px;
     border-radius: 12px;
 }
@@ -161,10 +241,10 @@
 }
 
 .bp-share-services-inner {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background: var(--bp-share-bg);
+    border: 1px solid var(--bp-share-border);
+    border-radius: var(--bp-share-radius-lg);
+    box-shadow: 0 4px 12px var(--bp-share-shadow);
     padding: 8px;
     display: flex;
     flex-direction: column;
@@ -172,19 +252,25 @@
     min-width: 48px;
 }
 
-/* Service buttons - Light theme with smooth transitions */
+/* Service buttons */
 .bp-share-service {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 10px 16px;
+    min-height: 40px;
     border-radius: 8px;
     text-decoration: none;
-    color: #4b5563;
+    color: var(--bp-share-gray-600);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
     position: relative;
     overflow: hidden;
+}
+
+.bp-share-service:focus-visible {
+    outline: 2px solid var(--bp-share-primary);
+    outline-offset: 2px;
 }
 
 /* Smooth background transition on hover */
@@ -192,53 +278,13 @@
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
+    inset-inline-start: 0;
+    inset-inline-end: 0;
     bottom: 0;
-    background: #f9fafb;
+    background: var(--bp-share-gray-50);
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: -1;
-}
-
-.bp-share-service:hover::before {
-    transform: translateX(0);
-}
-
-.bp-share-service:hover {
-    color: #1f2937;
-}
-
-/* Smooth directional slide - removed to prevent shift */
-.bp-share-position-right .bp-share-service {
-    transform: translateX(0);
-}
-
-.bp-share-position-right .bp-share-service:hover {
-    transform: translateX(0);
-    background: #f3f4f6;
-}
-
-.bp-share-position-left .bp-share-service {
-    transform: translateX(0);
-}
-
-.bp-share-position-left .bp-share-service:hover {
-    transform: translateX(0);
-    background: #f3f4f6;
-}
-
-.bp-share-service i {
-    width: 20px;
-    text-align: center;
-    font-size: 16px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    z-index: 1;
-}
-
-.bp-share-service:hover i {
-    transform: scale(1.1);
 }
 
 .bp-share-service .service-name {
@@ -256,32 +302,41 @@
 .bp-share-floating-wrapper:hover .service-name {
     opacity: 1;
     max-width: 150px;
-    margin-left: 8px;
+    margin-inline-start: 8px;
 }
 
-/* Service specific colors */
-.bp-share-service-facebook i { color: #1877f2; }
-.bp-share-service-twitter i { color: #1da1f2; }
-.bp-share-service-linkedin i { color: #0077b5; }
-.bp-share-service-whatsapp i { color: #25d366; }
-.bp-share-service-telegram i { color: #0088cc; }
-.bp-share-service-pinterest i { color: #bd081c; }
-.bp-share-service-reddit i { color: #ff4500; }
-.bp-share-service-wordpress i { color: #21759b; }
-.bp-share-service-pocket i { color: #ef4056; }
-.bp-share-service-bluesky i { color: #00a8e8; }
-.bp-share-service-email i { color: #667eea; }
-.bp-share-service-print i { color: #666; }
-.bp-share-service-copy i { color: #667eea; }
+.bp-share-service i {
+    width: 20px;
+    text-align: center;
+    font-size: 16px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+}
+
+/* Service specific colors (official brand hues). */
+.bp-share-service-facebook i { color: var(--bpas-brand-facebook); }
+.bp-share-service-twitter i { color: var(--bpas-brand-x); }
+.bp-share-service-linkedin i { color: var(--bpas-brand-linkedin); }
+.bp-share-service-whatsapp i { color: var(--bpas-brand-whatsapp); }
+.bp-share-service-telegram i { color: var(--bpas-brand-telegram); }
+.bp-share-service-pinterest i { color: var(--bpas-brand-pinterest); }
+.bp-share-service-reddit i { color: var(--bpas-brand-reddit); }
+.bp-share-service-wordpress i { color: var(--bpas-brand-wordpress); }
+.bp-share-service-pocket i { color: var(--bpas-brand-pocket); }
+.bp-share-service-bluesky i { color: var(--bpas-brand-bluesky); }
+.bp-share-service-email i { color: var(--bpas-inline-btn-bg); }
+.bp-share-service-print i { color: var(--bp-share-text-muted); }
+.bp-share-service-copy i { color: var(--bpas-inline-btn-bg); }
 
 /* Professional tooltip with smooth animation */
 .bp-share-tooltip {
     position: absolute;
     bottom: 100%;
-    left: 50%;
+    inset-inline-start: 50%;
     transform: translateX(-50%) translateY(5px);
-    background: #1f2937;
-    color: #fff;
+    background: var(--bp-share-gray-800);
+    color: var(--bp-share-white);
     padding: 8px 16px;
     border-radius: 6px;
     font-size: 13px;
@@ -291,7 +346,7 @@
     margin-bottom: 12px;
     opacity: 0;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px var(--bp-share-shadow-lg);
 }
 
 .bp-share-tooltip.show {
@@ -303,71 +358,10 @@
     content: '';
     position: absolute;
     top: 100%;
-    left: 50%;
+    inset-inline-start: 50%;
     transform: translateX(-50%);
     border: 5px solid transparent;
-    border-top-color: #1f2937;
-}
-
-/* ========================================
-   Mobile Responsive
-   ======================================== */
-
-@media (max-width: 768px) {
-    /* Reset desktop positioning for mobile */
-    .bp-share-floating-wrapper {
-        padding-left: 0;
-        padding-right: 0;
-    }
-    
-    /* Bottom bar style for mobile */
-    .bp-share-floating-wrapper.bp-share-mobile-bottom {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        top: auto;
-        transform: none;
-        background: #fff;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-        padding: 10px;
-        border-radius: 0;
-        animation: none;
-    }
-    
-    .bp-share-mobile-bottom .bp-share-toggle {
-        display: none;
-    }
-    
-    .bp-share-mobile-bottom .bp-share-services {
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        max-height: none;
-    }
-    
-    .bp-share-mobile-bottom .bp-share-services-inner {
-        flex-direction: row;
-        justify-content: space-around;
-        box-shadow: none;
-        padding: 0;
-        background: transparent;
-    }
-    
-    .bp-share-mobile-bottom .bp-share-service {
-        flex-direction: column;
-        gap: 4px;
-        padding: 8px;
-    }
-    
-    .bp-share-mobile-bottom .service-name {
-        display: none;
-    }
-    
-    /* Hidden on mobile */
-    .bp-share-floating-wrapper.bp-share-mobile-hidden {
-        display: none;
-    }
+    border-top-color: var(--bp-share-gray-800);
 }
 
 /* ========================================
@@ -384,7 +378,7 @@
 .bp-share-inline-count {
     text-align: center;
     padding: 10px 15px;
-    background: #f5f5f5;
+    background: var(--bp-share-bg-secondary);
     border-radius: 8px;
 }
 
@@ -392,13 +386,13 @@
     display: block;
     font-size: 24px;
     font-weight: 700;
-    color: #333;
+    color: var(--bp-share-text);
 }
 
 .bp-share-inline-count .count-label {
     display: block;
     font-size: 12px;
-    color: #666;
+    color: var(--bp-share-text-muted);
     text-transform: uppercase;
 }
 
@@ -413,19 +407,19 @@
     align-items: center;
     gap: 8px;
     padding: 8px 16px;
-    background: var(--bp-share-btn-bg, #f5f5f5);
-    color: var(--bp-share-btn-color, #333);
+    min-height: 40px;
+    background: var(--bp-share-btn-bg, var(--bp-share-bg-secondary));
+    color: var(--bp-share-btn-color, var(--bp-share-text));
     font-size: 14px;
     transition: all 0.2s ease;
     border: 1px solid var(--bp-share-btn-border, transparent);
-    border-radius: var(--bp-share-btn-radius, 6px);
+    border-radius: var(--bp-share-btn-radius, var(--bp-share-radius));
     text-decoration: none;
 }
 
-.bp-share-button:hover {
-    background: var(--bp-share-btn-hover, #e5e5e5);
-    transform: translateY(-2px);
-    color: var(--bp-share-btn-color, #333);
+.bp-share-button:focus-visible {
+    outline: 2px solid var(--bp-share-primary);
+    outline-offset: 2px;
 }
 
 .bp-share-button i {
@@ -434,13 +428,8 @@
 
 /* Button style variations */
 .bp-share-style-buttons #bp-share-inline-buttons .bp-share-button {
-    background: var(--bp-share-btn-bg, #667eea);
-    color: var(--bp-share-btn-color, #fff);
-}
-
-.bp-share-style-buttons #bp-share-inline-buttons .bp-share-button:hover {
-    background: var(--bp-share-btn-hover, #5a67d8);
-    color: var(--bp-share-btn-color, #fff);
+    background: var(--bp-share-btn-bg, var(--bpas-inline-btn-bg));
+    color: var(--bp-share-btn-color, var(--bp-share-white));
 }
 
 .bp-share-style-icons .bp-share-button {
@@ -475,63 +464,16 @@
 
 .bp-share-icon-style-blackwhite #bp-share-inline-buttons .bp-share-button {
     background: transparent;
-    color: #000;
-    border: 1px solid #000;
+    color: var(--bpas-brand-blackwhite-fg);
+    border: 1px solid var(--bpas-brand-blackwhite-fg);
     border-radius: 0;
-}
-
-.bp-share-icon-style-blackwhite #bp-share-inline-buttons .bp-share-button:hover {
-    background: var(--bp-share-btn-hover, #5a67d8);
-    color: var(--bp-share-btn-color, #fff);
 }
 
 .bp-share-icon-style-baricon #bp-share-inline-buttons .bp-share-button {
     background: transparent;
-    color: var(--bp-share-btn-bg, #667eea);
-    border-top: 3px solid var(--bp-share-btn-bg, #667eea);
+    color: var(--bp-share-btn-bg, var(--bpas-inline-btn-bg));
+    border-top: 3px solid var(--bp-share-btn-bg, var(--bpas-inline-btn-bg));
     border-radius: 0;
-}
-
-.bp-share-icon-style-baricon #bp-share-inline-buttons .bp-share-button:hover {
-    background: var(--bp-share-btn-hover, #5a67d8);
-    color: var(--bp-share-btn-color, #fff);
-    border-top: 3px solid var(--bp-share-btn-hover, #5a67d8);
-}
-
-/* ========================================
-   Dark Mode Support - Light approach
-   ======================================== */
-
-@media (prefers-color-scheme: dark) {
-    .bp-share-floating-wrapper .bp-share-toggle,
-    .bp-share-floating-wrapper .bp-share-services-inner {
-        background: #f9fafb;
-        border-color: #e5e7eb;
-        color: #374151;
-    }
-    
-    .bp-share-service {
-        color: #4b5563;
-    }
-    
-    .bp-share-service:hover {
-        background: #f3f4f6;
-        color: #1f2937;
-    }
-    
-    .bp-share-count {
-        background: #e5e7eb;
-        color: #374151;
-    }
-    
-    .bp-share-tooltip {
-        background: #374151;
-        color: #f9fafb;
-    }
-    
-    .bp-share-tooltip::after {
-        border-top-color: #374151;
-    }
 }
 
 /* ========================================
@@ -540,19 +482,15 @@
 
 /* Subtle bounce animation */
 @keyframes bp-share-bounce {
-    0%, 100% { 
+    0%, 100% {
         transform: translateY(0);
     }
-    30% { 
+    30% {
         transform: translateY(-3px);
     }
-    60% { 
+    60% {
         transform: translateY(-1px);
     }
-}
-
-.bp-share-toggle:hover .bp-share-icon svg {
-    animation: bp-share-bounce 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Professional slide-in animations */
@@ -604,23 +542,161 @@
     content: '';
     position: absolute;
     top: 50%;
-    left: 50%;
+    inset-inline-start: 50%;
     width: 16px;
     height: 16px;
     margin: -8px 0 0 -8px;
-    border: 2px solid #e5e7eb;
-    border-top-color: #6b7280;
+    border: 2px solid var(--bp-share-border);
+    border-top-color: var(--bp-share-text-muted);
     border-radius: 50%;
     animation: bp-share-loading 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 /* ========================================
-   Print Styles
+   Hover affordances (guarded — never sticks on touch)
+   ======================================== */
+
+@media (hover: hover) and (pointer: fine) {
+    .bp-share-toggle:hover {
+        box-shadow: 0 6px 20px var(--bp-share-shadow-lg);
+        transform: translateY(-2px);
+        border-color: var(--bp-share-gray-300);
+    }
+
+    .bp-share-toggle:hover .bp-share-icon svg {
+        animation: bp-share-bounce 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .bp-share-service:hover::before {
+        transform: translateX(0);
+    }
+
+    .bp-share-service:hover {
+        color: var(--bp-share-text);
+    }
+
+    .bp-share-position-right .bp-share-service:hover,
+    .bp-share-position-left .bp-share-service:hover {
+        transform: translateX(0);
+        background: var(--bp-share-gray-100);
+    }
+
+    .bp-share-service:hover i {
+        transform: scale(1.1);
+    }
+
+    .bp-share-button:hover {
+        background: var(--bp-share-btn-hover, var(--bp-share-gray-200));
+        transform: translateY(-2px);
+        color: var(--bp-share-btn-color, var(--bp-share-text));
+    }
+
+    .bp-share-style-buttons #bp-share-inline-buttons .bp-share-button:hover {
+        background: var(--bp-share-btn-hover, var(--bpas-inline-btn-hover));
+        color: var(--bp-share-btn-color, var(--bp-share-white));
+    }
+
+    .bp-share-icon-style-blackwhite #bp-share-inline-buttons .bp-share-button:hover {
+        background: var(--bp-share-btn-hover, var(--bpas-inline-btn-hover));
+        color: var(--bp-share-btn-color, var(--bp-share-white));
+    }
+
+    .bp-share-icon-style-baricon #bp-share-inline-buttons .bp-share-button:hover {
+        background: var(--bp-share-btn-hover, var(--bpas-inline-btn-hover));
+        color: var(--bp-share-btn-color, var(--bp-share-white));
+        border-top: 3px solid var(--bp-share-btn-hover, var(--bpas-inline-btn-hover));
+    }
+}
+
+/* ========================================
+   Reduced motion
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .bp-share-floating-wrapper,
+    .bp-share-floating-wrapper * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========================================
+   Print
    ======================================== */
 
 @media print {
     .bp-share-floating-wrapper,
     .bp-share-inline-wrapper {
         display: none !important;
+    }
+}
+
+/* ========================================
+   Responsive — exactly two bottom-anchored breakpoints
+   ======================================== */
+
+@media (max-width: 1024px) {
+    .bp-share-floating-wrapper.bp-share-position-right {
+        inset-inline-end: 12px;
+    }
+
+    .bp-share-floating-wrapper.bp-share-position-left {
+        inset-inline-start: 12px;
+    }
+}
+
+@media (max-width: 640px) {
+    /* Reset desktop positioning for mobile */
+    .bp-share-floating-wrapper {
+        padding-inline: 0;
+    }
+
+    /* Bottom bar style for mobile */
+    .bp-share-floating-wrapper.bp-share-mobile-bottom {
+        position: fixed;
+        bottom: 0;
+        inset-inline: 0;
+        top: auto;
+        transform: none;
+        background: var(--bp-share-bg);
+        box-shadow: 0 -2px 10px var(--bp-share-shadow-lg);
+        padding: 10px;
+        border-radius: 0;
+        animation: none;
+    }
+
+    .bp-share-mobile-bottom .bp-share-toggle {
+        display: none;
+    }
+
+    .bp-share-mobile-bottom .bp-share-services {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        max-height: none;
+    }
+
+    .bp-share-mobile-bottom .bp-share-services-inner {
+        flex-direction: row;
+        justify-content: space-around;
+        box-shadow: none;
+        padding: 0;
+        background: transparent;
+    }
+
+    .bp-share-mobile-bottom .bp-share-service {
+        flex-direction: column;
+        gap: 4px;
+        padding: 8px;
+    }
+
+    .bp-share-mobile-bottom .service-name {
+        display: none;
+    }
+
+    /* Hidden on mobile */
+    .bp-share-floating-wrapper.bp-share-mobile-hidden {
+        display: none;
     }
 }
