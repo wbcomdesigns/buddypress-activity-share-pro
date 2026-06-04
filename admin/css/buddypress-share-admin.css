@@ -688,6 +688,29 @@
 	border-color: var(--bpas-admin-danger);
 }
 
+/*
+ * Anchor buttons (<a class="bpas-btn …">) must keep their own text colour.
+ * The generic `.bpas-admin a` link rule (specificity 0,1,1) otherwise beats
+ * `.bpas-btn-primary` (0,1,0) and paints the label the accent colour —
+ * blue-on-blue / invisible on the primary button (Overview → Quick Actions).
+ * These anchor-scoped selectors (0,2,1) win cleanly without !important.
+ */
+.bpas-admin a.bpas-btn-primary,
+.bpas-admin a.bpas-btn-primary:hover,
+.bpas-admin a.bpas-btn-primary:focus {
+	color: #fff;
+}
+
+.bpas-admin a.bpas-btn-secondary,
+.bpas-admin a.bpas-btn-secondary:hover,
+.bpas-admin a.bpas-btn-secondary:focus {
+	color: var(--bpas-admin-text);
+}
+
+.bpas-admin a.bpas-btn-danger {
+	color: var(--bpas-admin-danger);
+}
+
 .bpas-btn:focus-visible {
 	outline: 2px solid var(--bpas-admin-accent);
 	outline-offset: 2px;
