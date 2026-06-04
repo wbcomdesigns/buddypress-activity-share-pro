@@ -149,12 +149,7 @@ class Buddypress_Share {
 		 * The class responsible for asset loading helper functions.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/bp-share-helpers.php';
-		
-		/**
-		 * The class responsible for managing assets.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-buddypress-share-assets.php';
-		
+
 		/**
 		 * The file responsible for BuddyBoss Platform compatibility.
 		 */

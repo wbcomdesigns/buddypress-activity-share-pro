@@ -15,11 +15,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * The admin-specific functionality of the plugin.
+ * Legacy admin service class — settings data contract only.
  *
- * UPDATED: Modern CDN integration with Font Awesome 5.15.4 and optimized asset loading.
- * UPDATED: Added license management system integration.
- * UPDATED: Added simple asset helper functions for minification and RTL support.
+ * Post-2.3.0 migration scope (the card-panel chrome lives in
+ * Bpas_Admin_Panel; this class no longer owns any menu, enqueue, or
+ * wrapper rendering). What remains here, and how it is reached:
+ *
+ * - Settings API registration: bpas_register_setting() (wired on
+ *   admin_init) registers the option groups and self-wires the
+ *   sanitizer callbacks (sanitize_extra_settings, sanitize_reshare_settings,
+ *   sanitize_icon_settings) and the update_option_* sync-to-site_option
+ *   handlers (sync_to_site_option, sync_extra_to_site_option,
+ *   sync_services_to_site_option, sync_reshare_to_site_option).
+ * - Service AJAX handlers: wss_social_icons() / wss_social_remove_icons()
+ *   (wired to wp_ajax_* by the loader) plus their helper
+ *   get_all_available_services() and sanitize_services_array().
+ * - Public-cache invalidation: clear_public_settings_cache() (wired to the
+ *   update_(site_)option_* hooks by the loader).
+ * - Tab field-body renderers (bp_share_social_networks_page,
+ *   bp_share_display_settings_page, bp_share_restrictions_page,
+ *   bp_share_post_types_page, bp_share_faq_page) — now thin includes of
+ *   admin/views/*, invoked by Bpas_Admin_Panel's view router. Their
+ *   helpers get_default_services() and get_allowed_reshare_capabilities()
+ *   are used by those views / sanitizers.
  *
  * @package    Buddypress_Share
  * @subpackage Buddypress_Share/admin
