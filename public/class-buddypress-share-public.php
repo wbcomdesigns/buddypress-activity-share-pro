@@ -567,6 +567,12 @@ class Buddypress_Share_Public {
 	 * @param    array $bp_reshare_settings Reshare settings.
 	 */
 	private function bp_share_user_services_button( $bp_reshare_settings ) {
+		// Hide the reshare affordance entirely when the current user does not
+		// meet the "who can reshare" capability gate (mirrors the AJAX guard).
+		if ( ! $this->current_user_can_reshare() ) {
+			return;
+		}
+
 		// Hide the reshare affordance on a member's own activity when
 		// "prevent self-share" is enabled (mirrors the AJAX-side guard).
 		if ( ! empty( $bp_reshare_settings['prevent_self_share'] )
@@ -764,18 +770,37 @@ class Buddypress_Share_Public {
 	 * @return   string URL with tracking parameters.
 	 */
 	private function add_share_tracking_params( $url, $service = '' ) {
+		// UTM tracking opt-out (P1-3). When the admin disables UTM tracking the
+		// share link is returned untouched — no utm_* and no bps_* params, so
+		// no user id leaks into shared URLs (GDPR). Default ON preserves the
+		// historical behaviour for sites that never saved the setting.
+		$extra_options = get_site_option( 'bp_share_services_extra', array() );
+		$utm_enabled   = ! array_key_exists( 'enable_utm_tracking', $extra_options ) || ! empty( $extra_options['enable_utm_tracking'] );
+		if ( ! $utm_enabled ) {
+			return $url;
+		}
+
+		// Custom campaign name (P2-7). Falls back to the historical default.
+		$campaign = '';
+		if ( isset( $extra_options['utm_campaign'] ) && '' !== trim( (string) $extra_options['utm_campaign'] ) ) {
+			$campaign = sanitize_text_field( $extra_options['utm_campaign'] );
+		}
+		if ( '' === $campaign ) {
+			$campaign = 'activity_share';
+		}
+
 		// Get current user ID (0 if not logged in)
 		$user_id = get_current_user_id();
-		
+
 		// Get current activity ID from the global template
 		global $activities_template;
 		$activity_id = isset( $activities_template->activity->id ) ? $activities_template->activity->id : 0;
-		
+
 		// Build tracking parameters
 		$tracking_params = array(
 			'utm_source'   => 'buddypress_share',
 			'utm_medium'   => 'social',
-			'utm_campaign' => 'activity_share',
+			'utm_campaign' => $campaign,
 			'bps_aid'      => $activity_id,  // BuddyPress Share Activity ID
 			'bps_uid'      => $user_id,      // BuddyPress Share User ID
 			'bps_time'     => time(),        // Timestamp for tracking
@@ -983,6 +1008,14 @@ class Buddypress_Share_Public {
 			wp_send_json_error( array( 'message' => __( 'User not logged in.', 'buddypress-share' ) ) );
 		}
 
+		// Enforce the "who can reshare" capability gate (P2-5). When an admin
+		// has set a minimum capability, a user lacking it cannot create a
+		// reshare. Default (empty) means any logged-in member may reshare, so
+		// existing behaviour is unchanged.
+		if ( ! $this->current_user_can_reshare() ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission to reshare activity.', 'buddypress-share' ) ) );
+		}
+
 		// Validate and sanitize input
 		$user_id = get_current_user_id();
 		$activity_id = absint( $_POST['activity_id'] ?? 0 );
@@ -1161,6 +1194,43 @@ class Buddypress_Share_Public {
 		}
 
 		return (int) $activity['activities'][0]->user_id === (int) $user_id;
+	}
+
+	/**
+	 * Determine whether the current user is permitted to reshare.
+	 *
+	 * Reads the "minimum capability to reshare" admin setting
+	 * (`bp_reshare_settings['min_reshare_capability']`). An empty value means
+	 * any logged-in member may reshare (the historical default), so existing
+	 * sites are unaffected. When a capability is set, the user must have it.
+	 *
+	 * @since    2.3.0
+	 * @access   private
+	 * @return   bool True when the current user may reshare.
+	 */
+	private function current_user_can_reshare() {
+		if ( ! is_user_logged_in() ) {
+			return false;
+		}
+
+		$reshare_settings = get_site_option( 'bp_reshare_settings', array() );
+		$min_cap          = isset( $reshare_settings['min_reshare_capability'] ) ? (string) $reshare_settings['min_reshare_capability'] : '';
+
+		// No restriction configured: any logged-in member may reshare.
+		if ( '' === $min_cap ) {
+			$can = true;
+		} else {
+			$can = current_user_can( $min_cap );
+		}
+
+		/**
+		 * Filter whether the current user may reshare activity.
+		 *
+		 * @since 2.3.0
+		 * @param bool   $can     Whether the user may reshare.
+		 * @param string $min_cap The configured minimum capability ('' = none).
+		 */
+		return (bool) apply_filters( 'bp_share_user_can_reshare', $can, $min_cap );
 	}
 
 	/**

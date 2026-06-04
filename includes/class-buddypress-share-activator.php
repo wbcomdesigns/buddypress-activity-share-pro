@@ -275,6 +275,36 @@ class Buddypress_Share_Activator {
 			// Upgrade tasks for versions before 1.5.2.
 			self::upgrade_to_152();
 		}
+
+		if ( version_compare( $old_version, '2.1.0', '<' ) ) {
+			// Upgrade tasks for versions before 2.1.0.
+			self::upgrade_to_210();
+		}
+	}
+
+	/**
+	 * Upgrade tasks for version 2.1.0 and above.
+	 *
+	 * Post-type sharing (added in 2.1.0) creates its tracking tables on the
+	 * `bp_share_activate` action, which only fires from register_activation_hook.
+	 * Sites that were already active before 2.1.0 never trigger that hook on a
+	 * plugin update, so `{prefix}bp_share_post_tracking` (and the per-post-type
+	 * settings table) may be missing — post-type share tracking then silently
+	 * fails. Create the tables here in the upgrade path so every upgraded site
+	 * has them. dbDelta with CREATE TABLE IF NOT EXISTS is idempotent.
+	 *
+	 * @since    2.3.0
+	 * @access   private
+	 */
+	private static function upgrade_to_210() {
+		$tracker_file = plugin_dir_path( __DIR__ ) . 'includes/post-types/class-bp-share-post-type-tracker.php';
+		if ( ! class_exists( 'BP_Share_Post_Type_Tracker' ) && file_exists( $tracker_file ) ) {
+			require_once $tracker_file;
+		}
+
+		if ( class_exists( 'BP_Share_Post_Type_Tracker' ) ) {
+			BP_Share_Post_Type_Tracker::get_instance()->create_tables();
+		}
 	}
 
 	/**

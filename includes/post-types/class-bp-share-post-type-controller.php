@@ -254,7 +254,16 @@ class BP_Share_Post_Type_Controller {
 		$rate_limit_key = 'bp_share_rate_' . md5( $user_id . '_' . $ip );
 		$share_count = get_transient( $rate_limit_key );
 		
-		if ( $share_count && $share_count >= apply_filters( 'bp_share_rate_limit', 20 ) ) {
+		// Admin-configurable rate limit (P1-2). The bp_share_services_extra
+		// option carries a shared "rate_limit" value; the filter remains the
+		// final say for developers. Defaults to 20/hr when unset.
+		$extra_options    = get_site_option( 'bp_share_services_extra', array() );
+		$rate_limit_value = isset( $extra_options['rate_limit'] ) ? (int) $extra_options['rate_limit'] : 20;
+		if ( $rate_limit_value < 1 ) {
+			$rate_limit_value = 20;
+		}
+
+		if ( $share_count && $share_count >= apply_filters( 'bp_share_rate_limit', $rate_limit_value ) ) {
 			wp_die( json_encode( array( 
 				'success' => false, 
 				'message' => __( 'You\'ve reached the sharing limit. Please wait a moment before sharing again.', 'buddypress-share' ) 
@@ -439,15 +448,33 @@ class BP_Share_Post_Type_Controller {
 	 * @return string URL with tracking parameters.
 	 */
 	private static function add_share_tracking_params( $url, $service, $post_id ) {
+		// UTM tracking opt-out (P1-3). When disabled, the post share link is
+		// returned untouched so no utm_* / bps_* params (including the user id)
+		// are appended. Default ON preserves historical behaviour.
+		$extra_options = get_site_option( 'bp_share_services_extra', array() );
+		$utm_enabled   = ! array_key_exists( 'enable_utm_tracking', $extra_options ) || ! empty( $extra_options['enable_utm_tracking'] );
+		if ( ! $utm_enabled ) {
+			return $url;
+		}
+
+		// Custom campaign name (P2-7), falling back to the historical default.
+		$campaign = '';
+		if ( isset( $extra_options['utm_campaign'] ) && '' !== trim( (string) $extra_options['utm_campaign'] ) ) {
+			$campaign = sanitize_text_field( $extra_options['utm_campaign'] );
+		}
+		if ( '' === $campaign ) {
+			$campaign = 'post_share';
+		}
+
 		// Get current user ID (0 if not logged in)
 		$user_id = get_current_user_id();
 		$post_type = get_post_type( $post_id );
-		
+
 		// Build tracking parameters (matching activity sharing approach)
 		$tracking_params = array(
 			'utm_source'   => 'buddypress_share',
 			'utm_medium'   => 'social',
-			'utm_campaign' => 'post_share',
+			'utm_campaign' => $campaign,
 			'bps_pid'      => $post_id,      // BuddyPress Share Post ID
 			'bps_uid'      => $user_id,      // BuddyPress Share User ID
 			'bps_time'     => time(),        // Timestamp for tracking

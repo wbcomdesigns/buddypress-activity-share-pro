@@ -165,6 +165,13 @@ class Buddypress_Share {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-buddypress-share-tracker.php';
 
+		/**
+		 * The class responsible for reshare notifications to the original author.
+		 *
+		 * @since 2.3.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-buddypress-share-notifications.php';
+
 		$this->loader = new Buddypress_Share_Loader();
 	}
 
@@ -275,6 +282,13 @@ class Buddypress_Share {
 		
 		// NEW: Optimized AJAX handler for loading groups and friends dynamically
 		$this->loader->add_action( 'wp_ajax_bp_get_user_share_options', $plugin_public, 'get_user_share_options_ajax' );
+
+		// Reshare notifications to the original author (P1-4). Additive; the
+		// component registers with BuddyPress only when the admin toggle is on.
+		if ( class_exists( 'Buddypress_Share_Notifications' ) ) {
+			$bp_share_notifications = new Buddypress_Share_Notifications();
+			$bp_share_notifications->register( $this->loader );
+		}
 	}
 
 	/**

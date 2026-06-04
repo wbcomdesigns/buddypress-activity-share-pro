@@ -1165,6 +1165,100 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
+   Form fields (select / text / number) + Analytics (2.3.0)
+   ═══════════════════════════════════════════════════════════ */
+
+.bp-share-field {
+	margin-bottom: var(--bpas-admin-gap-md);
+}
+
+.bp-share-field:last-child {
+	margin-bottom: 0;
+}
+
+.bp-share-field__label {
+	display: block;
+	font-weight: 600;
+	color: var(--bpas-admin-text);
+	margin-bottom: 6px;
+}
+
+.bp-share-field select,
+.bp-share-field input[type="text"],
+.bp-share-field input[type="number"] {
+	min-height: 40px;
+}
+
+.bpas-analytics-filter {
+	display: flex;
+	align-items: center;
+	gap: var(--bpas-admin-gap-sm);
+	margin-bottom: var(--bpas-admin-gap-md);
+}
+
+.bpas-analytics-filter .bp-share-field__label {
+	margin-bottom: 0;
+}
+
+.bpas-bar-list {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.bpas-bar-list__row {
+	display: grid;
+	grid-template-columns: 120px 1fr 56px;
+	align-items: center;
+	gap: var(--bpas-admin-gap-sm);
+	margin: 0;
+}
+
+.bpas-bar-list__label {
+	font-weight: 600;
+	color: var(--bpas-admin-text);
+}
+
+.bpas-bar-list__track {
+	position: relative;
+	height: 10px;
+	border-radius: var(--bpas-admin-radius-sm);
+	background: var(--bpas-admin-surface-1);
+	overflow: hidden;
+}
+
+.bpas-bar-list__fill {
+	position: absolute;
+	inset-inline-start: 0;
+	top: 0;
+	height: 100%;
+	background: var(--bpas-admin-accent);
+	border-radius: var(--bpas-admin-radius-sm);
+}
+
+.bpas-bar-list__value {
+	text-align: end;
+	font-variant-numeric: tabular-nums;
+	color: var(--bpas-admin-text-2);
+}
+
+.bpas-data-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.bpas-data-table th,
+.bpas-data-table td {
+	text-align: start;
+}
+
+.bpas-data-table__num {
+	text-align: end;
+	font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════════════════════════════════════════════════════
    Responsive — two media blocks (ux-foundation Part 7.5)
    ═══════════════════════════════════════════════════════════ */
 
@@ -1218,5 +1312,14 @@
 
 	.bpas-stats-grid {
 		grid-template-columns: 1fr;
+	}
+
+	.bpas-bar-list__row {
+		grid-template-columns: 90px 1fr 48px;
+	}
+
+	.bpas-analytics-filter {
+		flex-direction: column;
+		align-items: flex-start;
 	}
 }

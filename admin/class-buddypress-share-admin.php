@@ -366,7 +366,25 @@ class Buddypress_Share_Admin {
 		} else {
 			$sanitized['bp_share_services_open'] = '';
 		}
-		
+
+		// UTM tracking opt-out (P1-3). Rendered as a checkbox on the Networks
+		// form, so an absent value is a definite 0 (off).
+		$sanitized['enable_utm_tracking'] = ! empty( $input['enable_utm_tracking'] ) ? 1 : 0;
+
+		// Custom UTM campaign name (P2-7). Empty means "use the built-in
+		// default" (activity_share / post_share). Stored sanitized.
+		$sanitized['utm_campaign'] = isset( $input['utm_campaign'] ) ? sanitize_text_field( $input['utm_campaign'] ) : '';
+
+		// Post-type share rate limit (P1-2). Clamp to a sane 1–1000/hour range;
+		// fall back to the historical default of 20 on an empty/invalid value.
+		$rate_limit = isset( $input['rate_limit'] ) ? (int) $input['rate_limit'] : 20;
+		if ( $rate_limit < 1 ) {
+			$rate_limit = 20;
+		} elseif ( $rate_limit > 1000 ) {
+			$rate_limit = 1000;
+		}
+		$sanitized['rate_limit'] = $rate_limit;
+
 		/**
 		 * Filter the sanitized extra settings.
 		 *
@@ -500,7 +518,37 @@ class Buddypress_Share_Admin {
 		$reshare_mode = isset( $settings['reshare_share_activity'] ) ? $settings['reshare_share_activity'] : 'parent';
 		$sanitized['reshare_share_activity'] = in_array( $reshare_mode, $allowed_modes, true ) ? $reshare_mode : 'parent';
 
+		// Reshare notifications toggle (P1-4). Rendered on the Restrictions form,
+		// so an absent checkbox is a definite 0.
+		$sanitized['enable_reshare_notifications'] = ! empty( $settings['enable_reshare_notifications'] ) ? 1 : 0;
+
+		// Minimum capability to reshare (P2-5). Whitelisted to a small set of
+		// safe, well-known capabilities; '' means "any logged-in member".
+		$allowed_caps                        = $this->get_allowed_reshare_capabilities();
+		$min_cap                             = isset( $settings['min_reshare_capability'] ) ? sanitize_text_field( $settings['min_reshare_capability'] ) : '';
+		$sanitized['min_reshare_capability'] = array_key_exists( $min_cap, $allowed_caps ) ? $min_cap : '';
+
 		return $sanitized;
+	}
+
+	/**
+	 * Whitelist of capabilities offered for the "who can reshare" gate.
+	 *
+	 * Keyed by capability => human label. The empty key represents "any
+	 * logged-in member" (no restriction) and is the default.
+	 *
+	 * @since    2.3.0
+	 * @access   public
+	 * @return   array<string,string> Capability => label.
+	 */
+	public function get_allowed_reshare_capabilities() {
+		return array(
+			''                  => __( 'Any logged-in member', 'buddypress-share' ),
+			'edit_posts'        => __( 'Contributors and above', 'buddypress-share' ),
+			'publish_posts'     => __( 'Authors and above', 'buddypress-share' ),
+			'edit_others_posts' => __( 'Editors and above', 'buddypress-share' ),
+			'manage_options'    => __( 'Administrators only', 'buddypress-share' ),
+		);
 	}
 
 	/**

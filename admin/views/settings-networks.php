@@ -26,6 +26,15 @@ $bp_share_services_logout_enable = get_site_option( 'bp_share_services_logout_en
 $bp_share_services_extra         = get_site_option( 'bp_share_services_extra', array( 'bp_share_services_open' => 'on' ) );
 $bp_share_services_open          = isset( $bp_share_services_extra['bp_share_services_open'] ) ? $bp_share_services_extra['bp_share_services_open'] : 'on';
 
+// Privacy & tracking controls (P1-2, P1-3, P2-7). Defaults preserve historical
+// behaviour: UTM on, default campaign name, 20 shares/hour.
+$bpas_utm_enabled  = ! array_key_exists( 'enable_utm_tracking', $bp_share_services_extra ) || ! empty( $bp_share_services_extra['enable_utm_tracking'] );
+$bpas_utm_campaign = isset( $bp_share_services_extra['utm_campaign'] ) ? (string) $bp_share_services_extra['utm_campaign'] : '';
+$bpas_rate_limit   = isset( $bp_share_services_extra['rate_limit'] ) ? (int) $bp_share_services_extra['rate_limit'] : 20;
+if ( $bpas_rate_limit < 1 ) {
+	$bpas_rate_limit = 20;
+}
+
 $enabled_services = get_site_option( 'bp_share_services', array() );
 if ( ! is_array( $enabled_services ) ) {
 	$enabled_services = array();
@@ -108,8 +117,47 @@ $disabled_services = array_diff_key( $all_services, $enabled_services );
 					</label>
 					<div class="toggle-content">
 						<span class="toggle-label"><?php esc_html_e( 'Open links in a popup window', 'buddypress-share' ); ?></span>
-						<p class="description"><?php esc_html_e( 'Sharing links open in a small popup instead of a new tab.', 'buddypress-share' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Sharing links open in a small popup instead of a new tab. WhatsApp and Email always open in a new tab.', 'buddypress-share' ); ?></p>
 					</div>
+				</div>
+
+				<div class="bp-share-toggle-setting">
+					<label class="bp-share-toggle">
+						<input type="checkbox"
+							name="bp_share_services_extra[enable_utm_tracking]"
+							id="enable_utm_tracking"
+							value="1"
+							<?php checked( true, $bpas_utm_enabled ); ?> />
+						<span class="toggle-slider"></span>
+					</label>
+					<div class="toggle-content">
+						<span class="toggle-label"><?php esc_html_e( 'Add tracking parameters to share links', 'buddypress-share' ); ?></span>
+						<p class="description"><?php esc_html_e( 'Appends UTM and analytics parameters to shared URLs. Turn this off to keep shared links clean (recommended for GDPR-sensitive sites).', 'buddypress-share' ); ?></p>
+					</div>
+				</div>
+
+				<div class="bp-share-field">
+					<label for="bpas_utm_campaign" class="bp-share-field__label"><?php esc_html_e( 'Campaign name', 'buddypress-share' ); ?></label>
+					<input type="text"
+						name="bp_share_services_extra[utm_campaign]"
+						id="bpas_utm_campaign"
+						value="<?php echo esc_attr( $bpas_utm_campaign ); ?>"
+						class="regular-text"
+						placeholder="<?php esc_attr_e( 'activity_share', 'buddypress-share' ); ?>" />
+					<p class="description"><?php esc_html_e( 'Used as the utm_campaign value in shared links. Leave blank to use the default.', 'buddypress-share' ); ?></p>
+				</div>
+
+				<div class="bp-share-field">
+					<label for="bpas_rate_limit" class="bp-share-field__label"><?php esc_html_e( 'Sharing limit (per hour)', 'buddypress-share' ); ?></label>
+					<input type="number"
+						name="bp_share_services_extra[rate_limit]"
+						id="bpas_rate_limit"
+						value="<?php echo esc_attr( $bpas_rate_limit ); ?>"
+						min="1"
+						max="1000"
+						step="1"
+						class="small-text" />
+					<p class="description"><?php esc_html_e( 'How many times one member may share a post in an hour before being asked to slow down. Applies to post-type sharing.', 'buddypress-share' ); ?></p>
 				</div>
 			</div>
 		</div>

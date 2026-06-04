@@ -14,6 +14,22 @@ defined( 'ABSPATH' ) || exit;
 
 $bp_reshare_settings          = get_site_option( 'bp_reshare_settings', array() );
 $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activity'] ) ? $bp_reshare_settings['reshare_share_activity'] : 'parent';
+
+$bpas_reshare_notifications = ! empty( $bp_reshare_settings['enable_reshare_notifications'] );
+$bpas_min_reshare_cap       = isset( $bp_reshare_settings['min_reshare_capability'] ) ? (string) $bp_reshare_settings['min_reshare_capability'] : '';
+
+// Capability whitelist for the "who can reshare" gate. Mirrors the admin
+// sanitizer so an out-of-list value never renders as selected.
+$bpas_reshare_caps = array(
+	''                  => __( 'Any logged-in member', 'buddypress-share' ),
+	'edit_posts'        => __( 'Contributors and above', 'buddypress-share' ),
+	'publish_posts'     => __( 'Authors and above', 'buddypress-share' ),
+	'edit_others_posts' => __( 'Editors and above', 'buddypress-share' ),
+	'manage_options'    => __( 'Administrators only', 'buddypress-share' ),
+);
+if ( ! array_key_exists( $bpas_min_reshare_cap, $bpas_reshare_caps ) ) {
+	$bpas_min_reshare_cap = '';
+}
 ?>
 
 <form method="post" action="options.php">
@@ -119,6 +135,40 @@ $bp_reshare_settings_activity = isset( $bp_reshare_settings['reshare_share_activ
 						</span>
 					</label>
 				</div>
+			</div>
+		</div>
+
+		<div class="bp-share-settings-card">
+			<div class="card-header">
+				<h3><?php esc_html_e( 'Who can reshare &amp; notifications', 'buddypress-share' ); ?></h3>
+			</div>
+			<div class="card-body">
+				<p class="card-description"><?php esc_html_e( 'Decide which members may reshare activity, and whether authors are told when their activity is reshared.', 'buddypress-share' ); ?></p>
+
+				<div class="bp-share-field">
+					<label for="min_reshare_capability" class="bp-share-field__label"><?php esc_html_e( 'Minimum role to reshare', 'buddypress-share' ); ?></label>
+					<select name="bp_reshare_settings[min_reshare_capability]" id="min_reshare_capability">
+						<?php foreach ( $bpas_reshare_caps as $bpas_cap_value => $bpas_cap_label ) : ?>
+							<option value="<?php echo esc_attr( $bpas_cap_value ); ?>" <?php selected( $bpas_min_reshare_cap, $bpas_cap_value ); ?>>
+								<?php echo esc_html( $bpas_cap_label ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+					<p class="card-description"><?php esc_html_e( 'Members below this role will not see the Reshare button.', 'buddypress-share' ); ?></p>
+				</div>
+
+				<label class="bp-share-checkbox-item">
+					<input type="checkbox"
+						name="bp_reshare_settings[enable_reshare_notifications]"
+						id="enable_reshare_notifications"
+						value="1"
+						<?php checked( true, $bpas_reshare_notifications ); ?> />
+					<span class="checkbox-label">
+						<span class="checkbox-icon dashicons dashicons-bell" aria-hidden="true"></span>
+						<?php esc_html_e( 'Notify the author when their activity is reshared', 'buddypress-share' ); ?>
+					</span>
+				</label>
+				<p class="card-description"><?php esc_html_e( 'Sends a BuddyPress notification to the original author each time their activity is reshared (self-reshares are skipped).', 'buddypress-share' ); ?></p>
 			</div>
 		</div>
 	</div>

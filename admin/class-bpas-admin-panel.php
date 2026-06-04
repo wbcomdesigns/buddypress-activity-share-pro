@@ -71,6 +71,11 @@ class Bpas_Admin_Panel {
 				'icon'  => 'dashicons-chart-bar',
 				'group' => 'main',
 			),
+			'analytics'    => array(
+				'label' => __( 'Analytics', 'buddypress-share' ),
+				'icon'  => 'dashicons-chart-area',
+				'group' => 'main',
+			),
 			'networks'     => array(
 				'label' => __( 'Social Networks', 'buddypress-share' ),
 				'icon'  => 'dashicons-share-alt2',
@@ -115,6 +120,7 @@ class Bpas_Admin_Panel {
 	private function view_map() {
 		return array(
 			'overview'     => 'overview',
+			'analytics'    => 'analytics',
 			'networks'     => 'settings-networks',
 			'display'      => 'settings-display',
 			'restrictions' => 'settings-restrictions',
