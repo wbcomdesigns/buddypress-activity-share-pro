@@ -1,0 +1,37 @@
+{
+  "product_name": "BuddyPress Activity Share Pro",
+  "product_slug": "buddypress-activity-share-pro",
+  "short_id": "bpas",
+  "tagline": "Social sharing and internal resharing for BuddyPress activity streams.",
+  "parent_category": "buddypress-activity-share-pro",
+  "subcategories": [
+    {
+      "slug": "getting-started-bpas",
+      "name": "Getting Started",
+      "docs": [
+        "getting-started/01-introduction.md",
+        "getting-started/02-installation.md",
+        "getting-started/03-quick-setup.md"
+      ]
+    },
+    {
+      "slug": "settings-bpas",
+      "name": "Settings",
+      "docs": [
+        "settings/01-social-networks.md",
+        "settings/02-display-settings.md",
+        "settings/03-restrictions.md",
+        "settings/04-post-type-sharing.md"
+      ]
+    },
+    {
+      "slug": "developer-guide-bpas",
+      "name": "Developer Guide",
+      "docs": [
+        "developer-guide/01-hooks-reference.md",
+        "developer-guide/02-filters-reference.md",
+        "developer-guide/03-rest-api.md"
+      ]
+    }
+  ]
+}
