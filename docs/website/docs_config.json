@@ -1,0 +1,41 @@
+{
+  "product_slug": "buddypress-activity-share-pro",
+  "product_name": "BuddyPress Activity Share Pro",
+  "short_id": "bpas",
+  "categories": [
+    {
+      "name": "Getting Started",
+      "slug": "getting-started-bpas",
+      "folder": "getting-started",
+      "docs": [
+        {
+          "title": "Requirements",
+          "slug": "requirements-bpas",
+          "file": "getting-started/requirements.md"
+        },
+        {
+          "title": "Installation",
+          "slug": "installation-bpas",
+          "file": "getting-started/installation.md"
+        },
+        {
+          "title": "Your First Share",
+          "slug": "first-share-bpas",
+          "file": "getting-started/first-share.md"
+        }
+      ]
+    },
+    {
+      "name": "Developer Guide",
+      "slug": "developer-guide-bpas",
+      "folder": "developer-guide",
+      "docs": [
+        {
+          "title": "Shortcode Reference",
+          "slug": "shortcodes-bpas",
+          "file": "developer-guide/shortcodes.md"
+        }
+      ]
+    }
+  ]
+}
