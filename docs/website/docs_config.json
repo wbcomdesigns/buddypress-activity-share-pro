@@ -15,6 +15,15 @@
       ]
     },
     {
+      "slug": "user-guide-bpas",
+      "name": "User Guide",
+      "docs": [
+        "user-guide/sharing-to-social-networks.md",
+        "user-guide/resharing-internally.md",
+        "user-guide/supported-networks.md"
+      ]
+    },
+    {
       "slug": "settings-bpas",
       "name": "Settings",
       "docs": [
