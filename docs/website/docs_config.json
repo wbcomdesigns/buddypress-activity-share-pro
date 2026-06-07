@@ -37,6 +37,8 @@
       "slug": "developer-guide-bpas",
       "name": "Developer Guide",
       "docs": [
+        "developer-guide/hooks.md",
+        "developer-guide/shortcodes.md",
         "developer-guide/01-hooks-reference.md",
         "developer-guide/02-filters-reference.md",
         "developer-guide/03-rest-api.md"
