@@ -9,9 +9,9 @@
       "slug": "getting-started-bpas",
       "name": "Getting Started",
       "docs": [
-        "getting-started/01-introduction.md",
-        "getting-started/02-installation.md",
-        "getting-started/03-quick-setup.md"
+        "getting-started/requirements.md",
+        "getting-started/installation.md",
+        "getting-started/first-share.md"
       ]
     },
     {
