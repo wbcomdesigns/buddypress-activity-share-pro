@@ -865,6 +865,21 @@ For post-type shares the order is:
 4. Tracking record inserted
 5. `bp_share_post_shared` — action
 
+## Additional Filters
+
+These filters ship in the current release and are part of the public surface.
+
+| Filter | Where it fires | What it controls |
+|---|---|---|
+| `bp_share_activity_classes` | `includes/bp-share-buddyboss-compat.php:58` | CSS classes applied to the share wrapper under BuddyBoss |
+| `bp_share_use_minified_assets` | `includes/bp-share-helpers.php:26` | Return `false` to load unminified CSS/JS for debugging |
+| `bp_share_post_type_available_services` | `includes/post-types/class-bp-share-post-type-settings.php:222` | The list of share services offered for post-type shares |
+| `bp_share_post_type_whitelist` | `includes/post-types/class-bp-share-post-type-settings.php:428` | Which post types are eligible for sharing |
+| `bp_share_post_type_is_valid` | `includes/post-types/class-bp-share-post-type-settings.php:451` | Final validity decision for a single post type |
+| `bp_share_valid_post_types` | `includes/post-types/class-bp-share-post-type-settings.php:475` | The resolved set of valid post types after whitelist + checks |
+| `buddypress_reactions_theme_support` | `public/class-buddypress-share-public.php:813` | Theme-support flag consumed for styling compatibility (name shared with the Reactions plugin) |
+| `wbcom_submenu_label` | `includes/shared-admin/class-wbcom-shared-loader.php:471` | The shared Wbcom admin submenu label |
+
 ---
 
 ## Related Documentation
