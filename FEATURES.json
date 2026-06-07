@@ -1,0 +1,700 @@
+{
+  "product": "BuddyPress Activity Share Pro",
+  "slug": "buddypress-activity-share-pro",
+  "version": "2.2.4",
+  "generated": "2026-06-07",
+  "note": "Every entry is grounded in source code. File:line references point to the shipped codebase. Items that appear only in admin notices or placeholder UI (not behind shipped logic) are marked roadmap:true.",
+  "features": [
+    {
+      "id": "social-sharing-activity-stream",
+      "title": "Social sharing from the BuddyPress activity stream",
+      "description": "A Share button appears on every activity entry. Clicking it opens a dropdown with enabled social networks and a Reshare option for logged-in users. The button is suppressed on profile or group pages when the corresponding restriction is enabled.",
+      "category": "core",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 402,
+          "symbol": "bp_activity_share_button_dis",
+          "note": "Hooks bp_share_inner_activity_filter onto bp_activity_entry_meta when sharing is enabled or guest sharing is on."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 516,
+          "symbol": "bp_share_inner_activity_filter",
+          "note": "Renders the Share button dropdown, respecting profile/group restriction flags before output."
+        }
+      ]
+    },
+    {
+      "id": "social-networks-12",
+      "title": "12 built-in social networks",
+      "description": "Facebook, X (Twitter), LinkedIn, Pinterest, Reddit, WordPress, Pocket, Telegram, Bluesky, WhatsApp, E-mail, and Copy Link. Each network has its own share URL pattern. Twitter entries stored from previous versions are silently migrated to X on save.",
+      "category": "core",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 970,
+          "symbol": "get_all_available_services",
+          "note": "Canonical list of 12 service keys. Filterable via bp_share_available_services."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 660,
+          "symbol": "get_sharing_services_config",
+          "note": "Per-service share URL patterns; includes Bluesky (bsky.app) added in 1.4.0."
+        },
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 410,
+          "symbol": "bp_share_social_networks_page",
+          "note": "Migrates legacy Twitter key to X on every save."
+        }
+      ]
+    },
+    {
+      "id": "drag-drop-network-management",
+      "title": "Drag-and-drop social network ordering",
+      "description": "The Social Networks settings tab has two sortable lists (Active Networks and Inactive Networks). Dragging a network between lists saves via AJAX without a page reload. Order within the active list is persisted and respected on the frontend.",
+      "category": "admin-settings",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 500,
+          "symbol": "bp_share_social_networks_page",
+          "note": "jQuery UI sortable/draggable/droppable enqueued; hidden field bp_share_services_serialized holds JSON-encoded order."
+        },
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 551,
+          "symbol": "inline JS in bp_share_social_networks_page",
+          "note": "sortstop event triggers wss_social_icons or wss_social_remove_icons AJAX actions."
+        },
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 867,
+          "symbol": "wss_social_icons",
+          "note": "AJAX handler: validates service against whitelist, updates bp_share_services site option."
+        },
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 918,
+          "symbol": "wss_social_remove_icons",
+          "note": "AJAX handler: removes service from bp_share_services site option."
+        }
+      ]
+    },
+    {
+      "id": "guest-sharing",
+      "title": "Guest (logged-out) sharing",
+      "description": "When Guest Sharing is enabled, logged-out visitors see the social sharing dropdown on public activities. A bpss-logout-enabled body class is added for CSS targeting. The Reshare (internal) button is not shown to guests.",
+      "category": "core",
+      "since": "1.4.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 463,
+          "symbol": "bp_share_services_logout_enable checkbox",
+          "note": "Option bp_share_services_logout_enable stored via site option. Shown only when social sharing is enabled."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 402,
+          "symbol": "bp_activity_share_button_dis",
+          "note": "Gate: shows share button to logged-out users when logout_enable is truthy."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 419,
+          "symbol": "add_bp_share_services_logout_body_class",
+          "note": "Adds bpss-logout-enabled body class for CSS when guest sharing is on."
+        }
+      ]
+    },
+    {
+      "id": "popup-window-mode",
+      "title": "Popup window sharing links",
+      "description": "Social network links can open in small popup windows instead of new tabs. WhatsApp and Email links are always excluded from popup mode regardless of this setting.",
+      "category": "core",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 479,
+          "symbol": "bp_share_services_open checkbox",
+          "note": "Option stored as bp_share_services_extra[bp_share_services_open] = 'on'."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 828,
+          "symbol": "bp_share_popup_script",
+          "note": "Adds has-popup class to .bp-share links excluding #bp_whatsapp_share and #bp_email_share."
+        }
+      ]
+    },
+    {
+      "id": "internal-reshare",
+      "title": "Internal reshare to profile, group, or friend",
+      "description": "Logged-in members can reshare an activity to their own profile, to a group they belong to, or to a friend (with an @mention). A modal captures an optional message, a 'Post in' dropdown, and the original activity preview. The reshare is saved as a new BuddyPress activity with type activity_share and the original activity ID stored in secondary_item_id and the shared_activity_id meta key.",
+      "category": "core",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 563,
+          "symbol": "bp_share_user_services_button",
+          "note": "Renders the Reshare button only when at least one reshare destination is not disabled."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 960,
+          "symbol": "bp_activity_create_reshare_ajax",
+          "note": "AJAX handler: validates nonce, activity type (activity_share/post_share), group membership; calls create_share_activity."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1128,
+          "symbol": "create_share_activity",
+          "note": "Calls bp_activity_add with component=groups or activity, sets hide_sitewide for non-public groups."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1689,
+          "symbol": "bp_activity_share_popup_box",
+          "note": "Renders the Bootstrap modal with Select2 dropdown for post-in, textarea for message, and original activity preview."
+        }
+      ]
+    },
+    {
+      "id": "reshare-display-modes",
+      "title": "Reshare display mode: simple or detailed",
+      "description": "When a reshared activity appears in the feed, site owners can choose whether to show only the original activity content (Simple View) or the full nested content (Detailed View). Controlled by the reshare_share_activity setting.",
+      "category": "admin-settings",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 703,
+          "symbol": "bp_share_restrictions_page radio buttons",
+          "note": "Saves value 'parent' or 'child' to bp_reshare_settings[reshare_share_activity]."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1450,
+          "symbol": "bp_activity_share_entry_content",
+          "note": "Reads reshare_share_activity and passes it to bp_share_display_activity; 'parent' mode removes the entry_content hook before rendering to avoid recursion."
+        }
+      ]
+    },
+    {
+      "id": "content-type-restrictions",
+      "title": "Disable sharing per content type",
+      "description": "Admins can prevent sharing for Blog Post activities, User Profile activities, and Group activities independently. When a type is disabled, neither the Share button nor the Reshare button appears on matching pages.",
+      "category": "admin-settings",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 656,
+          "symbol": "bp_share_restrictions_page checkboxes",
+          "note": "Checkboxes for disable_post_reshare_activity, disable_my_profile_reshare_activity, disable_group_reshare_activity stored in bp_reshare_settings."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 439,
+          "symbol": "bp_share_inner_activity_filter",
+          "note": "Checks disable_my_profile_reshare_activity on bp_is_user() and disable_group_reshare_activity on bp_is_group() before rendering."
+        },
+        {
+          "file": "buddypress-share.php",
+          "line": 478,
+          "symbol": "bp_activity_reshare_post_disable",
+          "note": "Removes 'post' from bp_activity_reshare_post_type filter when disable_post_reshare_activity is set."
+        }
+      ]
+    },
+    {
+      "id": "icon-styles",
+      "title": "Four icon button styles",
+      "description": "The Display Settings tab offers four visual styles for the sharing buttons: Circle, Rectangle, Black & White, and Bar. The chosen style is applied as a CSS class on the share dropdown container.",
+      "category": "admin-settings",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 748,
+          "symbol": "bp_share_display_settings_page",
+          "note": "$icon_styles defines circle, rec, blackwhite, baricon. Saved to bpas_icon_color_settings[icon_style]."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 513,
+          "symbol": "bp_share_inner_activity_filter",
+          "note": "Applies $style as CSS class on .bp-activity-share-dropdown-menu alongside the activity type."
+        }
+      ]
+    },
+    {
+      "id": "custom-icon-colors",
+      "title": "Custom icon colors (background, icon, hover)",
+      "description": "Admins can set a hex color for background, icon/text, and hover state of the sharing buttons. Values are sanitized with sanitize_hex_color and saved to bpas_icon_color_settings.",
+      "category": "admin-settings",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 793,
+          "symbol": "bp_share_display_settings_page color pickers",
+          "note": "Three wp-color-picker inputs for bg_color (#667eea default), text_color (#ffffff default), hover_color (#5a6fd8 default)."
+        },
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 1197,
+          "symbol": "sanitize_icon_settings",
+          "note": "sanitize_hex_color applied to bg_color, text_color, hover_color, border_color fields."
+        }
+      ]
+    },
+    {
+      "id": "share-count-display",
+      "title": "Share count display on activity entries",
+      "description": "A running share count is shown on the Share button next to each activity. The count is stored as activity meta (share_count) and incremented on every successful internal reshare. The count is also returned in REST API responses.",
+      "category": "core",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 464,
+          "symbol": "bp_share_inner_activity_filter",
+          "note": "Reads share_count activity meta to render reshare-count span; empty string when zero (hidden by CSS)."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1168,
+          "symbol": "update_share_count",
+          "note": "Increments share_count on bp_activity_meta for activity_share or post_meta for post_share."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1968,
+          "symbol": "bp_activity_post_reshare_data_embed_rest_api",
+          "note": "Adds bp_activity_share_count to BuddyPress REST API activity response."
+        }
+      ]
+    },
+    {
+      "id": "opengraph-meta-tags",
+      "title": "Open Graph meta tags for activity permalinks",
+      "description": "When a visitor opens a single activity permalink, the plugin outputs og:type, og:url, og:title, og:description, and og:image meta tags. The image is sourced from BP Media attachments, Youzer/Youzify attachments, or the first img tag in activity content, in that order.",
+      "category": "core",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1275,
+          "symbol": "bp_share_opengraph",
+          "note": "Hooked to wp_head at priority 999; fires only on bp_is_single_activity() pages."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1336,
+          "symbol": "get_activity_image",
+          "note": "Image resolution priority: BP_Media → Youzer/Youzify → first img in content."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1390,
+          "symbol": "bp_share_opengraph_meta_tags",
+          "note": "Outputs og:image and og:image:secure_url only when an image URL is found."
+        }
+      ]
+    },
+    {
+      "id": "post-share-button-single",
+      "title": "Share button on single WordPress post pages",
+      "description": "A Share button is automatically appended to the_content on single WordPress posts (when the theme is not Reign or BuddyX Pro, which have their own integration). The button opens the same reshare modal and posts a post_share activity to BuddyPress.",
+      "category": "core",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "includes/class-buddypress-share.php",
+          "line": 244,
+          "symbol": "define_public_hooks",
+          "note": "the_content filter bp_activity_post_share_button_action is registered only when theme is NOT in reign-theme/buddyx-pro list."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1413,
+          "symbol": "bp_activity_post_share_button_action",
+          "note": "Appends share button HTML to post content; skips if disable_post_reshare_activity is set."
+        }
+      ]
+    },
+    {
+      "id": "post-reshare-shortcode",
+      "title": "[bp_activity_post_reshare] shortcode",
+      "description": "The shortcode renders a Share button on single WordPress post pages. It displays the current post's share count and opens the reshare modal when clicked. Only outputs on is_single() pages with post type 'post'.",
+      "category": "core",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "includes/class-buddypress-share.php",
+          "line": 257,
+          "symbol": "define_public_hooks",
+          "note": "Shortcode bp_activity_post_reshare registered via loader."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1931,
+          "symbol": "bp_activity_post_reshare",
+          "note": "Returns empty string if not is_single() or post type is not 'post'."
+        }
+      ]
+    },
+    {
+      "id": "utm-tracking-parameters",
+      "title": "UTM and custom tracking parameters on share links",
+      "description": "All external share links (social networks and copy-link) receive utm_source, utm_medium, utm_campaign, utm_content, bps_aid (activity ID), bps_uid (user ID), bps_service, and bps_time query parameters. Parameters are filterable via bp_share_tracking_parameters.",
+      "category": "core",
+      "since": "2.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 751,
+          "symbol": "add_share_tracking_params",
+          "note": "Builds tracking_params array with UTM fields and bps_* custom fields, then calls add_query_arg."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 785,
+          "symbol": "bp_share_tracking_parameters filter",
+          "note": "Filter applied before parameters are added to URL; receives url, service, activity_id, user_id."
+        }
+      ]
+    },
+    {
+      "id": "share-tracking-system",
+      "title": "Share event tracking (user stats and activity stats)",
+      "description": "Every internal reshare updates user meta (bp_share_user_stats: total, internal, external counts and per-type breakdown) and activity meta (bp_share_activity_stats: total, internal, external counts and unique sharers list). When a visitor lands on a tracked link, visit data is recorded via bp_share_activity_visit_stats activity meta.",
+      "category": "core",
+      "since": "2.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "includes/class-buddypress-share-tracker.php",
+          "line": 86,
+          "symbol": "track_internal_share",
+          "note": "Called via bp_share_user_reshared_activity action; updates user meta and activity meta."
+        },
+        {
+          "file": "includes/class-buddypress-share-tracker.php",
+          "line": 122,
+          "symbol": "process_tracking_parameters",
+          "note": "Hooked to init; detects bps_aid and bps_service params and fires bp_share_external_visit_tracked action."
+        },
+        {
+          "file": "includes/class-buddypress-share-tracker.php",
+          "line": 219,
+          "symbol": "update_user_share_stats",
+          "note": "Stores stats array in bp_share_user_stats user meta."
+        }
+      ]
+    },
+    {
+      "id": "dynamic-groups-friends-dropdown",
+      "title": "Dynamic group and friend loading in reshare modal",
+      "description": "When the reshare modal opens, groups and friends are loaded via a separate AJAX call (bp_get_user_share_options) rather than on page load, capped at 50 each. Groups and Friends optgroups are shown only when the corresponding BuddyPress component is active and not disabled in restrictions.",
+      "category": "core",
+      "since": "1.5.2",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "includes/class-buddypress-share.php",
+          "line": 267,
+          "symbol": "define_public_hooks",
+          "note": "wp_ajax_bp_get_user_share_options registered."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1216,
+          "symbol": "get_user_share_options_ajax",
+          "note": "Returns up to 50 groups and 50 friends; friends loaded only when bp_is_active('friends')."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1738,
+          "symbol": "bp_activity_share_popup_box",
+          "note": "Optgroups for groups and friends are rendered conditionally based on component active status and restriction settings."
+        }
+      ]
+    },
+    {
+      "id": "post-type-sharing",
+      "title": "Post Type Sharing settings tab and frontend buttons",
+      "description": "A dedicated Post Type Sharing tab in admin allows enabling share buttons on any public WordPress post type with configurable social services, display position (left/right/bottom), display style (floating/inline/button), and mobile behavior. Frontend buttons are rendered by BP_Share_Post_Type_Frontend. The tab is powered by BP_Share_Post_Type_Settings and BP_Share_Post_Type_Controller.",
+      "category": "admin-settings",
+      "since": "2.1.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "includes/class-buddypress-share.php",
+          "line": 310,
+          "symbol": "init_post_type_sharing",
+          "note": "Loads post-type class files and calls BP_Share_Post_Type_Controller::get_instance() when bp_share_enable_post_type_sharing filter returns true (default true)."
+        },
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 1332,
+          "symbol": "bp_share_post_types_page",
+          "note": "Includes admin/partials/bp-share-post-type-settings.php when the file exists. Falls back to a placeholder notice when the partial is missing.",
+          "note_detail": "The partial (bp-share-post-type-settings.php) exists in the shipped code so the full UI renders."
+        },
+        {
+          "file": "admin/partials/bp-share-post-type-settings.php",
+          "line": 1,
+          "symbol": "template",
+          "note": "Settings form rendered using BP_Share_Post_Type_Settings::get_instance()."
+        },
+        {
+          "file": "includes/post-types/class-bp-share-post-type-frontend.php",
+          "line": 49,
+          "symbol": "render_sticky_wrapper",
+          "note": "Renders the sharing widget with position, style, and mobile settings from BP_Share_Post_Type_Settings."
+        },
+        {
+          "file": "includes/post-types/class-bp-share-post-type-settings.php",
+          "line": 1,
+          "symbol": "BP_Share_Post_Type_Settings",
+          "note": "Manages option bp_share_post_type_settings; exposes get_valid_post_types(), get_services_for_post_type(), get_display_position(), get_display_style(), get_mobile_behavior()."
+        }
+      ]
+    },
+    {
+      "id": "buddyboss-compatibility",
+      "title": "BuddyBoss Platform compatibility",
+      "description": "The plugin detects BuddyBoss Platform via the BP_PLATFORM_VERSION constant and adapts activity action format strings, group permalink calls (bp_get_group_url vs bp_get_group_permalink based on BP version), and modal classes. Font Awesome is force-loaded for BuddyBoss theme.",
+      "category": "compatibility",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "buddypress-share.php",
+          "line": 155,
+          "symbol": "bpshare_pro_plugin_init",
+          "note": "Accepts class_exists('BuddyPress') OR defined('BP_PLATFORM_VERSION') as valid environment."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 940,
+          "symbol": "bp_share_activity_format_action_group_reshare",
+          "note": "Uses bp_get_group_url for BP >= 12.0 and bp_get_group_permalink otherwise."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 120,
+          "symbol": "enqueue_styles",
+          "note": "Force-enqueues Font Awesome CDN when buddyboss_theme() function or BUDDYBOSS_THEME_VERSION constant is detected."
+        },
+        {
+          "file": "includes/bp-share-buddyboss-compat.php",
+          "line": 1,
+          "symbol": "compatibility module",
+          "note": "Dedicated BuddyBoss compatibility file loaded unconditionally by class-buddypress-share.php."
+        }
+      ]
+    },
+    {
+      "id": "reign-buddyx-theme-integration",
+      "title": "Reign Theme and BuddyX Pro integration",
+      "description": "When the active theme is reign-theme or buddyx-pro, the_content filter for the post share button is skipped because those themes provide their own integration point. A popup overlay div is injected inside the share dropdown for these themes.",
+      "category": "compatibility",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "includes/class-buddypress-share.php",
+          "line": 244,
+          "symbol": "define_public_hooks",
+          "note": "$theme_support array contains 'reign-theme' and 'buddyx-pro'; the_content filter skipped for these templates."
+        },
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 812,
+          "symbol": "bp_share_popup_overlay",
+          "note": "Injects .bp-share-service-popup-overlay div inside the share container for Reign/BuddyX themes."
+        }
+      ]
+    },
+    {
+      "id": "multisite-network-support",
+      "title": "WordPress Multisite / network activation support",
+      "description": "Settings are stored in site options (get_site_option / update_site_option) so they are network-wide on multisite. The plugin validates blog status and network configuration on init and shows admin notices if BuddyPress and the plugin are not on the same blog or share the same network activation state.",
+      "category": "compatibility",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "buddypress-share.php",
+          "line": 254,
+          "symbol": "bp_activity_share_pro_check_config",
+          "note": "Checks get_current_blog_id() === bp_get_root_blog_id() and network_active alignment."
+        },
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 399,
+          "symbol": "bp_share_social_networks_page",
+          "note": "Uses get_site_option for bp_share_services, bp_share_services_enable, bp_share_services_logout_enable."
+        }
+      ]
+    },
+    {
+      "id": "rtl-support",
+      "title": "RTL language support",
+      "description": "The plugin ships RTL-specific stylesheets in public/css-rtl/ and admin/css-rtl/. The bp_share_enqueue_style helper automatically loads the RTL variant when is_rtl() returns true.",
+      "category": "accessibility",
+      "since": "1.5.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "includes/bp-share-helpers.php",
+          "line": 1,
+          "symbol": "bp_share_enqueue_style",
+          "note": "Helper appends -rtl suffix and switches to css-rtl/ directory when is_rtl() is true."
+        },
+        {
+          "file": "public/css-rtl",
+          "line": "directory",
+          "symbol": "RTL stylesheets",
+          "note": "RTL CSS directory present alongside standard css/ directory."
+        }
+      ]
+    },
+    {
+      "id": "wbcom-shared-admin",
+      "title": "Wbcom Designs shared admin wrapper integration",
+      "description": "When wbcom-essential (Wbcom_Shared_Loader) is active, the plugin registers under the shared Wbcom Designs admin menu via wbcom_integrate_plugin() rather than adding a standalone Settings submenu. The plugin provides its own standalone fallback when the wrapper is absent.",
+      "category": "admin-settings",
+      "since": "1.5.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "buddypress-share.php",
+          "line": 171,
+          "symbol": "bp_share_init_wbcom_integration",
+          "note": "Calls wbcom_integrate_plugin() when function exists; falls back to BP_Activity_Share_Wbcom_Integration class."
+        },
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 279,
+          "symbol": "bp_share_plugin_menu",
+          "note": "Adds standalone Settings > Activity Share menu only when Wbcom_Shared_Loader class is absent."
+        }
+      ]
+    },
+    {
+      "id": "gamification-hooks",
+      "title": "Gamification / point system hooks",
+      "description": "The action bp_share_user_reshared_activity fires after every successful internal reshare with (user_id, reshare_type, original_activity_id, new_activity_id). GamiPress and similar point systems can award points by hooking into this action.",
+      "category": "developer",
+      "since": "2.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1071,
+          "symbol": "bp_share_user_reshared_activity do_action",
+          "note": "Fired with four args after bp_activity_add succeeds and before share count update."
+        },
+        {
+          "file": "includes/class-buddypress-share-tracker.php",
+          "line": 66,
+          "symbol": "init_hooks",
+          "note": "Tracker itself hooks track_internal_share onto bp_share_user_reshared_activity at priority 10."
+        }
+      ]
+    },
+    {
+      "id": "rest-api-share-count",
+      "title": "Share count in BuddyPress REST API",
+      "description": "The bp_rest_activity_prepare_value filter is used to add a bp_activity_share_count field to every activity object returned by the BuddyPress REST API.",
+      "category": "developer",
+      "since": "1.0.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "public/class-buddypress-share-public.php",
+          "line": 1968,
+          "symbol": "bp_activity_post_reshare_data_embed_rest_api",
+          "note": "Registered on bp_rest_activity_prepare_value with priority 10; appends share_count from activity meta."
+        },
+        {
+          "file": "includes/class-buddypress-share.php",
+          "line": 261,
+          "symbol": "define_public_hooks",
+          "note": "Filter registered via loader."
+        }
+      ]
+    },
+    {
+      "id": "youzify-incompatibility",
+      "title": "Youzify incompatibility guard",
+      "description": "The plugin cannot run alongside Youzify. On admin_init it checks for the Youzify class and deactivates itself if found, displaying an admin notice. This is a hard restriction, not a configuration option.",
+      "category": "compatibility",
+      "since": "1.1.0",
+      "roadmap": false,
+      "evidence": [
+        {
+          "file": "buddypress-share.php",
+          "line": 391,
+          "symbol": "bpshare_pro_youzify",
+          "note": "Calls deactivate_plugins() and adds admin notice when class_exists('Youzify') is true."
+        }
+      ]
+    }
+  ],
+  "roadmap_items": [
+    {
+      "id": "post-type-sharing-analytics",
+      "title": "Per-post-type sharing analytics dashboard",
+      "note": "The admin notice in bp_share_post_types_page fallback path mentions 'Track sharing analytics per post type' but no analytics UI or DB table exists in the codebase. The tracker class records meta but there is no admin read surface for post-type-specific analytics.",
+      "evidence": [
+        {
+          "file": "admin/class-buddypress-share-admin.php",
+          "line": 1387,
+          "symbol": "bp_share_post_types_page fallback notice",
+          "note": "Placeholder text visible only when bp-share-post-type-settings.php partial is absent."
+        }
+      ]
+    },
+    {
+      "id": "external-share-tracking-ajax",
+      "title": "AJAX endpoint for tracking external social shares (client-side)",
+      "note": "The AJAX actions wp_ajax_bp_share_track_external and wp_ajax_nopriv_bp_share_track_external are registered and the handler is implemented, but no frontend JavaScript calls these endpoints. External share clicks go directly to the social network URL; there is no client-side interception.",
+      "evidence": [
+        {
+          "file": "includes/class-buddypress-share-tracker.php",
+          "line": 72,
+          "symbol": "ajax_track_external_share registered actions",
+          "note": "Handler exists but is not called from any bundled frontend JS."
+        }
+      ]
+    }
+  ]
+}
