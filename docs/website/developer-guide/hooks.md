@@ -92,7 +92,7 @@ Fires after a share event for a standard WordPress post (or custom post type) ha
 | `$user_id` | `int\|null` | User ID, or `null` if shared anonymously. |
 | `$metadata` | `array` | Additional tracking data: `post_type`, `ip_address`, `user_agent`, `referrer`, `shared_at`. |
 
-**Note:** This hook only fires when the custom tracking tables exist. See the known issue about table creation in the [Troubleshooting](../getting-started/troubleshooting.md) doc.
+**Note:** This hook only fires when the custom tracking tables exist. If the tables are absent, deactivate and reactivate the plugin so the installer can recreate them.
 
 ```php
 add_action( 'bp_share_post_shared', function( $post_id, $service, $user_id, $metadata ) {
@@ -869,5 +869,5 @@ For post-type shares the order is:
 
 ## Related Documentation
 
-- [Getting Started](../getting-started/index.md)
-- [Settings Reference](../settings/index.md)
+- Getting Started — see the plugin's main documentation index.
+- Settings Reference — see the plugin's settings documentation.
