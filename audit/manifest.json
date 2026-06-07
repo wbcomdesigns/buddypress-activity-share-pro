@@ -1,0 +1,316 @@
+{
+  "plugin": "buddypress-activity-share-pro",
+  "slug": "buddypress-activity-share-pro",
+  "version": "2.2.4",
+  "main_file": "buddypress-share.php",
+  "text_domain": "buddypress-share",
+  "generated": "2026-06-07",
+  "direction": "1.1",
+
+  "constants": [
+    { "name": "BP_ACTIVITY_SHARE_PLUGIN_VERSION", "value": "2.2.4", "file": "buddypress-share.php:32" },
+    { "name": "BP_SHARE", "value": "buddypress-share", "file": "buddypress-share.php:36" },
+    { "name": "BP_ACTIVITY_SHARE_PLUGIN_URL", "file": "buddypress-share.php:37" },
+    { "name": "BP_ACTIVITY_SHARE_PLUGIN_BASENAME", "file": "buddypress-share.php:38" },
+    { "name": "BP_ACTIVITY_SHARE_PLUGIN_PATH", "file": "buddypress-share.php:39" }
+  ],
+
+  "options": {
+    "site_options": [
+      { "key": "bp_share_services", "type": "array", "purpose": "Enabled social services (key=>label map)" },
+      { "key": "bp_share_services_enable", "type": "int/bool", "purpose": "Master toggle for social sharing" },
+      { "key": "bp_share_services_logout_enable", "type": "int/bool", "purpose": "Guest/logged-out sharing toggle" },
+      { "key": "bp_share_services_extra", "type": "array", "purpose": "Extra options: bp_share_services_open" },
+      { "key": "bp_reshare_settings", "type": "array", "purpose": "Reshare restrictions and display mode" },
+      { "key": "bpas_icon_color_settings", "type": "array", "purpose": "Icon style and color settings (also read via get_option)" },
+      { "key": "bp_share_plugin_version", "type": "string", "purpose": "Version tracking" },
+      { "key": "bp_share_install_date", "type": "int", "purpose": "Installation timestamp" }
+    ],
+    "wp_options": [
+      { "key": "bpas_icon_color_settings", "type": "array", "purpose": "Icon settings (mixed get_option/get_site_option inconsistency)" },
+      { "key": "bp_share_db_version", "type": "string", "purpose": "DB schema version tracking" },
+      { "key": "bp_share_post_type_settings", "type": "array", "purpose": "Post type sharing configuration" }
+    ]
+  },
+
+  "custom_tables": [
+    {
+      "table": "{prefix}bp_share_post_tracking",
+      "purpose": "Track post-type share events",
+      "created_by": "class-bp-share-post-type-tracker.php:create_tables()",
+      "trigger": "bp_share_activate action hook",
+      "issue": "CRITICAL: bp_share_activate hook is NEVER fired - activation only calls Buddypress_Share_Activator::activate() which does not do_action('bp_share_activate'). Tables never auto-created.",
+      "columns": ["id", "post_id", "post_type", "service", "user_id", "ip_address", "user_agent", "referrer", "shared_at"],
+      "indexes": ["idx_post_shares(post_id,service)", "idx_user_shares(user_id)", "idx_date_shares(shared_at)"]
+    },
+    {
+      "table": "{prefix}bp_share_post_type_settings",
+      "purpose": "Per-post-type sharing settings (DB-backed)",
+      "created_by": "class-bp-share-post-type-tracker.php:create_tables()",
+      "trigger": "Same bp_share_activate hook - same issue",
+      "columns": ["id", "post_type", "enabled_services", "position", "style", "custom_settings", "created_at", "updated_at"],
+      "indexes": ["UNIQUE idx_post_type(post_type)"]
+    }
+  ],
+
+  "ajax_handlers": [
+    {
+      "action": "wss_social_icons",
+      "auth": "admin_only",
+      "nonce": "bp_share_admin_nonce",
+      "capability": "manage_options",
+      "file": "admin/class-buddypress-share-admin.php:867",
+      "purpose": "Add social service to enabled list"
+    },
+    {
+      "action": "wss_social_remove_icons",
+      "auth": "admin_only",
+      "nonce": "bp_share_admin_nonce",
+      "capability": "manage_options",
+      "file": "admin/class-buddypress-share-admin.php:918",
+      "purpose": "Remove social service from enabled list"
+    },
+    {
+      "action": "bp_activity_create_reshare_ajax",
+      "auth": "logged_in",
+      "nonce": "bp-activity-share-nonce",
+      "capability": "is_user_logged_in",
+      "file": "public/class-buddypress-share-public.php:960",
+      "purpose": "Create internal activity reshare"
+    },
+    {
+      "action": "bp_share_get_activity_content",
+      "auth": "logged_in",
+      "nonce": "bp-activity-share-nonce",
+      "capability": "is_user_logged_in (implicit via nonce)",
+      "file": "public/class-buddypress-share-public.php:1190",
+      "purpose": "Load activity content into modal"
+    },
+    {
+      "action": "bp_get_user_share_options",
+      "auth": "logged_in",
+      "nonce": "bp-activity-share-nonce",
+      "capability": "is_user_logged_in",
+      "file": "public/class-buddypress-share-public.php:1216",
+      "purpose": "Load user's groups and friends for share-to dropdown (limit 50)"
+    },
+    {
+      "action": "bp_share_post",
+      "auth": "public_with_nonce",
+      "nonce": "bp-share-post",
+      "capability": "read (or anonymous via filter)",
+      "file": "includes/post-types/class-bp-share-post-type-controller.php:240",
+      "nopriv": true,
+      "purpose": "Track post-type share event"
+    },
+    {
+      "action": "bp_share_track_external",
+      "auth": "public_with_nonce",
+      "nonce": "bp-activity-share-nonce",
+      "capability": "none (nopriv)",
+      "file": "includes/class-buddypress-share-tracker.php:168",
+      "nopriv": true,
+      "purpose": "Track external share click (future implementation)"
+    }
+  ],
+
+  "rest_api": [
+    {
+      "type": "filter_embed",
+      "filter": "bp_rest_activity_prepare_value",
+      "handler": "bp_activity_post_reshare_data_embed_rest_api",
+      "file": "public/class-buddypress-share-public.php:1968",
+      "adds_field": "bp_activity_share_count",
+      "purpose": "Append share_count to every BP REST activity response"
+    }
+  ],
+
+  "shortcodes": [
+    {
+      "tag": "bp_activity_post_reshare",
+      "file": "public/class-buddypress-share-public.php:1931",
+      "purpose": "Render share button on single posts (only works on post type, singular)"
+    }
+  ],
+
+  "hooks_registered": {
+    "actions_fired": [
+      { "hook": "bp_share_after_create_reshare", "file": "public/class-buddypress-share-public.php:1058", "args": ["new_activity_id", "reshare_data"] },
+      { "hook": "bp_share_user_reshared_activity", "file": "public/class-buddypress-share-public.php:1071", "args": ["user_id", "destination_type", "activity_id", "new_activity_id"] },
+      { "hook": "bp_share_post_shared", "file": "includes/post-types/class-bp-share-post-type-tracker.php:153", "args": ["post_id", "service", "user_id", "metadata"] },
+      { "hook": "bp_share_post_visit_tracked", "file": "includes/post-types/class-bp-share-post-type-controller.php:207", "args": ["visit_data", "post_id"] },
+      { "hook": "bp_share_internal_share_tracked", "file": "includes/class-buddypress-share-tracker.php:107", "args": ["share_data", "user_id"] },
+      { "hook": "bp_share_external_visit_tracked", "file": "includes/class-buddypress-share-tracker.php:156", "args": ["visit_data"] },
+      { "hook": "bp_share_external_share_tracked", "file": "includes/class-buddypress-share-tracker.php:199", "args": ["share_data"] },
+      { "hook": "bp_share_clear_public_cache", "file": "admin/class-buddypress-share-admin.php:1035" },
+      { "hook": "bp_share_user_stats_updated", "file": "includes/class-buddypress-share-tracker.php:252", "args": ["user_id", "stats"] },
+      { "hook": "bp_share_activity_stats_updated", "file": "includes/class-buddypress-share-tracker.php:297", "args": ["activity_id", "stats"] },
+      { "hook": "bp_share_plugin_upgraded", "file": "includes/class-buddypress-share.php:486", "args": ["old_version", "new_version"] },
+      { "hook": "bp_share_deactivated", "file": "includes/class-buddypress-share.php:526" },
+      { "hook": "bp_share_uninstalled", "file": "includes/class-buddypress-share.php:557" }
+    ],
+    "filters_provided": [
+      { "filter": "bp_share_available_services", "file": "admin/class-buddypress-share-admin.php:991", "args": ["services"] },
+      { "filter": "bp_share_services_config", "file": "public/class-buddypress-share-public.php:739", "args": ["services", "activity_link", "activity_title", "mail_subject"] },
+      { "filter": "bp_share_enable_post_type_sharing", "file": "includes/class-buddypress-share.php:313", "default": true },
+      { "filter": "bp_share_tracking_parameters", "file": "public/class-buddypress-share-public.php:785", "args": ["tracking_params", "url", "service", "activity_id", "user_id"] },
+      { "filter": "bp_share_before_create_reshare", "file": "public/class-buddypress-share-public.php:1029", "args": ["reshare_data"] },
+      { "filter": "bp_activity_reshare_post_type", "file": "buddypress-share.php:467", "default": ["post"] },
+      { "filter": "bp_share_post_url", "file": "includes/post-types/class-bp-share-post-type-controller.php:429", "args": ["url", "service", "post_id"] },
+      { "filter": "bp_share_post_tracking_url", "file": "includes/post-types/class-bp-share-post-type-controller.php:474", "args": ["url", "tracking_params", "service", "post_id"] },
+      { "filter": "bp_share_social_button_html", "file": "public/class-buddypress-share-public.php:629", "args": ["button_html", "service", "details", "activity_link"] },
+      { "filter": "bp_share_activity_data", "file": "public/class-buddypress-share-public.php:498", "args": ["share_data", "activity"] },
+      { "filter": "bp_share_allow_anonymous_sharing", "file": "includes/post-types/class-bp-share-post-type-controller.php:244", "default": true },
+      { "filter": "bp_share_rate_limit", "file": "includes/post-types/class-bp-share-post-type-controller.php:257", "default": 20 },
+      { "filter": "bp_share_disable_ip_tracking", "file": "includes/post-types/class-bp-share-post-type-tracker.php:386", "default": false },
+      { "filter": "bp_share_anonymize_ip", "file": "includes/post-types/class-bp-share-post-type-tracker.php:399", "default": false },
+      { "filter": "buddypress_share_theme_support", "file": "includes/class-buddypress-share.php:230", "default": ["reign-theme","buddyx-pro"] }
+    ]
+  },
+
+  "admin_pages": [
+    {
+      "page_slug": "buddypress-share",
+      "parent": "Settings (options.php)",
+      "condition": "Wbcom_Shared_Loader class NOT active",
+      "capability": "manage_options",
+      "file": "admin/class-buddypress-share-admin.php:279"
+    },
+    {
+      "page_slug": "wbcom-buddypress-share",
+      "parent": "Wbcom Designs shared menu",
+      "condition": "Wbcom_Shared_Loader active",
+      "capability": "manage_options",
+      "tabs": ["Social Networks", "Display Settings", "Restrictions", "Post Type Sharing", "FAQ"]
+    }
+  ],
+
+  "cron_hooks": [
+    {
+      "hook": "bp_share_weekly_cleanup",
+      "schedule": "weekly",
+      "registered": "class-buddypress-share-activator.php:289",
+      "callback": "Buddypress_Share_Activator::cleanup_orphaned_data (NOT wired - no add_action found)",
+      "issue": "Cron hook scheduled but no listener registered to call cleanup_orphaned_data"
+    }
+  ],
+
+  "dependencies": {
+    "required": ["BuddyPress 8.0+ OR BuddyBoss Platform"],
+    "incompatible": ["Youzify"],
+    "deactivates_free": "buddypress-activity-social-share/buddypress-share.php",
+    "cdn_external": [
+      "Font Awesome 5.15.4 (cdnjs.cloudflare.com) - loaded conditionally",
+      "Bootstrap 4.6.2 CSS/JS (cdnjs.cloudflare.com) - loaded on all BP pages",
+      "Select2 4.1.0-rc.0 CSS/JS (cdnjs.cloudflare.com) - loaded on all BP pages"
+    ]
+  },
+
+  "post_type_sharing_subsystem": {
+    "enabled_by": "filter bp_share_enable_post_type_sharing (default: true - always on)",
+    "classes": [
+      "BP_Share_Post_Type_Settings (includes/post-types/class-bp-share-post-type-settings.php)",
+      "BP_Share_Post_Type_Controller (includes/post-types/class-bp-share-post-type-controller.php)",
+      "BP_Share_Post_Type_Frontend (includes/post-types/class-bp-share-post-type-frontend.php)",
+      "BP_Share_Post_Type_Tracker (includes/post-types/class-bp-share-post-type-tracker.php)"
+    ],
+    "issues": [
+      "Tables never created because bp_share_activate hook is never fired",
+      "handle_ajax_share uses wp_die(json_encode()) instead of wp_send_json_success/error"
+    ]
+  },
+
+  "privacy_issues": [
+    {
+      "issue": "User ID leaked in public share URLs via bps_uid query param",
+      "files": ["public/class-buddypress-share-public.php:765", "includes/post-types/class-bp-share-post-type-controller.php:452"],
+      "severity": "major"
+    },
+    {
+      "issue": "IP address stored in custom table without GDPR-compliant notice/consent flow visible to user",
+      "file": "includes/post-types/class-bp-share-post-type-tracker.php:137",
+      "note": "Filter exists to disable/anonymize, but not enabled by default"
+    }
+  ],
+
+  "uninstall_gaps": [
+    "uninstall.php is empty (only ABSPATH guard) - no actual cleanup code",
+    "Custom tables {prefix}bp_share_post_tracking and {prefix}bp_share_post_type_settings are NOT dropped on uninstall",
+    "bpas_icon_color_settings stored via both get_option and get_site_option - inconsistency",
+    "Post meta: share_count, _bp_share_visits never cleaned on uninstall",
+    "Activity meta: share_count, shared_activity_id, bp_share_activity_stats, bp_share_visit_stats never cleaned"
+  ],
+
+  "known_bugs": [
+    {
+      "id": "B1",
+      "title": "Custom DB tables never created",
+      "detail": "BP_Share_Post_Type_Tracker listens on bp_share_activate hook, but that hook is never fired anywhere. activate_buddypress_share_pro() calls Buddypress_Share_Activator::activate() which never calls do_action('bp_share_activate'). Post-type tracking table and settings table silently do not exist.",
+      "file": "includes/post-types/class-bp-share-post-type-tracker.php:44 + includes/class-buddypress-share-activator.php",
+      "severity": "blocker"
+    },
+    {
+      "id": "B2",
+      "title": "Cron cleanup callback not wired",
+      "detail": "bp_share_weekly_cleanup cron event scheduled on activation (activator:289) but no add_action hooking Buddypress_Share_Activator::cleanup_orphaned_data to it. Cleanup never runs.",
+      "file": "includes/class-buddypress-share-activator.php:289-293",
+      "severity": "major"
+    },
+    {
+      "id": "B3",
+      "title": "Bluesky icon class invalid in FA 5",
+      "detail": "'fas fa-bluesky' does not exist in Font Awesome 5.15.4. Bluesky was added to FA 6.6+. The icon will render as nothing or blank on all installs.",
+      "files": ["public/class-buddypress-share-public.php:703", "includes/post-types/class-bp-share-post-type-settings.php:89"],
+      "severity": "major"
+    },
+    {
+      "id": "B4",
+      "title": "post-type AJAX uses wp_die(json_encode()) instead of wp_send_json_*",
+      "detail": "handle_ajax_share() uses wp_die(json_encode(...)) instead of wp_send_json_success/wp_send_json_error. Does not set JSON content-type header, breaks native WP AJAX JSON handling.",
+      "file": "includes/post-types/class-bp-share-post-type-controller.php:245-297",
+      "severity": "major"
+    },
+    {
+      "id": "B5",
+      "title": "User ID exposed in public share URLs",
+      "detail": "bps_uid (logged-in user ID) appended to every share link URL. Anyone who receives a share link can identify which user shared it. GDPR/privacy concern.",
+      "files": ["public/class-buddypress-share-public.php:765", "includes/post-types/class-bp-share-post-type-controller.php:452"],
+      "severity": "major"
+    },
+    {
+      "id": "B6",
+      "title": "uninstall.php contains no cleanup logic",
+      "detail": "uninstall.php only contains the WP_UNINSTALL_PLUGIN guard and nothing else. Custom tables, options, user meta, activity meta are all orphaned on uninstall. WordPress.org requires uninstall cleanup.",
+      "file": "uninstall.php",
+      "severity": "major"
+    },
+    {
+      "id": "B7",
+      "title": "get_option vs get_site_option inconsistency for bpas_icon_color_settings",
+      "detail": "Activator sets this via update_site_option. Admin reads via get_option. Public reads via get_option. This means on non-multisite the values match, but on multisite the activator sets it network-wide while the readers pull the site-level value. Inconsistent defaults on multisite.",
+      "files": ["includes/class-buddypress-share-activator.php:94", "admin/class-buddypress-share-admin.php:745", "public/class-buddypress-share-public.php:387"],
+      "severity": "minor"
+    },
+    {
+      "id": "B8",
+      "title": "CDN dependencies violate WordPress.org guidelines",
+      "detail": "Bootstrap 4.6.2 CSS/JS and Select2 4.1.0-rc.0 are loaded from cdnjs.cloudflare.com on every BP page. WordPress.org submission rules require all assets to be bundled locally. Site also breaks in air-gapped/offline environments.",
+      "files": ["public/class-buddypress-share-public.php:62-67"],
+      "severity": "major"
+    },
+    {
+      "id": "B9",
+      "title": "Version constant mismatch: CLAUDE.md says 2.1.0, plugin says 2.2.4",
+      "detail": "CLAUDE.md Quick Reference lists version 2.1.0 but buddypress-share.php header and BP_ACTIVITY_SHARE_PLUGIN_VERSION both declare 2.2.4. Documentation out of sync.",
+      "files": ["CLAUDE.md:5", "buddypress-share.php:16,32"],
+      "severity": "minor"
+    },
+    {
+      "id": "B10",
+      "title": "Post type sharing enabled by default (filter default true) without guard",
+      "detail": "init_post_type_sharing() calls BP_Share_Post_Type_Controller::get_instance() unconditionally (filter defaults to true). The subsystem activates even when the custom tables don't exist, causing silent DB failures on every post-type share attempt.",
+      "file": "includes/class-buddypress-share.php:313",
+      "severity": "major"
+    }
+  ]
+}
