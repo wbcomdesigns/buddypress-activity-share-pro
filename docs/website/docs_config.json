@@ -1,0 +1,32 @@
+{
+  "product_slug": "buddypress-activity-share-pro",
+  "product_name": "BuddyPress Activity Share Pro",
+  "short_id": "bpas",
+  "categories": [
+    {
+      "name": "User Guide",
+      "slug": "user-guide-bpas",
+      "folder": "user-guide",
+      "docs": [
+        {
+          "title": "Sharing Activities to Social Networks",
+          "slug": "sharing-to-social-networks-bpas",
+          "file": "user-guide/sharing-to-social-networks.md",
+          "order": 1
+        },
+        {
+          "title": "Resharing to Your Profile, a Group, or a Friend",
+          "slug": "resharing-internally-bpas",
+          "file": "user-guide/resharing-internally.md",
+          "order": 2
+        },
+        {
+          "title": "Supported Social Networks",
+          "slug": "supported-networks-bpas",
+          "file": "user-guide/supported-networks.md",
+          "order": 3
+        }
+      ]
+    }
+  ]
+}
