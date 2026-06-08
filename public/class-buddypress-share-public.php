@@ -1516,8 +1516,12 @@ class Buddypress_Share_Public {
 	 * @param    object $activity Activity object.
 	 * @return   string Modified content.
 	 */
-	public function bp_share_filter_read_more_activity_content( $content, $activity ) {
-		if ( ! wp_doing_ajax() || empty( $_REQUEST['action'] ) || $_REQUEST['action'] !== 'get_single_activity_content' ) { //phpcs:ignore
+	public function bp_share_filter_read_more_activity_content( $content, $activity = null ) {
+		// $activity is optional: some BuddyPress paths / sibling plugins apply
+		// `bp_get_activity_content_body` with only the content arg, which on PHP 8
+		// would otherwise fatal with ArgumentCountError. Bail unless we have a
+		// real activity object on the matching AJAX request.
+		if ( ! is_object( $activity ) || ! wp_doing_ajax() || empty( $_REQUEST['action'] ) || $_REQUEST['action'] !== 'get_single_activity_content' ) { //phpcs:ignore
 			return $content;
 		}
 
