@@ -53,6 +53,33 @@ class Buddypress_Share_Public {
 	private $cached_settings = null;
 
 	/**
+	 * Current nesting depth while rendering reshared activities.
+	 *
+	 * Reshare chains (a reshare of a reshare) can otherwise re-enter
+	 * bp_share_display_activity() through the bp_activity_entry_content hook
+	 * and recurse without bound, producing a PHP fatal error / stack overflow.
+	 * This counter hard-caps how deep nested originals are rendered.
+	 *
+	 * @since    2.3.0
+	 * @access   private
+	 * @var      int
+	 */
+	private static $reshare_render_depth = 0;
+
+	/**
+	 * Maximum reshare nesting levels rendered in the stream.
+	 *
+	 * 1 = render the immediate original beneath a reshare, but stop before
+	 * rendering an original that is itself a reshare. This is what users expect
+	 * and what prevents unbounded recursion on reshare-of-reshare chains.
+	 *
+	 * @since    2.3.0
+	 * @access   private
+	 * @var      int
+	 */
+	private static $reshare_max_depth = 1;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -1565,44 +1592,56 @@ class Buddypress_Share_Public {
 	 */
 	private function bp_share_display_activity( $activity_id, $display_mode ) {
 		global $activities_template;
-		
+
+		// Recursion guard. A reshare-of-a-reshare ("activity_share" whose
+		// original is also "activity_share") would otherwise re-enter this
+		// method through the bp_activity_entry_content hook and recurse without
+		// bound, fataling the page. Stop once we exceed the allowed nesting.
+		if ( self::$reshare_render_depth >= self::$reshare_max_depth ) {
+			return;
+		}
+
 		// Store the original template
 		$temp_activities_template = $activities_template;
-		
+
 		// Fetch the shared activity
 		$shared_activity = new BP_Activity_Activity( $activity_id );
-		
+
 		if ( empty( $shared_activity->id ) ) {
 			return;
 		}
-		
+
 		// Create minimal activities query for this specific activity
-		$args = array( 
+		$args = array(
 			'include'     => $activity_id,
 			'per_page'    => 1,
 			'show_hidden' => true
 		);
-		
+
 		if ( ! bp_has_activities( $args ) ) {
 			$activities_template = $temp_activities_template;
 			return;
 		}
-		
-		// Temporarily remove this function from the content hook if showing parent
-		if ( 'parent' === $display_mode ) {
-			remove_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
-		}
-		
+
+		++self::$reshare_render_depth;
+
+		// Detach this callback from the content hook for BOTH display modes
+		// while we render the nested original. The original may itself be an
+		// "activity_share" (a reshare chain); leaving the hook live would let
+		// it fire again inside this loop and recurse. The depth guard above is
+		// the hard cap; removing the hook is the clean, mode-independent guard.
+		remove_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
+
 		while ( bp_activities() ) {
 			bp_the_activity();
 			$this->bp_share_activity_container();
 		}
-		
-		// Restore filters and template
-		if ( 'parent' === $display_mode ) {
-			add_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
-		}
+
+		// Restore the hook and template.
+		add_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
 		$activities_template = $temp_activities_template;
+
+		--self::$reshare_render_depth;
 	}
 
 	/**
