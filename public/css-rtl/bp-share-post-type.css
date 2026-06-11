@@ -22,16 +22,19 @@
     --bp-share-gray-800: #1f2937;
     --bp-share-gray-900: #111827;
 
-    /* Primary (3-layer: brand → theme.json preset → hex fallback). */
-    --bp-share-primary: var(--wp--preset--color--primary, #2563eb);
-    --bp-share-primary-hover: var(--wp--preset--color--primary-dark, #1d4ed8);
+    /* Primary (host-theme adopt: BuddyX --bx-color-* → Reign --reign-* →
+       theme.json preset → hex fallback). */
+    --bp-share-primary: var(--bx-color-accent, var(--reign-colors-theme, var(--wp--preset--color--primary, #2563eb)));
+    --bp-share-primary-hover: var(--bx-color-link-hover, var(--reign-site-link-hover-color, var(--wp--preset--color--primary-dark, #1d4ed8)));
 
-    /* Semantic surfaces. */
-    --bp-share-bg: var(--wp--preset--color--base, var(--bp-share-white));
-    --bp-share-bg-secondary: var(--bp-share-gray-50);
-    --bp-share-text: var(--wp--preset--color--contrast, var(--bp-share-gray-800));
-    --bp-share-text-muted: var(--bp-share-gray-500);
-    --bp-share-border: var(--bp-share-gray-200);
+    /* Semantic surfaces — adopt the host theme (BuddyX → Reign → theme.json). */
+    --bp-share-bg: var(--bx-color-bg-page, var(--reign-site-body-bg-color, var(--wp--preset--color--base, var(--bp-share-white))));
+    --bp-share-bg-secondary: var(--bx-color-bg-subtle, var(--reign-site-secondary-bg-color, var(--bp-share-gray-50)));
+    --bp-share-surface: var(--bx-color-bg-elevated, var(--reign-site-sections-bg-color, var(--bp-share-white)));
+    --bp-share-text: var(--bx-color-fg, var(--reign-site-body-text-color, var(--wp--preset--color--contrast, var(--bp-share-gray-800))));
+    --bp-share-text-muted: var(--bx-color-fg-muted, var(--reign-site-alternate-text-color, var(--bp-share-gray-500)));
+    --bp-share-border: var(--bx-color-border, var(--reign-site-border-color, var(--bp-share-gray-200)));
+    --bp-share-link: var(--bx-color-link, var(--reign-site-link-color, var(--bp-share-primary)));
     --bp-share-shadow: rgba(0, 0, 0, 0.05);
     --bp-share-shadow-lg: rgba(0, 0, 0, 0.1);
 
@@ -58,21 +61,29 @@
     --bp-share-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dark mode via THEME BODY CLASS only (never prefers-color-scheme). */
+/* Dark mode via THEME BODY CLASS only (never prefers-color-scheme). Single
+   root override with EXPLICIT dark hex — the host-theme --bx- / --reign- chains
+   stay light on a generic toggle, so they are never re-chained in this block.
+   accent (--bp-share-primary) is intentionally left untouched. */
+html.dark-mode,
 body.dark-mode,
+body.dark-scheme,
+html.dark,
+body.dark,
+[data-theme="dark"],
+body.buddyx-dark-mode,
 body.bb-dark-mode,
 body.bx-dark-theme,
-body.buddyx-dark-mode,
-body.dark-theme,
-body.dark,
-body[data-theme="dark"] {
-    --bp-share-bg: var(--bp-share-gray-900);
-    --bp-share-bg-secondary: var(--bp-share-gray-800);
-    --bp-share-text: var(--bp-share-gray-100);
-    --bp-share-text-muted: var(--bp-share-gray-400);
-    --bp-share-border: var(--bp-share-gray-700);
-    --bp-share-shadow: rgba(0, 0, 0, 0.3);
-    --bp-share-shadow-lg: rgba(0, 0, 0, 0.5);
+body.dark-theme {
+    --bp-share-bg: #16191f;
+    --bp-share-bg-secondary: #262c3a;
+    --bp-share-surface: #1f2430;
+    --bp-share-text: #e4e4e7;
+    --bp-share-text-muted: #b4b4b8;
+    --bp-share-border: #3a4253;
+    --bp-share-link: #e4e4e7;
+    --bp-share-shadow: rgba(0, 0, 0, 0.4);
+    --bp-share-shadow-lg: rgba(0, 0, 0, 0.6);
 }
 
 /* ========================================
@@ -149,7 +160,7 @@ body[data-theme="dark"] {
     height: 50px;
     min-width: 50px;
     min-height: 50px;
-    background: var(--bp-share-bg);
+    background: var(--bp-share-surface);
     border: 1px solid var(--bp-share-border);
     border-radius: 30px;
     padding: 0;
@@ -241,7 +252,7 @@ body[data-theme="dark"] {
 }
 
 .bp-share-services-inner {
-    background: var(--bp-share-bg);
+    background: var(--bp-share-surface);
     border: 1px solid var(--bp-share-border);
     border-radius: var(--bp-share-radius-lg);
     box-shadow: 0 4px 12px var(--bp-share-shadow);
@@ -700,4 +711,5 @@ body[data-theme="dark"] {
         display: none;
     }
 }
+
 /*# sourceMappingURL=bp-share-post-type.css.map */

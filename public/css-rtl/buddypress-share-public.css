@@ -22,23 +22,29 @@
     --bp-share-gray-800: #1f2937;
     --bp-share-gray-900: #111827;
 
-    /* Primary brand color (3-layer: brand → theme.json preset → hex fallback). */
-    --bp-share-primary: var(--wp--preset--color--primary, #2563eb);
-    --bp-share-primary-hover: var(--wp--preset--color--primary-dark, #1d4ed8);
+    /* Primary brand color (host-theme adopt: BuddyX --bx-color-* → Reign
+       --reign-* → theme.json preset → hex fallback). */
+    --bp-share-primary: var(--bx-color-accent, var(--reign-colors-theme, var(--wp--preset--color--primary, #2563eb)));
+    --bp-share-primary-hover: var(--bx-color-link-hover, var(--reign-site-link-hover-color, var(--wp--preset--color--primary-dark, #1d4ed8)));
 
     /* Status colors */
     --bp-share-success: var(--wp--preset--color--success, #059669);
     --bp-share-danger: var(--wp--preset--color--danger, #dc2626);
 
-    /* Light theme (default) — semantic tokens bridge to theme.json presets. */
-    --bp-share-bg: var(--wp--preset--color--base, var(--bp-share-white));
-    --bp-share-bg-secondary: var(--bp-share-gray-50);
-    --bp-share-text: var(--wp--preset--color--contrast, var(--bp-share-gray-900));
-    --bp-share-text-muted: var(--bp-share-gray-600);
+    /* Light theme (default) — semantic tokens adopt the host theme
+       (BuddyX --bx-color-* → Reign --reign-* → theme.json → hex fallback). */
+    --bp-share-bg: var(--bx-color-bg-page, var(--reign-site-body-bg-color, var(--wp--preset--color--base, var(--bp-share-white))));
+    --bp-share-bg-secondary: var(--bx-color-bg-subtle, var(--reign-site-secondary-bg-color, var(--bp-share-gray-50)));
+    --bp-share-text: var(--bx-color-fg, var(--reign-site-body-text-color, var(--wp--preset--color--contrast, var(--bp-share-gray-900))));
+    --bp-share-text-muted: var(--bx-color-fg-muted, var(--reign-site-alternate-text-color, var(--bp-share-gray-600)));
     --bp-share-text-light: var(--bp-share-gray-400);
-    --bp-share-border: var(--bp-share-gray-200);
+    --bp-share-border: var(--bx-color-border, var(--reign-site-border-color, var(--bp-share-gray-200)));
     --bp-share-border-light: var(--bp-share-gray-100);
     --bp-share-border-focus: var(--bp-share-primary);
+    /* Elevated surface (modal / dropdown / card) — host-theme section bg. */
+    --bp-share-surface: var(--bx-color-bg-elevated, var(--reign-site-sections-bg-color, var(--bp-share-white)));
+    /* Hyperlink colour — host-theme link colour. */
+    --bp-share-link: var(--bx-color-link, var(--reign-site-link-color, var(--bp-share-primary)));
     --bp-share-shadow: rgba(0, 0, 0, 0.1);
     --bp-share-shadow-lg: rgba(0, 0, 0, 0.15);
     --bp-share-overlay: rgba(255, 255, 255, 0.95);
@@ -73,24 +79,33 @@
     --bp-share-transition: all 0.2s ease;
 }
 
-/* Dark mode via THEME BODY CLASS only (never prefers-color-scheme). Covers
-   every plugin surface — modal, share dropdown, and floating widget — by
-   scoping the token overrides to the body, not just .activity-share-modal. */
+/* Dark mode via THEME BODY CLASS only (never prefers-color-scheme). Single
+   root override that flips every plugin surface — modal, share dropdown, and
+   floating widget — by scoping the token swaps to the body, not per component.
+   Values are EXPLICIT dark hex: the host-theme --bx- / --reign- chains stay
+   light on a generic .dark-mode toggle, so they must never be re-chained here.
+   accent (--bp-share-primary) is intentionally left untouched. */
+html.dark-mode,
 body.dark-mode,
+body.dark-scheme,
+html.dark,
+body.dark,
+[data-theme="dark"],
+body.buddyx-dark-mode,
 body.bb-dark-mode,
 body.bx-dark-theme,
-body.buddyx-dark-mode,
-body.dark-theme,
-body.dark,
-body[data-theme="dark"] {
-    --bp-share-bg: var(--bp-share-gray-900);
-    --bp-share-bg-secondary: var(--bp-share-gray-800);
-    --bp-share-text: var(--bp-share-gray-100);
-    --bp-share-text-muted: var(--bp-share-gray-400);
-    --bp-share-text-light: var(--bp-share-gray-500);
-    --bp-share-border: var(--bp-share-gray-700);
-    --bp-share-border-light: var(--bp-share-gray-800);
-    --bp-share-shadow: rgba(0, 0, 0, 0.3);
+body.dark-theme {
+    --bp-share-bg: #16191f;
+    --bp-share-bg-secondary: #262c3a;
+    --bp-share-surface: #1f2430;
+    --bp-share-text: #e4e4e7;
+    --bp-share-text-muted: #b4b4b8;
+    --bp-share-text-light: #b4b4b8;
+    --bp-share-border: #3a4253;
+    --bp-share-border-light: #262c3a;
+    --bp-share-link: #e4e4e7;
+    --bp-share-shadow: rgba(0, 0, 0, 0.5);
+    --bp-share-shadow-lg: rgba(0, 0, 0, 0.6);
     --bp-share-overlay: rgba(0, 0, 0, 0.8);
 }
 
@@ -159,7 +174,7 @@ header .dropdown-item {
     border-radius: var(--bp-share-radius-lg);
     box-shadow: 0 10px 40px var(--bp-share-shadow-lg);
     border: 1px solid var(--bp-share-border);
-    background-color: var(--bp-share-bg);
+    background-color: var(--bp-share-surface);
     color: var(--bp-share-text);
     width: 100%;
     font-family: inherit;
@@ -716,7 +731,7 @@ body.admin-bar .activity-share-modal .modal-dialog {
     padding: 4px 0;
     border: 1px solid var(--bp-share-border);
     border-radius: var(--bp-share-radius-lg);
-    background-color: var(--bp-share-bg);
+    background-color: var(--bp-share-surface);
     box-shadow: 0 0.4rem 1.2rem var(--bp-share-shadow);
     opacity: 0;
     pointer-events: none;
@@ -1666,4 +1681,5 @@ body.modal-open .activity-share-modal {
         transition-duration: 0.01ms !important;
     }
 }
+
 /*# sourceMappingURL=buddypress-share-public.css.map */
