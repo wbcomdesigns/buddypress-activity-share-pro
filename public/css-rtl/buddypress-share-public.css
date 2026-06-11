@@ -917,6 +917,33 @@ body.admin-bar .activity-share-modal .modal-dialog {
     border-top: 1px solid var(--bp-share-border);
 }
 
+/* ===================================================================
+   CONFIGURED SHARE-BUTTON COLORS (Display tab → "Colors")
+   The --bp-share-btn-* custom properties are emitted inline on the
+   dropdown container ONLY when the admin has set a color (see
+   bp_share_get_color_css_vars()). Each rule falls back to the existing
+   design token, so unconfigured sites render exactly as before.
+   Shared --bp-share-btn-* contract with the post-type sharing widget.
+   =================================================================== */
+.bp-activity-share-dropdown-menu .bp-share-wrapper .button,
+.bp-activity-share-dropdown-menu .bp-share-wrapper a,
+.bp-activity-share-dropdown-menu .bp-share-wrapper span.bp-share-label,
+.bp-activity-share-dropdown-menu .bp-share-wrapper i {
+    color: var(--bp-share-btn-color, var(--bp-share-text));
+}
+
+.bp-activity-share-dropdown-menu .bp-share-wrapper {
+    background-color: var(--bp-share-btn-bg, transparent);
+    border: 1px solid var(--bp-share-btn-border, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .bp-activity-share-dropdown-menu .bp-share-wrapper:hover,
+    #buddypress .activity-list .bp-activity-share-dropdown-menu .bp-share-wrapper:hover {
+        background-color: var(--bp-share-btn-hover, var(--bp-share-bg-secondary));
+    }
+}
+
 /* Share Button Main Toggle */
 .bp-activity-share-dropdown-toggle a.dropdown-toggle {
     cursor: pointer;

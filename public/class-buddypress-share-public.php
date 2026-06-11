@@ -458,6 +458,10 @@ class Buddypress_Share_Public {
 
 		$icon_settings = isset( $settings['icon_settings'] ) ? $settings['icon_settings'] : array();
 		$style = isset( $icon_settings['icon_style'] ) ? $icon_settings['icon_style'] : 'circle';
+		// Emit the admin Display-tab colors as CSS custom properties on the
+		// dropdown container so the activity-stream share buttons honour them
+		// (same --bp-share-btn-* contract the post-type widget already uses).
+		$color_style = $this->bp_share_get_color_css_vars( $icon_settings );
 		?>
 
 		<div class="generic-button bp-activity-share-dropdown-toggle">
@@ -471,7 +475,7 @@ class Buddypress_Share_Public {
 				<?php endif; ?>
 			</a>
 
-			<div class="bp-activity-share-dropdown-menu activity-share-dropdown-menu-container <?php echo esc_attr( $activity_type . ' ' . $style ); ?>">
+			<div class="bp-activity-share-dropdown-menu activity-share-dropdown-menu-container <?php echo esc_attr( $activity_type . ' ' . $style ); ?>"<?php echo '' !== $color_style ? ' style="' . esc_attr( $color_style ) . '"' : ''; ?>>
 				<?php // Mobile bottom-drawer dismiss affordance (visible only at <=640px). ?>
 				<div class="bp-share-drawer-header">
 					<span class="bp-share-drawer-handle" aria-hidden="true"></span>
@@ -560,6 +564,53 @@ class Buddypress_Share_Public {
 		}
 	}
 
+
+	/**
+	 * Build the CSS custom-property declaration string for the configured
+	 * share-button colors (Display tab → "Colors").
+	 *
+	 * Mirrors the --bp-share-btn-* contract the post-type sharing widget uses
+	 * (includes/post-types/class-bp-share-post-type-frontend.php) so the same
+	 * admin settings drive both surfaces. Returns an empty string when no color
+	 * is configured, so the theme/token defaults remain untouched in that case.
+	 *
+	 * @since    2.3.0
+	 * @access   private
+	 * @param    array $icon_settings The bpas_icon_color_settings option value.
+	 * @return   string Inline style declarations (without the surrounding attribute), or ''.
+	 */
+	private function bp_share_get_color_css_vars( $icon_settings ) {
+		if ( ! is_array( $icon_settings ) ) {
+			return '';
+		}
+
+		$map = array(
+			'bg_color'     => '--bp-share-btn-bg',
+			'text_color'   => '--bp-share-btn-color',
+			'hover_color'  => '--bp-share-btn-hover',
+			'border_color' => '--bp-share-btn-border',
+		);
+
+		$style = '';
+		foreach ( $map as $setting_key => $css_var ) {
+			if ( ! empty( $icon_settings[ $setting_key ] ) ) {
+				$color = sanitize_hex_color( $icon_settings[ $setting_key ] );
+				if ( null === $color ) {
+					// Allow non-hex CSS color keywords/rgb() as a fallback while
+					// still rejecting anything with quotes/semicolons/braces.
+					$raw = trim( (string) $icon_settings[ $setting_key ] );
+					if ( '' !== $raw && ! preg_match( '/[;{}"\'<>]/', $raw ) ) {
+						$color = $raw;
+					}
+				}
+				if ( ! empty( $color ) ) {
+					$style .= $css_var . ':' . $color . ';';
+				}
+			}
+		}
+
+		return $style;
+	}
 
 	/**
 	 * Display social share service buttons.
