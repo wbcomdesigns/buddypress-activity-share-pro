@@ -681,18 +681,27 @@
          * Setup social sharing functionality
          */
         setupSocialSharing: function() {
-            // Apply the "open in popup window" affordance when the admin enabled it.
-            // (Previously an inline <script> in the PHP template — moved here in 2.3.0.)
-            if (typeof bp_activity_share_vars !== 'undefined' && bp_activity_share_vars.popup_active) {
-                $('.bp-share').not('#bp_whatsapp_share, #bp_email_share').addClass('has-popup');
-            }
-
-            $(document).on('click', '.bp-share.has-popup', (e) => {
-                const displayAttr = $(e.currentTarget).attr('attr-display');
-                if (displayAttr !== 'no-popup') {
-                    e.preventDefault();
-                    this.openSharePopup($(e.currentTarget).attr('href'));
+            // "Open links in a popup window" affordance. The decision is made at
+            // CLICK time via event delegation so it also covers .bp-share buttons
+            // injected later by BuddyPress/BuddyBoss AJAX (infinite scroll, etc.).
+            // A class stamped once at load time would miss those buttons, so we
+            // gate on the popup_active flag + stable per-button markers instead.
+            $(document).on('click', '.bp-share', (e) => {
+                const popupActive = (typeof bp_activity_share_vars !== 'undefined') && bp_activity_share_vars.popup_active;
+                if (!popupActive) {
+                    return;
                 }
+
+                const $target = $(e.currentTarget);
+
+                // WhatsApp and E-mail open in their own clients, and Copy Link is
+                // not a navigable share URL — never pop these into a window.
+                if ($target.is('#bp_whatsapp_share, #bp_email_share') || $target.attr('attr-display') === 'no-popup') {
+                    return;
+                }
+
+                e.preventDefault();
+                this.openSharePopup($target.attr('href'));
             });
         },
 
