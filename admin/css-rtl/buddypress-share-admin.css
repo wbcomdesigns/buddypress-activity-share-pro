@@ -1,10 +1,3 @@
-/*
- * RTL build of admin styles — generated for 2.3.0 (rtlcss-equivalent).
- * The source uses CSS logical properties (margin-inline-*, inset-inline-*)
- * which are already direction-aware; only the few physical offsets in the
- * toggle slider + hub-card arrow are flipped here.
- */
-
 /**
  * BuddyPress Activity Share — Admin Styles
  *
@@ -59,7 +52,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 .bpas-admin {
-	margin: 0 20px 0 0;
+	margin: 0 0 0 20px;
 	color: var(--bpas-admin-text);
 	font-size: 13px;
 	line-height: 1.5;
@@ -277,7 +270,7 @@
 }
 
 .bpas-snav-section-label {
-	margin: 8px 0 4px 10px;
+	margin: 8px 10px 4px 0;
 	font-size: 10px;
 	font-weight: 700;
 	text-transform: uppercase;
@@ -693,6 +686,29 @@
 	background: var(--bpas-admin-danger);
 	color: #fff;
 	border-color: var(--bpas-admin-danger);
+}
+
+/*
+ * Anchor buttons (<a class="bpas-btn …">) must keep their own text colour.
+ * The generic `.bpas-admin a` link rule (specificity 0,1,1) otherwise beats
+ * `.bpas-btn-primary` (0,1,0) and paints the label the accent colour —
+ * blue-on-blue / invisible on the primary button (Overview → Quick Actions).
+ * These anchor-scoped selectors (0,2,1) win cleanly without !important.
+ */
+.bpas-admin a.bpas-btn-primary,
+.bpas-admin a.bpas-btn-primary:hover,
+.bpas-admin a.bpas-btn-primary:focus {
+	color: #fff;
+}
+
+.bpas-admin a.bpas-btn-secondary,
+.bpas-admin a.bpas-btn-secondary:hover,
+.bpas-admin a.bpas-btn-secondary:focus {
+	color: var(--bpas-admin-text);
+}
+
+.bpas-admin a.bpas-btn-danger {
+	color: var(--bpas-admin-danger);
 }
 
 .bpas-btn:focus-visible {
@@ -1149,7 +1165,7 @@
 	margin: 0 0 18px;
 	font-size: 14px;
 	line-height: 1.5;
-	border-width: 0 0 0 4px;
+	border-width: 0 4px 0 0;
 	border-style: solid;
 }
 
@@ -1323,3 +1339,5 @@
 		align-items: flex-start;
 	}
 }
+
+/*# sourceMappingURL=buddypress-share-admin.css.map */

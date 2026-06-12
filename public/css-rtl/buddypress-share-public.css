@@ -70,6 +70,10 @@
     --bpas-inline-btn-bg: var(--bp-share-primary);
     --bpas-inline-btn-hover: var(--bp-share-primary-hover);
 
+    /* Baricon icon-chip tint + form focus ring (mode-aware tokens). */
+    --bpas-baricon-bg: rgba(0, 0, 0, 0.05);
+    --bp-share-focus-ring: rgba(37, 99, 235, 0.1);
+
     /* Spacing and sizing */
     --bp-share-radius: 6px;
     --bp-share-radius-lg: 8px;
@@ -107,6 +111,36 @@ body.dark-theme {
     --bp-share-shadow: rgba(0, 0, 0, 0.5);
     --bp-share-shadow-lg: rgba(0, 0, 0, 0.6);
     --bp-share-overlay: rgba(0, 0, 0, 0.8);
+}
+
+/* Reign 8.0.0 light/dark toggle (<html data-bx-mode="dark"> set by the theme;
+   "auto" follows the OS preference). The --reign-* chains in :root flip on
+   their own — Reign swaps the token VALUES under [data-bx-mode="dark"] — so
+   ONLY the plugin-local tokens with no host-theme chain are overridden here.
+   Re-stating the chained tokens (bg / surface / text / border / link) would
+   fight the buyer's per-palette Reign dark colors. */
+:root[data-bx-mode="dark"] {
+    --bp-share-text-light: #b4b4b8;
+    --bp-share-border-light: rgba(255, 255, 255, 0.08);
+    --bp-share-shadow: rgba(0, 0, 0, 0.5);
+    --bp-share-shadow-lg: rgba(0, 0, 0, 0.6);
+    --bp-share-overlay: rgba(0, 0, 0, 0.8);
+    --bpas-brand-neutral: #9ca3af;
+    --bpas-brand-blackwhite-fg: var(--bp-share-gray-200);
+    --bpas-baricon-bg: rgba(255, 255, 255, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root[data-bx-mode="auto"] {
+        --bp-share-text-light: #b4b4b8;
+        --bp-share-border-light: rgba(255, 255, 255, 0.08);
+        --bp-share-shadow: rgba(0, 0, 0, 0.5);
+        --bp-share-shadow-lg: rgba(0, 0, 0, 0.6);
+        --bp-share-overlay: rgba(0, 0, 0, 0.8);
+        --bpas-brand-neutral: #9ca3af;
+        --bpas-brand-blackwhite-fg: var(--bp-share-gray-200);
+        --bpas-baricon-bg: rgba(255, 255, 255, 0.08);
+    }
 }
 
 
@@ -388,7 +422,7 @@ header .dropdown-item {
 .bp-activity-share-filter #post-in:focus,
 .activity-share-modal .form-textarea textarea:focus {
     border-color: var(--bp-share-border-focus);
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 2px var(--bp-share-focus-ring);
     outline: none;
 }
 
@@ -1677,7 +1711,7 @@ body.modal-open .activity-share-modal {
         min-width: 50px;
         width: 50px;
         height: 50px;
-        background: rgba(0, 0, 0, .05);
+        background: var(--bpas-baricon-bg);
         border-radius: 100px;
         display: -webkit-box;
         display: -ms-flexbox;

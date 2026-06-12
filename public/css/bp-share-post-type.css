@@ -86,6 +86,23 @@ body.dark-theme {
     --bp-share-shadow-lg: rgba(0, 0, 0, 0.6);
 }
 
+/* Reign 8.0.0 light/dark toggle (<html data-bx-mode="dark">; "auto" follows
+   the OS preference). The --reign-* chains above flip on their own, so only
+   the plugin-local tokens with no host-theme chain are overridden here. */
+:root[data-bx-mode="dark"] {
+    --bp-share-shadow: rgba(0, 0, 0, 0.4);
+    --bp-share-shadow-lg: rgba(0, 0, 0, 0.6);
+    --bpas-brand-blackwhite-fg: var(--bp-share-gray-200);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root[data-bx-mode="auto"] {
+        --bp-share-shadow: rgba(0, 0, 0, 0.4);
+        --bp-share-shadow-lg: rgba(0, 0, 0, 0.6);
+        --bpas-brand-blackwhite-fg: var(--bp-share-gray-200);
+    }
+}
+
 /* ========================================
    Inline Icon Base (Lucide chrome + brand SVGs)
    ----------------------------------------
