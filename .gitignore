@@ -118,6 +118,11 @@ wp-cli.yml
 vendor/
 composer.phar
 
+# Bundled FRONTEND vendor libraries (Bootstrap + Select2) are shipped assets,
+# not Composer deps — keep them tracked despite the vendor/ rule above.
+!public/vendor/
+!public/vendor/**
+
 # Local development
 local-config.php
 .htaccess.local

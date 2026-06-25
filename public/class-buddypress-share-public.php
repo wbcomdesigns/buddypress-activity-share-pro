@@ -53,19 +53,31 @@ class Buddypress_Share_Public {
 	private $cached_settings = null;
 
 	/**
-	 * Modern CDN URLs for external libraries.
+	 * Current nesting depth while rendering reshared activities.
 	 *
-	 * @since    1.5.2
+	 * Reshare chains (a reshare of a reshare) can otherwise re-enter
+	 * bp_share_display_activity() through the bp_activity_entry_content hook
+	 * and recurse without bound, producing a PHP fatal error / stack overflow.
+	 * This counter hard-caps how deep nested originals are rendered.
+	 *
+	 * @since    2.3.0
 	 * @access   private
-	 * @var      array    CDN asset URLs.
+	 * @var      int
 	 */
-	const CDN_ASSETS = array(
-		'font_awesome' => 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
-		'bootstrap_css' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css',
-		'bootstrap_js' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js',
-		'select2_css' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css',
-		'select2_js' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js',
-	);
+	private static $reshare_render_depth = 0;
+
+	/**
+	 * Maximum reshare nesting levels rendered in the stream.
+	 *
+	 * 1 = render the immediate original beneath a reshare, but stop before
+	 * rendering an original that is itself a reshare. This is what users expect
+	 * and what prevents unbounded recursion on reshare-of-reshare chains.
+	 *
+	 * @since    2.3.0
+	 * @access   private
+	 * @var      int
+	 */
+	private static $reshare_max_depth = 1;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -93,74 +105,36 @@ class Buddypress_Share_Public {
 
 		$plugin_url = $this->get_plugin_url();
 
-		// Font Awesome 5.15.4 - Load only if not already loaded
-		if ( ! $this->is_fontawesome_loaded() ) {
-			// Use asset manager for icon library
-			if ( class_exists( 'Buddypress_Share_Assets' ) ) {
-				Buddypress_Share_Assets::enqueue_icon_library();
-			} else {
-				// Fallback to CDN if asset manager not available
-				$use_cdn = apply_filters( 'bp_share_use_cdn_assets', false );
-				if ( $use_cdn ) {
-					wp_enqueue_style( 
-						'bp-share-fontawesome', 
-						self::CDN_ASSETS['font_awesome'],
-						array(), 
-						'5.15.4', 
-						'all' 
-					);
-				} else {
-					// Use dashicons as ultimate fallback
-					wp_enqueue_style( 'dashicons' );
-				}
-			}
-		}
+		// Icons are now bundled as inline Lucide chrome SVGs + bundled brand
+		// SVGs (see bp_share_icon() / bp_share_brand_svg()). No Font Awesome,
+		// no icon-font, no CDN enqueue is needed on the frontend anymore.
 
-		// BuddyBoss theme compatibility - ensure Font Awesome loads
-		if ( function_exists( 'buddyboss_theme' ) || defined( 'BUDDYBOSS_THEME_VERSION' ) ) {
-			wp_enqueue_style( 
-				'bp-share-buddyboss-fa', 
-				'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css', //phpcs:ignore
-				array(), 
-				'5.15.4', 
-				'all' 
-			);
-		}
-
-		// Bootstrap CSS - Load only if not conflicting
+		// Bootstrap CSS - bundled locally (no CDN). Load only if not conflicting.
 		if ( ! $this->has_bootstrap_conflict() && ! wp_style_is( 'bootstrap', 'enqueued' ) ) {
-			wp_enqueue_style( 
-				'bp-share-bootstrap', 
-				self::CDN_ASSETS['bootstrap_css'],
-				array(), 
-				'4.6.2', 
-				'all' 
+			wp_enqueue_style(
+				'bp-share-bootstrap',
+				$plugin_url . 'public/vendor/bootstrap/css/bootstrap.min.css',
+				array(),
+				'4.6.2',
+				'all'
 			);
 		}
-		
-		// Select2 CSS - For enhanced dropdowns
-		wp_enqueue_style( 
-			'bp-share-select2', 
-			self::CDN_ASSETS['select2_css'],
-			array(), 
-			'4.1.0', 
-			'all' 
-		);
 
-		// Custom AS-Icons font with auto min/RTL support
-		bp_share_enqueue_style(
-			'bp-share-as-icons',
-			$plugin_url . 'public/css/as-icons', // Without .css
+		// Select2 CSS - bundled locally (no CDN).
+		wp_enqueue_style(
+			'bp-share-select2',
+			$plugin_url . 'public/vendor/select2/css/select2.min.css',
 			array(),
-			$this->version,
+			'4.1.0',
 			'all'
 		);
-		
-		// Main plugin CSS with auto min/RTL support
+
+		// Main plugin CSS with auto min/RTL support. The as-icons icon font was
+		// retired in 2.3.0 in favour of inline Lucide / brand SVGs.
 		bp_share_enqueue_style(
 			$this->plugin_name,
 			$plugin_url . 'public/css/buddypress-share-public', // Without .css
-			array( 'bp-share-as-icons' ),
+			array(),
 			$this->version,
 			'all'
 		);
@@ -183,24 +157,24 @@ class Buddypress_Share_Public {
 		// jQuery UI tooltip
 		wp_enqueue_script( 'jquery-ui-tooltip' );
 		
-		// Bootstrap JS - Load only if not conflicting
+		// Bootstrap JS - bundled locally (no CDN). Load only if not conflicting.
 		if ( ! $this->has_bootstrap_conflict() && ! wp_script_is( 'bootstrap', 'enqueued' ) ) {
-			wp_enqueue_script( 
-				'bp-share-bootstrap', 
-				self::CDN_ASSETS['bootstrap_js'],
-				array( 'jquery' ), 
-				'4.6.2', 
-				true 
+			wp_enqueue_script(
+				'bp-share-bootstrap',
+				$plugin_url . 'public/vendor/bootstrap/js/bootstrap.bundle.min.js',
+				array( 'jquery' ),
+				'4.6.2',
+				true
 			);
 		}
-		
-		// Select2 JS - For enhanced dropdowns
-		wp_enqueue_script( 
-			'bp-share-select2', 
-			self::CDN_ASSETS['select2_js'],
-			array( 'jquery' ), 
-			'4.1.0', 
-			true 
+
+		// Select2 JS - bundled locally (no CDN).
+		wp_enqueue_script(
+			'bp-share-select2',
+			$plugin_url . 'public/vendor/select2/js/select2.min.js',
+			array( 'jquery' ),
+			'4.1.0',
+			true
 		);
 		
 		// Main plugin script with auto minification
@@ -223,46 +197,6 @@ class Buddypress_Share_Public {
 		$this->localize_script();
 	}
 
-
-	/**
-	 * Check if Font Awesome is already loaded by other plugins/themes.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @return   bool True if Font Awesome is already loaded, false otherwise.
-	 */
-	private function is_fontawesome_loaded() {
-		global $wp_styles;
-		
-		if ( ! $wp_styles ) {
-			return false;
-		}
-
-		// Check for various Font Awesome handles including BuddyBoss
-		$fa_handles = array(
-			'font-awesome',
-			'fontawesome', 
-			'fa',
-			'font-awesome-5',
-			'fontawesome-5',
-			'font-awesome-6',
-			'fontawesome-6',
-			'wp-fontawesome',
-			'elementor-icons-fa-solid',
-			'elementor-icons-fa-brands',
-			'buddyboss-icons',
-			'buddyboss-fontawesome',
-			'buddyboss-theme-icons'
-		);
-
-		foreach ( $fa_handles as $handle ) {
-			if ( wp_style_is( $handle, 'enqueued' ) || wp_style_is( $handle, 'registered' ) ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	/**
 	 * Check for Bootstrap conflicts with other plugins/themes.
@@ -354,6 +288,8 @@ class Buddypress_Share_Public {
 	private function localize_script() {
 		$settings = $this->get_plugin_settings();
 		$reshare_share_activity = isset( $settings['reshare_settings']['reshare_share_activity'] ) ? $settings['reshare_settings']['reshare_share_activity'] : 'parent';
+		$extra_options          = isset( $settings['extra_options'] ) ? $settings['extra_options'] : array();
+		$popup_active           = isset( $extra_options['bp_share_services_open'] ) ? $extra_options['bp_share_services_open'] : '';
 
 		wp_localize_script(
 			$this->plugin_name,
@@ -364,6 +300,14 @@ class Buddypress_Share_Public {
 				'reshare_share_activity' => $reshare_share_activity,
 				'ajax_nonce'             => wp_create_nonce( 'bp-activity-share-nonce' ),
 				'member_profile_url'     => function_exists('bp_loggedin_user_domain') ? bp_loggedin_user_domain() . 'messages/compose/' : '',
+				// Whether the "open in popup window" behaviour is enabled (was an inline script).
+				'popup_active'           => ( 'on' === $popup_active ) ? 1 : 0,
+				// Translatable button labels (were hardcoded English in the JS).
+				'i18n'                   => array(
+					'post'    => __( 'Post', 'buddypress-share' ),
+					'sharing' => __( 'Sharing…', 'buddypress-share' ),
+					'close'   => __( 'Close', 'buddypress-share' ),
+				),
 			)
 		);
 	}
@@ -465,12 +409,15 @@ class Buddypress_Share_Public {
 		$share_count = $share_count ? $share_count : '';
 
 		global $activities_template;
-		
+
 		// Use cached plugin settings
 		$settings = $this->get_plugin_settings();
 		$social_service = isset( $settings['services'] ) ? $settings['services'] : array();
-		$extra_options = isset( $settings['extra_options'] ) ? $settings['extra_options'] : array();
 		$bp_reshare_settings = isset( $settings['reshare_settings'] ) ? $settings['reshare_settings'] : array();
+
+		// Whether the reshare count should be displayed. Default ON when the
+		// setting has never been saved, so existing behaviour is unchanged.
+		$show_share_count = ! array_key_exists( 'enable_share_count', $bp_reshare_settings ) || ! empty( $bp_reshare_settings['enable_share_count'] );
 		
 		$activity_type  = bp_share_get_activity_type();
 		
@@ -511,18 +458,31 @@ class Buddypress_Share_Public {
 
 		$icon_settings = isset( $settings['icon_settings'] ) ? $settings['icon_settings'] : array();
 		$style = isset( $icon_settings['icon_style'] ) ? $icon_settings['icon_style'] : 'circle';
+		// Emit the admin Display-tab colors as CSS custom properties on the
+		// dropdown container so the activity-stream share buttons honour them
+		// (same --bp-share-btn-* contract the post-type widget already uses).
+		$color_style = $this->bp_share_get_color_css_vars( $icon_settings );
 		?>
-	
+
 		<div class="generic-button bp-activity-share-dropdown-toggle">
 			<a class="button dropdown-toggle" rel="nofollow">
-				<span class="bp-activity-reshare-icon">	
-					<i class="as-icon as-icon-share-square"></i>
+				<span class="bp-activity-reshare-icon">
+					<?php bp_share_the_icon( 'share-2' ); ?>
 				</span>
 				<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
-				<span id="bp-activity-reshare-count-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html( $share_count ); ?></span>
+				<?php if ( $show_share_count ) : ?>
+					<span id="bp-activity-reshare-count-<?php echo esc_attr( bp_get_activity_id() ); ?>" class="reshare-count bp-activity-reshare-count"><?php echo esc_html( $share_count ); ?></span>
+				<?php endif; ?>
 			</a>
-			
-			<div class="bp-activity-share-dropdown-menu activity-share-dropdown-menu-container <?php echo esc_attr( $activity_type . ' ' . $style ); ?>">
+
+			<div class="bp-activity-share-dropdown-menu activity-share-dropdown-menu-container <?php echo esc_attr( $activity_type . ' ' . $style ); ?>"<?php echo '' !== $color_style ? ' style="' . esc_attr( $color_style ) . '"' : ''; ?>>
+				<?php // Mobile bottom-drawer dismiss affordance (visible only at <=640px). ?>
+				<div class="bp-share-drawer-header">
+					<span class="bp-share-drawer-handle" aria-hidden="true"></span>
+					<button type="button" class="bp-share-drawer-close" aria-label="<?php esc_attr_e( 'Close', 'buddypress-share' ); ?>">
+						<?php bp_share_the_icon( 'x' ); ?>
+					</button>
+				</div>
 				<?php if ( is_user_logged_in() ) : ?>
 					<?php $this->bp_share_user_services_button( $bp_reshare_settings ); ?>
 				<?php endif; ?>
@@ -543,10 +503,8 @@ class Buddypress_Share_Public {
 
 				<?php $this->bp_share_popup_overlay(); ?>
 			</div>
-			
-			<?php $this->bp_share_popup_script( $extra_options ); ?>
 		</div>
-		
+
 		<?php
 		if ( ! is_user_logged_in() ) {
 			echo '</div>';
@@ -561,6 +519,21 @@ class Buddypress_Share_Public {
 	 * @param    array $bp_reshare_settings Reshare settings.
 	 */
 	private function bp_share_user_services_button( $bp_reshare_settings ) {
+		// Hide the reshare affordance entirely when the current user does not
+		// meet the "who can reshare" capability gate (mirrors the AJAX guard).
+		if ( ! $this->current_user_can_reshare() ) {
+			return;
+		}
+
+		// Hide the reshare affordance on a member's own activity when
+		// "prevent self-share" is enabled (mirrors the AJAX-side guard).
+		if ( ! empty( $bp_reshare_settings['prevent_self_share'] )
+			&& function_exists( 'bp_get_activity_user_id' )
+			&& (int) bp_get_activity_user_id() === (int) get_current_user_id()
+		) {
+			return;
+		}
+
 		// Check if any reshare option is enabled
 		$reshare_enabled = false;
 		$reshare_types = array(
@@ -568,21 +541,21 @@ class Buddypress_Share_Public {
 			'disable_group_reshare_activity',
 			'disable_friends_reshare_activity'
 		);
-		
+
 		foreach ( $reshare_types as $type ) {
 			if ( ! isset( $bp_reshare_settings[ $type ] ) || ! $bp_reshare_settings[ $type ] ) {
 				$reshare_enabled = true;
 				break;
 			}
 		}
-		
+
 		// Render single reshare button if any option is enabled
 		if ( $reshare_enabled ) {
 			?>
 			<div class="bp-activity-share-btn bp-activity-reshare-btn" data-reshare="all" data-title="<?php esc_attr_e( 'Reshare Activity', 'buddypress-share' ); ?>">
 				<a class="button item-button bp-secondary-action bp-activity-share-button" data-toggle="modal" data-target="#activity-share-modal" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
-					<span class="bp-activity-reshare-icon">	
-						<i class="as-icon as-icon-share-square"></i>
+					<span class="bp-activity-reshare-icon">
+						<?php bp_share_the_icon( 'share-2' ); ?>
 					</span>
 					<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
 				</a>
@@ -591,6 +564,53 @@ class Buddypress_Share_Public {
 		}
 	}
 
+
+	/**
+	 * Build the CSS custom-property declaration string for the configured
+	 * share-button colors (Display tab → "Colors").
+	 *
+	 * Mirrors the --bp-share-btn-* contract the post-type sharing widget uses
+	 * (includes/post-types/class-bp-share-post-type-frontend.php) so the same
+	 * admin settings drive both surfaces. Returns an empty string when no color
+	 * is configured, so the theme/token defaults remain untouched in that case.
+	 *
+	 * @since    2.3.0
+	 * @access   private
+	 * @param    array $icon_settings The bpas_icon_color_settings option value.
+	 * @return   string Inline style declarations (without the surrounding attribute), or ''.
+	 */
+	private function bp_share_get_color_css_vars( $icon_settings ) {
+		if ( ! is_array( $icon_settings ) ) {
+			return '';
+		}
+
+		$map = array(
+			'bg_color'     => '--bp-share-btn-bg',
+			'text_color'   => '--bp-share-btn-color',
+			'hover_color'  => '--bp-share-btn-hover',
+			'border_color' => '--bp-share-btn-border',
+		);
+
+		$style = '';
+		foreach ( $map as $setting_key => $css_var ) {
+			if ( ! empty( $icon_settings[ $setting_key ] ) ) {
+				$color = sanitize_hex_color( $icon_settings[ $setting_key ] );
+				if ( null === $color ) {
+					// Allow non-hex CSS color keywords/rgb() as a fallback while
+					// still rejecting anything with quotes/semicolons/braces.
+					$raw = trim( (string) $icon_settings[ $setting_key ] );
+					if ( '' !== $raw && ! preg_match( '/[;{}"\'<>]/', $raw ) ) {
+						$color = $raw;
+					}
+				}
+				if ( ! empty( $color ) ) {
+					$style .= $css_var . ':' . $color . ';';
+				}
+			}
+		}
+
+		return $style;
+	}
 
 	/**
 	 * Display social share service buttons.
@@ -612,7 +632,7 @@ class Buddypress_Share_Public {
 				
 				$button_html = '<div class="bp-share-wrapper">';
 				$button_html .= '<a class="button bp-share" id="' . esc_attr( $button_id ) . '" href="' . esc_url( $details['url'] ) . '" target="_blank">';
-				$button_html .= '<i class="' . esc_attr( $details['icon'] ) . '"></i>';
+				$button_html .= bp_share_service_icon( $service );
 				$button_html .= '<span class="bp-share-label">' . esc_html( $details['label'] ) . '</span>';
 				$button_html .= '</a>';
 				$button_html .= '</div>';
@@ -635,7 +655,7 @@ class Buddypress_Share_Public {
 			$tracked_copy_link = $this->add_share_tracking_params( $activity_link, 'copy-link' );
 			echo '<div class="bp-share-wrapper bp-copy-wrapper">';
 			echo '<a class="button bp-share bp-copy" href="#" data-href="' . esc_attr( $tracked_copy_link ) . '" attr-display="no-popup">';
-			echo '<i class="fas fa-link"></i>';
+			echo bp_share_icon( 'link' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset.
 			echo '<span class="bp-share-label">' . esc_html__( 'Copy Link', 'buddypress-share' ) . '</span>';
 			echo '</a>';
 			echo '<span class="tooltiptext tooltip-hide">' . esc_attr__( 'Link Copied!', 'buddypress-share' ) . '</span>';
@@ -657,55 +677,58 @@ class Buddypress_Share_Public {
 		// Store original link for non-tracked services
 		$original_link = $activity_link;
 		
+		// The 'icon' value is the stable service slug; the rendered glyph comes
+		// from bp_share_service_icon() (bundled brand SVG or Lucide chrome icon).
+		// Font Awesome class strings were removed in 2.3.0.
 		$services = array(
 			'Facebook' => array(
 				'url'   => 'https://www.facebook.com/sharer.php?u=' . urlencode( $this->add_share_tracking_params( $activity_link, 'facebook' ) ),
-				'icon'  => 'fab fa-facebook-f',
+				'icon'  => 'facebook',
 				'label' => __( 'Facebook', 'buddypress-share' )
 			),
 			'X' => array(
 				'url'   => 'https://twitter.com/share?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'x-twitter' ) ) . '&text=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-twitter',
+				'icon'  => 'x',
 				'label' => __( 'X', 'buddypress-share' )
 			),
 			'LinkedIn' => array(
 				'url'   => 'http://www.linkedin.com/shareArticle?mini=true&url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'linkedin' ) ) . '&text=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-linkedin-in',
+				'icon'  => 'linkedin',
 				'label' => __( 'LinkedIn', 'buddypress-share' )
 			),
 			'Pinterest' => array(
 				'url'   => 'https://pinterest.com/pin/create/bookmarklet/?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'pinterest' ) ) . '&description=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-pinterest-p',
+				'icon'  => 'pinterest',
 				'label' => __( 'Pinterest', 'buddypress-share' )
 			),
 			'Reddit' => array(
 				'url'   => 'http://reddit.com/submit?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'reddit' ) ) . '&title=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-reddit-alien',
+				'icon'  => 'reddit',
 				'label' => __( 'Reddit', 'buddypress-share' )
 			),
 			'WordPress' => array(
 				'url'   => 'https://wordpress.com/wp-admin/press-this.php?u=' . urlencode( $this->add_share_tracking_params( $activity_link, 'wordpress' ) ) . '&t=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-wordpress',
+				'icon'  => 'wordpress',
 				'label' => __( 'WordPress', 'buddypress-share' )
 			),
 			'Pocket' => array(
 				'url'   => 'https://getpocket.com/save?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'pocket' ) ) . '&title=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-get-pocket',
+				'icon'  => 'pocket',
 				'label' => __( 'Pocket', 'buddypress-share' )
 			),
 			'Telegram' => array(
 				'url'   => 'https://t.me/share/url?url=' . urlencode( $this->add_share_tracking_params( $activity_link, 'telegram' ) ) . '&title=' . urlencode( $activity_title ),
-				'icon'  => 'fab fa-telegram-plane',
+				'icon'  => 'telegram',
 				'label' => __( 'Telegram', 'buddypress-share' )
 			),
 			'Bluesky' => array(
 				'url'   => 'https://bsky.app/intent/compose?text=' . urlencode( 'Check this out! ' . $activity_title . ' ' . $this->add_share_tracking_params( $activity_link, 'bluesky' ) ),
-				'icon'  => 'fas fa-bluesky',
+				'icon'  => 'bluesky',
 				'label' => __( 'Bluesky', 'buddypress-share' )
 			),
 			'WhatsApp' => array(
 				'url'   => 'https://wa.me/?text=' . urlencode( $this->add_share_tracking_params( $activity_link, 'whatsapp' ) ),
-				'icon'  => 'fab fa-whatsapp',
+				'icon'  => 'whatsapp',
 				'label' => __( 'WhatsApp', 'buddypress-share' )
 			),
 		);
@@ -722,7 +745,7 @@ class Buddypress_Share_Public {
 
 			$services['E-mail'] = array(
 				'url'   => 'mailto:?subject=' . rawurlencode( $email_subject ) . '&body=' . rawurlencode( $email_body ),
-				'icon'  => 'fas fa-envelope',
+				'icon'  => 'email',
 				'label' => __( 'E-mail', 'buddypress-share' )
 			);
 		}
@@ -749,18 +772,37 @@ class Buddypress_Share_Public {
 	 * @return   string URL with tracking parameters.
 	 */
 	private function add_share_tracking_params( $url, $service = '' ) {
+		// UTM tracking opt-out (P1-3). When the admin disables UTM tracking the
+		// share link is returned untouched — no utm_* and no bps_* params, so
+		// no user id leaks into shared URLs (GDPR). Default ON preserves the
+		// historical behaviour for sites that never saved the setting.
+		$extra_options = get_site_option( 'bp_share_services_extra', array() );
+		$utm_enabled   = ! array_key_exists( 'enable_utm_tracking', $extra_options ) || ! empty( $extra_options['enable_utm_tracking'] );
+		if ( ! $utm_enabled ) {
+			return $url;
+		}
+
+		// Custom campaign name (P2-7). Falls back to the historical default.
+		$campaign = '';
+		if ( isset( $extra_options['utm_campaign'] ) && '' !== trim( (string) $extra_options['utm_campaign'] ) ) {
+			$campaign = sanitize_text_field( $extra_options['utm_campaign'] );
+		}
+		if ( '' === $campaign ) {
+			$campaign = 'activity_share';
+		}
+
 		// Get current user ID (0 if not logged in)
 		$user_id = get_current_user_id();
-		
+
 		// Get current activity ID from the global template
 		global $activities_template;
 		$activity_id = isset( $activities_template->activity->id ) ? $activities_template->activity->id : 0;
-		
+
 		// Build tracking parameters
 		$tracking_params = array(
 			'utm_source'   => 'buddypress_share',
 			'utm_medium'   => 'social',
-			'utm_campaign' => 'activity_share',
+			'utm_campaign' => $campaign,
 			'bps_aid'      => $activity_id,  // BuddyPress Share Activity ID
 			'bps_uid'      => $user_id,      // BuddyPress Share User ID
 			'bps_time'     => time(),        // Timestamp for tracking
@@ -816,27 +858,6 @@ class Buddypress_Share_Public {
 		if ( in_array( $theme_name->template, $theme_support ) ) {
 			echo '<div class="bp-share-service-popup-overlay"></div>';
 		}
-	}
-
-	/**
-	 * Output activity share popup script.
-	 *
-	 * @since    1.5.2
-	 * @access   private
-	 * @param    array $extra_options Extra plugin options.
-	 */
-	private function bp_share_popup_script( $extra_options ) {
-		$popup_active = isset( $extra_options['bp_share_services_open'] ) ? $extra_options['bp_share_services_open'] : '';
-		?>
-		<script>
-			jQuery(document).ready(function() {
-				var popActive = '<?php echo esc_js( $popup_active ); ?>';
-				if (popActive === 'on') {
-					jQuery('.bp-share').not('#bp_whatsapp_share, #bp_email_share').addClass('has-popup');
-				}
-			});
-		</script>
-		<?php
 	}
 
 	/**
@@ -968,6 +989,14 @@ class Buddypress_Share_Public {
 			wp_send_json_error( array( 'message' => __( 'User not logged in.', 'buddypress-share' ) ) );
 		}
 
+		// Enforce the "who can reshare" capability gate (P2-5). When an admin
+		// has set a minimum capability, a user lacking it cannot create a
+		// reshare. Default (empty) means any logged-in member may reshare, so
+		// existing behaviour is unchanged.
+		if ( ! $this->current_user_can_reshare() ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission to reshare activity.', 'buddypress-share' ) ) );
+		}
+
 		// Validate and sanitize input
 		$user_id = get_current_user_id();
 		$activity_id = absint( $_POST['activity_id'] ?? 0 );
@@ -983,6 +1012,16 @@ class Buddypress_Share_Public {
 		$allowed_types = array( 'activity_share', 'post_share' );
 		if ( ! in_array( $activity_type, $allowed_types, true ) ) {
 			wp_send_json_error( array( 'message' => __( 'Invalid activity type.', 'buddypress-share' ) ) );
+		}
+
+		// Enforce "prevent self-share": block a user from resharing their own
+		// activity when the setting is enabled. Applies to activity reshares
+		// only; post shares are not authored within the activity stream.
+		if ( 'activity_share' === $activity_type && $this->is_self_share( $user_id, $activity_id ) ) {
+			$reshare_settings = get_site_option( 'bp_reshare_settings', array() );
+			if ( ! empty( $reshare_settings['prevent_self_share'] ) ) {
+				wp_send_json_error( array( 'message' => __( 'You cannot reshare your own activity.', 'buddypress-share' ) ) );
+			}
 		}
 
 		// Handle different share destinations
@@ -1114,6 +1153,68 @@ class Buddypress_Share_Public {
 	}
 
 	/**
+	 * Determine whether the given user is the author of the given activity.
+	 *
+	 * Used to enforce the "prevent self-share" setting and to hide the reshare
+	 * affordance on a member's own activity.
+	 *
+	 * @since    2.3.0
+	 * @access   private
+	 * @param    int $user_id     The acting user ID.
+	 * @param    int $activity_id The original activity ID being reshared.
+	 * @return   bool True when the user authored the activity.
+	 */
+	private function is_self_share( $user_id, $activity_id ) {
+		if ( ! $user_id || ! $activity_id || ! function_exists( 'bp_activity_get_specific' ) ) {
+			return false;
+		}
+
+		$activity = bp_activity_get_specific( array( 'activity_ids' => array( $activity_id ) ) );
+		if ( empty( $activity['activities'][0] ) ) {
+			return false;
+		}
+
+		return (int) $activity['activities'][0]->user_id === (int) $user_id;
+	}
+
+	/**
+	 * Determine whether the current user is permitted to reshare.
+	 *
+	 * Reads the "minimum capability to reshare" admin setting
+	 * (`bp_reshare_settings['min_reshare_capability']`). An empty value means
+	 * any logged-in member may reshare (the historical default), so existing
+	 * sites are unaffected. When a capability is set, the user must have it.
+	 *
+	 * @since    2.3.0
+	 * @access   private
+	 * @return   bool True when the current user may reshare.
+	 */
+	private function current_user_can_reshare() {
+		if ( ! is_user_logged_in() ) {
+			return false;
+		}
+
+		$reshare_settings = get_site_option( 'bp_reshare_settings', array() );
+		$min_cap          = isset( $reshare_settings['min_reshare_capability'] ) ? (string) $reshare_settings['min_reshare_capability'] : '';
+
+		// No restriction configured: any logged-in member may reshare.
+		if ( '' === $min_cap ) {
+			$can = true;
+		} else {
+			$can = current_user_can( $min_cap );
+		}
+
+		/**
+		 * Filter whether the current user may reshare activity.
+		 *
+		 * @since 2.3.0
+		 * @param bool   $can     Whether the user may reshare.
+		 * @param string $min_cap The configured minimum capability ('' = none).
+		 */
+		return (bool) apply_filters( 'bp_share_user_can_reshare', $can, $min_cap );
+	}
+
+	/**
 	 * Create share activity.
 	 *
 	 * @since    1.5.2
@@ -1144,7 +1245,24 @@ class Buddypress_Share_Public {
 				$activity_args['hide_sitewide'] = true;
 			}
 		}
-		
+
+		// Respect privacy: when enabled, the reshare must never be more visible
+		// than the activity it reshares. If the original activity is hidden from
+		// the sitewide stream, the reshare inherits that visibility so private
+		// content cannot be surfaced to a public profile. This only ever
+		// tightens visibility — it never relaxes the group rule above.
+		if ( 'activity_share' === $activity_type ) {
+			$reshare_settings = get_site_option( 'bp_reshare_settings', array() );
+			$respect_privacy  = ! array_key_exists( 'respect_privacy', $reshare_settings ) || ! empty( $reshare_settings['respect_privacy'] );
+
+			if ( $respect_privacy && function_exists( 'bp_activity_get_specific' ) ) {
+				$original = bp_activity_get_specific( array( 'activity_ids' => array( $activity_id ) ) );
+				if ( ! empty( $original['activities'][0] ) && ! empty( $original['activities'][0]->hide_sitewide ) ) {
+					$activity_args['hide_sitewide'] = true;
+				}
+			}
+		}
+
 		// Add the activity
 		$new_activity_id = bp_activity_add( $activity_args );
 		
@@ -1429,8 +1547,8 @@ class Buddypress_Share_Public {
 			   data-bs-target="#activity-share-modal" 
 			   data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" 
 			   rel="nofollow">
-				<span class="bp-activity-reshare-icon">	
-					<i class="as-icon as-icon-share-square"></i>
+				<span class="bp-activity-reshare-icon">
+					<?php bp_share_the_icon( 'share-2' ); ?>
 				</span>
 				<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
 				<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() ); ?>" class="reshare-count bp-post-reshare-count"><?php echo esc_html( $share_count ); ?></span>
@@ -1476,8 +1594,12 @@ class Buddypress_Share_Public {
 	 * @param    object $activity Activity object.
 	 * @return   string Modified content.
 	 */
-	public function bp_share_filter_read_more_activity_content( $content, $activity ) {
-		if ( ! wp_doing_ajax() || empty( $_REQUEST['action'] ) || $_REQUEST['action'] !== 'get_single_activity_content' ) { //phpcs:ignore
+	public function bp_share_filter_read_more_activity_content( $content, $activity = null ) {
+		// $activity is optional: some BuddyPress paths / sibling plugins apply
+		// `bp_get_activity_content_body` with only the content arg, which on PHP 8
+		// would otherwise fatal with ArgumentCountError. Bail unless we have a
+		// real activity object on the matching AJAX request.
+		if ( ! is_object( $activity ) || ! wp_doing_ajax() || empty( $_REQUEST['action'] ) || $_REQUEST['action'] !== 'get_single_activity_content' ) { //phpcs:ignore
 			return $content;
 		}
 
@@ -1521,44 +1643,56 @@ class Buddypress_Share_Public {
 	 */
 	private function bp_share_display_activity( $activity_id, $display_mode ) {
 		global $activities_template;
-		
+
+		// Recursion guard. A reshare-of-a-reshare ("activity_share" whose
+		// original is also "activity_share") would otherwise re-enter this
+		// method through the bp_activity_entry_content hook and recurse without
+		// bound, fataling the page. Stop once we exceed the allowed nesting.
+		if ( self::$reshare_render_depth >= self::$reshare_max_depth ) {
+			return;
+		}
+
 		// Store the original template
 		$temp_activities_template = $activities_template;
-		
+
 		// Fetch the shared activity
 		$shared_activity = new BP_Activity_Activity( $activity_id );
-		
+
 		if ( empty( $shared_activity->id ) ) {
 			return;
 		}
-		
+
 		// Create minimal activities query for this specific activity
-		$args = array( 
+		$args = array(
 			'include'     => $activity_id,
 			'per_page'    => 1,
 			'show_hidden' => true
 		);
-		
+
 		if ( ! bp_has_activities( $args ) ) {
 			$activities_template = $temp_activities_template;
 			return;
 		}
-		
-		// Temporarily remove this function from the content hook if showing parent
-		if ( 'parent' === $display_mode ) {
-			remove_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
-		}
-		
+
+		++self::$reshare_render_depth;
+
+		// Detach this callback from the content hook for BOTH display modes
+		// while we render the nested original. The original may itself be an
+		// "activity_share" (a reshare chain); leaving the hook live would let
+		// it fire again inside this loop and recurse. The depth guard above is
+		// the hard cap; removing the hook is the clean, mode-independent guard.
+		remove_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
+
 		while ( bp_activities() ) {
 			bp_the_activity();
 			$this->bp_share_activity_container();
 		}
-		
-		// Restore filters and template
-		if ( 'parent' === $display_mode ) {
-			add_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
-		}
+
+		// Restore the hook and template.
+		add_action( 'bp_activity_entry_content', array( $this, 'bp_activity_share_entry_content' ) );
 		$activities_template = $temp_activities_template;
+
+		--self::$reshare_render_depth;
 	}
 
 	/**
@@ -1664,16 +1798,17 @@ class Buddypress_Share_Public {
 		do_action( 'bp_activity_share_before_post_meta' );
 
 		// Post date
-		printf( 
-			'<span class="link date-links"><i class="as-icon-calendar"></i><a href="%s">%s</a></span>', 
-			esc_url( get_month_link( get_the_time( 'Y', $post ), get_the_time( 'm', $post ) ) ), 
-			get_the_date( '', $post )
+		printf(
+			'<span class="link date-links">%1$s<a href="%2$s">%3$s</a></span>',
+			bp_share_icon( 'calendar' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset.
+			esc_url( get_month_link( get_the_time( 'Y', $post ), get_the_time( 'm', $post ) ) ),
+			esc_html( get_the_date( '', $post ) )
 		);
 
 		// Categories
 		$categories_list = get_the_category_list( esc_html__( ', ', 'buddypress-share' ), '', $post->ID );
 		if ( $categories_list ) {
-			printf( '<span class="link cat-links"><i class="as-icon-folder"></i>%s</span>', $categories_list ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			printf( '<span class="link cat-links">%1$s%2$s</span>', bp_share_icon( 'folder' ), $categories_list ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 
 		// After post meta action
@@ -1711,8 +1846,8 @@ class Buddypress_Share_Public {
 					<!-- Close button with proper Bootstrap 4 attributes -->
 					<div class="modal-header">
 						<h5 class="modal-title" id="activity-share-modal-title"><?php esc_html_e( 'Share Activity', 'buddypress-share' ); ?></h5>
-						<button type="button" class="close activity-share-modal-close" data-dismiss="modal" aria-label="Close">
-							<i class="as-icon as-icon-times"></i>
+						<button type="button" class="close activity-share-modal-close" data-dismiss="modal" aria-label="<?php esc_attr_e( 'Close', 'buddypress-share' ); ?>">
+							<?php bp_share_the_icon( 'x' ); ?>
 						</button>
 					</div>
 					
@@ -1731,9 +1866,11 @@ class Buddypress_Share_Public {
 							<div class="bp-activity-share-filter">
 								<div class="form-item">
 									<div class="form-select">
-										<label for="post-in"><?php esc_html_e( 'Post in', 'buddypress-share' ); ?></label>
-										<!-- Select2 dropdown with proper initialization -->
-										<select id="post-in" name="postIn" class="bp-share-select2" style="width: 100%;">
+										<label id="post-in-label" for="post-in"><?php esc_html_e( 'Post in', 'buddypress-share' ); ?></label>
+										<!-- Select2 replaces the native select and reassigns its id, so the
+										     <label for> link breaks. aria-labelledby keeps the accessible
+										     name attached to the visible label on the Select2 widget too. -->
+										<select id="post-in" name="postIn" class="bp-share-select2" style="width: 100%;" aria-labelledby="post-in-label" aria-label="<?php esc_attr_e( 'Post in', 'buddypress-share' ); ?>">
 											<option value="0"><?php esc_html_e( 'My Profile', 'buddypress-share' ); ?></option>
 											<?php if ( bp_is_active( 'groups' ) && empty( $bp_reshare_settings['disable_group_reshare_activity'] ) ) : ?>
 												<optgroup label="<?php esc_attr_e( 'Groups', 'buddypress-share' ); ?>" id="bp-share-groups-options">
@@ -1774,54 +1911,11 @@ class Buddypress_Share_Public {
 				</div>
 			</div>
 		</div>
-
-		<!-- Modal and Select2 initialization script -->
-		<script type="text/javascript">
-		jQuery(document).ready(function($) {
-			// Fix Bootstrap modal initialization
-			if (typeof $.fn.modal !== 'undefined') {
-				// Ensure modal is properly initialized
-				$('#activity-share-modal').modal({
-					show: false,
-					backdrop: true,
-					keyboard: true
-				});
-			}
-
-			// Fix Select2 initialization
-			if (typeof $.fn.select2 !== 'undefined') {
-				// Initialize Select2 with proper configuration
-				$('#post-in').select2({
-					dropdownParent: $('#activity-share-modal'),
-					placeholder: 'Select where to share...',
-					allowClear: false,
-					minimumResultsForSearch: 10,
-					width: '100%'
-				});
-			}
-
-			// Fix close button functionality
-			$(document).on('click', '.activity-share-modal-close, .bp-activity-share-close', function(e) {
-				e.preventDefault();
-				$('#activity-share-modal').modal('hide');
-			});
-
-			// Fix backdrop click to close
-			$('#activity-share-modal').on('click', function(e) {
-				if (e.target === this) {
-					$(this).modal('hide');
-				}
-			});
-
-			// Fix ESC key to close
-			$(document).on('keydown', function(e) {
-				if (e.keyCode === 27 && $('#activity-share-modal').hasClass('show')) {
-					$('#activity-share-modal').modal('hide');
-				}
-			});
-		});
-		</script>
 		<?php
+		// Modal init, Select2 binding, close / backdrop / ESC handling all live in
+		// public/js/buddypress-share-public.js (enqueued). The previous inline
+		// <script> here duplicated that logic and caused a double-initialisation;
+		// it was removed in 2.3.0.
 	}
 
 	/**
@@ -1944,8 +2038,8 @@ class Buddypress_Share_Public {
 			   data-bs-target="#activity-share-modal" 
 			   data-post-id="<?php echo esc_attr( get_the_ID() ); ?>" 
 			   rel="nofollow">
-				<span class="bp-activity-reshare-icon">	
-					<i class="as-icon as-icon-share-square"></i>
+				<span class="bp-activity-reshare-icon">
+					<?php bp_share_the_icon( 'share-2' ); ?>
 				</span>
 				<span class="bp-share-text"><?php esc_html_e( 'Share', 'buddypress-share' ); ?></span>
 				<span id="bp-activity-reshare-count-<?php echo esc_attr( get_the_ID() ); ?>" class="reshare-count bp-post-reshare-count"><?php echo esc_html( $share_count ); ?></span>

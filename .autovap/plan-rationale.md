@@ -1,57 +1,59 @@
-# AutoVAP Planner Rationale — buddypress-activity-share-pro (docs-first takeover, batch 2)
+# AutoVAP Plan Rationale — Admin UX Revamp + First-Run Onboarding
 
-## Feasibility verdict: GO — confidence 0.9
+**Target:** buddypress-activity-share-pro 2.2.4 → 2.3.0
+**Spine:** `docs/ADMIN_UX_REVAMP_PLAN.md` (approved). This manifest serializes plan §14 into autovap waves.
+**HOW lives in skills/refs** — `wp-plugin-development/references/wbcom-wrapper-migration.md` (Parts 0–18) + `ux-foundation`. Not restated here.
 
-- Valid plugin structure (PHP boilerplate pattern, Loader-based hook registration), text domain `buddypress-share`, version 2.2.4.
-- Work type (docs conversion) is fully supported: no source edits, read-only audit + write only under `docs/website/`, `FEATURES.json`, and audit ledgers. Zero build-pipeline dependency (Grunt is for asset minification, irrelevant to docs).
-- Scope is sane and naturally phased: audit -> verify -> scaffold -> evidence.
-- The docs corpus is rich (4,103 lines across 9 loose `.md` files + an `architecture/` subtree) and there is NO `docs/website/`, so batch-2 (raw convert) is exactly the right batch.
+## Feasibility
 
-Confidence is below 1.0 only because of one large, confirmed drift (the phantom REST namespace) plus stale version/voice across guides — all handled by making wave 2 the inaccuracy-finder before any rewrite.
+**Verdict: GO. Confidence 0.85.**
 
-## Contract verification — every entry is grep-verified against EXECUTABLE PHP
+- Structure valid: WP Plugin Boilerplate layout, PHP present, recognizable admin/includes/public split.
+- Work type supported: UX-only chrome migration with three live reference implementations on the same machine (contact-me 1.5.0, Sticky Post 2.3.7, Auto Friends 1.8.2). Build pipeline (Grunt: uglify/cssmin/rtlcss/wp-i18n) is ready for the CSS/JS/RTL work.
+- Scope sane: refactor (move markup into views), not a rewrite. The field logic and persistence stay put.
+- No DB schema change — the two custom tables are untouched and pinned as contracts.
+- The one elevated risk (the split-scope option, below) is contained to a Wave-0 decision + a contract pin, not a blocker. Hence GO, not DEFER.
 
-Grep was restricted to `admin/ includes/ public/ buddypress-share.php` and visually confirmed to be executed code (not heredoc, not rendered admin-page text, not a code-sample string, not inside `docs/`). Counts:
+## Wave-0 inventory findings (recorded here so the build relies on them)
 
-- **Actions: 20** — e.g. `bp_share_post_shared` (includes/post-types/class-bp-share-post-type-tracker.php:153), `bp_share_after_create_reshare` (public/class-buddypress-share-public.php:1058), full tracker family (class-buddypress-share-tracker.php:107-340).
-- **Filters: 27** — e.g. `bp_share_available_services` (admin/class-buddypress-share-admin.php:991), `bp_share_post_type_whitelist` (includes/post-types/class-bp-share-post-type-settings.php:428), `bp_share_services_config` (public/...:739), `bp_share_tracking_parameters` (public/...:785). `wbcom_submenu_label` lives in the shared-admin loader; kept because it is executable and customer-relevant for the shared dashboard.
-- **Options: 11** — registered via `register_setting` (`bp_share_services_enable`, `bp_share_services_logout_enable`, `bp_share_services_extra`, `bp_share_services_serialized`, `bp_reshare_settings`, `bpas_icon_color_settings` at admin/...:846-852) plus get/update_(site_)option keys (`bp_share_services`, `bp_share_services_old`, `bp_share_plugin_version`, `bp_share_db_version`, `bp_share_install_date`). Note the site_option duplication for multisite is intentional.
-- **DB tables: 2** — `{prefix}bp_share_post_tracking` and `{prefix}bp_share_post_type_settings`, both via `dbDelta` with full `CREATE TABLE` at includes/post-types/class-bp-share-post-type-tracker.php:68-102. Columns transcribed verbatim from the SQL.
-- **Shortcode: 1** — `bp_activity_post_reshare`, registered at includes/class-buddypress-share.php:257 via the loader. The brackets form is `[bp_activity_post_reshare]`. (CLAUDE.md already states this correctly.)
-- **AJAX: 9 actions** (5 logical handlers) — `wss_social_icons`, `wss_social_remove_icons`, `bp_activity_create_reshare_ajax`, `bp_share_get_activity_content`, `bp_get_user_share_options`, plus public/nopriv pairs `bp_share_post` and `bp_share_track_external`. AJAX is not a schema contract type, so it is documented as developer-guide content rather than a `contracts` block, but it is part of the audited surface for wave 1.
+1. **EDD licensing is NOT active → License tab is OUT.** No `edd_*` actions, no license `register_setting`. Update delivery uses Yahnis Elsts plugin-update-checker (PUC v5), not EDD. The only artifact is a legacy option key `bp_activity_share_plugin_license_key` that the uninstaller cleans up — preserved in contracts, no UI. So the gate-6 carve-out for `plugin_updater_detected` does not apply here; PCP on the built zip should be clean of licensing detections.
 
-### Display-text / phantom-surface traps caught (the batch-1 lesson)
+2. **`bpas_icon_color_settings` is SPLIT-SCOPE in current code — this is the §12.9 sentinel case.** It is *written* with `update_site_option` (activator, line ~101) and the Settings API group `bpas_icon_color_settings`, but *read* with `get_option` in three places (admin render line ~745, post-type frontend, public class). On single-site these alias to the same row so it "works"; on multisite the read may miss the network-wide write. **The UX release must preserve current behavior byte-for-byte — do NOT silently switch read/write to a single scope.** Any scope reconciliation is a data-behavior change and ships in a separate release with a migration. The settings-display extraction (2.2) must keep the exact `get_option`/`update_site_option` calls it inherits, and the round-trip journey (`settings-roundtrip-multisite`) explicitly asserts the read-back is unchanged. Flagged to the owner as the single thing I was unsure about.
 
-- **`bp-share/v1` REST namespace is FICTION.** `register_rest_route` returns ZERO hits anywhere in the repo (including non-code paths). `COMPLETE-DEVELOPER-GUIDE.md` lines 535-563 document five endpoints — `GET /statistics/{activity_id}`, `POST /track`, `POST /reshare`, `GET /services`, `GET /users/{user_id}/shares` — none of which exist as executable code. The ONLY real REST surface is the `bp_rest_activity_prepare_value` filter (includes/class-buddypress-share.php:260) embedding a `bp_activity_share_count` field into BuddyPress's existing activity response. The manifest therefore declares NO `rest_routes` contract; the rewrite (wave 3) must describe only the field embed, and the `dev-rest-claims-honest` journey enforces it.
-- `apply_filters( 'active_plugins' )` (buddypress-share.php:71) is a READ of WordPress core's filter, not a surface this plugin provides — excluded from contracts.
-- `apply_filters( 'bb_get_messages_compose_url' )` (buddyboss compat) is a BuddyBoss-owned filter being read — excluded as a provided surface.
+3. **`bp_share_services_serialized` is registered under the `bp_share_general_settings` group** (`sanitize_text_field`), not a standalone `option` as plan §5's "hidden field" row implies. Both the group and the key are pinned; the networks-tab extraction (2.1) must keep the hidden field inside the general-settings form so the serialize state still saves.
 
-## Top drift risks (for wave 2 to confirm; code findings -> Basecamp, never fixed here)
+4. **Menu split confirmed.** `add_options_page('buddypress-share', …)` is the fallback (only when `Wbcom_Shared_Loader` is absent); every tab link + the activation redirect target `admin.php?page=wbcom-buddypress-share`. Wave 1.2 unifies to one `wbcomplugins` submenu and registers an alias so both legacy slugs resolve (journey `old-bookmark-resolves`). No `class-wbcom-integration.php` file exists in the repo grep — the `wbcom-buddypress-share` slug is registered by the shared `Wbcom_Shared_Loader`/hub; 1.2 must read where that registration happens before deciding canonical vs. alias (spine §6 open item).
 
-1. **Phantom REST API** (highest). Whole `bp-share/v1` section is aspirational. Either it was planned and cut, or copy-pasted from another plugin. Decision in wave 2: relabel as roadmap or delete; raise a Basecamp card if the endpoints were intended to ship.
-2. **Stale version stamps.** Guides say "Last Updated: Version 2.0.0"; plugin is 2.2.4; the repo `CLAUDE.md` Quick Reference says 2.1.0 (its own header is stale vs the plugin file). All three disagree.
-3. **Hook coverage gap.** `CLAUDE.md` advertises a "Most Used" hook subset and omits the entire tracker action family (`bp_share_internal_share_tracked`, `bp_share_external_share_tracked`, `bp_share_user_stats_updated`, etc.). The developer guide must reference the full grep-verified set, not the curated subset.
-4. **AJAX endpoint table** in CLAUDE.md is close but auth labels need re-checking against the actual `nopriv` registrations (only `bp_share_post` and `bp_share_track_external` have nopriv variants).
-5. **Two overlapping guide pairs** (`USER-GUIDE` vs `COMPLETE-USER-GUIDE`, `DEVELOPER-GUIDE` vs `COMPLETE-DEVELOPER-GUIDE`) — fold-in must pick one canonical source per topic and not double-document.
+5. **No `register_rest_route`** — the only REST surface is the `bp_rest_activity_prepare_value` filter (already in contracts.filters). No route contract needed.
 
-## Stability annotations (noted, not acted on — docs run)
+## Contracts = the hard guarantee
 
-- IP-address tracking in `bp_share_post_tracking` plus `bp_share_anonymize_ip` / `bp_share_disable_ip_tracking` filters: the docs must state the privacy/GDPR posture accurately. Flag-only.
-- Rate limiting (`bp_share_rate_limit`, default 20/hr) and anonymous sharing (`bp_share_allow_anonymous_sharing`) are real and must be documented with correct defaults.
-- CDN/minified asset filters (`bp_share_use_cdn_assets`, `bp_share_use_minified_assets`) appear in three files; document once in the developer guide.
+`migrations: []` is intentional and matches the non-negotiable hard contract: zero renames of option keys/groups, `wp_ajax_*` actions (incl. `wss_social_icons` / `wss_social_remove_icons`), nonces, meta keys (`share_count`, `shared_activity_id`, `bp_share_user_stats`, `bp_share_activity_stats`, `_bp_share_visits`), cron hook (`bp_share_weekly_cleanup`), or `do_action`/`apply_filters` names. The contract block was seeded entirely from the grep inventory, not the docs, so the engine diffs against reality. Any breach is a HARD HALT and the owner's call — a slave must never re-plan around it.
+
+Icons stay **Dashicons, not Lucide** (ux-foundation Rule 5 migration exception; matches the migrated siblings). The `ux-audit` gate's default "Lucide icons" assertion is a known, accepted deviation for this migration — noted so a reviewer doesn't treat it as a failure.
+
+## Stability annotations (enterprise scale)
+
+- **Overview stats (3.1)** is the only data-read surface. Must use `COUNT(*)`-style aggregates against `bp_share_post_tracking` (it has `idx_post_shares`, `idx_user_shares`, `idx_date_shares` — counts are indexed), cached in a transient invalidated on share write. Carries the `database` skill for this reason. No unbounded `SELECT *` over share rows.
+- Services list (≤12) and post-type list (bounded by registered public types) are not scale risks.
+- All async surfaces (Overview, onboarding) must handle empty/error/loading.
 
 ## Why the waves are ordered this way
 
-- **Wave 1 (audit)** establishes ground truth with file:line evidence before any claim is trusted. Read-only `audit` journey; writes only to `audit/`. No journeys gate it.
-- **Wave 2 (verify)** diffs the loose guides against wave-1 truth and records fold-in decisions + Basecamp-card candidates. Per the hard rule, NO doc-accuracy journeys gate this wave — its purpose is to surface inaccuracies, so gating it on accuracy would be circular.
-- **Wave 3 (scaffold)** writes `docs/website/` folding in only verified content. Doc-accuracy journeys (`owner-settings-doc-matches-ui`, `owner-post-type-sharing-doc`, `dev-hooks-match-code`, `dev-rest-claims-honest`) gate from here. Direction 3.2 depends_on 3.1 so `docs_config.json` exists before the developer-guide section is appended to it. Scopes are disjoint (getting-started/user-guide vs developer-guide).
-- **Wave 4 (FEATURES.json)** is built from the wave-1/wave-2 evidence and re-gated by the hook + REST honesty journeys so no fictional feature leaks into the evidence file.
+Maps the 9-phase ordering onto plan §14:
+- **Wave 0 (inventory)** is a read-only `audit`-journey pre-pass — the regression net + the two go/no-go decisions above. Single direction (no parallelism by design).
+- **Wave 1 (shell+menu)** is the foundation: shell/tokens (1.1, CSS+view files) and menu/hub/alias (1.2, admin class + main file) have disjoint scope and run in parallel. 1.2 retains the legacy admin class for sanitizers + the two service AJAX handlers (playbook Part 3).
+- **Wave 2 (view extraction)** splits one direction per view file plus one for the router method (2.6 owns the admin class alone). All scopes disjoint — five views + one class file, no overlap. This is where the round-trip and drag-drop journeys gate.
+- **Wave 3 (overview+onboarding)** needs the router live, so it depends on Wave 2. 3.1 (overview view) and 3.2 (onboarding view + activator) are disjoint.
+- **Wave 4 (JS)** touches only admin JS — isolated, runs after the views/handlers exist so the `[data-bpas-confirm]`-yields-to-`data-action` rule (playbook §11.1) can be verified against real buttons.
+- **Wave 5 (polish/release)** four disjoint scopes: RTL/CSS (5.1), drop-CDN in includes+public (5.2), copy/privacy in views (5.3), version/docs (5.4). The frontend-regression + round-trip + bookmark journeys gate the release. `buddypress-share.php` appears in 1.2 and 5.4 but in different waves, so there is no same-wave scope overlap.
 
-## Functional gate target
+## Worktree isolation
 
-All journeys target the support docker site `http://localhost:8080` (`local_wp_site: support-reference-wp (docker)`), set in the target block. No Local WP site is used.
+Parallel directions within Waves 1, 2, 3, and 5 touch admin files; each implementer runs in its own worktree (engine default). Wave 2 is the densest — six directions — but each owns exactly one file, so merges are clean.
 
-## Contracts I was unsure about
+## Gate mapping (plan §12 → manifest)
 
-- `bp_share_user_services` (public:542) and `bp_activity_share_before/after_post_meta` (public:1664/1680) are real `do_action` calls but lightly documented; included as actions, flagged for wave-2 to confirm they are stable extension points vs internal.
-- `bp_share_services_serialized` is registered via `register_setting` but I did not find a corresponding read; included as a contract (it is a registered option) but flagged as a possible orphaned-write candidate for a Basecamp card.
+- Per-direction static: `php-lint`, `wpcs` everywhere; `ux-audit` on every view/CSS/JS direction; `wiring` (= `/action-audit` + `wppqa_check_wiring_completeness` + REST/JS contract) on every direction that moves a handler, form, or button. The template-variable contract check (the `$bcm_tabs`-vs-`$tabs` blank-sidebar bug) and `wppqa_check_plugin_dev_rules` ride inside the `wpcs`/`wiring`/`qa-suite` recipes — not restated.
+- Per-wave functional: `browser-smoke` (Journey coverage at 390/1280) + `qa-suite` (includes `wppqa_audit_plugin`, a11y, database, template + template-contract, enum-consistency). The builtin `contract` gate runs at every wave integration and enforces the option/hook/meta/cron pins above.
+- PCP on the **built zip**, README↔header version match, and the multisite settings round-trip are covered by Wave-5 functional gates + the version-bump direction (5.4).

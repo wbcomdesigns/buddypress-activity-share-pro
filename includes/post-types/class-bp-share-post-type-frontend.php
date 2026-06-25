@@ -71,20 +71,14 @@ class BP_Share_Post_Type_Frontend {
 		     data-post-id="<?php echo esc_attr( $post_id ); ?>" 
 		     data-post-type="<?php echo esc_attr( $post_type ); ?>">
 			
-			<div class="bp-share-toggle">
+			<button type="button" class="bp-share-toggle" aria-expanded="false" aria-label="<?php esc_attr_e( 'Share this post', 'buddypress-share' ); ?>">
 				<span class="bp-share-icon">
-					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<circle cx="18" cy="5" r="3"></circle>
-						<circle cx="6" cy="12" r="3"></circle>
-						<circle cx="18" cy="19" r="3"></circle>
-						<line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-						<line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-					</svg>
+					<?php bp_share_the_icon( 'share-2' ); ?>
 				</span>
 				<?php if ( $share_count > 0 ) : ?>
 					<span class="bp-share-count"><?php echo esc_html( $this->format_count( $share_count ) ); ?></span>
 				<?php endif; ?>
-			</div>
+			</button>
 			
 			<div class="bp-share-services">
 				<div class="bp-share-services-inner">
@@ -101,7 +95,7 @@ class BP_Share_Post_Type_Frontend {
 						   target="_blank"
 						   rel="noopener noreferrer"
 						   <?php endif; ?>>
-							<i class="<?php echo esc_attr( $service['icon'] ); ?>"></i>
+							<?php echo bp_share_service_icon( $service_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset. ?>
 							<span class="service-name"><?php echo esc_html( $service['name'] ); ?></span>
 						</a>
 					<?php endforeach; ?>
@@ -145,6 +139,7 @@ class BP_Share_Post_Type_Frontend {
 		$bg_color = isset( $icon_settings['bg_color'] ) ? $icon_settings['bg_color'] : '#667eea';
 		$text_color = isset( $icon_settings['text_color'] ) ? $icon_settings['text_color'] : '#ffffff';
 		$hover_color = isset( $icon_settings['hover_color'] ) ? $icon_settings['hover_color'] : '#5a6fd8';
+		$border_color = ! empty( $icon_settings['border_color'] ) ? $icon_settings['border_color'] : '';
 		$icon_style = isset( $icon_settings['icon_style'] ) ? $icon_settings['icon_style'] : 'circle';
 		
 		$wrapper_classes = array(
@@ -163,6 +158,9 @@ class BP_Share_Post_Type_Frontend {
 		$wrapper_style .= '--bp-share-btn-bg:' . esc_attr( $bg_color ) . ';';
 		$wrapper_style .= '--bp-share-btn-color:' . esc_attr( $text_color ) . ';';
 		$wrapper_style .= '--bp-share-btn-hover:' . esc_attr( $hover_color ) . ';';
+		if ( $border_color ) {
+			$wrapper_style .= '--bp-share-btn-border:' . esc_attr( $border_color ) . ';';
+		}
 		
 		// Apply border-radius based on icon style
 		if ( 'circle' === $icon_style ) {
@@ -202,7 +200,7 @@ class BP_Share_Post_Type_Frontend {
 					   target="_blank" 
 					   rel="noopener noreferrer"
 					   <?php endif; ?>>
-						<i class="<?php echo esc_attr( $service['icon'] ); ?>"></i>
+						<?php echo bp_share_service_icon( $service_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset. ?>
 						<?php if ( $args['show_labels'] ) : ?>
 							<span class="button-label"><?php echo esc_html( $service['name'] ); ?></span>
 						<?php endif; ?>
@@ -275,7 +273,7 @@ class BP_Share_Post_Type_Frontend {
 		   target="_blank" 
 		   rel="noopener noreferrer"
 		   <?php endif; ?>>
-			<i class="<?php echo esc_attr( $service_info['icon'] ); ?>"></i>
+			<?php echo bp_share_service_icon( $service ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset. ?>
 			<?php if ( $args['show_label'] ) : ?>
 				<span class="bp-share-label"><?php echo esc_html( $service_info['name'] ); ?></span>
 			<?php endif; ?>

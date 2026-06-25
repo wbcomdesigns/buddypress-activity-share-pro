@@ -23,7 +23,7 @@ $post_types = $settings->get_valid_post_types();
 <div class="bp-share-post-type-settings">
 	<h2><?php esc_html_e( 'Post Type Sharing Settings', 'buddypress-share' ); ?></h2>
 	
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=wbcom-buddypress-share&section=post-types' ) ); ?>" id="bp-share-post-type-form">
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin.php?page=buddypress-share&tab=post-types' ) ); ?>" id="bp-share-post-type-form">
 		<?php wp_nonce_field( 'bp_share_post_type_settings', 'bp_share_nonce' ); ?>
 		<input type="hidden" name="action" value="save_post_type_settings" />
 		

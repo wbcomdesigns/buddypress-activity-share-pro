@@ -5,7 +5,7 @@ Donate link: https://wbcomdesigns.com
 Tags: buddypress, activity, share, social, reshare
 Requires at least: 5.0
 Tested up to: 6.9
-Stable tag: 2.2.4
+Stable tag: 2.3.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -54,6 +54,12 @@ If you need additional help, contact us for [Custom Development](https://wbcomde
 Yes, this plugin requires the  BuddyPress plugin.
 
 == Changelog ==
+
+= 2.3.0 - June 2026 =
+* New      - Refreshed the admin settings screen with a cleaner card-based layout and a left-hand menu, so everything is easier to find.
+* New      - Added a quick setup guide that appears the first time you activate the plugin to help you get started fast. It only shows once, and existing sites never see it.
+* New      - Added an Overview page with at-a-glance sharing stats and quick links to the most-used settings.
+* Improve  - All your existing settings, networks, colors, and restrictions are kept exactly as they were.
 
 = 2.2.4 - June 2026 =
 * Fix      - Re-share modal no longer appears unintentionally on pages across the site outside activity streams.

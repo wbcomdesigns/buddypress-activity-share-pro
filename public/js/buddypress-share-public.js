@@ -100,6 +100,23 @@
             $(document).on('click', SELECTORS.popupOverlay, this.closeDropdown.bind(this));
             $('body').on('mouseup', this.handleOutsideClick.bind(this));
             $(document).on('click', '.bp-share-activity-share-to-wrapper .bp-share', this.handleShareButtonClick.bind(this));
+
+            // Mobile bottom-drawer dismiss (visible close button / drag handle).
+            $(document).on('click', '.bp-share-drawer-close, .bp-share-drawer-handle', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const $dropdown = $(e.currentTarget).closest(SELECTORS.shareDropdown);
+                $dropdown.removeClass('selected');
+                $dropdown.find(SELECTORS.serviceButtons).hide();
+                $('body').removeClass('bp-share-popup-active');
+            });
+
+            // ESC closes the open dropdown / drawer.
+            $(document).on('keydown', (e) => {
+                if (e.key === 'Escape' || e.keyCode === 27) {
+                    $(SELECTORS.shareDropdown + '.selected').removeClass('selected');
+                }
+            });
         },
 
         handleDropdownToggle: function(e) {
@@ -542,12 +559,28 @@
 
         bpShareButtonLoading: function() {
             const $button = $('.bp-activity-share-activity');
-            $button.prop('disabled', true).text('Sharing...');
+            $button.prop('disabled', true).text(this.i18n('sharing', 'Sharing…'));
         },
 
         bpShareButtonReset: function() {
             const $button = $('.bp-activity-share-activity');
-            $button.prop('disabled', false).text('Post');
+            $button.prop('disabled', false).text(this.i18n('post', 'Post'));
+        },
+
+        /**
+         * Resolve a localized UI string (falls back to the English default).
+         *
+         * @param {string} key      Key under bp_activity_share_vars.i18n.
+         * @param {string} fallback Default English string.
+         * @return {string} The translated (or fallback) string.
+         */
+        i18n: function(key, fallback) {
+            if (typeof bp_activity_share_vars !== 'undefined' &&
+                bp_activity_share_vars.i18n &&
+                bp_activity_share_vars.i18n[key]) {
+                return bp_activity_share_vars.i18n[key];
+            }
+            return fallback;
         },
 
         handleShareSuccess: function(activityId, data) {
@@ -648,12 +681,27 @@
          * Setup social sharing functionality
          */
         setupSocialSharing: function() {
-            $(document).on('click', '.bp-share.has-popup', (e) => {
-                const displayAttr = $(e.currentTarget).attr('attr-display');
-                if (displayAttr !== 'no-popup') {
-                    e.preventDefault();
-                    this.openSharePopup($(e.currentTarget).attr('href'));
+            // "Open links in a popup window" affordance. The decision is made at
+            // CLICK time via event delegation so it also covers .bp-share buttons
+            // injected later by BuddyPress/BuddyBoss AJAX (infinite scroll, etc.).
+            // A class stamped once at load time would miss those buttons, so we
+            // gate on the popup_active flag + stable per-button markers instead.
+            $(document).on('click', '.bp-share', (e) => {
+                const popupActive = (typeof bp_activity_share_vars !== 'undefined') && bp_activity_share_vars.popup_active;
+                if (!popupActive) {
+                    return;
                 }
+
+                const $target = $(e.currentTarget);
+
+                // WhatsApp and E-mail open in their own clients, and Copy Link is
+                // not a navigable share URL — never pop these into a window.
+                if ($target.is('#bp_whatsapp_share, #bp_email_share') || $target.attr('attr-display') === 'no-popup') {
+                    return;
+                }
+
+                e.preventDefault();
+                this.openSharePopup($target.attr('href'));
             });
         },
 
