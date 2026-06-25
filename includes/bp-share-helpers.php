@@ -212,14 +212,16 @@ function bp_share_apply_svg_attrs( $svg, $icon_class = 'bpas-icon', $label = '' 
  */
 function bp_share_lucide_icons() {
 	return array(
-		'share-2'  => 'share-2',
-		'share'    => 'share',
-		'x'        => 'x',
-		'calendar' => 'calendar',
-		'folder'   => 'folder',
-		'mail'     => 'mail',
-		'link'     => 'link',
-		'printer'  => 'printer',
+		'share-2'       => 'share-2',
+		'share'         => 'share',
+		'x'             => 'x',
+		'calendar'      => 'calendar',
+		'folder'        => 'folder',
+		'mail'          => 'mail',
+		'link'          => 'link',
+		'printer'       => 'printer',
+		'chevron-right' => 'chevron-right',
+		'check'         => 'check',
 	);
 }
 

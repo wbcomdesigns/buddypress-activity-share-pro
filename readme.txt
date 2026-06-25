@@ -56,10 +56,27 @@ Yes, this plugin requires the  BuddyPress plugin.
 == Changelog ==
 
 = 2.3.0 - June 2026 =
+
+Admin redesign, a refreshed sharing experience, dark mode, and important stability fixes.
+
 * New      - Refreshed the admin settings screen with a cleaner card-based layout and a left-hand menu, so everything is easier to find.
 * New      - Added a quick setup guide that appears the first time you activate the plugin to help you get started fast. It only shows once, and existing sites never see it.
 * New      - Added an Overview page with at-a-glance sharing stats and quick links to the most-used settings.
+* New      - Reshare notifications let members know when someone reshares their activity.
+* New      - Reshare analytics show how often content is reshared across your community.
+* New      - Added controls to limit who can reshare by role, cap how often a member can reshare, and add campaign tags to reshared links.
+* New      - Activated several previously inactive settings: share count display, prevent self-sharing, respect activity privacy, share-button border color, and friends-only resharing.
+* Improve  - Redesigned the activity share menu with compact rows, larger icons, a clear divider between resharing and social networks, and visible keyboard focus.
+* Improve  - Refreshed the sharing icons for a cleaner, more consistent look across the activity stream.
+* Improve  - Added dark mode support and alignment with the latest BuddyX and Reign theme styles.
+* Improve  - Share button colors set on the Display tab now also apply to the buttons in the activity stream.
+* Improve  - Bundled the supporting script libraries with the plugin so the sharing UI loads without any external request.
+* Improve  - Better accessibility and right-to-left language support across the sharing UI.
 * Improve  - All your existing settings, networks, colors, and restrictions are kept exactly as they were.
+* Fix      - Resolved a fatal error that could occur when an activity was reshared repeatedly in a chain.
+* Fix      - The share popup now opens correctly for activities that load as you scroll the stream.
+* Fix      - Resolved a PHP 8 error in the activity content filter.
+* Fix      - Fixed an invisible label on the Overview primary button caused by matching text and background colors.
 
 = 2.2.4 - June 2026 =
 * Fix      - Re-share modal no longer appears unintentionally on pages across the site outside activity streams.

@@ -39,12 +39,12 @@ $bpas_get_overview_stats = static function () {
 	// Confirm the table exists before counting (fresh installs may not have it yet).
 	$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 	if ( $exists === $table ) {
-		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 		$stats['total'] = (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$table}`" );
 		$stats['today'] = (int) $wpdb->get_var(
 			$wpdb->prepare( "SELECT COUNT(*) FROM `{$table}` WHERE shared_at >= %s", gmdate( 'Y-m-d 00:00:00' ) )
 		);
-		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 	}
 
 	set_transient( 'bpas_overview_stats', $stats, 5 * MINUTE_IN_SECONDS );

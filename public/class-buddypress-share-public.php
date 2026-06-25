@@ -138,6 +138,16 @@ class Buddypress_Share_Public {
 			$this->version,
 			'all'
 		);
+
+		// Share-menu component (2.3.0 clean-room, fully namespaced under .bpas-sm).
+		// Self-contained so the host theme cannot restyle the menu's internals.
+		bp_share_enqueue_style(
+			$this->plugin_name . '-menu',
+			$plugin_url . 'public/css/bpas-share-menu', // Without .css
+			array( $this->plugin_name ),
+			$this->version,
+			'all'
+		);
 	}
 
 	/**
@@ -475,22 +485,26 @@ class Buddypress_Share_Public {
 				<?php endif; ?>
 			</a>
 
-			<div class="bp-activity-share-dropdown-menu activity-share-dropdown-menu-container <?php echo esc_attr( $activity_type . ' ' . $style ); ?>"<?php echo '' !== $color_style ? ' style="' . esc_attr( $color_style ) . '"' : ''; ?>>
-				<?php // Mobile bottom-drawer dismiss affordance (visible only at <=640px). ?>
-				<div class="bp-share-drawer-header">
-					<span class="bp-share-drawer-handle" aria-hidden="true"></span>
-					<button type="button" class="bp-share-drawer-close" aria-label="<?php esc_attr_e( 'Close', 'buddypress-share' ); ?>">
+			<div class="bp-activity-share-dropdown-menu activity-share-dropdown-menu-container bpas-sm <?php echo esc_attr( $activity_type . ' ' . $style ); ?>">
+				<?php // Mobile bottom-sheet header: drag handle, title, dismiss (visible only at <=640px). ?>
+				<div class="bp-share-drawer-header bpas-sm__sheet-header">
+					<span class="bp-share-drawer-handle bpas-sm__handle" aria-hidden="true"></span>
+					<span class="bpas-sm__sheet-title"><?php esc_html_e( 'Share this post', 'buddypress-share' ); ?></span>
+					<button type="button" class="bp-share-drawer-close bpas-sm__close" aria-label="<?php esc_attr_e( 'Close', 'buddypress-share' ); ?>">
 						<?php bp_share_the_icon( 'x' ); ?>
 					</button>
 				</div>
 				<?php if ( is_user_logged_in() ) : ?>
 					<?php $this->bp_share_user_services_button( $bp_reshare_settings ); ?>
 				<?php endif; ?>
-				
+
 				<?php if ( isset( $settings['services_enable'] ) && $settings['services_enable'] ) : ?>
 					<div class="bp-share-activity-share-to-wrapper">
 						<?php
 						if ( ! empty( $social_service ) ) {
+							?>
+							<span class="bp-share-group-label bpas-sm__label"><?php esc_html_e( 'Share to', 'buddypress-share' ); ?></span>
+							<?php
 							$this->bp_share_social_buttons( $activity_link, $activity_title, $mail_subject, $social_service );
 						} else {
 							esc_html_e( 'Please enable share services!', 'buddypress-share' );
@@ -551,13 +565,23 @@ class Buddypress_Share_Public {
 
 		// Render single reshare button if any option is enabled
 		if ( $reshare_enabled ) {
+			$reshare_count = function_exists( 'bp_activity_get_meta' ) ? bp_activity_get_meta( bp_get_activity_id(), 'share_count', true ) : '';
 			?>
-			<div class="bp-activity-share-btn bp-activity-reshare-btn" data-reshare="all" data-title="<?php esc_attr_e( 'Reshare Activity', 'buddypress-share' ); ?>">
+			<div class="bp-activity-share-btn bp-activity-reshare-btn bpas-sm__hero" data-reshare="all" data-title="<?php esc_attr_e( 'Reshare Activity', 'buddypress-share' ); ?>">
 				<a class="button item-button bp-secondary-action bp-activity-share-button" data-toggle="modal" data-target="#activity-share-modal" data-bs-toggle="modal" data-bs-target="#activity-share-modal" data-activity-id="<?php echo esc_attr( bp_get_activity_id() ); ?>" rel="nofollow">
-					<span class="bp-activity-reshare-icon">
+					<span class="bp-activity-reshare-icon bpas-sm__hero-badge">
 						<?php bp_share_the_icon( 'share-2' ); ?>
 					</span>
-					<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
+					<span class="bpas-sm__hero-text">
+						<span class="bpas-sm__hero-title">
+							<span class="bp-share-text bp-share-label"><?php esc_html_e( 'Reshare', 'buddypress-share' ); ?></span>
+							<?php if ( ! empty( $reshare_count ) ) : ?>
+								<span class="bpas-sm__hero-count"><?php echo esc_html( $reshare_count ); ?></span>
+							<?php endif; ?>
+						</span>
+						<span class="bpas-sm__hero-desc"><?php esc_html_e( 'Repost to your community', 'buddypress-share' ); ?></span>
+					</span>
+					<span class="bpas-sm__hero-chev" aria-hidden="true"><?php bp_share_the_icon( 'chevron-right' ); ?></span>
 				</a>
 			</div>
 			<?php
@@ -629,11 +653,12 @@ class Buddypress_Share_Public {
 			if ( ! empty( $social_service[ $service ] ) ) {
 				$service_key = ( 'E-mail' === $service ) ? 'Email' : $service;
 				$button_id = "bp_" . strtolower( str_replace( '-', '_', $service_key ) ) . "_share";
-				
-				$button_html = '<div class="bp-share-wrapper">';
+				$badge_mod = $this->bp_share_badge_modifier( $service );
+
+				$button_html = '<div class="bp-share-wrapper bpas-sm__row">';
 				$button_html .= '<a class="button bp-share" id="' . esc_attr( $button_id ) . '" href="' . esc_url( $details['url'] ) . '" target="_blank">';
-				$button_html .= bp_share_service_icon( $service );
-				$button_html .= '<span class="bp-share-label">' . esc_html( $details['label'] ) . '</span>';
+				$button_html .= '<span class="bpas-sm__badge bpas-sm__badge--' . esc_attr( $badge_mod ) . '">' . bp_share_service_icon( $service ) . '</span>';
+				$button_html .= '<span class="bp-share-label bpas-sm__row-label">' . esc_html( $details['label'] ) . '</span>';
 				$button_html .= '</a>';
 				$button_html .= '</div>';
 				
@@ -653,14 +678,50 @@ class Buddypress_Share_Public {
 		// Add copy link button if enabled
 		if ( ! empty( $social_service['Copy-Link'] ) ) {
 			$tracked_copy_link = $this->add_share_tracking_params( $activity_link, 'copy-link' );
-			echo '<div class="bp-share-wrapper bp-copy-wrapper">';
-			echo '<a class="button bp-share bp-copy" href="#" data-href="' . esc_attr( $tracked_copy_link ) . '" attr-display="no-popup">';
-			echo bp_share_icon( 'link' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset.
-			echo '<span class="bp-share-label">' . esc_html__( 'Copy Link', 'buddypress-share' ) . '</span>';
+			echo '<div class="bp-share-wrapper bp-copy-wrapper bpas-sm__row">';
+			echo '<a class="button bp-share bp-copy" href="#" data-href="' . esc_attr( $tracked_copy_link ) . '" data-copy-label="' . esc_attr__( 'Copy Link', 'buddypress-share' ) . '" data-copied-label="' . esc_attr__( 'Copied!', 'buddypress-share' ) . '" attr-display="no-popup">';
+			echo '<span class="bpas-sm__badge bpas-sm__badge--copy">' . bp_share_icon( 'link' ) . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset.
+			echo '<span class="bp-share-label bpas-sm__row-label">' . esc_html__( 'Copy Link', 'buddypress-share' ) . '</span>';
+			echo bp_share_icon( 'check', 'bpas-sm__check' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Trusted bundled SVG asset.
 			echo '</a>';
 			echo '<span class="tooltiptext tooltip-hide">' . esc_attr__( 'Link Copied!', 'buddypress-share' ) . '</span>';
 			echo '</div>';
 		}
+	}
+
+	/**
+	 * Map a share service label to its brand-badge CSS modifier slug.
+	 *
+	 * Used by the share-menu component (.bpas-sm__badge--{slug}) to colour each
+	 * network's circular icon badge. Unknown services fall back to a neutral
+	 * badge so a custom service never renders unstyled.
+	 *
+	 * @since    2.3.0
+	 * @access   private
+	 * @param    string $service The service label (e.g. 'Facebook', 'X (Twitter)', 'E-mail').
+	 * @return   string Brand modifier slug (e.g. 'facebook', 'x', 'mail', 'neutral').
+	 */
+	private function bp_share_badge_modifier( $service ) {
+		$key = strtolower( (string) $service );
+		$map = array(
+			'facebook'    => 'facebook',
+			'x'           => 'x',
+			'x (twitter)' => 'x',
+			'twitter'     => 'x',
+			'linkedin'    => 'linkedin',
+			'whatsapp'    => 'whatsapp',
+			'telegram'    => 'telegram',
+			'reddit'      => 'reddit',
+			'pinterest'   => 'pinterest',
+			'bluesky'     => 'bluesky',
+			'pocket'      => 'pocket',
+			'wordpress'   => 'wordpress',
+			'e-mail'      => 'mail',
+			'email'       => 'mail',
+			'copy-link'   => 'copy',
+		);
+
+		return isset( $map[ $key ] ) ? $map[ $key ] : 'neutral';
 	}
 
 	/**

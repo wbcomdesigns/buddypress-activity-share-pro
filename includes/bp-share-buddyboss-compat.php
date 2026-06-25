@@ -235,7 +235,7 @@ function bp_share_platform_admin_notice() {
 	
 	?>
 	<div class="notice notice-info is-dismissible">
-		<p><?php printf( esc_html__( 'BuddyPress Activity Share Pro is running in %s compatibility mode.', 'buddypress-share' ), '<strong>' . esc_html( $platform ) . '</strong>' ); ?></p>
+		<p><?php /* translators: %s is the active platform name, e.g. BuddyBoss. */ printf( esc_html__( 'BuddyPress Activity Share Pro is running in %s compatibility mode.', 'buddypress-share' ), '<strong>' . esc_html( $platform ) . '</strong>' ); ?></p>
 	</div>
 	<?php
 }

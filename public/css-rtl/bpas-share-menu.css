@@ -1,0 +1,418 @@
+/**
+ * BuddyPress Activity Share — Share Menu (2.3.0 clean-room component)
+ * =====================================================================
+ * A fully self-contained, namespaced share menu. Every visual layer is
+ * scoped under the `.bpas-sm` root and the menu opens its own reset
+ * boundary so the host THEME (BuddyX, Reign, BuddyBoss) and legacy
+ * stylesheets cannot touch any element inside it.
+ *
+ * Namespace: .bpas-sm  (block)  ·  .bpas-sm__*  (elements)  ·  .is-*  (state)
+ * Functional hooks (.bp-activity-share-button, .bp-copy, data-*) are kept
+ * for the JS/AJAX contract but carry NO styling here.
+ *
+ * Tokens resolve through the host theme (BuddyX --bx-*, Reign --reign-*,
+ * core --wp--preset--*) with safe light/dark fallbacks, so the menu always
+ * matches the site without ever letting the theme restyle its internals.
+ */
+
+.bpas-sm {
+	/* ---- tokens (theme-aware, with fallbacks) ---- */
+	--sm-surface: var(--bx-color-bg-elevated, var(--reign-site-sections-bg-color, #ffffff));
+	--sm-text: var(--bx-color-fg, var(--reign-site-text-color, #1d2129));
+	--sm-text-muted: var(--bx-color-fg-muted, var(--reign-site-alternate-text-color, #65676b));
+	--sm-border: var(--bx-color-border, var(--reign-site-border-color, #e4e6eb));
+	--sm-hover: var(--bx-color-bg-subtle, rgba(0, 0, 0, 0.04));
+	--sm-accent: var(--bx-color-accent, var(--reign-colors-theme, var(--wp--preset--color--primary, #2563eb)));
+	--sm-accent-tint: color-mix(in srgb, var(--sm-accent) 9%, transparent);
+	--sm-accent-tint-hover: color-mix(in srgb, var(--sm-accent) 15%, transparent);
+	--sm-success: #1f9d55;
+	--sm-radius: 14px;
+	--sm-radius-row: 10px;
+	--sm-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.22), 0 2px 6px -2px rgba(0, 0, 0, 0.12);
+
+	/* brand marks */
+	--sm-facebook: #1877f2;
+	--sm-x: #000000;
+	--sm-linkedin: #0a66c2;
+	--sm-whatsapp: #25d366;
+	--sm-telegram: #229ed9;
+	--sm-reddit: #ff4500;
+	--sm-pinterest: #e60023;
+	--sm-bluesky: #0085ff;
+	--sm-pocket: #ef3f56;
+	--sm-wordpress: #21759b;
+	--sm-mail: #c0392b;
+	--sm-neutral: #65676b;
+
+	box-sizing: border-box;
+	width: 300px;
+	max-width: calc(100vw - 24px);
+	padding: 8px;
+	background: var(--sm-surface);
+	border: 1px solid var(--sm-border);
+	border-radius: var(--sm-radius);
+	box-shadow: var(--sm-shadow);
+	color: var(--sm-text);
+	font-family: inherit;
+	font-size: 14px;
+	line-height: 1.4;
+	text-align: start;
+}
+
+.bpas-sm * {
+	box-sizing: border-box;
+}
+
+/* ---- RESET BOUNDARY: neutralize theme styling on the elements the menu
+   uses (a / button / i / span / ul / li). !important is intentional here —
+   it is the isolation wall that keeps the theme out of every layer. ---- */
+.bpas-sm a,
+.bpas-sm button {
+	display: flex !important;
+	align-items: center !important;
+	gap: 12px !important;
+	width: 100% !important;
+	min-height: 0 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+	color: inherit !important;
+	font: inherit !important;
+	letter-spacing: normal !important;
+	text-align: start !important;
+	text-decoration: none !important;
+	text-transform: none !important;
+	cursor: pointer;
+}
+
+.bpas-sm i {
+	background: none !important;
+	border: 0 !important;
+	width: auto !important;
+	height: auto !important;
+	min-width: 0 !important;
+}
+
+/* The host theme styles generic `.button` anchors inside the activity stream
+   with a border + filled background. Defeat that with an activity-scoped
+   override (higher specificity than the theme) so every row stays a clean,
+   borderless menu item — no nested boxes. */
+#buddypress .activity-list .bpas-sm a,
+#buddypress .activity-list .bpas-sm button,
+.bpas-sm a.button,
+.bpas-sm button {
+	border: 0 !important;
+	background: none !important;
+	box-shadow: none !important;
+}
+
+.bpas-sm svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+/* ---- Hero Reshare — the signature action ---- */
+.bpas-sm__hero {
+	border-radius: var(--sm-radius-row);
+	background: var(--sm-accent-tint);
+	transition: background 0.15s ease;
+}
+
+.bpas-sm__hero:hover {
+	background: var(--sm-accent-tint-hover);
+}
+
+.bpas-sm__hero > a,
+.bpas-sm__hero > .button {
+	padding: 11px 12px !important;
+}
+
+.bpas-sm__hero-badge {
+	flex: 0 0 auto;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: var(--sm-accent) !important;
+	color: #fff;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.bpas-sm__hero-badge i {
+	width: 18px !important;
+	height: 18px !important;
+	color: #fff !important;
+	display: inline-flex !important;
+	background: none !important;
+}
+
+.bpas-sm__hero-text {
+	flex: 1 1 auto;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	line-height: 1.25;
+}
+
+.bpas-sm__hero-title {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: 650;
+	font-size: 14.5px;
+	color: var(--sm-text);
+}
+
+.bpas-sm__hero-count {
+	font-size: 11.5px;
+	font-weight: 600;
+	line-height: 1;
+	padding: 2px 7px;
+	border-radius: 999px;
+	color: var(--sm-accent);
+	background: var(--sm-accent-tint-hover);
+}
+
+.bpas-sm__hero-desc {
+	font-size: 12px;
+	color: var(--sm-text-muted);
+	margin-top: 1px;
+}
+
+.bpas-sm__hero-chev {
+	flex: 0 0 auto;
+	width: 18px;
+	height: 18px;
+	color: var(--sm-accent);
+	opacity: 0.7;
+	display: inline-flex;
+}
+
+/* ---- "Share to" group label ---- */
+.bpas-sm__label {
+	display: block;
+	font-size: 10.5px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--sm-text-muted);
+	padding: 10px 12px 4px;
+}
+
+/* ---- Social rows ---- */
+.bpas-sm__row {
+	border-radius: var(--sm-radius-row);
+	transition: background 0.15s ease;
+}
+
+.bpas-sm__row:hover {
+	background: var(--sm-hover);
+}
+
+.bpas-sm__row > a,
+.bpas-sm__row > .button {
+	padding: 9px 12px !important;
+}
+
+.bpas-sm__row:focus-within {
+	outline: 2px solid var(--sm-accent);
+	outline-offset: -2px;
+}
+
+/* brand badge — colours are part of the isolation wall (!important) so the
+   host theme's generic `span`/`a span` rules cannot strip them. */
+.bpas-sm__badge {
+	flex: 0 0 auto;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--sm-neutral) !important;
+	color: #fff;
+	overflow: hidden;
+}
+
+.bpas-sm__badge i {
+	width: 16px !important;
+	height: 16px !important;
+	color: #fff !important;
+	display: inline-flex !important;
+	background: none !important;
+}
+
+.bpas-sm__badge--facebook { background: var(--sm-facebook) !important; }
+.bpas-sm__badge--x { background: var(--sm-x) !important; }
+.bpas-sm__badge--linkedin { background: var(--sm-linkedin) !important; }
+.bpas-sm__badge--whatsapp { background: var(--sm-whatsapp) !important; }
+.bpas-sm__badge--telegram { background: var(--sm-telegram) !important; }
+.bpas-sm__badge--reddit { background: var(--sm-reddit) !important; }
+.bpas-sm__badge--pinterest { background: var(--sm-pinterest) !important; }
+.bpas-sm__badge--bluesky { background: var(--sm-bluesky) !important; }
+.bpas-sm__badge--pocket { background: var(--sm-pocket) !important; }
+.bpas-sm__badge--wordpress { background: var(--sm-wordpress) !important; }
+.bpas-sm__badge--mail { background: var(--sm-mail) !important; }
+.bpas-sm__badge--copy { background: var(--sm-neutral) !important; }
+
+.bpas-sm__row-label {
+	flex: 1 1 auto;
+	min-width: 0;
+	font-size: 14px;
+	font-weight: 550;
+	color: var(--sm-text);
+}
+
+/* ---- Copy-link success state ---- */
+.bpas-sm__check {
+	flex: 0 0 auto;
+	width: 18px;
+	height: 18px;
+	margin-inline-start: auto;
+	color: var(--sm-success) !important;
+	background: none !important;
+	display: none !important;
+}
+
+.bpas-sm__row.is-copied .bpas-sm__row-label {
+	color: var(--sm-success);
+}
+
+.bpas-sm__row.is-copied .bpas-sm__check {
+	display: inline-flex !important;
+}
+
+/* ---- Mobile bottom-sheet header (hidden on desktop) ---- */
+.bpas-sm__sheet-header {
+	display: none;
+}
+
+/* ---- Divider before the social group ---- */
+.bpas-sm__hero + .bpas-sm__label {
+	border-top: 1px solid var(--sm-border);
+	margin-top: 4px;
+	padding-top: 10px;
+}
+
+/* =====================================================================
+   DARK MODE — the menu follows the host theme's dark trigger; tokens flip
+   at the root so no per-element dark rules are needed.
+   ===================================================================== */
+html[data-bx-mode="dark"] .bpas-sm,
+body.buddyx-dark-theme .bpas-sm,
+.reign-dark-mode .bpas-sm,
+[data-theme="dark"] .bpas-sm {
+	--sm-surface: var(--bx-color-bg-elevated, #1c1c1f);
+	--sm-text: var(--bx-color-fg, #f3f4f6);
+	--sm-text-muted: var(--bx-color-fg-muted, #b0b3b8);
+	--sm-border: var(--bx-color-border, #2d2d31);
+	--sm-hover: rgba(255, 255, 255, 0.06);
+	--sm-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6), 0 2px 8px -2px rgba(0, 0, 0, 0.5);
+	--sm-x: #e7e9ea;
+}
+
+@media (prefers-color-scheme: dark) {
+	html[data-bx-mode="auto"] .bpas-sm {
+		--sm-surface: var(--bx-color-bg-elevated, #1c1c1f);
+		--sm-text: var(--bx-color-fg, #f3f4f6);
+		--sm-text-muted: var(--bx-color-fg-muted, #b0b3b8);
+		--sm-border: var(--bx-color-border, #2d2d31);
+		--sm-hover: rgba(255, 255, 255, 0.06);
+		--sm-x: #e7e9ea;
+	}
+}
+
+/* The X badge is black on light, near-white on dark; keep its glyph legible. */
+html[data-bx-mode="dark"] .bpas-sm__badge--x i,
+body.buddyx-dark-theme .bpas-sm__badge--x i {
+	color: #000;
+}
+
+/* =====================================================================
+   MOBILE — bottom action sheet at <=640px.
+   ===================================================================== */
+@media (max-width: 640px) {
+	.bpas-sm {
+		position: fixed;
+		inset-inline: 0;
+		bottom: 0;
+		top: auto;
+		width: 100%;
+		max-width: 100%;
+		border: 0;
+		border-radius: 18px 18px 0 0;
+		padding: 0 8px 20px;
+		max-height: 85vh;
+		overflow-y: auto;
+		box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.3);
+		z-index: 99999;
+	}
+
+	.bpas-sm__sheet-header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		position: sticky;
+		top: 0;
+		padding: 8px 12px 10px;
+		background: var(--sm-surface);
+		z-index: 2;
+	}
+
+	.bpas-sm__handle {
+		width: 40px;
+		height: 4px;
+		border-radius: 999px;
+		background: var(--sm-border);
+		margin-bottom: 8px;
+	}
+
+	.bpas-sm__sheet-title {
+		font-size: 15px;
+		font-weight: 650;
+		color: var(--sm-text);
+	}
+
+	/* #buddypress-scoped so it beats both the theme and the reset's
+	   width:100%/background wall. Transparent ✕ on the sheet surface. */
+	#buddypress .activity-list .bpas-sm button.bpas-sm__close {
+		position: absolute;
+		inset-inline-end: 8px;
+		top: 12px;
+		width: 36px !important;
+		min-width: 36px !important;
+		height: 36px;
+		padding: 0 !important;
+		color: var(--sm-text) !important;
+		display: inline-flex !important;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.bpas-sm__close i {
+		width: 18px !important;
+		height: 18px !important;
+	}
+
+	/* roomier tap targets in the sheet */
+	.bpas-sm__row > a,
+	.bpas-sm__row > .button,
+	.bpas-sm__hero > a,
+	.bpas-sm__hero > .button {
+		padding: 13px 14px !important;
+	}
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+	.bpas-sm__hero,
+	.bpas-sm__row {
+		transition: none;
+	}
+}
+
+/*# sourceMappingURL=bpas-share-menu.css.map */

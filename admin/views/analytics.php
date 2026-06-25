@@ -69,7 +69,7 @@ $bpas_get_activity_stats = static function () {
 
 	$meta_table = buddypress()->activity->table_name_meta;
 
-	// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 	// Sum of all share_count values = total activity reshares. Indexed on
 	// meta_key via idx_bp_share_count (created in the activator).
 	$out['total'] = (int) $wpdb->get_var(
@@ -89,7 +89,7 @@ $bpas_get_activity_stats = static function () {
 		),
 		ARRAY_A
 	);
-	// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+	// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
 	if ( ! is_array( $out['top'] ) ) {
 		$out['top'] = array();

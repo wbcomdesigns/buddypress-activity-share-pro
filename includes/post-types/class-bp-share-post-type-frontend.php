@@ -90,7 +90,7 @@ class BP_Share_Post_Type_Frontend {
 						<a href="<?php echo esc_url( $share_url ); ?>" 
 						   class="bp-share-service bp-share-service-<?php echo esc_attr( $service_key ); ?>" 
 						   data-service="<?php echo esc_attr( $service_key ); ?>"
-						   title="<?php echo esc_attr( sprintf( __( 'Share on %s', 'buddypress-share' ), $service['name'] ) ); ?>"
+						   title="<?php echo esc_attr( /* translators: %s is the social network name. */ sprintf( __( 'Share on %s', 'buddypress-share' ), $service['name'] ) ); ?>"
 						   <?php if ( $service_key !== 'print' && $service_key !== 'copy' && $service_key !== 'email' ) : ?>
 						   target="_blank"
 						   rel="noopener noreferrer"
@@ -268,7 +268,7 @@ class BP_Share_Post_Type_Frontend {
 		   class="<?php echo esc_attr( implode( ' ', array_filter( $classes ) ) ); ?>" 
 		   data-service="<?php echo esc_attr( $service ); ?>"
 		   data-post-id="<?php echo esc_attr( $post_id ); ?>"
-		   title="<?php echo esc_attr( sprintf( __( 'Share on %s', 'buddypress-share' ), $service_info['name'] ) ); ?>"
+		   title="<?php echo esc_attr( /* translators: %s is the social network name. */ sprintf( __( 'Share on %s', 'buddypress-share' ), $service_info['name'] ) ); ?>"
 		   <?php if ( $service !== 'print' && $service !== 'copy' ) : ?>
 		   target="_blank" 
 		   rel="noopener noreferrer"

@@ -159,7 +159,7 @@ class Buddypress_Share_Admin {
 		$allowed_services = $this->get_all_available_services();
 		if ( ! array_key_exists( $service_name, $allowed_services ) ) {
 			wp_send_json_error( array( 
-				'message' => sprintf( __( 'Invalid service name: %s', 'buddypress-share' ), $service_name ),
+				'message' => /* translators: %s is the service name. */ sprintf( __( 'Invalid service name: %s', 'buddypress-share' ), $service_name ),
 				'allowed_services' => array_keys( $allowed_services ),
 				'received_service' => $service_name
 			) );
@@ -175,7 +175,7 @@ class Buddypress_Share_Admin {
 		
 		if ( $updated || isset( $current_services[ $service_name ] ) ) {
 			wp_send_json_success( array( 
-				'message' => sprintf( __( 'Service "%s" added successfully.', 'buddypress-share' ), $service_name ),
+				'message' => /* translators: %s is the service name. */ sprintf( __( 'Service "%s" added successfully.', 'buddypress-share' ), $service_name ),
 				'service' => $service_name,
 				'all_services' => $current_services
 			) );
@@ -218,7 +218,7 @@ class Buddypress_Share_Admin {
 			
 			if ( $updated || ! isset( $current_services[ $service_name ] ) ) {
 				wp_send_json_success( array( 
-					'message' => sprintf( __( 'Service "%s" removed successfully.', 'buddypress-share' ), $service_name ),
+					'message' => /* translators: %s is the service name. */ sprintf( __( 'Service "%s" removed successfully.', 'buddypress-share' ), $service_name ),
 					'service' => $service_name,
 					'all_services' => $current_services
 				) );
@@ -227,7 +227,7 @@ class Buddypress_Share_Admin {
 			}
 		} else {
 			wp_send_json_error( array( 
-				'message' => sprintf( __( 'Service "%s" not found in enabled services.', 'buddypress-share' ), $service_name ),
+				'message' => /* translators: %s is the service name. */ sprintf( __( 'Service "%s" not found in enabled services.', 'buddypress-share' ), $service_name ),
 				'current_services' => array_keys( $current_services )
 			) );
 		}

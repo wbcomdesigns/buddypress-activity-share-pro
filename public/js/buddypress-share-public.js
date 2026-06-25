@@ -735,14 +735,14 @@
 
             if (navigator.clipboard && window.isSecureContext) {
                 navigator.clipboard.writeText(copyText)
-                    .then(() => this.showCopySuccess($tooltip))
-                    .catch(() => this.fallbackCopyToClipboard(copyText, $tooltip));
+                    .then(() => this.showCopySuccess($tooltip, $button))
+                    .catch(() => this.fallbackCopyToClipboard(copyText, $tooltip, $button));
             } else {
-                this.fallbackCopyToClipboard(copyText, $tooltip);
+                this.fallbackCopyToClipboard(copyText, $tooltip, $button);
             }
         },
 
-        fallbackCopyToClipboard: function(text, $tooltip) {
+        fallbackCopyToClipboard: function(text, $tooltip, $button) {
             const $tempTextarea = $('<textarea>')
                 .val(text)
                 .css({
@@ -750,7 +750,7 @@
                     left: '-9999px',
                     top: '-9999px'
                 });
-            
+
             $('body').append($tempTextarea);
 
             $tempTextarea.select();
@@ -759,7 +759,7 @@
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
-                    this.showCopySuccess($tooltip);
+                    this.showCopySuccess($tooltip, $button);
                 } else {
                     this.showCopyError($tooltip);
                 }
@@ -771,9 +771,24 @@
             $tempTextarea.remove();
         },
 
-        showCopySuccess: function($tooltip) {
+        showCopySuccess: function($tooltip, $button) {
             $tooltip.removeClass('tooltip-hide').text('Link Copied!');
-            
+
+            // Inline "Copied!" delight: green label + check on the row itself.
+            if ($button && $button.length) {
+                const $wrapper = $button.closest('.bpas-sm__row');
+                const $label = $button.find('.bp-share-label');
+                const copiedLabel = $button.data('copied-label') || 'Copied!';
+                const originalLabel = $button.data('copy-label') || $label.text();
+                $wrapper.addClass('is-copied');
+                $label.text(copiedLabel);
+
+                setTimeout(() => {
+                    $wrapper.removeClass('is-copied');
+                    $label.text(originalLabel);
+                }, 1800);
+            }
+
             setTimeout(() => {
                 $tooltip.addClass('tooltip-hide');
             }, 2000);
