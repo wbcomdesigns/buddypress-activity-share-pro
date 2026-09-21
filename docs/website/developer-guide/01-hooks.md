@@ -1,11 +1,4 @@
----
-title: "Hooks & Filters Reference"
-slug: "hooks-filters-bpas"
-category: "developer-guide"
-short_id: "bpas"
----
-
-# Hooks & Filters Reference
+# Hooks and Filters Reference
 
 This page documents every action hook and filter that BuddyPress Activity Share Pro exposes. Use them to extend or modify plugin behavior without editing plugin files directly.
 
@@ -258,7 +251,7 @@ add_action( 'bp_share_clear_public_cache', function() {
 
 #### `bp_share_before_sanitize_extra_settings`
 
-Fires before the plugin sanitizes the "extra settings" options array (`bp_share_services_extra`). The raw `$input` is passed for inspection only — modifying it here has no effect on what gets sanitized.
+Fires before the plugin sanitizes the "extra settings" options array (`bp_share_services_extra`). The raw `$input` is passed for inspection only - modifying it here has no effect on what gets sanitized.
 
 **Since:** (undocumented, present in admin class)  
 **File:** `admin/class-buddypress-share-admin.php`
@@ -368,7 +361,7 @@ Fires during the plugin's `deactivate_` hook, before WP removes the plugin from 
 
 #### `bp_share_uninstalled`
 
-Fires during `uninstall.php` execution. Note: the uninstall file currently contains only the `WP_UNINSTALL_PLUGIN` guard and this hook call — no actual cleanup logic runs unless you add it.
+Fires during `uninstall.php` execution. Note: the uninstall file currently contains only the `WP_UNINSTALL_PLUGIN` guard and this hook call - no actual cleanup logic runs unless you add it.
 
 **Since:** 2.0.0  
 **File:** `includes/class-buddypress-share.php`
@@ -400,7 +393,7 @@ Modifies the list of social services that appear in the admin drag-and-drop inte
 
 **Return:** `array`
 
-**Example — add a custom service:**
+**Example - add a custom service:**
 
 ```php
 add_filter( 'bp_share_available_services', function( $services ) {
@@ -409,7 +402,7 @@ add_filter( 'bp_share_available_services', function( $services ) {
 } );
 ```
 
-**Example — remove a service from the available list:**
+**Example - remove a service from the available list:**
 
 ```php
 add_filter( 'bp_share_available_services', function( $services ) {
@@ -474,7 +467,7 @@ Modifies the activity link, title, and mail subject before they are passed to sh
 | `$share_data` | `array` | Array with keys `activity_link`, `activity_title`, `mail_subject`. |
 | `$activity` | `object` | The current BuddyPress activity object. |
 
-**Return:** `array` — must return the same array structure.
+**Return:** `array` - must return the same array structure.
 
 ```php
 add_filter( 'bp_share_activity_data', function( $share_data, $activity ) {
@@ -503,7 +496,7 @@ Modifies the reshare data array immediately before the plugin creates the new ac
 
 **Return:** `array`
 
-**Example — prepend text to reshare content:**
+**Example - prepend text to reshare content:**
 
 ```php
 add_filter( 'bp_share_before_create_reshare', function( $reshare_data ) {
@@ -779,7 +772,7 @@ Modifies the sanitized "extra settings" array before it is saved to the database
 
 #### `bp_share_use_cdn_assets`
 
-Return `true` to load Bootstrap 4.6.2 and Select2 from the Cloudflare CDN instead of bundled copies. Defaults to `false` (use local/CDN — note: the plugin currently loads these from CDN regardless; this filter controls an intended local-bundling path).
+Return `true` to load Bootstrap 4.6.2 and Select2 from the Cloudflare CDN instead of bundled copies. Defaults to `false` (use local/CDN - note: the plugin currently loads these from CDN regardless; this filter controls an intended local-bundling path).
 
 **Since:** (undocumented, present in both admin and public classes)  
 **File:** `admin/class-buddypress-share-admin.php`, `public/class-buddypress-share-public.php`
@@ -848,14 +841,14 @@ add_filter( 'buddypress_share_theme_support', function( $themes ) {
 
 The sequence below shows when the most frequently used hooks fire during a typical reshare request:
 
-1. `bp_share_before_create_reshare` — filter, modify reshare data before DB write
+1. `bp_share_before_create_reshare` - filter, modify reshare data before DB write
 2. Activity created in the database
-3. `bp_share_after_create_reshare` — action, activity ID and data available
-4. `bp_share_user_reshared_activity` — action, for points/rewards
+3. `bp_share_after_create_reshare` - action, activity ID and data available
+4. `bp_share_user_reshared_activity` - action, for points/rewards
 5. Share count updated
-6. `bp_share_internal_share_tracked` — action, user/activity meta updated
-7. `bp_share_user_stats_updated` — action, after user meta write
-8. `bp_share_activity_stats_updated` — action, after activity meta write
+6. `bp_share_internal_share_tracked` - action, user/activity meta updated
+7. `bp_share_user_stats_updated` - action, after user meta write
+8. `bp_share_activity_stats_updated` - action, after activity meta write
 
 For post-type shares the order is:
 
@@ -863,7 +856,7 @@ For post-type shares the order is:
 2. `bp_share_allow_anonymous_sharing` checked
 3. Share URL built (`bp_share_post_url`, `bp_share_post_tracking_url`)
 4. Tracking record inserted
-5. `bp_share_post_shared` — action
+5. `bp_share_post_shared` - action
 
 ## Additional Filters
 
@@ -884,5 +877,5 @@ These filters ship in the current release and are part of the public surface.
 
 ## Related Documentation
 
-- Getting Started — see the plugin's main documentation index.
-- Settings Reference — see the plugin's settings documentation.
+- Getting Started - see the plugin's main documentation index.
+- Settings Reference - see the plugin's settings documentation.

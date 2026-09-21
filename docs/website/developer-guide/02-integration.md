@@ -1,10 +1,4 @@
----
-title: "Integration & API Reference"
-slug: "integration-bpas"
-category: "developer-guide-bpas"
----
-
-# Integration & API Reference
+# Integration and API Reference
 
 This page covers how BuddyPress Activity Share Pro exposes its functionality to other code: the AJAX endpoints it registers, the one REST API extension it makes to BuddyPress's own responses, and the action/filter hooks that are the primary integration surface.
 
@@ -40,7 +34,7 @@ When BuddyPress returns an activity item via its REST API (e.g., `GET /wp-json/b
 
 This is a read-only field. There is no corresponding write endpoint.
 
-**Source:** `public/class-buddypress-share-public.php` — method `bp_activity_post_reshare_data_embed_rest_api`
+**Source:** `public/class-buddypress-share-public.php` - method `bp_activity_post_reshare_data_embed_rest_api`
 
 ---
 
@@ -57,11 +51,11 @@ Creates a new reshare of an existing BuddyPress activity.
 - **Authentication:** Logged-in users only (`wp_ajax_` prefix)
 - **Nonce action:** `bp-activity-share-nonce`
 - **Parameters:**
-  - `activity_id` (int) — ID of the activity to reshare
-  - `type` (string) — Share destination: `activity_share`, `post_share`
-  - `activity_content` (string) — Optional message to attach
-  - `activity_in` (int) — Group ID when sharing to a group
-  - `activity_in_type` (string) — `user` or `group`
+  - `activity_id` (int) - ID of the activity to reshare
+  - `type` (string) - Share destination: `activity_share`, `post_share`
+  - `activity_content` (string) - Optional message to attach
+  - `activity_in` (int) - Group ID when sharing to a group
+  - `activity_in_type` (string) - `user` or `group`
 - **Source:** `public/class-buddypress-share-public.php`
 
 #### `bp_share_get_activity_content`
@@ -120,11 +114,11 @@ Hooks are the recommended integration point for custom code. The plugin fires a 
 
 See the Hooks & Filters reference doc in this developer guide for full parameter lists and code examples. Key integration hooks include:
 
-- `bp_share_after_create_reshare` — fires after a reshare activity is created; use this to trigger notifications or point awards
-- `bp_share_user_reshared_activity` — purpose-built for gamification integrations (myCRED, GamiPress)
-- `bp_share_external_share_tracked` — fires when an external share is recorded
-- `bp_share_services_config` — filter to add, remove, or modify social sharing services
-- `bp_share_tracking_parameters` — filter to customize the UTM and custom parameters appended to tracked links
+- `bp_share_after_create_reshare` - fires after a reshare activity is created; use this to trigger notifications or point awards
+- `bp_share_user_reshared_activity` - purpose-built for gamification integrations (myCRED, GamiPress)
+- `bp_share_external_share_tracked` - fires when an external share is recorded
+- `bp_share_services_config` - filter to add, remove, or modify social sharing services
+- `bp_share_tracking_parameters` - filter to customize the UTM and custom parameters appended to tracked links
 
 ---
 

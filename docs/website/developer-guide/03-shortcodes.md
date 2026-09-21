@@ -1,6 +1,6 @@
 # Shortcode Reference
 
-BuddyPress Activity Share Pro registers one shortcode. Use it when you need to place the share button somewhere specific in a template or page — for example, inside a custom single-post layout or a page builder block.
+BuddyPress Activity Share Pro registers one shortcode. Use it when you need to place the share button somewhere specific in a template or page - for example, inside a custom single-post layout or a page builder block.
 
 ---
 
@@ -42,10 +42,10 @@ When the visitor clicks the button, the share modal opens. The modal content and
 
 Most themes do not need this shortcode. The plugin hooks into `the_content` filter automatically and appends the share button to every single post. The shortcode exists for two specific situations:
 
-1. **Themes that handle their own content rendering** — Reign Theme and BuddyX Pro integrate the button through their own hooks. Other themes that bypass `the_content` filter may need the shortcode to place the button manually.
-2. **Custom template placement** — When the auto-appended position (end of post content) does not match your design, remove or suppress the automatic button and place the shortcode where you want it in your template instead.
+1. **Themes that handle their own content rendering** - Reign Theme and BuddyX Pro integrate the button through their own hooks. Other themes that bypass `the_content` filter may need the shortcode to place the button manually.
+2. **Custom template placement** - When the auto-appended position (end of post content) does not match your design, remove or suppress the automatic button and place the shortcode where you want it in your template instead.
 
-### Usage example — PHP template
+### Usage example - PHP template
 
 To place the button inside a template file (for example, `single.php` in a child theme), use `do_shortcode`:
 
@@ -55,7 +55,7 @@ To place the button inside a template file (for example, `single.php` in a child
 
 Call this inside the Loop where `get_the_ID()` returns the correct post ID. Calling it outside the Loop produces an empty string.
 
-### Usage example — Page builder or block editor
+### Usage example - Page builder or block editor
 
 If you are using a page builder (Elementor, Beaver Builder) or the block editor on a post, add a shortcode block or shortcode element and enter:
 
@@ -63,7 +63,7 @@ If you are using a page builder (Elementor, Beaver Builder) or the block editor 
 [bp_activity_post_reshare]
 ```
 
-The block editor's shortcode block renders the button correctly on the front end only — the button does not preview inside the editor canvas.
+The block editor's shortcode block renders the button correctly on the front end only - the button does not preview inside the editor canvas.
 
 ### Interaction with the "Blog Posts" sharing restriction
 
