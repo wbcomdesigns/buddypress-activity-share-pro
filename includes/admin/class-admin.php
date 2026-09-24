@@ -35,18 +35,26 @@ final class Admin {
 			'features'  => array(
 				'label'  => __( 'Features', 'buddypress-activity-share-pro' ),
 				'render' => array( __CLASS__, 'render_features' ),
+				'icon'   => 'dashicons-admin-plugins',
+				'group'  => __( 'Pro', 'buddypress-activity-share-pro' ),
 			),
 			'content'   => array(
 				'label'  => __( 'Content types', 'buddypress-activity-share-pro' ),
 				'render' => array( __CLASS__, 'render_content' ),
+				'icon'   => 'dashicons-media-document',
+				'group'  => __( 'Pro', 'buddypress-activity-share-pro' ),
 			),
 			'analytics' => array(
 				'label'  => __( 'Analytics', 'buddypress-activity-share-pro' ),
 				'render' => array( __CLASS__, 'render_analytics' ),
+				'icon'   => 'dashicons-chart-bar',
+				'group'  => __( 'Pro', 'buddypress-activity-share-pro' ),
 			),
 			'license'   => array(
 				'label'  => __( 'License', 'buddypress-activity-share-pro' ),
 				'render' => array( __CLASS__, 'render_license' ),
+				'icon'   => 'dashicons-admin-network',
+				'group'  => __( 'Account', 'buddypress-activity-share-pro' ),
 			),
 		);
 	}

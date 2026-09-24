@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-24T10:10:27+00:00\n"
+"POT-Creation-Date: 2026-09-24T10:31:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-activity-share-pro\n"
@@ -75,21 +75,31 @@ msgstr ""
 msgid "Features"
 msgstr ""
 
-#: includes/admin/class-admin.php:40
+#: includes/admin/class-admin.php:39
+#: includes/admin/class-admin.php:45
+#: includes/admin/class-admin.php:51
+msgid "Pro"
+msgstr ""
+
+#: includes/admin/class-admin.php:42
 #: includes/admin/views/tab-content.php:21
 msgid "Content types"
 msgstr ""
 
-#: includes/admin/class-admin.php:44
+#: includes/admin/class-admin.php:48
 msgid "Analytics"
 msgstr ""
 
-#: includes/admin/class-admin.php:48
+#: includes/admin/class-admin.php:54
 #: includes/admin/views/tab-license.php:13
 msgid "License"
 msgstr ""
 
-#: includes/admin/class-admin.php:60
+#: includes/admin/class-admin.php:57
+msgid "Account"
+msgstr ""
+
+#: includes/admin/class-admin.php:68
 #: includes/class-assets.php:53
 #: includes/reshare/class-menu-item.php:47
 #: includes/reshare/class-menu-item.php:72
@@ -98,135 +108,135 @@ msgstr ""
 msgid "Repost"
 msgstr ""
 
-#: includes/admin/class-admin.php:60
+#: includes/admin/class-admin.php:68
 msgid "Members repost updates to their profile or a group, with or without a comment. Quick repost has an Undo."
 msgstr ""
 
-#: includes/admin/class-admin.php:61
+#: includes/admin/class-admin.php:69
 #: includes/class-assets.php:56
 #: includes/reshare/class-menu-item.php:50
 #: includes/reshare/class-menu-item.php:77
 msgid "Send to a friend"
 msgstr ""
 
-#: includes/admin/class-admin.php:61
+#: includes/admin/class-admin.php:69
 msgid "Members send a post to a friend as a private message."
 msgstr ""
 
-#: includes/admin/class-admin.php:62
+#: includes/admin/class-admin.php:70
 msgid "Share replies"
 msgstr ""
 
-#: includes/admin/class-admin.php:62
+#: includes/admin/class-admin.php:70
 msgid "Replies get their own share menu and can be reposted."
 msgstr ""
 
-#: includes/admin/class-admin.php:63
+#: includes/admin/class-admin.php:71
 msgid "Counts and who reposted"
 msgstr ""
 
-#: includes/admin/class-admin.php:63
+#: includes/admin/class-admin.php:71
 msgid "Show the number of shares next to Share, and who reposted."
 msgstr ""
 
-#: includes/admin/class-admin.php:64
+#: includes/admin/class-admin.php:72
 msgid "Share image for text posts"
 msgstr ""
 
-#: includes/admin/class-admin.php:64
+#: includes/admin/class-admin.php:72
 msgid "Posts without a picture get a branded image when shared to Facebook, LinkedIn or WhatsApp."
 msgstr ""
 
-#: includes/admin/class-admin.php:65
+#: includes/admin/class-admin.php:73
 msgid "Short share links"
 msgstr ""
 
-#: includes/admin/class-admin.php:65
+#: includes/admin/class-admin.php:73
 msgid "Shared links look like yoursite.com/s/abc123 and credit the member who shared."
 msgstr ""
 
-#: includes/admin/class-admin.php:66
+#: includes/admin/class-admin.php:74
 #: includes/admin/views/tab-analytics.php:20
 msgid "Share analytics"
 msgstr ""
 
-#: includes/admin/class-admin.php:66
+#: includes/admin/class-admin.php:74
 msgid "Count clicks on share buttons and visits from shared links. Visitors are counted without storing IP addresses."
 msgstr ""
 
-#: includes/admin/class-admin.php:117
+#: includes/admin/class-admin.php:125
 msgid "Settings saved."
 msgstr ""
 
-#: includes/admin/class-admin.php:118
+#: includes/admin/class-admin.php:126
 msgid "Settings could not be saved. Please try again."
 msgstr ""
 
-#: includes/admin/class-admin.php:119
+#: includes/admin/class-admin.php:127
 #: includes/class-assets.php:69
 msgid "Loading..."
 msgstr ""
 
-#: includes/admin/class-admin.php:120
+#: includes/admin/class-admin.php:128
 msgid "Nothing shared in this period yet."
 msgstr ""
 
-#: includes/admin/class-admin.php:121
+#: includes/admin/class-admin.php:129
 msgid "No shares to other sites in this period."
 msgstr ""
 
-#: includes/admin/class-admin.php:122
+#: includes/admin/class-admin.php:130
 msgid "The report could not be loaded. Please try again."
 msgstr ""
 
-#: includes/admin/class-admin.php:123
+#: includes/admin/class-admin.php:131
 #: includes/admin/views/tab-analytics.php:53
 #: includes/privacy/class-privacy.php:84
 msgid "Item"
 msgstr ""
 
-#: includes/admin/class-admin.php:124
+#: includes/admin/class-admin.php:132
 #: includes/admin/views/tab-analytics.php:54
 msgid "Type"
 msgstr ""
 
-#: includes/admin/class-admin.php:125
+#: includes/admin/class-admin.php:133
 #: includes/admin/views/tab-analytics.php:55
 msgid "Shares"
 msgstr ""
 
-#: includes/admin/class-admin.php:126
+#: includes/admin/class-admin.php:134
 #: includes/admin/views/tab-analytics.php:31
 msgid "Activity"
 msgstr ""
 
-#: includes/admin/class-admin.php:127
+#: includes/admin/class-admin.php:135
 msgid "Post"
 msgstr ""
 
-#: includes/admin/class-admin.php:128
+#: includes/admin/class-admin.php:136
 msgid "Previous"
 msgstr ""
 
-#: includes/admin/class-admin.php:129
+#: includes/admin/class-admin.php:137
 msgid "Next"
 msgstr ""
 
 #. translators: 1: current page, 2: total pages.
-#: includes/admin/class-admin.php:131
+#: includes/admin/class-admin.php:139
 #, php-format
 msgid "Page %1$d of %2$d"
 msgstr ""
 
-#: includes/admin/class-admin.php:150
+#: includes/admin/class-admin.php:158
 msgid "Activating"
 msgstr ""
 
-#: includes/admin/class-admin.php:151
+#: includes/admin/class-admin.php:159
 msgid "Deactivating"
 msgstr ""
 
-#: includes/admin/class-admin.php:152
+#: includes/admin/class-admin.php:160
 #: includes/class-assets.php:65
 msgid "Something went wrong. Please try again."
 msgstr ""
@@ -648,20 +658,20 @@ msgstr ""
 msgid "Repost in this group"
 msgstr ""
 
-#: includes/reshare/class-reposted-card.php:76
-#: includes/reshare/class-reposted-card.php:104
+#: includes/reshare/class-reposted-card.php:84
+#: includes/reshare/class-reposted-card.php:112
 msgid "This post is no longer available."
 msgstr ""
 
-#: includes/reshare/class-reposted-card.php:104
+#: includes/reshare/class-reposted-card.php:112
 msgid "This reply is no longer available."
 msgstr ""
 
-#: includes/reshare/class-reposted-card.php:129
+#: includes/reshare/class-reposted-card.php:137
 msgid "View reply"
 msgstr ""
 
-#: includes/reshare/class-reposted-card.php:129
+#: includes/reshare/class-reposted-card.php:137
 msgid "View post"
 msgstr ""
 
