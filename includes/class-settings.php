@@ -101,7 +101,7 @@ final class Settings {
 			$all['content_types'] = $types;
 		}
 
-		update_option( self::OPTION, $all, false );
+		update_option( self::OPTION, $all, true ); // Small and read on every page: autoload.
 		do_action( 'bpas_pro_settings_updated', $all );
 		return $all;
 	}

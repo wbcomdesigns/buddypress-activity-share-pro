@@ -138,6 +138,13 @@ final class Analytics {
 	 * @param int $limit Items.
 	 */
 	public static function trending( int $days, int $limit = 5 ): array {
+		// Front-end widget/block, possibly on every page: a short transient keeps it one query per
+		// 15 minutes even without a persistent object cache. Same for every visitor (public items only).
+		$key    = 'bpas_pro_trending_' . $days . '_' . $limit;
+		$cached = get_transient( $key );
+		if ( is_array( $cached ) ) {
+			return $cached;
+		}
 		$report = self::report( $days, 1, $limit * 3 );
 		$items  = array();
 		foreach ( $report['top'] as $row ) {
@@ -149,6 +156,7 @@ final class Analytics {
 				break;
 			}
 		}
+		set_transient( $key, $items, 15 * MINUTE_IN_SECONDS );
 		return $items;
 	}
 }

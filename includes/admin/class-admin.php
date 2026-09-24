@@ -133,6 +133,8 @@ final class Admin {
 						'item'       => __( 'Item', 'buddypress-activity-share-pro' ),
 						'type'       => __( 'Type', 'buddypress-activity-share-pro' ),
 						'shares'     => _x( 'Shares', 'number of shares', 'buddypress-activity-share-pro' ),
+						'url'        => __( 'URL', 'buddypress-activity-share-pro' ),
+						'exporting'  => __( 'Preparing the file...', 'buddypress-activity-share-pro' ),
 						'activity'   => _x( 'Activity', 'content type', 'buddypress-activity-share-pro' ),
 						'post'       => _x( 'Post', 'content type', 'buddypress-activity-share-pro' ),
 						'prev'       => __( 'Previous', 'buddypress-activity-share-pro' ),

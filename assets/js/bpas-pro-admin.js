@@ -190,24 +190,50 @@
 		}
 	} );
 
-	box.querySelector( '[data-bpas-csv]' ).addEventListener( 'click', function () {
-		if ( ! last ) {
-			return;
+	/*
+	 * CSV of the whole "Most shared" list for the chosen period and content, fetched 100 rows at a
+	 * time. Titles are member-written: a leading = + - @ is neutralised so spreadsheets never run it.
+	 */
+	var quote = function ( v ) {
+		v = String( v );
+		if ( /^[=+\-@\t\r]/.test( v ) ) {
+			v = "'" + v;
 		}
-		var quote = function ( v ) {
-			return '"' + String( v ).replace( /"/g, '""' ) + '"';
-		};
-		var lines = [ [ t.item, t.type, t.shares, 'URL' ].map( quote ).join( ',' ) ];
-		last.top.forEach( function ( row ) {
-			lines.push( [ row.title, row.type, row.count, row.url ].map( quote ).join( ',' ) );
+		return '"' + v.replace( /"/g, '""' ) + '"';
+	};
+
+	box.querySelector( '[data-bpas-csv]' ).addEventListener( 'click', function () {
+		var button = this;
+		var days = box.querySelector( '[data-bpas-days]' ).value;
+		var type = box.querySelector( '[data-bpas-object-type]' ).value;
+		var lines = [ [ t.item, t.type, t.shares, t.url ].map( quote ).join( ',' ) ];
+		var label = button.textContent;
+		button.disabled = true;
+		button.textContent = t.exporting;
+
+		function fetchPage( p ) {
+			return api( '/analytics?days=' + days + '&object_type=' + encodeURIComponent( type ) + '&page=' + p + '&per_page=100' ).then( function ( res ) {
+				res.top.forEach( function ( row ) {
+					lines.push( [ row.title, 'post' === row.type ? t.post : t.activity, row.count, row.url ].map( quote ).join( ',' ) );
+				} );
+				return res.has_more ? fetchPage( p + 1 ) : null;
+			} );
+		}
+
+		fetchPage( 1 ).then( function () {
+			var blob = new Blob( [ '\ufeff' + lines.join( '\r\n' ) ], { type: 'text/csv;charset=utf-8' } );
+			var link = document.createElement( 'a' );
+			link.href = URL.createObjectURL( blob );
+			link.download = 'activity-share-' + days + '-days.csv';
+			document.body.appendChild( link );
+			link.click();
+			link.remove();
+		}, function () {
+			toast( t.failed, true );
+		} ).finally( function () {
+			button.disabled = false;
+			button.textContent = label;
 		} );
-		var blob = new Blob( [ lines.join( '\n' ) ], { type: 'text/csv;charset=utf-8' } );
-		var link = document.createElement( 'a' );
-		link.href = URL.createObjectURL( blob );
-		link.download = 'activity-share-' + box.querySelector( '[data-bpas-days]' ).value + '-days.csv';
-		document.body.appendChild( link );
-		link.click();
-		link.remove();
 	} );
 
 	load();

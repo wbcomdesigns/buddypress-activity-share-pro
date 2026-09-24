@@ -30,6 +30,8 @@ final class Events {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		$table   = self::table();
 		$charset = $wpdb->get_charset_collate();
+		// Indexes follow the queries: time range first (analytics report, retention cleanup), event + time
+		// for the per-network breakdown, object for counts/undo, user for privacy. Measured at 1M rows.
 		dbDelta(
 			"CREATE TABLE {$table} (
 				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -42,8 +44,8 @@ final class Events {
 				created_at datetime NOT NULL,
 				PRIMARY KEY  (id),
 				KEY object_time (object_type,object_id,created_at),
-				KEY service_time (service,created_at),
-				KEY created_at (created_at),
+				KEY time_event_object (created_at,event,object_type,object_id),
+				KEY event_time_service (event,created_at,service),
 				KEY user_id (user_id)
 			) ENGINE=InnoDB {$charset};"
 		);
@@ -102,7 +104,7 @@ final class Events {
 	public static function delete_before( string $before, int $limit = 1000 ): int {
 		global $wpdb;
 		$table = self::table();
-		$rows  = (int) $wpdb->query( $wpdb->prepare( "DELETE FROM {$table} WHERE created_at < %s ORDER BY id LIMIT %d", $before, $limit ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- custom table name.
+		$rows  = (int) $wpdb->query( $wpdb->prepare( "DELETE FROM {$table} WHERE created_at < %s LIMIT %d", $before, $limit ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- custom table name.
 		if ( $rows ) {
 			wp_cache_set_last_changed( 'bpas_pro_events' );
 		}
