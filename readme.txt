@@ -9,7 +9,7 @@ Stable tag: 3.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Reposting, sending posts to friends, share buttons on any content, counts, trending posts, rewards and share analytics for BuddyPress. Extends Activity Share for BuddyPress.
+Reposts, send to a friend, share buttons on any content, counts, trending posts, rewards and analytics for BuddyPress.
 
 == Description ==
 
