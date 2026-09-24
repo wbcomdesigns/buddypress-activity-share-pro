@@ -1369,14 +1369,16 @@ class Buddypress_Share_Public {
 	public function bp_share_get_activity_content() {
 		check_ajax_referer( 'bp-activity-share-nonce', '_ajax_nonce' );
 
-		$activity_id = ! empty( $_POST['activity_id'] ) ? sanitize_text_field( wp_unslash( $_POST['activity_id'] ) ) : 0;
-		
-		if ( ! $activity_id ) {
+		$activity_id = absint( $_POST['activity_id'] ?? 0 );
+		$activity    = $activity_id ? new BP_Activity_Activity( $activity_id ) : null;
+
+		if ( ! $activity || empty( $activity->id ) || ! bp_activity_user_can_read( $activity ) ) {
 			wp_send_json_error( array( 'message' => __( 'Invalid activity ID.', 'buddypress-share' ) ) );
 		}
 
 		ob_start();
-		if ( bp_has_activities( 'include=' . $activity_id ) ) {
+		// Read access is checked above, so hidden (private/hidden group) items may be rendered for members.
+		if ( bp_has_activities( array( 'include' => $activity_id, 'show_hidden' => true ) ) ) {
 			while ( bp_activities() ) {
 				bp_the_activity();
 				bp_get_template_part( 'activity/entry' );
