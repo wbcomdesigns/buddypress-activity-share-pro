@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-24T11:04:10+00:00\n"
+"POT-Creation-Date: 2026-09-24T11:10:09+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-activity-share-pro\n"
@@ -78,6 +78,7 @@ msgstr ""
 #: includes/admin/class-admin.php:39
 #: includes/admin/class-admin.php:45
 #: includes/admin/class-admin.php:51
+msgctxt "settings section"
 msgid "Pro"
 msgstr ""
 
@@ -100,11 +101,7 @@ msgid "Account"
 msgstr ""
 
 #: includes/admin/class-admin.php:68
-#: includes/class-assets.php:53
-#: includes/reshare/class-menu-item.php:47
-#: includes/reshare/class-menu-item.php:77
-#: templates/composer.php:17
-#: templates/composer.php:67
+msgctxt "feature name"
 msgid "Repost"
 msgstr ""
 
@@ -164,79 +161,82 @@ msgstr ""
 msgid "Count clicks on share buttons and visits from shared links. Visitors are counted without storing IP addresses."
 msgstr ""
 
-#: includes/admin/class-admin.php:125
+#: includes/admin/class-admin.php:127
 msgid "Settings saved."
 msgstr ""
 
-#: includes/admin/class-admin.php:126
+#: includes/admin/class-admin.php:128
 msgid "Settings could not be saved. Please try again."
 msgstr ""
 
-#: includes/admin/class-admin.php:127
+#: includes/admin/class-admin.php:129
 #: includes/class-assets.php:77
 msgid "Loading..."
 msgstr ""
 
-#: includes/admin/class-admin.php:128
+#: includes/admin/class-admin.php:130
 msgid "Nothing shared in this period yet."
 msgstr ""
 
-#: includes/admin/class-admin.php:129
+#: includes/admin/class-admin.php:131
 msgid "No shares to other sites in this period."
 msgstr ""
 
-#: includes/admin/class-admin.php:130
+#: includes/admin/class-admin.php:132
 msgid "The report could not be loaded. Please try again."
 msgstr ""
 
-#: includes/admin/class-admin.php:131
+#: includes/admin/class-admin.php:133
 #: includes/admin/views/tab-analytics.php:53
 #: includes/privacy/class-privacy.php:84
 msgid "Item"
 msgstr ""
 
-#: includes/admin/class-admin.php:132
+#: includes/admin/class-admin.php:134
 #: includes/admin/views/tab-analytics.php:54
 msgid "Type"
 msgstr ""
 
-#: includes/admin/class-admin.php:133
+#: includes/admin/class-admin.php:135
 #: includes/admin/views/tab-analytics.php:55
+msgctxt "number of shares"
 msgid "Shares"
 msgstr ""
 
-#: includes/admin/class-admin.php:134
+#: includes/admin/class-admin.php:136
 #: includes/admin/views/tab-analytics.php:31
+msgctxt "content type"
 msgid "Activity"
 msgstr ""
 
-#: includes/admin/class-admin.php:135
+#: includes/admin/class-admin.php:137
+msgctxt "content type"
 msgid "Post"
 msgstr ""
 
-#: includes/admin/class-admin.php:136
+#: includes/admin/class-admin.php:138
 msgid "Previous"
 msgstr ""
 
-#: includes/admin/class-admin.php:137
+#: includes/admin/class-admin.php:139
 msgid "Next"
 msgstr ""
 
 #. translators: 1: current page, 2: total pages.
-#: includes/admin/class-admin.php:139
+#: includes/admin/class-admin.php:141
 #, php-format
-msgid "Page %1$d of %2$d"
-msgstr ""
-
-#: includes/admin/class-admin.php:158
-msgid "Activating"
-msgstr ""
-
-#: includes/admin/class-admin.php:159
-msgid "Deactivating"
+msgid "Page %1$s of %2$s"
 msgstr ""
 
 #: includes/admin/class-admin.php:160
+msgid "Activating"
+msgstr ""
+
+#: includes/admin/class-admin.php:161
+msgid "Deactivating"
+msgstr ""
+
+#: includes/admin/class-admin.php:162
 #: includes/class-assets.php:73
 msgid "Something went wrong. Please try again."
 msgstr ""
@@ -292,7 +292,7 @@ msgid "Shares to other sites"
 msgstr ""
 
 #: includes/admin/views/tab-analytics.php:40
-#: includes/notifications/class-notifications.php:199
+#: includes/notifications/class-notifications.php:208
 #: includes/reshare/class-activity-types.php:27
 #: includes/reshare/class-activity-types.php:28
 msgid "Reposts"
@@ -427,6 +427,15 @@ msgstr ""
 msgid "This post is not available."
 msgstr ""
 
+#: includes/class-assets.php:53
+#: includes/reshare/class-menu-item.php:47
+#: includes/reshare/class-menu-item.php:77
+#: templates/composer.php:17
+#: templates/composer.php:67
+msgctxt "verb"
+msgid "Repost"
+msgstr ""
+
 #: includes/class-assets.php:54
 #: includes/reshare/class-menu-item.php:79
 msgid "Repost with comment"
@@ -469,6 +478,7 @@ msgid "Undo repost"
 msgstr ""
 
 #: includes/class-assets.php:64
+msgctxt "open the new post or conversation"
 msgid "View"
 msgstr ""
 
@@ -538,61 +548,75 @@ msgstr ""
 msgid "Invalid template."
 msgstr ""
 
+#. translators: 1: member name, 2: number of other members.
+#: includes/notifications/class-notifications.php:141
+#, php-format
+msgid "%1$s and %2$s other reposted your post"
+msgid_plural "%1$s and %2$s others reposted your post"
+msgstr[0] ""
+msgstr[1] ""
+
 #. translators: %s: member name.
-#: includes/notifications/class-notifications.php:139
+#: includes/notifications/class-notifications.php:143
+#, php-format
+msgid "%s reposted your post"
+msgstr ""
+
+#. translators: 1: member name, 2: number of other members.
+#: includes/notifications/class-notifications.php:147
+#, php-format
+msgid "%1$s and %2$s other reposted your update"
+msgid_plural "%1$s and %2$s others reposted your update"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: member name.
+#: includes/notifications/class-notifications.php:149
 #, php-format
 msgid "%s reposted your update"
 msgstr ""
 
-#. translators: 1: member name, 2: number of other members.
-#: includes/notifications/class-notifications.php:141
-#, php-format
-msgid "%1$s and %2$d other reposted your update"
-msgid_plural "%1$s and %2$d others reposted your update"
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/notifications/class-notifications.php:200
+#: includes/notifications/class-notifications.php:209
 msgid "Yes"
 msgstr ""
 
-#: includes/notifications/class-notifications.php:201
+#: includes/notifications/class-notifications.php:210
 msgid "No"
 msgstr ""
 
-#: includes/notifications/class-notifications.php:207
+#: includes/notifications/class-notifications.php:216
 msgid "A member reposts one of your updates"
 msgstr ""
 
-#: includes/notifications/class-notifications.php:208
+#: includes/notifications/class-notifications.php:217
 msgid "Yes, email me about reposts"
 msgstr ""
 
-#: includes/notifications/class-notifications.php:209
+#: includes/notifications/class-notifications.php:218
 msgid "No, do not email me about reposts"
 msgstr ""
 
-#: includes/notifications/class-notifications.php:224
-#: includes/notifications/class-notifications.php:253
+#: includes/notifications/class-notifications.php:233
+#: includes/notifications/class-notifications.php:262
 msgid "A member reposts one of your updates."
 msgstr ""
 
-#: includes/notifications/class-notifications.php:227
+#: includes/notifications/class-notifications.php:236
 msgid "You will no longer receive emails when someone reposts your updates."
 msgstr ""
 
 #. translators: do not translate the {{tokens}}.
-#: includes/notifications/class-notifications.php:245
+#: includes/notifications/class-notifications.php:254
 msgid "[{{{site.name}}}] {{reposter.name}} reposted your update"
 msgstr ""
 
 #. translators: do not translate the {{tokens}}.
-#: includes/notifications/class-notifications.php:247
+#: includes/notifications/class-notifications.php:256
 msgid "<a href=\"{{{reposter.url}}}\">{{reposter.name}}</a> reposted your update.<br /><br /><a href=\"{{{repost.url}}}\">See the repost</a> or <a href=\"{{{item.url}}}\">view your update</a>."
 msgstr ""
 
 #. translators: do not translate the {{tokens}}.
-#: includes/notifications/class-notifications.php:249
+#: includes/notifications/class-notifications.php:258
 msgid ""
 "{{reposter.name}} reposted your update.\n"
 "\n"
@@ -623,10 +647,12 @@ msgid "Shares and reposts"
 msgstr ""
 
 #: includes/privacy/class-privacy.php:80
+msgctxt "what the member did"
 msgid "Action"
 msgstr ""
 
 #: includes/privacy/class-privacy.php:88
+msgctxt "where it was shared"
 msgid "Where"
 msgstr ""
 
@@ -654,28 +680,40 @@ msgstr ""
 msgid "Reposted a post"
 msgstr ""
 
-#. translators: %s: member link.
-#: includes/reshare/class-activity-types.php:43
+#. translators: 1: member link, 2: group link.
+#: includes/reshare/class-activity-types.php:57
 #, php-format
-msgid "%s reposted a post"
+msgid "%1$s reposted an update in the group %2$s"
+msgstr ""
+
+#. translators: 1: member link, 2: group link.
+#: includes/reshare/class-activity-types.php:59
+#, php-format
+msgid "%1$s reposted a reply in the group %2$s"
+msgstr ""
+
+#. translators: 1: member link, 2: group link.
+#: includes/reshare/class-activity-types.php:61
+#, php-format
+msgid "%1$s reposted a post in the group %2$s"
 msgstr ""
 
 #. translators: %s: member link.
-#: includes/reshare/class-activity-types.php:48
+#: includes/reshare/class-activity-types.php:67
+#, php-format
+msgid "%s reposted an update"
+msgstr ""
+
+#. translators: %s: member link.
+#: includes/reshare/class-activity-types.php:69
 #, php-format
 msgid "%s reposted a reply"
 msgstr ""
 
 #. translators: %s: member link.
-#: includes/reshare/class-activity-types.php:48
+#: includes/reshare/class-activity-types.php:71
 #, php-format
-msgid "%s reposted an update"
-msgstr ""
-
-#. translators: 1: "Anna reposted an update", 2: group link.
-#: includes/reshare/class-activity-types.php:55
-#, php-format
-msgid "%1$s in the group %2$s"
+msgid "%s reposted a post"
 msgstr ""
 
 #: includes/reshare/class-counts.php:56
@@ -824,6 +862,7 @@ msgid "Log in"
 msgstr ""
 
 #: templates/composer.php:30
+msgctxt "create an account"
 msgid "Join"
 msgstr ""
 

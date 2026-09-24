@@ -44,7 +44,7 @@ final class Menu_Item {
 
 		if ( ! is_user_logged_in() ) {
 			if ( $repost ) {
-				$rows[] = self::row( 'repeat', __( 'Repost', 'buddypress-activity-share-pro' ), 'data-bpas-login ' . $data );
+				$rows[] = self::row( 'repeat', _x( 'Repost', 'verb', 'buddypress-activity-share-pro' ), 'data-bpas-login ' . $data );
 			}
 			if ( $send ) {
 				$rows[] = self::row( 'send', __( 'Send to a friend', 'buddypress-activity-share-pro' ), 'data-bpas-login ' . $data );
@@ -74,7 +74,7 @@ final class Menu_Item {
 					if ( $mine > 0 ) {
 						$rows[] = self::row( 'repeat', __( 'Undo repost', 'buddypress-activity-share-pro' ), sprintf( 'data-bpas-undo="%d" ', $mine ) . $data );
 					} elseif ( 0 === $mine ) {
-						$rows[] = self::row( 'repeat', __( 'Repost', 'buddypress-activity-share-pro' ), 'data-bpas-repost ' . $data );
+						$rows[] = self::row( 'repeat', _x( 'Repost', 'verb', 'buddypress-activity-share-pro' ), 'data-bpas-repost ' . $data );
 					}
 					$rows[] = self::row( 'message-square-quote', __( 'Repost with comment', 'buddypress-activity-share-pro' ), 'data-bpas-compose ' . $data );
 				}

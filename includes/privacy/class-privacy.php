@@ -77,7 +77,7 @@ final class Privacy {
 				'item_id'     => 'bpas-event-' . (int) $row->id,
 				'data'        => array(
 					array(
-						'name'  => __( 'Action', 'buddypress-activity-share-pro' ),
+						'name'  => _x( 'Action', 'what the member did', 'buddypress-activity-share-pro' ),
 						'value' => $row->event,
 					),
 					array(
@@ -85,7 +85,7 @@ final class Privacy {
 						'value' => $row->object_type . ' #' . (int) $row->object_id,
 					),
 					array(
-						'name'  => __( 'Where', 'buddypress-activity-share-pro' ),
+						'name'  => _x( 'Where', 'where it was shared', 'buddypress-activity-share-pro' ),
 						'value' => $row->service,
 					),
 					array(

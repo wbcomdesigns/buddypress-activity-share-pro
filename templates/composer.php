@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 <dialog class="bpas-pro-dialog" data-bpas-dialog aria-labelledby="bpas-pro-dialog-title">
 	<form method="dialog" class="bpas-pro-dialog__box" data-bpas-dialog-form novalidate>
 		<header class="bpas-pro-dialog__head">
-			<h2 id="bpas-pro-dialog-title" class="bpas-pro-dialog__title" data-bpas-dialog-title><?php esc_html_e( 'Repost', 'buddypress-activity-share-pro' ); ?></h2>
+			<h2 id="bpas-pro-dialog-title" class="bpas-pro-dialog__title" data-bpas-dialog-title><?php echo esc_html( _x( 'Repost', 'verb', 'buddypress-activity-share-pro' ) ); ?></h2>
 			<button type="button" class="bpas-pro-dialog__close" data-bpas-dialog-close>
 				<?php echo bpas_icon( 'x' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- bundled SVG. ?>
 				<span class="screen-reader-text"><?php esc_html_e( 'Close', 'buddypress-activity-share-pro' ); ?></span>
@@ -27,7 +27,7 @@ defined( 'ABSPATH' ) || exit;
 				<p class="bpas-pro-dialog__actions">
 					<a class="bpas-pro-btn bpas-pro-btn--primary" href="<?php echo esc_url( $view['login_url'] ); ?>"><?php esc_html_e( 'Log in', 'buddypress-activity-share-pro' ); ?></a>
 					<?php if ( $view['register_url'] ) : ?>
-						<a class="bpas-pro-btn" href="<?php echo esc_url( $view['register_url'] ); ?>"><?php esc_html_e( 'Join', 'buddypress-activity-share-pro' ); ?></a>
+						<a class="bpas-pro-btn" href="<?php echo esc_url( $view['register_url'] ); ?>"><?php echo esc_html( _x( 'Join', 'create an account', 'buddypress-activity-share-pro' ) ); ?></a>
 					<?php endif; ?>
 				</p>
 			</div>
@@ -64,7 +64,7 @@ defined( 'ABSPATH' ) || exit;
 
 				<p class="bpas-pro-dialog__actions">
 					<button type="button" class="bpas-pro-btn" data-bpas-dialog-close><?php esc_html_e( 'Cancel', 'buddypress-activity-share-pro' ); ?></button>
-					<button type="submit" class="bpas-pro-btn bpas-pro-btn--primary" data-bpas-dialog-submit><?php esc_html_e( 'Repost', 'buddypress-activity-share-pro' ); ?></button>
+					<button type="submit" class="bpas-pro-btn bpas-pro-btn--primary" data-bpas-dialog-submit><?php echo esc_html( _x( 'Repost', 'verb', 'buddypress-activity-share-pro' ) ); ?></button>
 				</p>
 			</div>
 		<?php endif; ?>

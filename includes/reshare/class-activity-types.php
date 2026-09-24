@@ -37,23 +37,40 @@ final class Activity_Types {
 	 */
 	public static function format_action( $action, $activity ): string {
 		$user = bp_core_get_userlink( (int) $activity->user_id );
-
-		if ( 'post_share' === $activity->type ) {
-			/* translators: %s: member link. */
-			$text = sprintf( __( '%s reposted a post', 'buddypress-activity-share-pro' ), $user );
-		} else {
+		$kind = 'post';
+		if ( 'activity_share' === $activity->type ) {
 			$original = Reshare_Service::original_activity( (int) $activity->secondary_item_id );
-			$is_reply = $original && 'activity_comment' === $original->type;
-			/* translators: %s: member link. */
-			$text = $is_reply ? sprintf( __( '%s reposted a reply', 'buddypress-activity-share-pro' ), $user ) : sprintf( __( '%s reposted an update', 'buddypress-activity-share-pro' ), $user );
+			$kind     = $original && 'activity_comment' === $original->type ? 'reply' : 'update';
 		}
 
+		$group = null;
 		if ( 'groups' === $activity->component && function_exists( 'groups_get_group' ) ) {
 			$group = groups_get_group( (int) $activity->item_id );
-			if ( ! empty( $group->id ) ) {
-				/* translators: 1: "Anna reposted an update", 2: group link. */
-				$text = sprintf( __( '%1$s in the group %2$s', 'buddypress-activity-share-pro' ), $text, '<a href="' . esc_url( bp_get_group_url( $group ) ) . '">' . esc_html( $group->name ) . '</a>' );
-			}
+			$group = empty( $group->id ) ? null : $group;
+		}
+
+		// Whole sentences only, so translators control word order (no "... in the group ..." glued on).
+		if ( $group ) {
+			$link  = '<a href="' . esc_url( bp_get_group_url( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
+			$texts = array(
+				/* translators: 1: member link, 2: group link. */
+				'update' => __( '%1$s reposted an update in the group %2$s', 'buddypress-activity-share-pro' ),
+				/* translators: 1: member link, 2: group link. */
+				'reply'  => __( '%1$s reposted a reply in the group %2$s', 'buddypress-activity-share-pro' ),
+				/* translators: 1: member link, 2: group link. */
+				'post'   => __( '%1$s reposted a post in the group %2$s', 'buddypress-activity-share-pro' ),
+			);
+			$text  = sprintf( $texts[ $kind ], $user, $link );
+		} else {
+			$texts = array(
+				/* translators: %s: member link. */
+				'update' => __( '%s reposted an update', 'buddypress-activity-share-pro' ),
+				/* translators: %s: member link. */
+				'reply'  => __( '%s reposted a reply', 'buddypress-activity-share-pro' ),
+				/* translators: %s: member link. */
+				'post'   => __( '%s reposted a post', 'buddypress-activity-share-pro' ),
+			);
+			$text  = sprintf( $texts[ $kind ], $user );
 		}
 
 		return (string) apply_filters( 'bpas_pro_repost_action', $text, $activity );

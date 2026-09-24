@@ -6,6 +6,16 @@
 
 	var cfg = window.bpasProAdmin || {};
 	var t = cfg.i18n || {};
+	var numberFormat;
+	try {
+		numberFormat = new Intl.NumberFormat( cfg.locale );
+	} catch ( e ) {
+		numberFormat = new Intl.NumberFormat();
+	}
+
+	function num( n ) {
+		return numberFormat.format( n || 0 );
+	}
 	var toastEl = document.querySelector( '.bpas-admin__toast' );
 	var toastTimer;
 
@@ -95,7 +105,7 @@
 		[ 'share', 'repost', 'send', 'visit' ].forEach( function ( key ) {
 			var el = box.querySelector( '[data-bpas-stat="' + key + '"]' );
 			if ( el ) {
-				el.textContent = ( report.totals[ key ] || 0 ).toLocaleString();
+				el.textContent = num( report.totals[ key ] );
 			}
 		} );
 
@@ -114,7 +124,7 @@
 			fill.style.inlineSize = ( max ? Math.round( ( n.count / max ) * 100 ) : 0 ) + '%';
 			track.appendChild( fill );
 			li.appendChild( track );
-			li.appendChild( cell( 'span', n.count.toLocaleString(), 'bpas-pro-bars__value' ) );
+			li.appendChild( cell( 'span', num( n.count ), 'bpas-pro-bars__value' ) );
 			bars.appendChild( li );
 		} );
 
@@ -133,7 +143,7 @@
 			}
 			tr.appendChild( td );
 			tr.appendChild( cell( 'td', 'post' === row.type ? t.post : t.activity ) );
-			tr.appendChild( cell( 'td', row.count.toLocaleString(), 'num' ) );
+			tr.appendChild( cell( 'td', num( row.count ), 'num' ) );
 			tbody.appendChild( tr );
 		} );
 
@@ -156,7 +166,7 @@
 				load();
 			} );
 			pager.appendChild( prev );
-			pager.appendChild( cell( 'span', ( t.pageOf || '%1$d / %2$d' ).replace( '%1$d', page ).replace( '%2$d', report.pages ), 'bpas-pro-pager__label' ) );
+			pager.appendChild( cell( 'span', t.pageOf.replace( '%1$s', num( page ) ).replace( '%2$s', num( report.pages ) ), 'bpas-pro-pager__label' ) );
 			pager.appendChild( next );
 		}
 	}

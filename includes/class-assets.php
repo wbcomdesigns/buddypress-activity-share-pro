@@ -50,7 +50,7 @@ final class Assets {
 					'loggedIn' => is_user_logged_in(),
 					'track'    => Settings::feature( 'analytics' ),
 					'i18n'     => array(
-						'repost'        => __( 'Repost', 'buddypress-activity-share-pro' ),
+						'repost'        => _x( 'Repost', 'verb', 'buddypress-activity-share-pro' ),
 						'repostComment' => __( 'Repost with comment', 'buddypress-activity-share-pro' ),
 						'repostGroup'   => __( 'Repost to a group', 'buddypress-activity-share-pro' ),
 						'repostHere'    => __( 'Repost in this group', 'buddypress-activity-share-pro' ),
@@ -61,7 +61,7 @@ final class Assets {
 						'reposted'      => __( 'Reposted.', 'buddypress-activity-share-pro' ),
 						'undo'          => __( 'Undo', 'buddypress-activity-share-pro' ),
 						'undoRepost'    => __( 'Undo repost', 'buddypress-activity-share-pro' ),
-						'view'          => __( 'View', 'buddypress-activity-share-pro' ),
+						'view'          => _x( 'View', 'open the new post or conversation', 'buddypress-activity-share-pro' ),
 						'undone'        => __( 'Repost removed.', 'buddypress-activity-share-pro' ),
 						'sending'       => __( 'Sending...', 'buddypress-activity-share-pro' ),
 						'reposting'     => __( 'Reposting...', 'buddypress-activity-share-pro' ),

@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
 			<label for="bpas-object-type" class="screen-reader-text"><?php esc_html_e( 'Content', 'buddypress-activity-share-pro' ); ?></label>
 			<select id="bpas-object-type" data-bpas-object-type>
 				<option value=""><?php esc_html_e( 'All content', 'buddypress-activity-share-pro' ); ?></option>
-				<option value="activity"><?php esc_html_e( 'Activity', 'buddypress-activity-share-pro' ); ?></option>
+				<option value="activity"><?php echo esc_html( _x( 'Activity', 'content type', 'buddypress-activity-share-pro' ) ); ?></option>
 				<option value="post"><?php esc_html_e( 'Posts and pages', 'buddypress-activity-share-pro' ); ?></option>
 			</select>
 			<button type="button" class="button" data-bpas-csv><?php esc_html_e( 'Export CSV', 'buddypress-activity-share-pro' ); ?></button>
@@ -52,7 +52,7 @@ defined( 'ABSPATH' ) || exit;
 				<tr>
 					<th scope="col"><?php esc_html_e( 'Item', 'buddypress-activity-share-pro' ); ?></th>
 					<th scope="col"><?php esc_html_e( 'Type', 'buddypress-activity-share-pro' ); ?></th>
-					<th scope="col" class="num"><?php esc_html_e( 'Shares', 'buddypress-activity-share-pro' ); ?></th>
+					<th scope="col" class="num"><?php echo esc_html( _x( 'Shares', 'number of shares', 'buddypress-activity-share-pro' ) ); ?></th>
 				</tr>
 			</thead>
 			<tbody></tbody>

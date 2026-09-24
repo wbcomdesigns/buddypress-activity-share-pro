@@ -134,11 +134,20 @@ final class Notifications {
 		$count = max( 1, (int) bp_notifications_get_meta( (int) $id, 'bpas_count', true ) );
 		$type  = (string) bp_notifications_get_meta( (int) $id, 'bpas_type', true );
 		$name  = bp_core_get_user_displayname( (int) $secondary_item_id );
-		$text  = 1 === $count
-			/* translators: %s: member name. */
-			? sprintf( __( '%s reposted your update', 'buddypress-activity-share-pro' ), $name )
-			/* translators: 1: member name, 2: number of other members. */
-			: sprintf( _n( '%1$s and %2$d other reposted your update', '%1$s and %2$d others reposted your update', $count - 1, 'buddypress-activity-share-pro' ), $name, $count - 1 );
+		$others = $count - 1;
+		if ( 'post' === $type ) {
+			$text = $others
+				/* translators: 1: member name, 2: number of other members. */
+				? sprintf( _n( '%1$s and %2$s other reposted your post', '%1$s and %2$s others reposted your post', $others, 'buddypress-activity-share-pro' ), $name, number_format_i18n( $others ) )
+				/* translators: %s: member name. */
+				: sprintf( __( '%s reposted your post', 'buddypress-activity-share-pro' ), $name );
+		} else {
+			$text = $others
+				/* translators: 1: member name, 2: number of other members. */
+				? sprintf( _n( '%1$s and %2$s other reposted your update', '%1$s and %2$s others reposted your update', $others, 'buddypress-activity-share-pro' ), $name, number_format_i18n( $others ) )
+				/* translators: %s: member name. */
+				: sprintf( __( '%s reposted your update', 'buddypress-activity-share-pro' ), $name );
+		}
 		$link = 'post' === $type ? get_permalink( (int) $item_id ) : bp_activity_get_permalink( (int) $item_id );
 		$link = (string) add_query_arg( 'bpas_read', (int) $id, (string) $link );
 

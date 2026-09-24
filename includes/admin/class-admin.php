@@ -36,19 +36,19 @@ final class Admin {
 				'label'  => __( 'Features', 'buddypress-activity-share-pro' ),
 				'render' => array( __CLASS__, 'render_features' ),
 				'icon'   => 'dashicons-admin-plugins',
-				'group'  => __( 'Pro', 'buddypress-activity-share-pro' ),
+				'group'  => _x( 'Pro', 'settings section', 'buddypress-activity-share-pro' ),
 			),
 			'content'   => array(
 				'label'  => __( 'Content types', 'buddypress-activity-share-pro' ),
 				'render' => array( __CLASS__, 'render_content' ),
 				'icon'   => 'dashicons-media-document',
-				'group'  => __( 'Pro', 'buddypress-activity-share-pro' ),
+				'group'  => _x( 'Pro', 'settings section', 'buddypress-activity-share-pro' ),
 			),
 			'analytics' => array(
 				'label'  => __( 'Analytics', 'buddypress-activity-share-pro' ),
 				'render' => array( __CLASS__, 'render_analytics' ),
 				'icon'   => 'dashicons-chart-bar',
-				'group'  => __( 'Pro', 'buddypress-activity-share-pro' ),
+				'group'  => _x( 'Pro', 'settings section', 'buddypress-activity-share-pro' ),
 			),
 			'license'   => array(
 				'label'  => __( 'License', 'buddypress-activity-share-pro' ),
@@ -65,7 +65,7 @@ final class Admin {
 	public static function render_features(): void {
 		$features = Settings::all()['features'];
 		$rows     = array(
-			'repost'      => array( __( 'Repost', 'buddypress-activity-share-pro' ), __( 'Members repost updates to their profile or a group, with or without a comment. Quick repost has an Undo.', 'buddypress-activity-share-pro' ) ),
+			'repost'      => array( _x( 'Repost', 'feature name', 'buddypress-activity-share-pro' ), __( 'Members repost updates to their profile or a group, with or without a comment. Quick repost has an Undo.', 'buddypress-activity-share-pro' ) ),
 			'send_friend' => array( __( 'Send to a friend', 'buddypress-activity-share-pro' ), __( 'Members send a post to a friend as a private message.', 'buddypress-activity-share-pro' ) ),
 			'reply_share' => array( __( 'Share replies', 'buddypress-activity-share-pro' ), __( 'Replies get their own share menu and can be reposted.', 'buddypress-activity-share-pro' ) ),
 			'counts'      => array( __( 'Counts and who reposted', 'buddypress-activity-share-pro' ), __( 'Show the number of shares next to Share, and who reposted.', 'buddypress-activity-share-pro' ) ),
@@ -120,8 +120,10 @@ final class Admin {
 			'bpas-pro-admin',
 			'window.bpasProAdmin = ' . wp_json_encode(
 				array(
-					'ns'   => '/' . bpas_rest_namespace(),
-					'i18n' => array(
+					'ns'     => '/' . bpas_rest_namespace(),
+					// Numbers follow the admin's WordPress language, not the browser's.
+					'locale' => str_replace( '_', '-', get_user_locale() ),
+					'i18n'   => array(
 						'saved'      => __( 'Settings saved.', 'buddypress-activity-share-pro' ),
 						'failed'     => __( 'Settings could not be saved. Please try again.', 'buddypress-activity-share-pro' ),
 						'loading'    => __( 'Loading...', 'buddypress-activity-share-pro' ),
@@ -130,13 +132,13 @@ final class Admin {
 						'error'      => __( 'The report could not be loaded. Please try again.', 'buddypress-activity-share-pro' ),
 						'item'       => __( 'Item', 'buddypress-activity-share-pro' ),
 						'type'       => __( 'Type', 'buddypress-activity-share-pro' ),
-						'shares'     => __( 'Shares', 'buddypress-activity-share-pro' ),
-						'activity'   => __( 'Activity', 'buddypress-activity-share-pro' ),
-						'post'       => __( 'Post', 'buddypress-activity-share-pro' ),
+						'shares'     => _x( 'Shares', 'number of shares', 'buddypress-activity-share-pro' ),
+						'activity'   => _x( 'Activity', 'content type', 'buddypress-activity-share-pro' ),
+						'post'       => _x( 'Post', 'content type', 'buddypress-activity-share-pro' ),
 						'prev'       => __( 'Previous', 'buddypress-activity-share-pro' ),
 						'next'       => __( 'Next', 'buddypress-activity-share-pro' ),
 						/* translators: 1: current page, 2: total pages. */
-						'pageOf'     => __( 'Page %1$d of %2$d', 'buddypress-activity-share-pro' ),
+						'pageOf'     => __( 'Page %1$s of %2$s', 'buddypress-activity-share-pro' ),
 					),
 				)
 			) . ';',
