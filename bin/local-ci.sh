@@ -26,6 +26,9 @@ echo "header=$hv const=$cv readme=$rv package=$pv free=${fv:-missing}"
 [ "$hv" = "$cv" ] && [ "$cv" = "$rv" ] && [ "$rv" = "$pv" ] || bad "version mismatch"
 [ -z "$fv" ] || [ "$fv" = "$hv" ] || bad "Free $fv != Pro $hv (always the same version)"
 
+step "BuddyBoss-safe URLs (bp_members_get_user_url / bp_get_group_url are BuddyPress 12+ only)"
+grep -rn 'bp_members_get_user_url\|bp_get_group_url' --include='*.php' includes templates | grep -v 'includes/functions.php' && bad "use bpas_member_url() / bpas_group_url()"
+
 step "No inline <script>/<style> in PHP"
 grep -rln '<script\|<style' --include='*.php' includes templates && bad "inline script/style"
 

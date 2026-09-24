@@ -352,7 +352,7 @@ final class Rest_Controller {
 		return array(
 			'id'     => $user_id,
 			'name'   => bp_core_get_user_displayname( $user_id ),
-			'url'    => bp_members_get_user_url( $user_id ),
+			'url'    => bpas_member_url( $user_id ),
 			// BuddyPress returns the URL HTML-escaped (&#038;); JSON consumers need the raw URL.
 			'avatar' => esc_url_raw(
 				html_entity_decode(

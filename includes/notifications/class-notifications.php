@@ -186,7 +186,7 @@ final class Notifications {
 			array(
 				'tokens' => array(
 					'reposter.name' => bp_core_get_user_displayname( $user_id ),
-					'reposter.url'  => esc_url( bp_members_get_user_url( $user_id ) ),
+					'reposter.url'  => esc_url( bpas_member_url( $user_id ) ),
 					'item.url'      => esc_url( (string) $url ),
 					'repost.url'    => esc_url( bp_activity_get_permalink( $repost_id ) ),
 				),

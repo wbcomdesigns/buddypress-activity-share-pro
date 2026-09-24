@@ -148,7 +148,7 @@ final class Reposted_Card {
 					'class'   => 'bpas-pro-card__avatar',
 				)
 			),
-			esc_url( bp_members_get_user_url( $author ) ),
+			esc_url( bpas_member_url( $author ) ),
 			esc_html( bp_core_get_user_displayname( $author ) ),
 			esc_html( bp_core_time_since( $original->date_recorded ) ),
 			wp_kses_post( wpautop( esc_html( wp_trim_words( $text, 60 ) ) ) ),

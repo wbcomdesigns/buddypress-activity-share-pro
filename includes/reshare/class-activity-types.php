@@ -51,7 +51,7 @@ final class Activity_Types {
 
 		// Whole sentences only, so translators control word order (no "... in the group ..." glued on).
 		if ( $group ) {
-			$link  = '<a href="' . esc_url( bp_get_group_url( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
+			$link  = '<a href="' . esc_url( bpas_group_url( $group ) ) . '">' . esc_html( $group->name ) . '</a>';
 			$texts = array(
 				/* translators: 1: member link, 2: group link. */
 				'update' => __( '%1$s reposted an update in the group %2$s', 'buddypress-activity-share-pro' ),
