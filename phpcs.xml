@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<ruleset name="Activity Share Pro">
+	<file>.</file>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/assets/*</exclude-pattern>
+	<exclude-pattern>/bin/*</exclude-pattern>
+	<exclude-pattern>/libs/*</exclude-pattern>
+	<arg name="extensions" value="php"/>
+	<config name="minimum_wp_version" value="6.7"/>
+	<rule ref="WordPress">
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+	</rule>
+	<rule ref="WordPress.WP.I18n">
+		<properties><property name="text_domain" type="array"><element value="buddypress-activity-share-pro"/></property></properties>
+	</rule>
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties><property name="prefixes" type="array"><element value="bpas_pro"/><element value="BPAS_Pro"/></property></properties>
+	</rule>
+</ruleset>

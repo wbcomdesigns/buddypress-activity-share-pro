@@ -1,0 +1,842 @@
+# Copyright (C) 2026 Wbcom Designs
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Activity Share Pro 3.6.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/buddypress-activity-share-pro\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-24T10:10:27+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: buddypress-activity-share-pro\n"
+
+#. Plugin Name of the plugin
+#: buddypress-share.php
+#: includes/privacy/class-privacy.php:128
+msgid "Activity Share Pro"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: buddypress-share.php
+msgid "https://wbcomdesigns.com/downloads/buddypress-activity-share-pro/"
+msgstr ""
+
+#. Description of the plugin
+#: buddypress-share.php
+msgid "Reposting inside your BuddyPress community, sending posts to friends, share buttons on any content, share counts, trending posts, rewards and share analytics. Extends Activity Share for BuddyPress."
+msgstr ""
+
+#. Author of the plugin
+#: buddypress-share.php
+msgid "Wbcom Designs"
+msgstr ""
+
+#. Author URI of the plugin
+#: buddypress-share.php
+msgid "https://wbcomdesigns.com/"
+msgstr ""
+
+#: buddypress-share.php:41
+msgid "Activity Share Pro does not support Youzify and is inactive while Youzify is active."
+msgstr ""
+
+#. translators: %s: Activity Share for BuddyPress version.
+#: buddypress-share.php:61
+#, php-format
+msgid "Please update Activity Share Pro to version %s to match Activity Share for BuddyPress."
+msgstr ""
+
+#: buddypress-share.php:100
+msgid "Activity Share Pro needs the free Activity Share for BuddyPress plugin. Your Pro settings are safe and sharing resumes as soon as it is active."
+msgstr ""
+
+#: buddypress-share.php:102
+msgid "Activate Activity Share for BuddyPress"
+msgstr ""
+
+#: buddypress-share.php:102
+msgid "Install and activate Activity Share for BuddyPress"
+msgstr ""
+
+#: buddypress-share.php:115
+msgid "Activity Share Pro is paused until Activity Share for BuddyPress is updated. Sharing keeps working meanwhile."
+msgstr ""
+
+#: buddypress-share.php:117
+msgid "Update Activity Share for BuddyPress"
+msgstr ""
+
+#: includes/admin/class-admin.php:36
+#: includes/admin/views/tab-features.php:15
+msgid "Features"
+msgstr ""
+
+#: includes/admin/class-admin.php:40
+#: includes/admin/views/tab-content.php:21
+msgid "Content types"
+msgstr ""
+
+#: includes/admin/class-admin.php:44
+msgid "Analytics"
+msgstr ""
+
+#: includes/admin/class-admin.php:48
+#: includes/admin/views/tab-license.php:13
+msgid "License"
+msgstr ""
+
+#: includes/admin/class-admin.php:60
+#: includes/class-assets.php:53
+#: includes/reshare/class-menu-item.php:47
+#: includes/reshare/class-menu-item.php:72
+#: templates/composer.php:17
+#: templates/composer.php:67
+msgid "Repost"
+msgstr ""
+
+#: includes/admin/class-admin.php:60
+msgid "Members repost updates to their profile or a group, with or without a comment. Quick repost has an Undo."
+msgstr ""
+
+#: includes/admin/class-admin.php:61
+#: includes/class-assets.php:56
+#: includes/reshare/class-menu-item.php:50
+#: includes/reshare/class-menu-item.php:77
+msgid "Send to a friend"
+msgstr ""
+
+#: includes/admin/class-admin.php:61
+msgid "Members send a post to a friend as a private message."
+msgstr ""
+
+#: includes/admin/class-admin.php:62
+msgid "Share replies"
+msgstr ""
+
+#: includes/admin/class-admin.php:62
+msgid "Replies get their own share menu and can be reposted."
+msgstr ""
+
+#: includes/admin/class-admin.php:63
+msgid "Counts and who reposted"
+msgstr ""
+
+#: includes/admin/class-admin.php:63
+msgid "Show the number of shares next to Share, and who reposted."
+msgstr ""
+
+#: includes/admin/class-admin.php:64
+msgid "Share image for text posts"
+msgstr ""
+
+#: includes/admin/class-admin.php:64
+msgid "Posts without a picture get a branded image when shared to Facebook, LinkedIn or WhatsApp."
+msgstr ""
+
+#: includes/admin/class-admin.php:65
+msgid "Short share links"
+msgstr ""
+
+#: includes/admin/class-admin.php:65
+msgid "Shared links look like yoursite.com/s/abc123 and credit the member who shared."
+msgstr ""
+
+#: includes/admin/class-admin.php:66
+#: includes/admin/views/tab-analytics.php:20
+msgid "Share analytics"
+msgstr ""
+
+#: includes/admin/class-admin.php:66
+msgid "Count clicks on share buttons and visits from shared links. Visitors are counted without storing IP addresses."
+msgstr ""
+
+#: includes/admin/class-admin.php:117
+msgid "Settings saved."
+msgstr ""
+
+#: includes/admin/class-admin.php:118
+msgid "Settings could not be saved. Please try again."
+msgstr ""
+
+#: includes/admin/class-admin.php:119
+#: includes/class-assets.php:69
+msgid "Loading..."
+msgstr ""
+
+#: includes/admin/class-admin.php:120
+msgid "Nothing shared in this period yet."
+msgstr ""
+
+#: includes/admin/class-admin.php:121
+msgid "No shares to other sites in this period."
+msgstr ""
+
+#: includes/admin/class-admin.php:122
+msgid "The report could not be loaded. Please try again."
+msgstr ""
+
+#: includes/admin/class-admin.php:123
+#: includes/admin/views/tab-analytics.php:53
+#: includes/privacy/class-privacy.php:84
+msgid "Item"
+msgstr ""
+
+#: includes/admin/class-admin.php:124
+#: includes/admin/views/tab-analytics.php:54
+msgid "Type"
+msgstr ""
+
+#: includes/admin/class-admin.php:125
+#: includes/admin/views/tab-analytics.php:55
+msgid "Shares"
+msgstr ""
+
+#: includes/admin/class-admin.php:126
+#: includes/admin/views/tab-analytics.php:31
+msgid "Activity"
+msgstr ""
+
+#: includes/admin/class-admin.php:127
+msgid "Post"
+msgstr ""
+
+#: includes/admin/class-admin.php:128
+msgid "Previous"
+msgstr ""
+
+#: includes/admin/class-admin.php:129
+msgid "Next"
+msgstr ""
+
+#. translators: 1: current page, 2: total pages.
+#: includes/admin/class-admin.php:131
+#, php-format
+msgid "Page %1$d of %2$d"
+msgstr ""
+
+#: includes/admin/class-admin.php:150
+msgid "Activating"
+msgstr ""
+
+#: includes/admin/class-admin.php:151
+msgid "Deactivating"
+msgstr ""
+
+#: includes/admin/class-admin.php:152
+#: includes/class-assets.php:65
+msgid "Something went wrong. Please try again."
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:13
+msgid "Clicks and visits are not being counted"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:14
+msgid "Reposts and sends are always counted. Turn on Share analytics on the Features tab to also count clicks on share buttons and visits from shared links."
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:22
+#: includes/analytics/class-trending-widget.php:51
+#: assets/js/bpas-pro-block.js:48
+msgid "Period"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:24
+#: includes/analytics/class-trending-widget.php:53
+#: assets/js/bpas-pro-block.js:51
+msgid "Last 7 days"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:25
+#: includes/analytics/class-trending-widget.php:54
+#: assets/js/bpas-pro-block.js:52
+msgid "Last 30 days"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:26
+msgid "Last 90 days"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:28
+msgid "Content"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:30
+msgid "All content"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:32
+msgid "Posts and pages"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:34
+msgid "Export CSV"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:39
+msgid "Shares to other sites"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:40
+#: includes/notifications/class-notifications.php:199
+#: includes/reshare/class-activity-types.php:27
+#: includes/reshare/class-activity-types.php:28
+msgid "Reposts"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:41
+msgid "Sent to friends"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:42
+msgid "Visits from shared links"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:45
+msgid "By network"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:48
+#: includes/analytics/class-trending-widget.php:21
+#: includes/analytics/class-trending-widget.php:31
+#: includes/analytics/class-trending.php:35
+#: assets/js/bpas-pro-block.js:27
+msgid "Most shared"
+msgstr ""
+
+#: includes/admin/views/tab-analytics.php:61
+msgid "Most shared pages"
+msgstr ""
+
+#: includes/admin/views/tab-content.php:13
+msgid "Below the content"
+msgstr ""
+
+#: includes/admin/views/tab-content.php:14
+msgid "Above the content"
+msgstr ""
+
+#: includes/admin/views/tab-content.php:15
+msgid "Floating button"
+msgstr ""
+
+#: includes/admin/views/tab-content.php:22
+msgid "Add the share menu to single posts, pages, products, courses and other content. You can also place it anywhere with the Share buttons block or the [bpas_share] shortcode."
+msgstr ""
+
+#. translators: %s: post type name.
+#: includes/admin/views/tab-content.php:35
+#, php-format
+msgid "Placement for %s"
+msgstr ""
+
+#: includes/admin/views/tab-content.php:47
+#: includes/admin/views/tab-features.php:31
+msgid "Save changes"
+msgstr ""
+
+#: includes/admin/views/tab-features.php:16
+msgid "Turn Activity Share Pro features on or off."
+msgstr ""
+
+#: includes/admin/views/tab-features.php:29
+msgid "Share rewards turn on by themselves when WB Gamification, GamiPress or myCRED is active; set the points in that plugin."
+msgstr ""
+
+#: includes/admin/views/tab-license.php:14
+msgid "Activate your license key to get updates. All features work with or without it."
+msgstr ""
+
+#: includes/admin/views/tab-license.php:17
+msgid "Automatic updates are unavailable because the update library is missing from this copy of the plugin. Please download it again from your Wbcom Designs account."
+msgstr ""
+
+#: includes/admin/views/tab-license.php:20
+msgid "License key"
+msgstr ""
+
+#: includes/admin/views/tab-license.php:29
+msgid "Paste your license key"
+msgstr ""
+
+#. translators: %s: link to the customer's account.
+#: includes/admin/views/tab-license.php:37
+#, php-format
+msgid "Find your key in your %s."
+msgstr ""
+
+#: includes/admin/views/tab-license.php:38
+msgid "Wbcom Designs account"
+msgstr ""
+
+#: includes/analytics/class-analytics.php:126
+msgid "(deleted)"
+msgstr ""
+
+#: includes/analytics/class-trending-widget.php:21
+#: includes/analytics/class-trending.php:36
+#: assets/js/bpas-pro-block.js:28
+msgid "The community posts shared most recently."
+msgstr ""
+
+#: includes/analytics/class-trending-widget.php:47
+msgid "Title"
+msgstr ""
+
+#: includes/analytics/class-trending.php:75
+msgid "Nothing has been shared yet."
+msgstr ""
+
+#. translators: %s: number of shares.
+#: includes/analytics/class-trending.php:84
+#: includes/reshare/class-counts.php:36
+#, php-format
+msgid "%s share"
+msgid_plural "%s shares"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/api/class-admin-controller.php:88
+#: includes/api/class-rest-controller.php:155
+msgid "Authentication required."
+msgstr ""
+
+#: includes/api/class-admin-controller.php:90
+#: includes/licensing.php:58
+msgid "You are not allowed to do this."
+msgstr ""
+
+#: includes/api/class-rest-controller.php:333
+#: includes/reshare/class-reshare-service.php:191
+#: includes/reshare/class-reshare-service.php:203
+#: includes/reshare/class-reshare-service.php:224
+msgid "This post is not available."
+msgstr ""
+
+#: includes/class-assets.php:54
+#: includes/reshare/class-menu-item.php:73
+msgid "Repost with comment"
+msgstr ""
+
+#: includes/class-assets.php:55
+#: includes/reshare/class-menu-item.php:70
+msgid "Repost to a group"
+msgstr ""
+
+#: includes/class-assets.php:57
+msgid "Send"
+msgstr ""
+
+#: includes/class-assets.php:58
+msgid "Add a note (optional)"
+msgstr ""
+
+#: includes/class-assets.php:59
+#: templates/composer.php:59
+msgid "Add a comment (optional)"
+msgstr ""
+
+#: includes/class-assets.php:60
+msgid "Reposted."
+msgstr ""
+
+#: includes/class-assets.php:61
+msgid "Undo"
+msgstr ""
+
+#: includes/class-assets.php:62
+msgid "Repost removed."
+msgstr ""
+
+#: includes/class-assets.php:63
+msgid "Sent."
+msgstr ""
+
+#: includes/class-assets.php:64
+msgid "Working..."
+msgstr ""
+
+#: includes/class-assets.php:66
+msgid "Choose a friend first."
+msgstr ""
+
+#: includes/class-assets.php:67
+msgid "Choose a group first."
+msgstr ""
+
+#: includes/class-assets.php:68
+msgid "No friends match that name."
+msgstr ""
+
+#: includes/class-assets.php:70
+msgid "Reposted by"
+msgstr ""
+
+#: includes/class-assets.php:71
+msgid "Join the conversation"
+msgstr ""
+
+#: includes/groups/class-group-controls.php:42
+msgid "Sharing"
+msgstr ""
+
+#: includes/groups/class-group-controls.php:45
+msgid "Members can share posts from this group to other sites (Facebook, X, WhatsApp...)"
+msgstr ""
+
+#: includes/groups/class-group-controls.php:49
+msgid "Members can repost posts from this group to their profile or other groups"
+msgstr ""
+
+#: includes/licensing.php:62
+msgid "Invalid template."
+msgstr ""
+
+#. translators: %s: member name.
+#: includes/notifications/class-notifications.php:139
+#, php-format
+msgid "%s reposted your update"
+msgstr ""
+
+#. translators: 1: member name, 2: number of other members.
+#: includes/notifications/class-notifications.php:141
+#, php-format
+msgid "%1$s and %2$d other reposted your update"
+msgid_plural "%1$s and %2$d others reposted your update"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/notifications/class-notifications.php:200
+msgid "Yes"
+msgstr ""
+
+#: includes/notifications/class-notifications.php:201
+msgid "No"
+msgstr ""
+
+#: includes/notifications/class-notifications.php:207
+msgid "A member reposts one of your updates"
+msgstr ""
+
+#: includes/notifications/class-notifications.php:208
+msgid "Yes, email me about reposts"
+msgstr ""
+
+#: includes/notifications/class-notifications.php:209
+msgid "No, do not email me about reposts"
+msgstr ""
+
+#: includes/notifications/class-notifications.php:224
+#: includes/notifications/class-notifications.php:253
+msgid "A member reposts one of your updates."
+msgstr ""
+
+#: includes/notifications/class-notifications.php:227
+msgid "You will no longer receive emails when someone reposts your updates."
+msgstr ""
+
+#. translators: do not translate the {{tokens}}.
+#: includes/notifications/class-notifications.php:245
+msgid "[{{{site.name}}}] {{reposter.name}} reposted your update"
+msgstr ""
+
+#. translators: do not translate the {{tokens}}.
+#: includes/notifications/class-notifications.php:247
+msgid "<a href=\"{{{reposter.url}}}\">{{reposter.name}}</a> reposted your update.<br /><br /><a href=\"{{{repost.url}}}\">See the repost</a> or <a href=\"{{{item.url}}}\">view your update</a>."
+msgstr ""
+
+#. translators: do not translate the {{tokens}}.
+#: includes/notifications/class-notifications.php:249
+msgid ""
+"{{reposter.name}} reposted your update.\n"
+"\n"
+"See the repost: {{{repost.url}}}\n"
+"\n"
+"View your update: {{{item.url}}}"
+msgstr ""
+
+#: includes/posts/class-post-share.php:97
+#: assets/js/bpas-pro-block.js:11
+msgid "Share buttons"
+msgstr ""
+
+#: includes/posts/class-post-share.php:98
+#: assets/js/bpas-pro-block.js:12
+msgid "The share menu for this page."
+msgstr ""
+
+#: includes/privacy/class-privacy.php:36
+#: includes/privacy/class-privacy.php:50
+#: includes/rewards/class-rewards.php:82
+#: includes/rewards/class-rewards.php:126
+msgid "Activity Share"
+msgstr ""
+
+#: includes/privacy/class-privacy.php:76
+msgid "Shares and reposts"
+msgstr ""
+
+#: includes/privacy/class-privacy.php:80
+msgid "Action"
+msgstr ""
+
+#: includes/privacy/class-privacy.php:88
+msgid "Where"
+msgstr ""
+
+#: includes/privacy/class-privacy.php:92
+msgid "Date"
+msgstr ""
+
+#: includes/privacy/class-privacy.php:130
+msgid "When members repost or send a post to a friend, we record who did it, what was shared and when, so we can show share counts and the most shared posts."
+msgstr ""
+
+#: includes/privacy/class-privacy.php:131
+msgid "If share analytics is turned on, we also count clicks on share buttons and visits from shared links. Visitors are counted with a one-way code that changes every day; we do not store IP addresses."
+msgstr ""
+
+#: includes/privacy/class-privacy.php:132
+msgid "Share records are kept for 12 months and are included when you export or erase your personal data."
+msgstr ""
+
+#: includes/reshare/class-activity-types.php:27
+msgid "Reposted an update"
+msgstr ""
+
+#: includes/reshare/class-activity-types.php:28
+msgid "Reposted a post"
+msgstr ""
+
+#. translators: %s: member link.
+#: includes/reshare/class-activity-types.php:43
+#, php-format
+msgid "%s reposted a post"
+msgstr ""
+
+#. translators: %s: member link.
+#: includes/reshare/class-activity-types.php:48
+#, php-format
+msgid "%s reposted a reply"
+msgstr ""
+
+#. translators: %s: member link.
+#: includes/reshare/class-activity-types.php:48
+#, php-format
+msgid "%s reposted an update"
+msgstr ""
+
+#. translators: 1: "Anna reposted an update", 2: group link.
+#: includes/reshare/class-activity-types.php:55
+#, php-format
+msgid "%1$s in the group %2$s"
+msgstr ""
+
+#: includes/reshare/class-counts.php:56
+msgid "See who reposted"
+msgstr ""
+
+#: includes/reshare/class-member-settings.php:38
+msgid "Allow other members to repost my posts"
+msgstr ""
+
+#: includes/reshare/class-menu-item.php:68
+msgid "Repost in this group"
+msgstr ""
+
+#: includes/reshare/class-reposted-card.php:76
+#: includes/reshare/class-reposted-card.php:104
+msgid "This post is no longer available."
+msgstr ""
+
+#: includes/reshare/class-reposted-card.php:104
+msgid "This reply is no longer available."
+msgstr ""
+
+#: includes/reshare/class-reposted-card.php:129
+msgid "View reply"
+msgstr ""
+
+#: includes/reshare/class-reposted-card.php:129
+msgid "View post"
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:41
+msgid "Reposting is turned off."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:44
+msgid "Please log in to repost."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:61
+msgid "You already reposted this here."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:86
+msgid "The repost could not be saved. Please try again."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:115
+msgid "Repost not found."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:118
+msgid "You can only undo your own reposts."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:138
+msgid "Sending to friends is turned off."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:141
+msgid "Please log in to send this."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:144
+msgid "Choose a friend to send this to."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:147
+msgid "You can only send posts to your friends."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:155
+msgid "Your friend cannot see this post, so it cannot be sent to them."
+msgstr ""
+
+#. translators: %s: title of the shared item.
+#: includes/reshare/class-reshare-service.php:165
+#, php-format
+msgid "Shared with you: %s"
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:171
+msgid "The message could not be sent. Please try again."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:211
+msgid "Sharing replies is turned off."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:228
+msgid "The author does not allow reposts of their posts."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:232
+msgid "You cannot repost this."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:253
+msgid "Posts from this group can only be reposted inside the group."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:258
+msgid "You can repost your own posts into a group."
+msgstr ""
+
+#: includes/reshare/class-reshare-service.php:263
+msgid "You can only repost into groups you belong to."
+msgstr ""
+
+#: includes/rewards/class-mycred-hook.php:30
+msgid "Shared post brought a visitor"
+msgstr ""
+
+#: includes/rewards/class-mycred-hook.php:34
+msgid "Shared post brought a new member"
+msgstr ""
+
+#: includes/rewards/class-mycred-hook.php:80
+msgid "Visitor from a shared post"
+msgstr ""
+
+#: includes/rewards/class-mycred-hook.php:80
+msgid "New member from a shared post"
+msgstr ""
+
+#: includes/rewards/class-rewards.php:55
+#: includes/rewards/class-rewards.php:83
+msgid "A shared post brought a visitor"
+msgstr ""
+
+#: includes/rewards/class-rewards.php:66
+#: includes/rewards/class-rewards.php:84
+msgid "A shared post brought a new member"
+msgstr ""
+
+#: includes/rewards/class-rewards.php:127
+msgid "Points when a member's shared post brings a visitor or a new member."
+msgstr ""
+
+#: templates/composer.php:20
+msgid "Close"
+msgstr ""
+
+#: templates/composer.php:26
+msgid "Log in or join the community to repost and send posts to friends."
+msgstr ""
+
+#: templates/composer.php:28
+msgid "Log in"
+msgstr ""
+
+#: templates/composer.php:30
+msgid "Join"
+msgstr ""
+
+#: templates/composer.php:37
+msgid "Where to post"
+msgstr ""
+
+#: templates/composer.php:38
+msgid "My profile"
+msgstr ""
+
+#: templates/composer.php:40
+msgid "A group"
+msgstr ""
+
+#: templates/composer.php:45
+msgid "Group"
+msgstr ""
+
+#: templates/composer.php:46
+msgid "Search your groups"
+msgstr ""
+
+#: templates/composer.php:48
+msgid "You have not joined any groups yet."
+msgstr ""
+
+#: templates/composer.php:52
+msgid "Friend"
+msgstr ""
+
+#: templates/composer.php:53
+msgid "Type a name"
+msgstr ""
+
+#: templates/composer.php:54
+msgid "Only your friends are shown."
+msgstr ""
+
+#: templates/composer.php:55
+msgid "Friends"
+msgstr ""
+
+#: templates/composer.php:66
+msgid "Cancel"
+msgstr ""
+
+#: assets/js/bpas-pro-block.js:46
+msgid "Settings"
+msgstr ""
+
+#: assets/js/bpas-pro-block.js:59
+msgid "Number of posts"
+msgstr ""

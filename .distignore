@@ -1,0 +1,17 @@
+/.git
+/.gitignore
+/.distignore
+/node_modules
+/bin
+/docs
+/audit
+/tests
+/package.json
+/package-lock.json
+/phpcs.xml
+/phpstan.neon.dist
+/CLAUDE.md
+/libs/edd-sl-sdk/composer.json
+*.md
+.DS_Store
+/dist

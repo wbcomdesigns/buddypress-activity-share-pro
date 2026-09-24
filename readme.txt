@@ -1,59 +1,73 @@
-=== Wbcom Designs - BuddyPress Activity Share Pro ===
-
-Contributors: vapvarun,wbcomdesigns
-Donate link: https://wbcomdesigns.com
-Tags: buddypress, activity, share, social, reshare
-Requires at least: 5.0
-Tested up to: 6.9
-Stable tag: 2.3.1
-Requires PHP: 7.4
+=== Activity Share Pro ===
+Contributors: wbcomdesigns, vapvarun
+Tags: buddypress, share, repost, social share, analytics
+Requires at least: 6.7
+Tested up to: 7.1
+Requires PHP: 8.1
+Requires Plugins: bp-activity-social-share
+Stable tag: 3.6.0
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Premium WordPress plugin for sharing BuddyPress Activities on social media with advanced tracking and analytics.
+Reposting, sending posts to friends, share buttons on any content, counts, trending posts, rewards and share analytics for BuddyPress. Extends Activity Share for BuddyPress.
 
 == Description ==
 
-BuddyPress Activity Share Pro enables comprehensive social sharing for BuddyPress activities with advanced tracking and analytics capabilities. This premium plugin is exclusively available with Reign Theme and BuddyX Pro.
+Activity Share Pro adds everything that keeps sharing inside your community to the free Activity Share for BuddyPress plugin.
 
-Key Features:
-• Share activities on Facebook, Twitter/X, LinkedIn, WhatsApp, Telegram, Bluesky, and more
-• Internal resharing to profiles, groups, and friends
-• Advanced share tracking and analytics foundation
-• UTM parameters for external link tracking
-• Gamification-ready with hooks for point systems
-• Full PHP 8+ compatibility
-• Dark mode support
-• RTL language support
-
-**If you like the plugin functionality, please leave a review to help the plugin grow!**
-
-=== THEME - WORDPRESS THEME WITH OUTSTANDING BUDDYPRESS SUPPORT ===
-* [FREE BuddyPress Theme: BuddyX](https://wordpress.org/themes/buddyx/) - Offers unique layouts with clean code and easy-to-customize options, giving you a whole new way to visualize BuddyPress.
+* **Repost:** one tap reposts an update to your profile (with Undo), or repost with a comment to your profile or a group. @mentions work in the comment.
+* **Send to a friend:** send any post to a friend as a private message.
+* **Share replies:** replies get their own share menu and can be reposted, with a clear note if the reply is later deleted.
+* **Share buttons on any content:** posts, pages, products, courses, events and other content types, above or below the content or as a floating button. Also a Share buttons block and the [bpas_share] shortcode.
+* **Repost blog posts into the stream** as a quoted card.
+* **Counts and who reposted** next to the Share button.
+* **Most shared block and widget** for the last 7 or 30 days.
+* **Share image for text posts:** a branded image is used when a text-only post is shared to Facebook, LinkedIn or WhatsApp.
+* **Short share links** like yoursite.com/s/abc123 that credit the member who shared.
+* **Share rewards** with WB Gamification, GamiPress or myCRED: points when a shared post brings a visitor or a new member.
+* **Group controls:** group admins decide whether posts from their public group can be shared outside or reposted elsewhere.
+* **Notifications:** "Anna and 5 others reposted your update", on the site and by email (members can switch the email off).
+* **Share analytics:** shares by network, reposts, sends and visits, most shared content, 7 / 30 / 90 days, CSV export. Visitors are counted without storing IP addresses.
+* **Privacy tools:** share data is included in WordPress's personal data export and erase tools.
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-1. Download the zip file and extract it.
-
-2. Upload `bp-activity-social-share` directory to the `/wp-content/plugins/` directory
-
-3. Activate the plugin through the \'Plugins\' menu.
-
-4. Alternatively, you can use the WordPress Plugin installer from Dashboard->Plugins->Add New to add this plugin
-
-5. Enjoy
-
-If you need additional help, contact us for [Custom Development](https://wbcomdesigns.com/hire-us/).
-
-
-== Frequently Asked Questions ==
-
-= Does this plugin require another plugin? =
-Yes, this plugin requires the  BuddyPress plugin.
+1. Install and activate Activity Share for BuddyPress (free).
+2. Upload and activate Activity Share Pro.
+3. Go to WB Plugins > Activity Share > Features and License.
 
 == Changelog ==
+
+= 3.6.0 - September 2026 =
+
+Rebuilt as an add-on to the free Activity Share for BuddyPress: faster, safer and with many new ways to share.
+
+* New      - Quick repost with Undo, and Repost with comment to your profile or a group.
+* New      - Send to a friend as a private message.
+* New      - Share and repost replies.
+* New      - Share buttons on any content type, a Share buttons block and the [bpas_share] shortcode.
+* New      - Repost blog posts and other content into the activity stream.
+* New      - Share counts and a list of who reposted.
+* New      - Most shared block and widget.
+* New      - Share image for text-only posts.
+* New      - Short share links that credit the member who shared.
+* New      - Share rewards with WB Gamification, GamiPress and myCRED.
+* New      - Group admins control outside sharing and reposting for their group.
+* New      - Grouped repost notifications and an email members can switch off.
+* New      - Privacy export and erase support for share data.
+* New      - REST API for reposting, sending, share counts and analytics.
+* Improve  - Analytics now work, with date ranges, pagination and CSV export, and stay fast on large sites.
+* Improve  - The repost dialog works with the keyboard and screen readers and looks right on phones.
+* Improve  - Bootstrap, Select2 and Font Awesome are no longer loaded.
+* Fix      - Activating Pro while the free plugin is active no longer causes an error.
+* Fix      - Posts from private and hidden groups can no longer be viewed or reposted by non-members.
+* Fix      - Drafts and private posts can no longer be reposted.
+* Fix      - Share tracking tables are created on update, without reactivating the plugin.
+* Fix      - Right-to-left sites now get the correct styles.
+* Fix      - Uninstall now removes all plugin data.
+* Security - Visitor IP addresses are no longer stored.
+* Dev      - Old settings, counts and share records move to the new format automatically; old entries are removed.
+* Compat   - Requires Activity Share for BuddyPress 3.6.0, WordPress 6.7 and PHP 8.1. Updates now use your Wbcom Designs license.
 
 = 2.3.1 - September 2026 =
 
