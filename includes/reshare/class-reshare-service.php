@@ -28,6 +28,14 @@ final class Reshare_Service {
 	private static array $originals = array();
 
 	/**
+	 * Request cache: "activity:ID" / "post:ID" => the member's own profile repost: its ID for a plain
+	 * repost, -1 for a quote (it has a comment, so Undo would delete words), 0 for none.
+	 *
+	 * @var array<string,int>
+	 */
+	private static array $mine = array();
+
+	/**
 	 * Create a repost.
 	 *
 	 * @param int    $user_id     Reposting member.
@@ -352,6 +360,57 @@ final class Reshare_Service {
 	public static function remember( object $activity ): void {
 		if ( ! empty( $activity->id ) ) {
 			self::$originals[ (int) $activity->id ] = $activity;
+		}
+	}
+
+	/**
+	 * The member's own profile repost of an item (ID, -1 for a quote, 0 = none), so the menu can offer Undo.
+	 * The stream primes this for the whole page in one query (prefetch_mine).
+	 *
+	 * @param int    $user_id Member.
+	 * @param string $type    'activity' | 'post'.
+	 * @param int    $id      Original ID.
+	 */
+	public static function my_repost( int $user_id, string $type, int $id ): int {
+		$key = $type . ':' . $id;
+		if ( ! array_key_exists( $key, self::$mine ) ) {
+			self::prefetch_mine( $user_id, $type, array( $id ) );
+		}
+		return self::$mine[ $key ];
+	}
+
+	/**
+	 * Load the member's profile reposts of many items in one query.
+	 *
+	 * @param int    $user_id Member.
+	 * @param string $type    'activity' | 'post'.
+	 * @param int[]  $ids     Original IDs.
+	 */
+	public static function prefetch_mine( int $user_id, string $type, array $ids ): void {
+		$ids = array_values( array_unique( array_filter( array_map( 'intval', $ids ) ) ) );
+		if ( ! $user_id || empty( $ids ) ) {
+			return;
+		}
+		foreach ( $ids as $id ) {
+			self::$mine[ $type . ':' . $id ] = 0;
+		}
+		$found = \BP_Activity_Activity::get(
+			array(
+				'filter'           => array(
+					'user_id'      => $user_id,
+					'object'       => 'activity',
+					'action'       => 'post' === $type ? 'post_share' : 'activity_share',
+					'secondary_id' => $ids,
+				),
+				'per_page'         => count( $ids ),
+				'show_hidden'      => true,
+				'display_comments' => false,
+				'count_total'      => false,
+				'update_meta_cache' => false,
+			)
+		);
+		foreach ( (array) ( $found['activities'] ?? array() ) as $repost ) {
+			self::$mine[ $type . ':' . (int) $repost->secondary_item_id ] = '' === trim( wp_strip_all_tags( (string) $repost->content ) ) ? (int) $repost->id : -1;
 		}
 	}
 

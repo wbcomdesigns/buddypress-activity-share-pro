@@ -201,7 +201,15 @@ final class Rest_Controller {
 	 */
 	public static function send( WP_REST_Request $request ) {
 		$thread = Reshare_Service::send( get_current_user_id(), (string) $request['object_type'], (int) $request['object_id'], (int) $request['friend_id'], (string) $request['note'] );
-		return is_wp_error( $thread ) ? $thread : rest_ensure_response( array( 'thread_id' => $thread ) );
+		if ( is_wp_error( $thread ) ) {
+			return $thread;
+		}
+		return rest_ensure_response(
+			array(
+				'thread_id' => $thread,
+				'url'       => bp_get_message_thread_view_link( $thread, get_current_user_id() ),
+			)
+		);
 	}
 
 	/**
@@ -345,11 +353,17 @@ final class Rest_Controller {
 			'id'     => $user_id,
 			'name'   => bp_core_get_user_displayname( $user_id ),
 			'url'    => bp_members_get_user_url( $user_id ),
-			'avatar' => bp_core_fetch_avatar(
-				array(
-					'item_id' => $user_id,
-					'type'    => 'thumb',
-					'html'    => false,
+			// BuddyPress returns the URL HTML-escaped (&#038;); JSON consumers need the raw URL.
+			'avatar' => esc_url_raw(
+				html_entity_decode(
+					(string) bp_core_fetch_avatar(
+						array(
+							'item_id' => $user_id,
+							'type'    => 'thumb',
+							'html'    => false,
+						)
+					),
+					ENT_QUOTES
 				)
 			),
 		);

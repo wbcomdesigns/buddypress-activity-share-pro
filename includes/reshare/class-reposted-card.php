@@ -36,6 +36,8 @@ final class Reposted_Card {
 		$activity_ids = array();
 		$post_ids     = array();
 		$group_ids    = array();
+		// Every item on the page, replies included, so each menu knows "already reposted" for free.
+		Reshare_Service::prefetch_mine( get_current_user_id(), 'activity', self::ids_with_replies( $template->activities ) );
 		foreach ( $template->activities as $activity ) {
 			Reshare_Service::remember( $activity );
 			if ( 'groups' === $activity->component ) {
@@ -56,6 +58,23 @@ final class Reposted_Card {
 			bp_groups_update_meta_cache( array_unique( $group_ids ) );
 		}
 		return $has;
+	}
+
+	/**
+	 * IDs of the loop's activities and their threaded replies.
+	 *
+	 * @param array $activities Activities (with ->children when threaded).
+	 * @return int[]
+	 */
+	private static function ids_with_replies( array $activities ): array {
+		$ids = array();
+		foreach ( $activities as $activity ) {
+			$ids[] = (int) $activity->id;
+			if ( ! empty( $activity->children ) ) {
+				$ids = array_merge( $ids, self::ids_with_replies( (array) $activity->children ) );
+			}
+		}
+		return $ids;
 	}
 
 	/**

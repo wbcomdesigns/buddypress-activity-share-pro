@@ -35,7 +35,7 @@ $bpas_pro_placements = array(
 						echo esc_html( sprintf( __( 'Placement for %s', 'buddypress-activity-share-pro' ), $bpas_pro_type->labels->name ) );
 						?>
 					</label>
-					<select id="bpas-place-<?php echo esc_attr( $bpas_pro_type->name ); ?>" data-bpas-placement="<?php echo esc_attr( $bpas_pro_type->name ); ?>">
+					<select id="bpas-place-<?php echo esc_attr( $bpas_pro_type->name ); ?>" data-bpas-placement="<?php echo esc_attr( $bpas_pro_type->name ); ?>" <?php disabled( ! $bpas_pro_on ); ?>>
 						<?php foreach ( $bpas_pro_placements as $bpas_pro_value => $bpas_pro_label ) : ?>
 							<option value="<?php echo esc_attr( $bpas_pro_value ); ?>" <?php selected( $selected[ $bpas_pro_type->name ] ?? 'below', $bpas_pro_value ); ?>><?php echo esc_html( $bpas_pro_label ); ?></option>
 						<?php endforeach; ?>

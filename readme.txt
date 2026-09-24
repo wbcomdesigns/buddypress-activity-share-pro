@@ -44,6 +44,7 @@ Rebuilt as an add-on to the free Activity Share for BuddyPress: faster, safer an
 
 * New      - Quick repost with Undo, and Repost with comment to your profile or a group.
 * New      - Send to a friend as a private message.
+* New      - Mention friends with @ in a repost comment; they get a notification.
 * New      - Share and repost replies.
 * New      - Share buttons on any content type, a Share buttons block and the [bpas_share] shortcode.
 * New      - Repost blog posts and other content into the activity stream.
@@ -58,6 +59,9 @@ Rebuilt as an add-on to the free Activity Share for BuddyPress: faster, safer an
 * New      - REST API for reposting, sending, share counts and analytics.
 * Improve  - Analytics now work, with date ranges, pagination and CSV export, and stay fast on large sites.
 * Improve  - The repost dialog works with the keyboard and screen readers and looks right on phones.
+* Improve  - The share menu shows Undo repost on posts you already reposted.
+* Improve  - After reposting or sending, a View link takes you straight to the post or the conversation.
+* Improve  - Dialogs, quoted posts and share buttons look the same on any theme, in light and dark mode.
 * Improve  - Bootstrap, Select2 and Font Awesome are no longer loaded.
 * Fix      - Activating Pro while the free plugin is active no longer causes an error.
 * Fix      - Posts from private and hidden groups can no longer be viewed or reposted by non-members.
@@ -106,7 +110,7 @@ Admin redesign, a refreshed sharing experience, dark mode, and important stabili
 * Fix: CSS conflict with notification dropdown items.
 
 = 2.2.2 =
-* Fix: PHP Warning — attempt to read property post_content on null when activity has no associated post
+* Fix: PHP Warning - attempt to read property post_content on null when activity has no associated post
 * Fix: Resolved PHPCS coding standards violations
 
 = 2.2.1 =

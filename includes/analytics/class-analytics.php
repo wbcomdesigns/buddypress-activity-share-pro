@@ -117,7 +117,7 @@ final class Analytics {
 				$url   = $post ? get_permalink( $post ) : '';
 			} else {
 				$a     = $activities[ $id ] ?? null;
-				$title = $a ? wp_html_excerpt( wp_strip_all_tags( $a->content ? $a->content : $a->action ), 90, '...' ) : '';
+				$title = $a ? wp_trim_words( wp_strip_all_tags( $a->content ? $a->content : $a->action ), 14, '&hellip;' ) : ''; // Whole words, never mid-word.
 				$url   = $a ? bp_activity_get_permalink( $id, $a ) : '';
 			}
 			$out[] = array(

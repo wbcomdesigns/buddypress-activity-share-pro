@@ -38,7 +38,7 @@
 		window.clearTimeout( toastTimer );
 		toastTimer = window.setTimeout( function () {
 			toastEl.hidden = true;
-		}, action ? 8000 : 3500 );
+		}, action ? 8000 : 5000 );
 	}
 
 	function closeMenu( el ) {
@@ -58,10 +58,11 @@
 		return dialog ? dialog.querySelector( sel ) : null;
 	}
 
-	function setStatus( text ) {
+	function setStatus( text, isError ) {
 		var s = q( '[data-bpas-dialog-status]' );
 		if ( s ) {
 			s.textContent = text || '';
+			s.classList.toggle( 'is-error', !! isError );
 		}
 	}
 
@@ -83,7 +84,8 @@
 			objectId: parseInt( trigger.getAttribute( 'data-bpas-object-id' ), 10 ) || 0,
 			fixedGroup: parseInt( trigger.getAttribute( 'data-bpas-group' ) || '0', 10 ),
 			groupsOnly: trigger.hasAttribute( 'data-bpas-groups-only' ),
-			friendId: 0
+			friendId: 0,
+			friendName: ''
 		};
 
 		var title = q( '[data-bpas-dialog-title]' );
@@ -105,19 +107,19 @@
 			show( 'destination', false );
 			show( 'group', false );
 			show( 'friend', true );
-			q( '[data-bpas-friend-list]' ).textContent = '';
+			searchFriends( '' );
 		} else if ( 'reposters' === mode ) {
 			title.textContent = t.reposters;
 			loadReposters();
 		} else {
-			var groupMode = state.fixedGroup || state.groupsOnly;
-			title.textContent = state.groupsOnly ? t.repostGroup : t.repostComment;
+			// "Repost in this group" needs no picker: the title and the menu row already name the group.
+			title.textContent = state.fixedGroup ? t.repostHere : ( state.groupsOnly ? t.repostGroup : t.repostComment );
 			submit.textContent = t.repost;
 			q( '[data-bpas-comment-label]' ).textContent = t.comment;
 			show( 'friend', false );
-			show( 'destination', ! groupMode );
-			show( 'group', !! groupMode );
-			if ( groupMode ) {
+			show( 'destination', ! state.fixedGroup && ! state.groupsOnly );
+			show( 'group', state.groupsOnly );
+			if ( state.groupsOnly ) {
 				loadGroups( '' );
 			}
 		}
@@ -127,12 +129,31 @@
 		} else {
 			dialog.setAttribute( 'open', '' );
 		}
+		mentionLists( dialog );
+		// Start where the member types, not on the close button.
+		var first = { send: '[data-bpas-friend-search]', compose: '[name="comment"]', reposters: '[data-bpas-reposters-list]', login: '[data-bpas-mode="login"] .bpas-pro-btn--primary' }[ mode ];
+		first = first ? q( first ) : null;
+		if ( first ) {
+			first.focus();
+		}
+	}
+
+	/*
+	 * @mention suggestions (BuddyPress At.js) render in <body>, which sits under a modal
+	 * dialog's top layer. Host them inside the dialog while it is open; At.js positions
+	 * them with jQuery .offset(), which accounts for the new parent.
+	 */
+	function mentionLists( host ) {
+		document.querySelectorAll( '.atwho-container' ).forEach( function ( el ) {
+			host.appendChild( el );
+		} );
 	}
 
 	function closeDialog() {
 		if ( dialog && dialog.open ) {
 			dialog.close();
 		}
+		mentionLists( document.body );
 		var body = q( '[data-bpas-reposters-list]' );
 		if ( body ) {
 			body.remove();
@@ -158,44 +179,50 @@
 		loadingOpt.textContent = t.loading;
 		select.appendChild( loadingOpt );
 		api( '/me/groups?per_page=50&search=' + encodeURIComponent( search || '' ) ).then( function ( res ) {
+			var groups = res.groups || [];
 			select.textContent = '';
-			( res.groups || [] ).forEach( function ( g ) {
-				if ( state.fixedGroup && g.id !== state.fixedGroup ) {
-					return;
-				}
+			var prompt = document.createElement( 'option' );
+			prompt.value = '';
+			prompt.textContent = t.chooseGroup;
+			select.appendChild( prompt );
+			groups.forEach( function ( g ) {
 				var opt = document.createElement( 'option' );
 				opt.value = g.id;
 				opt.textContent = g.name;
 				select.appendChild( opt );
 			} );
-			if ( state.fixedGroup && ! select.options.length ) {
-				var only = document.createElement( 'option' );
-				only.value = state.fixedGroup;
-				only.textContent = '#' + state.fixedGroup;
-				select.appendChild( only );
+			if ( 1 === groups.length ) {
+				select.value = groups[ 0 ].id;
 			}
-			empty.hidden = select.options.length > 0;
-			select.hidden = select.options.length === 0;
+			empty.hidden = groups.length > 0 || !! search;
+			select.hidden = ! groups.length && ! search;
 			searchBox.hidden = ! res.has_more && ! search;
-			select.disabled = !! state.fixedGroup;
 		}, function ( error ) {
-			setStatus( message( error ) );
+			setStatus( message( error ), true );
 		} );
 	}
 
 	/* ---------- friends ---------- */
 
 	var friendTimer;
+	function listNote( list, text ) {
+		var li = document.createElement( 'li' );
+		li.className = 'bpas-pro-options__empty';
+		li.textContent = text;
+		list.textContent = '';
+		list.appendChild( li );
+	}
+
 	function searchFriends( term ) {
 		var list = q( '[data-bpas-friend-list]' );
+		state.friendId = 0;
+		state.friendName = '';
+		listNote( list, t.loading );
 		api( '/me/friends?per_page=20&search=' + encodeURIComponent( term ) ).then( function ( res ) {
 			list.textContent = '';
 			var friends = res.friends || [];
 			if ( ! friends.length ) {
-				var none = document.createElement( 'li' );
-				none.className = 'bpas-pro-options__empty';
-				none.textContent = t.noFriends;
-				list.appendChild( none );
+				listNote( list, term ? t.noFriends : t.noFriendsYet );
 				return;
 			}
 			friends.forEach( function ( f ) {
@@ -214,13 +241,25 @@
 					img.height = 24;
 					btn.appendChild( img );
 				}
-				btn.appendChild( document.createTextNode( f.name ) );
+				var name = document.createElement( 'span' );
+				name.className = 'bpas-pro-option__name';
+				name.textContent = f.name;
+				btn.appendChild( name );
 				li.appendChild( btn );
 				list.appendChild( li );
 			} );
 		}, function ( error ) {
-			setStatus( message( error ) );
+			listNote( list, message( error ) );
 		} );
+	}
+
+	function pickFriend( btn ) {
+		state.friendId = parseInt( btn.getAttribute( 'data-friend-id' ), 10 );
+		state.friendName = btn.textContent;
+		dialog.querySelectorAll( '[data-friend-id]' ).forEach( function ( b ) {
+			b.setAttribute( 'aria-selected', b === btn ? 'true' : 'false' );
+		} );
+		setStatus( '' );
 	}
 
 	/* ---------- reposters ---------- */
@@ -230,11 +269,15 @@
 		var list = document.createElement( 'ul' );
 		list.className = 'bpas-pro-reposters';
 		list.setAttribute( 'data-bpas-reposters-list', '' );
+		list.tabIndex = -1;
 		list.textContent = t.loading;
 		body.hidden = true;
 		body.parentNode.appendChild( list );
 		api( '/activity/' + state.objectId + '/reposters?per_page=50' ).then( function ( res ) {
 			list.textContent = '';
+			if ( ! ( res.reposters || [] ).length ) {
+				list.textContent = t.noReposters;
+			}
 			( res.reposters || [] ).forEach( function ( m ) {
 				var li = document.createElement( 'li' );
 				var a = document.createElement( 'a' );
@@ -258,6 +301,29 @@
 
 	/* ---------- actions ---------- */
 
+	/* The Repost row flips to "Undo repost" and back, so the menu always tells the truth. */
+	function setReposted( row, repostId ) {
+		var name = row.querySelector( '.bpas-share__name' );
+		if ( repostId ) {
+			row.removeAttribute( 'data-bpas-repost' );
+			row.setAttribute( 'data-bpas-undo', repostId );
+			name.textContent = t.undoRepost;
+		} else {
+			row.removeAttribute( 'data-bpas-undo' );
+			row.setAttribute( 'data-bpas-repost', '' );
+			name.textContent = t.repost;
+		}
+	}
+
+	function undoRepost( row, repostId ) {
+		api( '/reshare/' + repostId, { method: 'DELETE' } ).then( function () {
+			setReposted( row, 0 );
+			toast( t.undone );
+		}, function ( error ) {
+			toast( message( error ) );
+		} );
+	}
+
 	function quickRepost( trigger ) {
 		closeMenu( trigger );
 		api( '/reshare', {
@@ -268,14 +334,11 @@
 				destination: 'profile'
 			}
 		} ).then( function ( res ) {
+			setReposted( trigger, res.id );
 			toast( t.reposted, {
 				label: t.undo,
 				run: function () {
-					api( '/reshare/' + res.id, { method: 'DELETE' } ).then( function () {
-						toast( t.undone );
-					}, function ( error ) {
-						toast( message( error ) );
-					} );
+					undoRepost( trigger, res.id );
 				}
 			} );
 		}, function ( error ) {
@@ -290,7 +353,7 @@
 
 		if ( 'send' === state.mode ) {
 			if ( ! state.friendId ) {
-				setStatus( t.pickFriend );
+				setStatus( t.pickFriend, true );
 				return;
 			}
 			request = api( '/send', { method: 'POST', data: { object_type: state.objectType, object_id: state.objectId, friend_id: state.friendId, note: comment } } );
@@ -298,21 +361,29 @@
 			var dest = state.fixedGroup || state.groupsOnly ? 'group' : ( ( q( '[name="destination"]:checked' ) || {} ).value || 'profile' );
 			var groupId = parseInt( q( '[data-bpas-group-select]' ).value, 10 ) || state.fixedGroup || 0;
 			if ( 'group' === dest && ! groupId ) {
-				setStatus( t.pickGroup );
+				setStatus( t.pickGroup, true );
 				return;
 			}
 			request = api( '/reshare', { method: 'POST', data: { object_type: state.objectType, object_id: state.objectId, destination: dest, group_id: groupId, comment: comment } } );
 		}
 
+		var label = submit.textContent;
 		submit.disabled = true;
-		setStatus( t.working );
-		request.then( function () {
+		submit.textContent = 'send' === state.mode ? t.sending : t.reposting;
+		setStatus( '' );
+		request.then( function ( res ) {
 			closeDialog();
-			toast( 'send' === state.mode ? t.sent : t.reposted );
+			toast( 'send' === state.mode ? t.sentTo.replace( '%s', state.friendName ) : t.reposted, res && res.url ? {
+				label: t.view,
+				run: function () {
+					window.location.href = res.url;
+				}
+			} : null );
 		}, function ( error ) {
-			setStatus( message( error ) );
+			setStatus( message( error ), true );
 		} ).finally( function () {
 			submit.disabled = false;
+			submit.textContent = label;
 		} );
 	}
 
@@ -323,6 +394,10 @@
 		if ( ( trigger = el.closest( '[data-bpas-repost]' ) ) ) {
 			event.preventDefault();
 			quickRepost( trigger );
+		} else if ( ( trigger = el.closest( '[data-bpas-undo]' ) ) ) {
+			event.preventDefault();
+			closeMenu( trigger );
+			undoRepost( trigger, parseInt( trigger.getAttribute( 'data-bpas-undo' ), 10 ) );
 		} else if ( ( trigger = el.closest( '[data-bpas-compose]' ) ) ) {
 			event.preventDefault();
 			closeMenu( trigger );
@@ -343,10 +418,7 @@
 			event.preventDefault();
 			closeDialog();
 		} else if ( ( trigger = el.closest( '[data-friend-id]' ) ) ) {
-			state.friendId = parseInt( trigger.getAttribute( 'data-friend-id' ), 10 );
-			dialog.querySelectorAll( '[data-friend-id]' ).forEach( function ( b ) {
-				b.setAttribute( 'aria-selected', b === trigger ? 'true' : 'false' );
-			} );
+			pickFriend( trigger );
 		} else if ( dialog && el === dialog ) {
 			closeDialog(); // Backdrop click.
 		}
@@ -382,6 +454,18 @@
 	} );
 
 	if ( dialog ) {
+		dialog.addEventListener( 'keydown', function ( event ) {
+			if ( 'Enter' === event.key && event.target.hasAttribute( 'data-bpas-friend-search' ) ) {
+				event.preventDefault();
+				var firstFriend = q( '[data-friend-id]' );
+				if ( firstFriend ) {
+					pickFriend( firstFriend );
+					firstFriend.focus();
+				}
+			} else if ( 'Enter' === event.key && event.target.hasAttribute( 'data-bpas-group-search' ) ) {
+				event.preventDefault();
+			}
+		} );
 		dialog.addEventListener( 'submit', function ( event ) {
 			event.preventDefault();
 			submitDialog();

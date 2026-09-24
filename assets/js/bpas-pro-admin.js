@@ -28,6 +28,17 @@
 
 	/* ---------- settings forms ---------- */
 
+	// A placement only matters for a ticked content type.
+	document.addEventListener( 'change', function ( event ) {
+		var input = event.target;
+		if ( input.hasAttribute && input.hasAttribute( 'data-bpas-type' ) ) {
+			var select = document.querySelector( '[data-bpas-placement="' + input.value + '"]' );
+			if ( select ) {
+				select.disabled = ! input.checked;
+			}
+		}
+	} );
+
 	document.querySelectorAll( '[data-bpas-pro-form]' ).forEach( function ( form ) {
 		form.addEventListener( 'submit', function ( event ) {
 			event.preventDefault();

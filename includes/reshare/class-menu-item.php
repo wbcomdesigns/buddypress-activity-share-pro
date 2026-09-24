@@ -69,7 +69,13 @@ final class Menu_Item {
 				} elseif ( $own ) {
 					$rows[] = self::row( 'repeat', __( 'Repost to a group', 'buddypress-activity-share-pro' ), 'data-bpas-compose data-bpas-groups-only ' . $data );
 				} else {
-					$rows[] = self::row( 'repeat', __( 'Repost', 'buddypress-activity-share-pro' ), 'data-bpas-repost ' . $data );
+					// Plain repost -> Undo; quote (-1) -> no quick row, the quote is managed from the post itself.
+					$mine = Reshare_Service::my_repost( $user_id, $ctx->type, (int) $ctx->id );
+					if ( $mine > 0 ) {
+						$rows[] = self::row( 'repeat', __( 'Undo repost', 'buddypress-activity-share-pro' ), sprintf( 'data-bpas-undo="%d" ', $mine ) . $data );
+					} elseif ( 0 === $mine ) {
+						$rows[] = self::row( 'repeat', __( 'Repost', 'buddypress-activity-share-pro' ), 'data-bpas-repost ' . $data );
+					}
 					$rows[] = self::row( 'message-square-quote', __( 'Repost with comment', 'buddypress-activity-share-pro' ), 'data-bpas-compose ' . $data );
 				}
 			}

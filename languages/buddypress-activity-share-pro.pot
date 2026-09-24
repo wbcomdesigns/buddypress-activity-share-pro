@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-24T10:31:18+00:00\n"
+"POT-Creation-Date: 2026-09-24T11:04:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-activity-share-pro\n"
@@ -102,7 +102,7 @@ msgstr ""
 #: includes/admin/class-admin.php:68
 #: includes/class-assets.php:53
 #: includes/reshare/class-menu-item.php:47
-#: includes/reshare/class-menu-item.php:72
+#: includes/reshare/class-menu-item.php:77
 #: templates/composer.php:17
 #: templates/composer.php:67
 msgid "Repost"
@@ -113,9 +113,9 @@ msgid "Members repost updates to their profile or a group, with or without a com
 msgstr ""
 
 #: includes/admin/class-admin.php:69
-#: includes/class-assets.php:56
+#: includes/class-assets.php:57
 #: includes/reshare/class-menu-item.php:50
-#: includes/reshare/class-menu-item.php:77
+#: includes/reshare/class-menu-item.php:83
 msgid "Send to a friend"
 msgstr ""
 
@@ -173,7 +173,7 @@ msgid "Settings could not be saved. Please try again."
 msgstr ""
 
 #: includes/admin/class-admin.php:127
-#: includes/class-assets.php:69
+#: includes/class-assets.php:77
 msgid "Loading..."
 msgstr ""
 
@@ -237,7 +237,7 @@ msgid "Deactivating"
 msgstr ""
 
 #: includes/admin/class-admin.php:160
-#: includes/class-assets.php:65
+#: includes/class-assets.php:73
 msgid "Something went wrong. Please try again."
 msgstr ""
 
@@ -420,15 +420,15 @@ msgstr ""
 msgid "You are not allowed to do this."
 msgstr ""
 
-#: includes/api/class-rest-controller.php:333
-#: includes/reshare/class-reshare-service.php:191
-#: includes/reshare/class-reshare-service.php:203
-#: includes/reshare/class-reshare-service.php:224
+#: includes/api/class-rest-controller.php:341
+#: includes/reshare/class-reshare-service.php:199
+#: includes/reshare/class-reshare-service.php:211
+#: includes/reshare/class-reshare-service.php:232
 msgid "This post is not available."
 msgstr ""
 
 #: includes/class-assets.php:54
-#: includes/reshare/class-menu-item.php:73
+#: includes/reshare/class-menu-item.php:79
 msgid "Repost with comment"
 msgstr ""
 
@@ -437,56 +437,88 @@ msgstr ""
 msgid "Repost to a group"
 msgstr ""
 
-#: includes/class-assets.php:57
-msgid "Send"
+#: includes/class-assets.php:56
+#: includes/reshare/class-menu-item.php:68
+msgid "Repost in this group"
 msgstr ""
 
 #: includes/class-assets.php:58
-msgid "Add a note (optional)"
+msgid "Send"
 msgstr ""
 
 #: includes/class-assets.php:59
+msgid "Add a note (optional)"
+msgstr ""
+
+#: includes/class-assets.php:60
 #: templates/composer.php:59
 msgid "Add a comment (optional)"
 msgstr ""
 
-#: includes/class-assets.php:60
+#: includes/class-assets.php:61
 msgid "Reposted."
 msgstr ""
 
-#: includes/class-assets.php:61
+#: includes/class-assets.php:62
 msgid "Undo"
 msgstr ""
 
-#: includes/class-assets.php:62
-msgid "Repost removed."
-msgstr ""
-
 #: includes/class-assets.php:63
-msgid "Sent."
+#: includes/reshare/class-menu-item.php:75
+msgid "Undo repost"
 msgstr ""
 
 #: includes/class-assets.php:64
-msgid "Working..."
+msgid "View"
+msgstr ""
+
+#: includes/class-assets.php:65
+msgid "Repost removed."
 msgstr ""
 
 #: includes/class-assets.php:66
-msgid "Choose a friend first."
+msgid "Sending..."
 msgstr ""
 
 #: includes/class-assets.php:67
-msgid "Choose a group first."
+msgid "Reposting..."
 msgstr ""
 
-#: includes/class-assets.php:68
-msgid "No friends match that name."
+#. translators: %s: friend's name.
+#: includes/class-assets.php:69
+#, php-format
+msgid "Sent to %s."
 msgstr ""
 
 #: includes/class-assets.php:70
-msgid "Reposted by"
+msgid "Choose a group"
 msgstr ""
 
 #: includes/class-assets.php:71
+msgid "You have no friends yet. Add friends to send them posts."
+msgstr ""
+
+#: includes/class-assets.php:72
+msgid "No reposts yet."
+msgstr ""
+
+#: includes/class-assets.php:74
+msgid "Choose a friend first."
+msgstr ""
+
+#: includes/class-assets.php:75
+msgid "Choose a group first."
+msgstr ""
+
+#: includes/class-assets.php:76
+msgid "No friends match that name."
+msgstr ""
+
+#: includes/class-assets.php:78
+msgid "Reposted by"
+msgstr ""
+
+#: includes/class-assets.php:79
 msgid "Join the conversation"
 msgstr ""
 
@@ -654,102 +686,98 @@ msgstr ""
 msgid "Allow other members to repost my posts"
 msgstr ""
 
-#: includes/reshare/class-menu-item.php:68
-msgid "Repost in this group"
-msgstr ""
-
-#: includes/reshare/class-reposted-card.php:84
-#: includes/reshare/class-reposted-card.php:112
+#: includes/reshare/class-reposted-card.php:103
+#: includes/reshare/class-reposted-card.php:131
 msgid "This post is no longer available."
 msgstr ""
 
-#: includes/reshare/class-reposted-card.php:112
+#: includes/reshare/class-reposted-card.php:131
 msgid "This reply is no longer available."
 msgstr ""
 
-#: includes/reshare/class-reposted-card.php:137
+#: includes/reshare/class-reposted-card.php:156
 msgid "View reply"
 msgstr ""
 
-#: includes/reshare/class-reposted-card.php:137
+#: includes/reshare/class-reposted-card.php:156
 msgid "View post"
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:41
+#: includes/reshare/class-reshare-service.php:49
 msgid "Reposting is turned off."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:44
+#: includes/reshare/class-reshare-service.php:52
 msgid "Please log in to repost."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:61
+#: includes/reshare/class-reshare-service.php:69
 msgid "You already reposted this here."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:86
+#: includes/reshare/class-reshare-service.php:94
 msgid "The repost could not be saved. Please try again."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:115
+#: includes/reshare/class-reshare-service.php:123
 msgid "Repost not found."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:118
+#: includes/reshare/class-reshare-service.php:126
 msgid "You can only undo your own reposts."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:138
+#: includes/reshare/class-reshare-service.php:146
 msgid "Sending to friends is turned off."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:141
+#: includes/reshare/class-reshare-service.php:149
 msgid "Please log in to send this."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:144
+#: includes/reshare/class-reshare-service.php:152
 msgid "Choose a friend to send this to."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:147
+#: includes/reshare/class-reshare-service.php:155
 msgid "You can only send posts to your friends."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:155
+#: includes/reshare/class-reshare-service.php:163
 msgid "Your friend cannot see this post, so it cannot be sent to them."
 msgstr ""
 
 #. translators: %s: title of the shared item.
-#: includes/reshare/class-reshare-service.php:165
+#: includes/reshare/class-reshare-service.php:173
 #, php-format
 msgid "Shared with you: %s"
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:171
+#: includes/reshare/class-reshare-service.php:179
 msgid "The message could not be sent. Please try again."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:211
+#: includes/reshare/class-reshare-service.php:219
 msgid "Sharing replies is turned off."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:228
+#: includes/reshare/class-reshare-service.php:236
 msgid "The author does not allow reposts of their posts."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:232
+#: includes/reshare/class-reshare-service.php:240
 msgid "You cannot repost this."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:253
+#: includes/reshare/class-reshare-service.php:261
 msgid "Posts from this group can only be reposted inside the group."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:258
+#: includes/reshare/class-reshare-service.php:266
 msgid "You can repost your own posts into a group."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:263
+#: includes/reshare/class-reshare-service.php:271
 msgid "You can only repost into groups you belong to."
 msgstr ""
 

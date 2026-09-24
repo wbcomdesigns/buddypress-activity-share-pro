@@ -98,6 +98,12 @@
 	text-transform: capitalize;
 }
 
+/* The empty message is text, not a bar row. */
+.bpas-pro-bars .bpas-pro-bars__empty {
+	display: block;
+	color: var(--bpas-a-muted, #64748b);
+}
+
 .bpas-pro-bars__track {
 	block-size: 10px;
 	border-radius: 999px;
