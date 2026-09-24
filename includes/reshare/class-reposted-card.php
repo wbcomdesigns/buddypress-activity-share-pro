@@ -35,8 +35,12 @@ final class Reposted_Card {
 		}
 		$activity_ids = array();
 		$post_ids     = array();
+		$group_ids    = array();
 		foreach ( $template->activities as $activity ) {
 			Reshare_Service::remember( $activity );
+			if ( 'groups' === $activity->component ) {
+				$group_ids[] = (int) $activity->item_id;
+			}
 			if ( 'activity_share' === $activity->type ) {
 				$activity_ids[] = (int) $activity->secondary_item_id;
 			} elseif ( 'post_share' === $activity->type ) {
@@ -46,6 +50,10 @@ final class Reposted_Card {
 		Reshare_Service::prefetch( $activity_ids );
 		if ( $post_ids ) {
 			_prime_post_caches( array_unique( $post_ids ), false, true );
+		}
+		// Group sharing controls are read per group: load them all at once.
+		if ( $group_ids && function_exists( 'bp_groups_update_meta_cache' ) ) {
+			bp_groups_update_meta_cache( array_unique( $group_ids ) );
 		}
 		return $has;
 	}
