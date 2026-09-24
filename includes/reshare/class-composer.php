@@ -67,7 +67,8 @@ final class Composer {
 			'logged_in'    => is_user_logged_in(),
 			'login_url'    => wp_login_url( (string) ( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) ), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- passed through wp_login_url (esc_url on output).
 			'register_url' => function_exists( 'bp_get_signup_page' ) && bp_get_signup_allowed() ? bp_get_signup_page() : '',
-			'groups_on'    => bp_is_active( 'groups' ),
+			// Only offer "A group" to members who belong to one (count is cached per user by BuddyPress).
+			'groups_on'    => bp_is_active( 'groups' ) && bp_get_total_group_count_for_user( get_current_user_id() ) > 0,
 		);
 		include BPAS_PRO_DIR . 'templates/composer.php';
 	}

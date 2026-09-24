@@ -33,13 +33,13 @@ defined( 'ABSPATH' ) || exit;
 			</div>
 		<?php else : ?>
 			<div class="bpas-pro-dialog__body">
-				<fieldset class="bpas-pro-field" data-bpas-field="destination">
-					<legend><?php esc_html_e( 'Where to post', 'buddypress-activity-share-pro' ); ?></legend>
-					<label class="bpas-pro-choice" data-bpas-dest="profile"><input type="radio" name="destination" value="profile" checked /> <?php esc_html_e( 'My profile', 'buddypress-activity-share-pro' ); ?></label>
-					<?php if ( $view['groups_on'] ) : ?>
+				<?php if ( $view['groups_on'] ) : // No groups = only one place to post, so no question to ask. ?>
+					<fieldset class="bpas-pro-field" data-bpas-field="destination">
+						<legend><?php esc_html_e( 'Where to post', 'buddypress-activity-share-pro' ); ?></legend>
+						<label class="bpas-pro-choice" data-bpas-dest="profile"><input type="radio" name="destination" value="profile" checked /> <?php esc_html_e( 'My profile', 'buddypress-activity-share-pro' ); ?></label>
 						<label class="bpas-pro-choice" data-bpas-dest="group"><input type="radio" name="destination" value="group" /> <?php esc_html_e( 'A group', 'buddypress-activity-share-pro' ); ?></label>
-					<?php endif; ?>
-				</fieldset>
+					</fieldset>
+				<?php endif; ?>
 
 				<div class="bpas-pro-field" data-bpas-field="group" hidden>
 					<label for="bpas-pro-group"><?php esc_html_e( 'Group', 'buddypress-activity-share-pro' ); ?></label>

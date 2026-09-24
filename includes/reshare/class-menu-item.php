@@ -67,7 +67,10 @@ final class Menu_Item {
 				if ( $stay ) {
 					$rows[] = self::row( 'repeat', __( 'Repost in this group', 'buddypress-activity-share-pro' ), sprintf( 'data-bpas-compose data-bpas-group="%d" ', $in_group ) . $data );
 				} elseif ( $own ) {
-					$rows[] = self::row( 'repeat', __( 'Repost to a group', 'buddypress-activity-share-pro' ), 'data-bpas-compose data-bpas-groups-only ' . $data );
+					// Own posts go only to a group, so members without one get no repost row.
+					if ( bp_is_active( 'groups' ) && bp_get_total_group_count_for_user( $user_id ) > 0 ) {
+						$rows[] = self::row( 'repeat', __( 'Repost to a group', 'buddypress-activity-share-pro' ), 'data-bpas-compose data-bpas-groups-only ' . $data );
+					}
 				} else {
 					// Plain repost -> Undo; quote (-1) -> no quick row, the quote is managed from the post itself.
 					$mine = Reshare_Service::my_repost( $user_id, $ctx->type, (int) $ctx->id );
