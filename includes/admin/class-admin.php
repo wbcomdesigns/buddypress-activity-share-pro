@@ -65,7 +65,7 @@ final class Admin {
 	public static function render_features(): void {
 		$features = Settings::all()['features'];
 		$rows     = array(
-			'repost'      => array( _x( 'Repost', 'feature name', 'buddypress-activity-share-pro' ), __( 'Members repost updates to their profile or a group, with or without a comment. Quick repost has an Undo.', 'buddypress-activity-share-pro' ) ),
+			'repost'      => array( _x( 'Repost', 'feature name', 'buddypress-activity-share-pro' ), __( 'Members repost other members\' updates to their profile or a group, and their own updates to a group, with or without a comment. Quick repost has an Undo.', 'buddypress-activity-share-pro' ) ),
 			'send_friend' => array( __( 'Send to a friend', 'buddypress-activity-share-pro' ), __( 'Members send a post to a friend as a private message.', 'buddypress-activity-share-pro' ) ),
 			'reply_share' => array( __( 'Share replies', 'buddypress-activity-share-pro' ), __( 'Replies get their own share menu and can be reposted.', 'buddypress-activity-share-pro' ) ),
 			'counts'      => array( __( 'Counts and who reposted', 'buddypress-activity-share-pro' ), __( 'Show the number of shares next to Share, and who reposted.', 'buddypress-activity-share-pro' ) ),

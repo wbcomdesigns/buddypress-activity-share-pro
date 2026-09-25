@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-24T11:16:36+00:00\n"
+"POT-Creation-Date: 2026-09-25T12:31:39+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-activity-share-pro\n"
@@ -106,13 +106,13 @@ msgid "Repost"
 msgstr ""
 
 #: includes/admin/class-admin.php:68
-msgid "Members repost updates to their profile or a group, with or without a comment. Quick repost has an Undo."
+msgid "Members repost other members' updates to their profile or a group, and their own updates to a group, with or without a comment. Quick repost has an Undo."
 msgstr ""
 
 #: includes/admin/class-admin.php:69
 #: includes/class-assets.php:57
 #: includes/reshare/class-menu-item.php:50
-#: includes/reshare/class-menu-item.php:83
+#: includes/reshare/class-menu-item.php:88
 msgid "Send to a friend"
 msgstr ""
 
@@ -429,15 +429,15 @@ msgid "You are not allowed to do this."
 msgstr ""
 
 #: includes/api/class-rest-controller.php:341
-#: includes/reshare/class-reshare-service.php:199
-#: includes/reshare/class-reshare-service.php:211
-#: includes/reshare/class-reshare-service.php:232
+#: includes/reshare/class-reshare-service.php:237
+#: includes/reshare/class-reshare-service.php:249
+#: includes/reshare/class-reshare-service.php:270
 msgid "This post is not available."
 msgstr ""
 
 #: includes/class-assets.php:53
 #: includes/reshare/class-menu-item.php:47
-#: includes/reshare/class-menu-item.php:77
+#: includes/reshare/class-menu-item.php:82
 #: templates/composer.php:17
 #: templates/composer.php:67
 msgctxt "verb"
@@ -445,17 +445,17 @@ msgid "Repost"
 msgstr ""
 
 #: includes/class-assets.php:54
-#: includes/reshare/class-menu-item.php:79
+#: includes/reshare/class-menu-item.php:84
 msgid "Repost with comment"
 msgstr ""
 
 #: includes/class-assets.php:55
-#: includes/reshare/class-menu-item.php:70
+#: includes/reshare/class-menu-item.php:74
 msgid "Repost to a group"
 msgstr ""
 
 #: includes/class-assets.php:56
-#: includes/reshare/class-menu-item.php:68
+#: includes/reshare/class-menu-item.php:70
 msgid "Repost in this group"
 msgstr ""
 
@@ -481,7 +481,7 @@ msgid "Undo"
 msgstr ""
 
 #: includes/class-assets.php:63
-#: includes/reshare/class-menu-item.php:75
+#: includes/reshare/class-menu-item.php:80
 msgid "Undo repost"
 msgstr ""
 
@@ -803,27 +803,27 @@ msgstr ""
 msgid "The message could not be sent. Please try again."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:219
+#: includes/reshare/class-reshare-service.php:257
 msgid "Sharing replies is turned off."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:236
+#: includes/reshare/class-reshare-service.php:274
 msgid "The author does not allow reposts of their posts."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:240
+#: includes/reshare/class-reshare-service.php:278
 msgid "You cannot repost this."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:261
+#: includes/reshare/class-reshare-service.php:299
 msgid "Posts from this group can only be reposted inside the group."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:266
+#: includes/reshare/class-reshare-service.php:304
 msgid "You can repost your own posts into a group."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:271
+#: includes/reshare/class-reshare-service.php:309
 msgid "You can only repost into groups you belong to."
 msgstr ""
 
@@ -874,11 +874,11 @@ msgctxt "create an account"
 msgid "Join"
 msgstr ""
 
-#: templates/composer.php:37
+#: templates/composer.php:38
 msgid "Where to post"
 msgstr ""
 
-#: templates/composer.php:38
+#: templates/composer.php:39
 msgid "My profile"
 msgstr ""
 
