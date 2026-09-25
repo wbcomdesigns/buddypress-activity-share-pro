@@ -59,15 +59,29 @@ final class Post_Share {
 		if ( ! in_array( $placement, array( 'above', 'below' ), true ) || ! in_the_loop() || ! is_main_query() || get_the_ID() !== get_queried_object_id() ) {
 			return (string) $content;
 		}
+		if ( self::placed_by_hand( (int) get_the_ID() ) ) {
+			return (string) $content;
+		}
 		$menu = self::menu( (int) get_the_ID(), $placement );
 		return 'above' === $placement ? $menu . $content : $content . $menu;
+	}
+
+	/**
+	 * The owner put [bpas_share] or the Share block in this post: that is where the menu goes,
+	 * so the automatic above / below / floating menu stands down instead of showing a second one.
+	 *
+	 * @param int $post_id Post.
+	 */
+	private static function placed_by_hand( int $post_id ): bool {
+		$post = get_post( $post_id );
+		return $post && ( has_shortcode( $post->post_content, 'bpas_share' ) || has_block( 'bpas/share', $post ) );
 	}
 
 	/**
 	 * Floating button.
 	 */
 	public static function floating(): void {
-		if ( 'floating' === self::placement() ) {
+		if ( 'floating' === self::placement() && ! self::placed_by_hand( (int) get_queried_object_id() ) ) {
 			echo self::menu( (int) get_queried_object_id(), 'floating' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Free's template escapes.
 		}
 	}
