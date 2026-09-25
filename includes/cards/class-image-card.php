@@ -27,32 +27,32 @@ final class Image_Card {
 		if ( ! function_exists( 'imagettftext' ) || ! function_exists( 'imagepng' ) ) {
 			return;
 		}
-		add_filter( 'bpas_share_context', array( __CLASS__, 'filter_context' ), 20 );
+		add_filter( 'bpas_preview_image', array( __CLASS__, 'preview_image' ), 10, 2 );
 		add_action( 'template_redirect', array( __CLASS__, 'serve' ), 1 );
 		add_action( 'bp_activity_deleted_activities', array( __CLASS__, 'delete_cards' ) );
 	}
 
 	/**
-	 * Activity without its own image: point to its card.
+	 * Activity without an image of its own: preview it with its card instead of the site image.
 	 *
-	 * @param object $ctx Share context.
-	 * @return object
+	 * @param string $image Stand-in image from Free (site icon or logo).
+	 * @param object $ctx   Share context.
+	 * @return string
 	 */
-	public static function filter_context( $ctx ) {
-		if ( 'activity' !== $ctx->type || ! self::is_fallback( (string) $ctx->image ) || ! bpas_can_share_externally( $ctx ) ) {
-			return $ctx;
+	public static function preview_image( $image, $ctx ) {
+		if ( 'activity' !== $ctx->type || ! bpas_can_share_externally( $ctx ) ) {
+			return $image;
 		}
 		$hash = self::hash( $ctx->object );
 		$file = self::path( (int) $ctx->id, $hash );
 		// Existing card: its static URL. Otherwise a generator URL that creates it on first request.
-		$ctx->image = file_exists( $file ) ? self::url( (int) $ctx->id, $hash ) : add_query_arg(
+		return file_exists( $file ) ? self::url( (int) $ctx->id, $hash ) : add_query_arg(
 			array(
 				'bpas_card' => (int) $ctx->id,
 				'h'         => $hash,
 			),
 			home_url( '/' )
 		);
-		return $ctx;
 	}
 
 	/**
@@ -139,19 +139,6 @@ final class Image_Card {
 				wp_delete_file( $file );
 			}
 		}
-	}
-
-	/**
-	 * Is this the site-wide fallback image (no image of the post's own)?
-	 *
-	 * @param string $image Image URL.
-	 */
-	private static function is_fallback( string $image ): bool {
-		if ( '' === $image ) {
-			return true;
-		}
-		$logo = (int) get_theme_mod( 'custom_logo' );
-		return in_array( $image, array_filter( array( get_site_icon_url( 512 ), $logo ? (string) wp_get_attachment_image_url( $logo, 'full' ) : '' ) ), true );
 	}
 
 	/**

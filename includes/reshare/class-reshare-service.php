@@ -164,7 +164,7 @@ final class Reshare_Service {
 		}
 
 		$ctx     = bpas_share_context( $target['type'], $target['id'] );
-		$content = trim( sanitize_textarea_field( $note ) . "\n\n" . ( $ctx ? $ctx->url : '' ) );
+		$content = self::message_body( sanitize_textarea_field( $note ), $ctx );
 		$thread  = messages_new_message(
 			array(
 				'sender_id'  => $user_id,
@@ -181,6 +181,31 @@ final class Reshare_Service {
 
 		do_action( 'bpas_pro_after_send', (int) $thread, $user_id, $friend_id, $target );
 		return (int) $thread;
+	}
+
+	/**
+	 * Message body: the note, then a preview of the item - its own image, linked title and excerpt -
+	 * so the friend sees what was shared without opening it. A bare URL would only render as a
+	 * title-only embed.
+	 *
+	 * @param string      $note Sanitised note.
+	 * @param object|null $ctx  Share context.
+	 */
+	private static function message_body( string $note, $ctx ): string {
+		$parts = array();
+		if ( '' !== trim( $note ) ) {
+			$parts[] = '<p>' . nl2br( esc_html( $note ), false ) . '</p>';
+		}
+		if ( $ctx ) {
+			if ( '' !== $ctx->image ) {
+				$parts[] = sprintf( '<p><a href="%1$s"><img src="%2$s" alt="%3$s" /></a></p>', esc_url( $ctx->url ), esc_url( $ctx->image ), esc_attr( $ctx->title ) );
+			}
+			$parts[] = sprintf( '<p><a href="%1$s"><strong>%2$s</strong></a></p>', esc_url( $ctx->url ), esc_html( $ctx->title ) );
+			if ( '' !== $ctx->text ) {
+				$parts[] = '<p>' . esc_html( $ctx->text ) . '</p>';
+			}
+		}
+		return implode( "\n", $parts );
 	}
 
 	/**
