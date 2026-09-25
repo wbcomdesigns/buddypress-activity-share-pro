@@ -165,7 +165,18 @@ final class Reshare_Service {
 
 		$ctx     = bpas_share_context( $target['type'], $target['id'] );
 		$content = self::message_body( sanitize_textarea_field( $note ), $ctx );
-		$thread  = messages_new_message(
+
+		// BuddyPress strips HTML from the message in its "new message" email, which would drop the
+		// preview's links. While this message is sent, the email text gets the item's address.
+		$email_link = static function ( $tokens ) use ( $ctx ) {
+			if ( $ctx && isset( $tokens['usermessage'] ) ) {
+				/* translators: %s: address of the shared post. */
+				$tokens['usermessage'] .= "\n\n" . sprintf( __( 'View it here: %s', 'buddypress-activity-share-pro' ), $ctx->url );
+			}
+			return $tokens;
+		};
+		add_filter( 'bp_email_set_tokens', $email_link );
+		$thread = messages_new_message(
 			array(
 				'sender_id'  => $user_id,
 				'recipients' => array( $friend_id ),
@@ -175,6 +186,7 @@ final class Reshare_Service {
 				'error_type' => 'wp_error',
 			)
 		);
+		remove_filter( 'bp_email_set_tokens', $email_link );
 		if ( is_wp_error( $thread ) || ! $thread ) {
 			return self::error( 'bpas_send_failed', __( 'The message could not be sent. Please try again.', 'buddypress-activity-share-pro' ), 500 );
 		}
