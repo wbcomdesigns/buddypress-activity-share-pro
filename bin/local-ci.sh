@@ -26,6 +26,12 @@ echo "header=$hv const=$cv readme=$rv package=$pv free=${fv:-missing}"
 [ "$hv" = "$cv" ] && [ "$cv" = "$rv" ] && [ "$rv" = "$pv" ] || bad "version mismatch"
 [ -z "$fv" ] || [ "$fv" = "$hv" ] || bad "Free $fv != Pro $hv (always the same version)"
 
+step "Requires Plugins names Free by its wordpress.org slug (a folder name here blocks activation for customers)"
+req=$(grep -m1 -E '^\s*\*\s*Requires Plugins:' buddypress-share.php | awk '{print $NF}')
+echo "Requires Plugins: $req"
+[ "$req" = "bp-activity-social-share" ] || bad "Requires Plugins must be bp-activity-social-share (wordpress.org slug), got '$req'"
+grep -q "'bp-activity-social-share/buddypress-share.php'" buddypress-share.php || bad "BPAS_PRO_FREE_FILE must point at bp-activity-social-share/"
+
 step "BuddyBoss-safe URLs (bp_members_get_user_url / bp_get_group_url are BuddyPress 12+ only)"
 grep -rn 'bp_members_get_user_url\|bp_get_group_url' --include='*.php' includes templates | grep -v 'includes/functions.php' && bad "use bpas_member_url() / bpas_group_url()"
 
