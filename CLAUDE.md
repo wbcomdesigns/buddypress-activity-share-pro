@@ -38,4 +38,4 @@ Plans: `docs/plans/3.6.0-PLAN.md` (synced copy; canonical in the free repo) and 
 - `bin/build-release.sh` - clean zip in `dist/`
 
 ## Basecamp
-Project 37939219, card table 7507533844. Columns: Triage 7507533845, Not now 7507533846, Suggestions 7507533860, Bugs 7507533850, Ready for Development 7507533853, Code Improvement 7808139615, In Development 7507533851, Ready for Testing 7507533854, Scope 9099749151, In Testing 9099749199, Done 7507533852.
+Project 37939219 "Activity Share (Free + Pro)" - the ONE board for both plugins since 2026-09-25 (the old Free project is archived). Card table 7507533844. Columns: Triage 7507533845, Not now 7507533846, Suggestions 7507533860, Possible Bugs 10340598697 (QA intake), Bugs 7507533850, Ready for Development 7507533853, Code Improvement 7808139615, In Development 7507533851, Ready for Testing 7507533854, Scope 9099749151, In Testing 9099749199, Done 7507533852.
