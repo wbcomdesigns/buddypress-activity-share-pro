@@ -537,6 +537,17 @@
 	color: var(--bpas-text-muted);
 }
 
+/* Send to a friend: several pictures sit in a row in the message (themes make message images blocks). */
+.bpas-pro-msg-thumb {
+	display: inline-block !important;
+	inline-size: 160px !important;
+	max-inline-size: calc(50% - 12px) !important;
+	block-size: auto !important;
+	margin-block: 0 8px !important;
+	margin-inline: 0 8px !important;
+	vertical-align: top;
+}
+
 @media (max-width: 1024px) {
 
 	.bpas-pro-card__thumb {

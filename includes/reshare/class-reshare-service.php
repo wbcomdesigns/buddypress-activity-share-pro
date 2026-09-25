@@ -184,7 +184,7 @@ final class Reshare_Service {
 	}
 
 	/**
-	 * Message body: the note, then a preview of the item - its own image, linked title and excerpt -
+	 * Message body: the note, then a preview of the item - up to four pictures, linked title and excerpt -
 	 * so the friend sees what was shared without opening it. A bare URL would only render as a
 	 * title-only embed.
 	 *
@@ -197,8 +197,21 @@ final class Reshare_Service {
 			$parts[] = '<p>' . nl2br( esc_html( $note ), false ) . '</p>';
 		}
 		if ( $ctx ) {
-			if ( '' !== $ctx->image ) {
-				$parts[] = sprintf( '<p><a href="%1$s"><img src="%2$s" alt="%3$s" /></a></p>', esc_url( $ctx->url ), esc_url( $ctx->image ), esc_attr( $ctx->title ) );
+			// Up to four of the item's pictures: one shows large, several as a row of thumbnails.
+			$images = $ctx->images( 4 );
+			$several = count( $images ) > 1;
+			$thumbs  = array();
+			foreach ( $images as $image ) {
+				$thumbs[] = sprintf(
+					'<a href="%1$s"><img src="%2$s" alt="%3$s"%4$s /></a>',
+					esc_url( $ctx->url ),
+					esc_url( $image ),
+					esc_attr( $ctx->title ),
+					$several ? ' class="bpas-pro-msg-thumb" width="160"' : ''
+				);
+			}
+			if ( $thumbs ) {
+				$parts[] = '<p>' . implode( ' ', $thumbs ) . '</p>';
 			}
 			$parts[] = sprintf( '<p><a href="%1$s"><strong>%2$s</strong></a></p>', esc_url( $ctx->url ), esc_html( $ctx->title ) );
 			if ( '' !== $ctx->text ) {
