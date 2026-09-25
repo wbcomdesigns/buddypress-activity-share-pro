@@ -55,7 +55,7 @@ defined( 'ABSPATH' ) || exit;
 					<ul class="bpas-pro-options" role="listbox" data-bpas-friend-list aria-label="<?php esc_attr_e( 'Friends', 'buddypress-activity-share-pro' ); ?>"></ul>
 				</div>
 
-				<div class="bpas-pro-field">
+				<div class="bpas-pro-field" data-bpas-field="comment">
 					<label for="bpas-pro-comment" data-bpas-comment-label><?php esc_html_e( 'Add a comment (optional)', 'buddypress-activity-share-pro' ); ?></label>
 					<textarea id="bpas-pro-comment" class="bpas-pro-input bp-suggestions" name="comment" rows="3" maxlength="5000"></textarea>
 				</div>

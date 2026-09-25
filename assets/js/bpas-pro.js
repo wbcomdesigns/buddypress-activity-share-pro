@@ -95,6 +95,7 @@
 			form.reset();
 		}
 		setStatus( '' );
+		noFriends( false );
 
 		if ( 'login' === mode ) {
 			if ( title ) {
@@ -223,6 +224,7 @@
 			var friends = res.friends || [];
 			if ( ! friends.length ) {
 				listNote( list, term ? t.noFriends : t.noFriendsYet );
+				noFriends( ! term );
 				return;
 			}
 			friends.forEach( function ( f ) {
@@ -251,6 +253,17 @@
 		}, function ( error ) {
 			listNote( list, message( error ) );
 		} );
+	}
+
+	// No friends at all: only the notice and Cancel remain; nothing to search, write or send.
+	function noFriends( none ) {
+		[ '[data-bpas-friend-search]', '#bpas-pro-friend-hint', 'label[for="bpas-pro-friend"]', '[data-bpas-dialog-submit]' ].forEach( function ( sel ) {
+			var el = q( sel );
+			if ( el ) {
+				el.hidden = none;
+			}
+		} );
+		show( 'comment', ! none );
 	}
 
 	function pickFriend( btn ) {

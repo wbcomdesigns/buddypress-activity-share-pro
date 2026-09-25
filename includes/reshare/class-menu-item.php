@@ -51,6 +51,8 @@ final class Menu_Item {
 			}
 		} else {
 			$user_id = get_current_user_id();
+			// Like "Repost to a group" for members in no group: nobody to send to, no row (cached count, no query).
+			$send = $send && ( ! bp_is_active( 'friends' ) || friends_get_total_friend_count( $user_id ) > 0 );
 			if ( 'activity' === $ctx->type ) {
 				Reshare_Service::remember( $ctx->object );
 			}

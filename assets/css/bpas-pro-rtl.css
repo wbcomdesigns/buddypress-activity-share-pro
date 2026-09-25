@@ -381,8 +381,8 @@
 }
 
 /* Buttons: ours on every theme (themes restyle `button` and `.button` freely). */
-.bpas-pro-dialog .bpas-pro-btn,
-.bpas-pro-dialog .bpas-pro-btn:visited {
+.bpas-pro-dialog .bpas-pro-btn:not([hidden]),
+.bpas-pro-dialog .bpas-pro-btn:not([hidden]):visited {
 	display: inline-flex !important;
 	align-items: center;
 	justify-content: center;
