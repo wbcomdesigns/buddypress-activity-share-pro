@@ -351,7 +351,8 @@ final class Rest_Controller {
 	private static function member( int $user_id ): array {
 		return array(
 			'id'     => $user_id,
-			'name'   => bp_core_get_user_displayname( $user_id ),
+			// WordPress stores display names entity-encoded ("&amp;"); the client renders them as text.
+			'name'   => html_entity_decode( (string) bp_core_get_user_displayname( $user_id ), ENT_QUOTES ),
 			'url'    => bpas_member_url( $user_id ),
 			// BuddyPress returns the URL HTML-escaped (&#038;); JSON consumers need the raw URL.
 			'avatar' => esc_url_raw(
