@@ -44,14 +44,17 @@ final class Migration_3_6_0 {
 	public static function run(): bool {
 		global $wpdb;
 
-		Events::install();
+		// No events table, no migration: the version is only recorded once it exists, so the next request retries.
+		if ( ! Events::install() ) {
+			return false;
+		}
 
 		if ( false === get_option( Settings::OPTION, false ) ) {
 			self::import_settings();
 		}
 
 		$legacy_tracking = $wpdb->prefix . 'bp_share_post_tracking';
-		if ( self::table_exists( $legacy_tracking ) ) {
+		if ( Events::exists( $legacy_tracking ) ) {
 			$events = Events::table();
 			// Visitor IPs are not carried over.
 			$wpdb->query( "INSERT INTO {$events} (event, object_type, object_id, service, user_id, created_at) SELECT 'share', 'post', post_id, LEFT(service, 30), user_id, shared_at FROM {$legacy_tracking}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- fixed table names.
@@ -113,16 +116,6 @@ final class Migration_3_6_0 {
 		}
 
 		Settings::update( $changes );
-	}
-
-	/**
-	 * True when a table exists.
-	 *
-	 * @param string $table Table name.
-	 */
-	private static function table_exists( string $table ): bool {
-		global $wpdb;
-		return $table === $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->esc_like( $table ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- schema check.
 	}
 
 	/**

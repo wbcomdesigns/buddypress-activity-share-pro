@@ -102,8 +102,7 @@ final class Tracker {
 		}
 		set_transient( $key, 1, HOUR_IN_SECONDS );
 
-		Events::add( 'share', $type, $id, $network, get_current_user_id(), $hash );
-		return rest_ensure_response( array( 'recorded' => true ) );
+		return rest_ensure_response( array( 'recorded' => Events::add( 'share', $type, $id, $network, get_current_user_id(), $hash ) ) );
 	}
 
 	/**
