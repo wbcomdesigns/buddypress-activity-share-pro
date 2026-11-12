@@ -3,8 +3,11 @@
  * Share image card for text-only activity (X1).
  *
  * The first time a card is needed (link preview or share), it is drawn once with GD and cached
- * as uploads/bpas-cards/{id}-{hash}.png; it is removed with the activity. Without GD + FreeType
- * the site image is used as before.
+ * as uploads/bpas-cards/{id}-{hash}.png: author avatar and name, excerpt, site logo and name.
+ * An edit replaces the card; deleting the activity removes it. Without GD + FreeType the site
+ * image is used as before. Filter `bpas_pro_image_card` (false) turns it off, per activity if needed.
+ *
+ * Known limit: GD draws glyphs one by one, so joined scripts (Arabic, Indic) show unshaped letters.
  *
  * @package BPAS_Pro
  */
@@ -30,6 +33,22 @@ final class Image_Card {
 		add_filter( 'bpas_preview_image', array( __CLASS__, 'preview_image' ), 10, 2 );
 		add_action( 'template_redirect', array( __CLASS__, 'serve' ), 1 );
 		add_action( 'bp_activity_deleted_activities', array( __CLASS__, 'delete_cards' ) );
+		add_action( 'bp_activity_after_save', array( __CLASS__, 'drop_stale' ) );
+	}
+
+	/**
+	 * Whether this activity gets a card.
+	 *
+	 * @param object $ctx Share context.
+	 */
+	private static function enabled( $ctx ): bool {
+		/**
+		 * Draw share image cards for text-only activity.
+		 *
+		 * @param bool   $enabled Default true (the Image card feature is on).
+		 * @param object $ctx     Share context of the activity.
+		 */
+		return (bool) apply_filters( 'bpas_pro_image_card', true, $ctx );
 	}
 
 	/**
@@ -40,7 +59,7 @@ final class Image_Card {
 	 * @return string
 	 */
 	public static function preview_image( $image, $ctx ) {
-		if ( 'activity' !== $ctx->type || ! bpas_can_share_externally( $ctx ) ) {
+		if ( 'activity' !== $ctx->type || ! bpas_can_share_externally( $ctx ) || ! self::enabled( $ctx ) ) {
 			return $image;
 		}
 		$hash = self::hash( $ctx->object );
@@ -64,7 +83,7 @@ final class Image_Card {
 			return;
 		}
 		$ctx = bpas_share_context( 'activity', $id );
-		if ( ! $ctx || ! bpas_can_share_externally( $ctx ) ) {
+		if ( ! $ctx || ! bpas_can_share_externally( $ctx ) || ! self::enabled( $ctx ) ) {
 			status_header( 404 );
 			exit;
 		}
@@ -109,23 +128,79 @@ final class Image_Card {
 		imagefilledrectangle( $img, 0, 0, $w, $h, $bg );
 		imagefilledrectangle( $img, 0, 0, 16, $h, $acc );
 
-		$author = bp_core_get_user_displayname( (int) $ctx->object->user_id );
-		$text   = wp_trim_words( wp_strip_all_tags( (string) $ctx->object->content ), 45, '...' );
+		$user_id = (int) $ctx->object->user_id;
+		$author  = bp_core_get_user_displayname( $user_id );
+		$text    = wp_trim_words( wp_strip_all_tags( (string) $ctx->object->content ), 40, '...' );
 		if ( '' === $text ) {
 			$text = wp_strip_all_tags( (string) $ctx->title );
 		}
 
-		imagettftext( $img, 30, 0, 80, 110, $fg, $font, self::fit( $author, 30, $font, $w - 160 ) );
-		$y = 190;
-		foreach ( array_slice( self::wrap( $text, 36, $font, $w - 160 ), 0, 6 ) as $line ) {
-			imagettftext( $img, 36, 0, 80, $y, $fg, $font, $line );
-			$y += 62;
+		// Header: avatar, then the name beside it (the name starts at the margin without one).
+		$avatar = bp_get_user_has_avatar( $user_id ) ? (string) bp_core_fetch_avatar(
+			array(
+				'item_id' => $user_id,
+				'type'    => 'full',
+				'html'    => false,
+				'no_grav' => true,
+			)
+		) : '';
+		$name_x = self::paste( $img, $avatar, 80, 56, 96 ) ? 200 : 80;
+		imagettftext( $img, 30, 0, $name_x, 118, $fg, $font, self::fit( $author, 30, $font, $w - $name_x - 80 ) );
+
+		$y = 240;
+		foreach ( array_slice( self::wrap( $text, 34, $font, $w - 160 ), 0, 5 ) as $line ) {
+			imagettftext( $img, 34, 0, 80, $y, $fg, $font, $line );
+			$y += 58;
 		}
-		imagettftext( $img, 22, 0, 80, $h - 60, $mut, $font, self::fit( wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), 22, $font, $w - 160 ) );
+
+		// Footer: site logo (site icon, else custom logo), then the site name.
+		$logo   = (int) get_option( 'site_icon' );
+		$logo   = $logo ? $logo : (int) get_theme_mod( 'custom_logo' );
+		$site_x = $logo && self::paste( $img, (string) wp_get_attachment_image_url( $logo, 'medium' ), 80, $h - 104, 56 ) ? 152 : 80;
+		imagettftext( $img, 22, 0, $site_x, $h - 66, $mut, $font, self::fit( wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), 22, $font, $w - $site_x - 80 ) );
 
 		$ok = imagepng( $img, $file, 6 );
 		imagedestroy( $img );
 		return (bool) $ok;
+	}
+
+	/**
+	 * Copy a local uploaded image into the card as a square (cover-cropped). False when the URL is
+	 * not a file in uploads (theme placeholders, remote or offloaded files are never fetched).
+	 *
+	 * @param \GdImage $img  Card.
+	 * @param string   $url  Image URL.
+	 * @param int      $x    Left.
+	 * @param int      $y    Top.
+	 * @param int      $size Side in pixels.
+	 */
+	private static function paste( $img, string $url, int $x, int $y, int $size ): bool {
+		$meta = '' !== $url ? bpas_image_meta( $url ) : null;
+		$src  = $meta ? imagecreatefromstring( (string) file_get_contents( $meta['file'] ) ) : false; // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local upload.
+		if ( ! $src ) {
+			return false;
+		}
+		$side = min( $meta['width'], $meta['height'] );
+		imagecopyresampled( $img, $src, $x, $y, (int) ( ( $meta['width'] - $side ) / 2 ), (int) ( ( $meta['height'] - $side ) / 2 ), $size, $size, $side, $side );
+		imagedestroy( $src );
+		return true;
+	}
+
+	/**
+	 * An edited activity gets a new card on its next share: remove the outdated one now.
+	 *
+	 * @param object $activity Saved activity.
+	 */
+	public static function drop_stale( $activity ): void {
+		if ( empty( $activity->id ) ) {
+			return;
+		}
+		$keep = self::path( (int) $activity->id, self::hash( $activity ) );
+		foreach ( (array) glob( self::path( (int) $activity->id, '*' ) ) as $file ) {
+			if ( $file !== $keep ) {
+				wp_delete_file( $file );
+			}
+		}
 	}
 
 	/**
@@ -147,7 +222,7 @@ final class Image_Card {
 	 * @param object $activity Activity.
 	 */
 	private static function hash( object $activity ): string {
-		return substr( md5( (string) $activity->content . '|' . (int) $activity->user_id . '|' . get_bloginfo( 'name' ) ), 0, 10 );
+		return substr( md5( 'v2|' . (string) $activity->content . '|' . (int) $activity->user_id . '|' . get_bloginfo( 'name' ) ), 0, 10 );
 	}
 
 	/**
@@ -198,6 +273,19 @@ final class Image_Card {
 		$lines = array();
 		$line  = '';
 		foreach ( preg_split( '/\s+/u', $text ) as $word ) {
+			// A word wider than the line (a URL) is broken by characters so it never runs off the card.
+			while ( self::width( $word, $size, $font ) > $width && mb_strlen( $word ) > 1 ) {
+				$cut = mb_strlen( $word ) - 1;
+				while ( $cut > 1 && self::width( mb_substr( $word, 0, $cut ), $size, $font ) > $width ) {
+					--$cut;
+				}
+				if ( '' !== $line ) {
+					$lines[] = $line;
+				}
+				$lines[] = mb_substr( $word, 0, $cut );
+				$line    = '';
+				$word    = mb_substr( $word, $cut );
+			}
 			$try = '' === $line ? $word : $line . ' ' . $word;
 			$box = imagettfbbox( $size, 0, $font, $try );
 			if ( $box && ( $box[2] - $box[0] ) > $width && '' !== $line ) {
@@ -211,6 +299,18 @@ final class Image_Card {
 			$lines[] = $line;
 		}
 		return $lines;
+	}
+
+	/**
+	 * Pixel width of a string.
+	 *
+	 * @param string $text Text.
+	 * @param int    $size Size.
+	 * @param string $font Font.
+	 */
+	private static function width( string $text, int $size, string $font ): int {
+		$box = imagettfbbox( $size, 0, $font, $text );
+		return $box ? $box[2] - $box[0] : 0;
 	}
 
 	/**

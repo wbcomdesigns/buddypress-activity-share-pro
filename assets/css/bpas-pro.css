@@ -468,8 +468,11 @@
 	cursor: pointer;
 }
 
-/* Share buttons on posts and content types. */
+/* Share buttons on posts and content types. Own layer so a theme banner pulled up with a
+   negative margin (Reign's resume / job hero) cannot paint over the buttons. */
 .bpas-pro-post-share {
+	position: relative;
+	z-index: 1;
 	display: flex;
 	margin-block: var(--bpas-space-4);
 }

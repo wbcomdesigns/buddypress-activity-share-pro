@@ -32,12 +32,28 @@ final class Post_Share {
 	 * Placement for the current singular view, or ''.
 	 */
 	private static function placement(): string {
-		if ( ! is_singular() || is_front_page() || ( function_exists( 'is_buddypress' ) && is_buddypress() ) ) {
+		if ( ! is_singular() || is_front_page() || self::buddypress_screen() ) {
 			return '';
 		}
 		$types = Settings::content_types();
 		$type  = get_post_type();
 		return isset( $types[ $type ] ) ? (string) $types[ $type ] : '';
+	}
+
+	/**
+	 * A BuddyPress screen (profile, group, single activity, directory) rather than a post.
+	 * Not is_buddypress(): add-ons set a BuddyPress component on their own post types (Business
+	 * Profile sets "activity" on single businesses), which made those posts refuse their buttons.
+	 */
+	private static function buddypress_screen(): bool {
+		if ( ! function_exists( 'bp_is_user' ) ) {
+			return false;
+		}
+		if ( bp_is_user() || bp_is_group() || bp_is_single_activity() || bp_is_directory() ) {
+			return true;
+		}
+		$pages = function_exists( 'bp_core_get_directory_page_ids' ) ? array_map( 'intval', (array) bp_core_get_directory_page_ids( 'all' ) ) : array();
+		return in_array( (int) get_queried_object_id(), $pages, true );
 	}
 
 	/**

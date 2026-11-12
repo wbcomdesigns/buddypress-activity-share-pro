@@ -32,11 +32,17 @@ final class Composer {
 	}
 
 	/**
-	 * BuddyPress loads the stream by AJAX, so rows are rendered in another request:
-	 * prepare the dialog and script on every BuddyPress page up front.
+	 * BuddyPress loads activity streams (single activity included, in Nouveau) by AJAX, so their
+	 * rows are rendered in another request: prepare the dialog and script up front on the screens
+	 * that hold a stream. Everything rendered with the page (headers, posts) calls needed() from its rows.
 	 */
 	public static function prepare_on_buddypress(): void {
-		if ( function_exists( 'is_buddypress' ) && is_buddypress() ) {
+		if ( ! function_exists( 'bp_is_activity_component' ) ) {
+			return;
+		}
+		$stream = bp_is_activity_component()
+			|| ( function_exists( 'bp_is_group_activity' ) && ( bp_is_group_activity() || bp_is_group_home() ) );
+		if ( $stream ) {
 			self::needed();
 		}
 	}
