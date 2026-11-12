@@ -54,13 +54,20 @@ function bpas_pro_boot(): void {
 	}
 
 	if ( bpas_version() !== BPAS_PRO_VERSION ) {
-		// Free is newer: keep running, ask for the matching Pro version.
+		// Same API, different release: keep running and name the plugin that is behind.
+		$free_newer = version_compare( bpas_version(), BPAS_PRO_VERSION, '>' );
 		bpas_pro_notice(
-			static fn() => sprintf(
-				/* translators: %s: Activity Share for BuddyPress version. */
-				__( 'Please update Activity Share Pro to version %s to match Activity Share for BuddyPress.', 'buddypress-activity-share-pro' ),
-				bpas_version()
-			)
+			static fn() => $free_newer
+				? sprintf(
+					/* translators: %s: Activity Share for BuddyPress version. */
+					__( 'Please update Activity Share Pro to version %s to match Activity Share for BuddyPress.', 'buddypress-activity-share-pro' ),
+					bpas_version()
+				)
+				: sprintf(
+					/* translators: %s: Activity Share Pro version. */
+					__( 'Please update Activity Share for BuddyPress to version %s to match Activity Share Pro.', 'buddypress-activity-share-pro' ),
+					BPAS_PRO_VERSION
+				)
 		);
 	}
 

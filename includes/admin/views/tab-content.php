@@ -19,7 +19,7 @@ $bpas_pro_placements = array(
 	<section class="bpas-card">
 		<header class="bpas-card__head">
 			<h2 class="bpas-card__title"><?php esc_html_e( 'Content types', 'buddypress-activity-share-pro' ); ?></h2>
-			<p class="bpas-card__desc"><?php esc_html_e( 'Add the share menu to single posts, pages, products, courses and other content. You can also place it anywhere with the Share buttons block or the [bpas_share] shortcode.', 'buddypress-activity-share-pro' ); ?></p>
+			<p class="bpas-card__desc"><?php esc_html_e( 'Add the share menu to single posts, pages, products, courses and other content. You can also place it anywhere with the Share buttons block or the [bpas_share] shortcode. A post that has the block or shortcode shows the menu only there, so the placement below is skipped for that post.', 'buddypress-activity-share-pro' ); ?></p>
 		</header>
 		<ul class="bpas-pro-types">
 			<?php foreach ( $types as $bpas_pro_type ) : ?>
