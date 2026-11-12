@@ -20,11 +20,24 @@ defined( 'ABSPATH' ) || exit;
 final class Post_Share {
 
 	/**
+	 * Post IDs whose menu was already placed at a WP Job Manager listing edge this request.
+	 *
+	 * @var array<int, true>
+	 */
+	private static array $placed = array();
+
+	/**
 	 * Hook registration.
 	 */
 	public static function init(): void {
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'maybe_enqueue' ), 12 );
 		add_filter( 'the_content', array( __CLASS__, 'filter_content' ), 20 );
+		// WP Job Manager single job / resume: themes with their own layout (Reign 8.0.9+) never run
+		// the_content there, but they fire WPJM's own start / end hooks around the listing.
+		add_action( 'single_job_listing_start', array( __CLASS__, 'wpjm_start' ) );
+		add_action( 'single_job_listing_end', array( __CLASS__, 'wpjm_end' ) );
+		add_action( 'single_resume_start', array( __CLASS__, 'wpjm_start' ) );
+		add_action( 'single_resume_end', array( __CLASS__, 'wpjm_end' ) );
 		add_action( 'wp_footer', array( __CLASS__, 'floating' ) );
 	}
 
@@ -75,11 +88,44 @@ final class Post_Share {
 		if ( ! in_array( $placement, array( 'above', 'below' ), true ) || ! in_the_loop() || ! is_main_query() || get_the_ID() !== get_queried_object_id() ) {
 			return (string) $content;
 		}
-		if ( self::placed_by_hand( (int) get_the_ID() ) ) {
+		if ( isset( self::$placed[ get_the_ID() ] ) || self::placed_by_hand( (int) get_the_ID() ) ) {
 			return (string) $content;
 		}
 		$menu = self::menu( (int) get_the_ID(), $placement );
 		return 'above' === $placement ? $menu . $content : $content . $menu;
+	}
+
+	/**
+	 * Above: start of a WP Job Manager single job / resume.
+	 */
+	public static function wpjm_start(): void {
+		self::wpjm_edge( 'above' );
+	}
+
+	/**
+	 * Below: end of a WP Job Manager single job / resume.
+	 */
+	public static function wpjm_end(): void {
+		self::wpjm_edge( 'below' );
+	}
+
+	/**
+	 * Print the menu at a WPJM listing edge when the theme renders the listing outside the_content.
+	 * Inside the_content (WPJM's own templates) it stands down and the_content places the menu as before.
+	 * Not on the description filters: WPJM re-runs KSES on the job description and strips the icons.
+	 *
+	 * @param string $edge above | below.
+	 */
+	private static function wpjm_edge( string $edge ): void {
+		$post_id = (int) get_the_ID();
+		if ( doing_filter( 'the_content' ) || self::placement() !== $edge || get_queried_object_id() !== $post_id || isset( self::$placed[ $post_id ] ) || self::placed_by_hand( $post_id ) ) {
+			return;
+		}
+		$menu = self::menu( $post_id, $edge );
+		if ( '' !== $menu ) {
+			self::$placed[ $post_id ] = true; // the_content, if the theme runs it later, must not add a second menu.
+			echo $menu; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Free's template escapes.
+		}
 	}
 
 	/**
