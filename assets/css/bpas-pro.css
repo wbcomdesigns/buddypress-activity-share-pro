@@ -11,6 +11,7 @@
 
 .bpas-pro-count {
 	display: inline-flex;
+	margin-inline-start: var(--bpas-space-2);
 	align-items: center;
 	justify-content: center;
 	min-inline-size: 1.5em;
