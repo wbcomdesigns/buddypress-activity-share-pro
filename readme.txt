@@ -4,7 +4,6 @@ Tags: buddypress, share, repost, social share, analytics
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.1
-Requires Plugins: bp-activity-social-share
 Stable tag: 3.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -64,6 +63,7 @@ Rebuilt as an add-on to the free Activity Share for BuddyPress: faster, safer an
 * Improve  - Dialogs, quoted posts and share buttons look the same on any theme, in light and dark mode.
 * Improve  - Bootstrap, Select2 and Font Awesome are no longer loaded.
 * Fix      - Activating Pro while the free plugin is active no longer causes an error.
+* Fix      - Pro activates whatever folder the free plugin is installed in, including installs from GitHub or a wbcomdesigns.com zip.
 * Fix      - Pages that show reposts no longer error on BuddyBoss Platform.
 * Fix      - Uninstalling now also removes cached data, the widget settings and the repost email.
 * Fix      - Posts from private and hidden groups can no longer be viewed or reposted by non-members.
