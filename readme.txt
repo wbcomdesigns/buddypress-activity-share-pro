@@ -71,6 +71,8 @@ Rebuilt as an add-on to the free Activity Share for BuddyPress: faster, safer an
 * Fix      - Share tracking tables are created on update, without reactivating the plugin.
 * Fix      - Right-to-left sites now get the correct styles.
 * Fix      - Uninstall now removes all plugin data.
+* Fix      - The share count on the Share button updates right away after a repost or undo.
+* Fix      - The share count has space between it and the Share label.
 * Security - Visitor IP addresses are no longer stored.
 * Dev      - Old settings, counts and share records move to the new format automatically; old entries are removed.
 * Compat   - Requires Activity Share for BuddyPress 3.6.0, WordPress 6.7 and PHP 8.1. Updates now use your Wbcom Designs license.
