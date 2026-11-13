@@ -28,15 +28,43 @@ final class Counts {
 	 * @param object $ctx Share context.
 	 */
 	public static function toggle_count( $ctx ): void {
-		$count = self::count_for( $ctx );
-		if ( $count > 0 ) {
-			printf(
-				'<span class="bpas-pro-count" aria-label="%1$s">%2$s</span>',
-				/* translators: %s: number of shares. */
-				esc_attr( sprintf( _n( '%s share', '%s shares', $count, 'buddypress-activity-share-pro' ), number_format_i18n( $count ) ) ),
-				esc_html( number_format_i18n( $count ) )
-			);
+		echo self::badge( self::count_for( $ctx ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in badge().
+	}
+
+	/**
+	 * Count badge markup, or '' for zero. Shared by the toggle and the REST replies so the
+	 * badge a member sees after a repost or undo matches the one a page load renders.
+	 *
+	 * @param int $count Share count.
+	 */
+	public static function badge( int $count ): string {
+		if ( $count < 1 ) {
+			return '';
 		}
+		return sprintf(
+			'<span class="bpas-pro-count" aria-label="%1$s">%2$s</span>',
+			/* translators: %s: number of shares. */
+			esc_attr( sprintf( _n( '%s share', '%s shares', $count, 'buddypress-activity-share-pro' ), number_format_i18n( $count ) ) ),
+			esc_html( number_format_i18n( $count ) )
+		);
+	}
+
+	/**
+	 * New count for the object a repost counts toward, for REST replies.
+	 *
+	 * @param object $repost The repost activity (activity_share / post_share).
+	 * @return array{type:string,id:int,count:int,badge:string}
+	 */
+	public static function for_repost( $repost ): array {
+		$type  = 'post_share' === $repost->type ? 'post' : 'activity';
+		$id    = (int) $repost->secondary_item_id;
+		$count = Reshare_Service::count( $type, $id );
+		return array(
+			'type'  => $type,
+			'id'    => $id,
+			'count' => $count,
+			'badge' => self::badge( $count ),
+		);
 	}
 
 	/**

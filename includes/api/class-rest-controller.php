@@ -7,6 +7,7 @@
 
 namespace BPAS_Pro\Api;
 
+use BPAS_Pro\Reshare\Counts;
 use BPAS_Pro\Reshare\Reshare_Service;
 use WP_Error;
 use WP_REST_Request;
@@ -180,6 +181,7 @@ final class Rest_Controller {
 				'id'         => $id,
 				'url'        => bp_activity_get_permalink( $id, $activity ),
 				'created_at' => mysql_to_rfc3339( $activity->date_recorded ),
+				'shares'     => Counts::for_repost( $activity ),
 			)
 		);
 	}
@@ -190,8 +192,18 @@ final class Rest_Controller {
 	 * @param WP_REST_Request $request Request.
 	 */
 	public static function undo( WP_REST_Request $request ) {
-		$done = Reshare_Service::undo( get_current_user_id(), (int) $request['id'] );
-		return is_wp_error( $done ) ? $done : rest_ensure_response( array( 'deleted' => true ) );
+		// Read the repost first: undo deletes it, and the reply carries the new count of what it counted toward.
+		$repost = new \BP_Activity_Activity( (int) $request['id'] );
+		$done   = Reshare_Service::undo( get_current_user_id(), (int) $request['id'] );
+		if ( is_wp_error( $done ) ) {
+			return $done;
+		}
+		return rest_ensure_response(
+			array(
+				'deleted' => true,
+				'shares'  => Counts::for_repost( $repost ),
+			)
+		);
 	}
 
 	/**

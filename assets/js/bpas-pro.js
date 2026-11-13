@@ -328,9 +328,26 @@
 		}
 	}
 
+	// Swap the count badge in every Share toggle for the object a repost counted toward.
+	function updateCount( shares ) {
+		if ( ! shares ) {
+			return;
+		}
+		document.querySelectorAll( 'details.bpas-share[data-bpas-type="' + shares.type + '"][data-bpas-id="' + shares.id + '"] > summary' ).forEach( function ( summary ) {
+			var old = summary.querySelector( '.bpas-pro-count' );
+			if ( old ) {
+				old.remove();
+			}
+			if ( shares.badge ) {
+				summary.insertAdjacentHTML( 'beforeend', shares.badge );
+			}
+		} );
+	}
+
 	function undoRepost( row, repostId ) {
-		api( '/reshare/' + repostId, { method: 'DELETE' } ).then( function () {
+		api( '/reshare/' + repostId, { method: 'DELETE' } ).then( function ( res ) {
 			setReposted( row, 0 );
+			updateCount( res && res.shares );
 			toast( t.undone );
 		}, function ( error ) {
 			toast( message( error ) );
@@ -348,6 +365,7 @@
 			}
 		} ).then( function ( res ) {
 			setReposted( trigger, res.id );
+			updateCount( res.shares );
 			toast( t.reposted, {
 				label: t.undo,
 				run: function () {
@@ -386,6 +404,7 @@
 		setStatus( '' );
 		request.then( function ( res ) {
 			closeDialog();
+			updateCount( res && res.shares );
 			toast( 'send' === state.mode ? t.sentTo.replace( '%s', state.friendName ) : t.reposted, res && res.url ? {
 				label: t.view,
 				run: function () {
