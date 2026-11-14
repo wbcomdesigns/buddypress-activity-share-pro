@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-25T12:42:49+00:00\n"
+"POT-Creation-Date: 2026-11-14T13:11:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-activity-share-pro\n"
@@ -40,7 +40,7 @@ msgstr ""
 msgid "https://wbcomdesigns.com/"
 msgstr ""
 
-#: buddypress-share.php:41
+#: buddypress-share.php:39
 msgid "Activity Share Pro does not support Youzify and is inactive while Youzify is active."
 msgstr ""
 
@@ -50,23 +50,29 @@ msgstr ""
 msgid "Please update Activity Share Pro to version %s to match Activity Share for BuddyPress."
 msgstr ""
 
-#: buddypress-share.php:100
+#. translators: %s: Activity Share Pro version.
+#: buddypress-share.php:66
+#, php-format
+msgid "Please update Activity Share for BuddyPress to version %s to match Activity Share Pro."
+msgstr ""
+
+#: buddypress-share.php:135
 msgid "Activity Share Pro needs the free Activity Share for BuddyPress plugin. Your Pro settings are safe and sharing resumes as soon as it is active."
 msgstr ""
 
-#: buddypress-share.php:102
+#: buddypress-share.php:137
 msgid "Activate Activity Share for BuddyPress"
 msgstr ""
 
-#: buddypress-share.php:102
+#: buddypress-share.php:137
 msgid "Install and activate Activity Share for BuddyPress"
 msgstr ""
 
-#: buddypress-share.php:115
+#: buddypress-share.php:150
 msgid "Activity Share Pro is paused until Activity Share for BuddyPress is updated. Sharing keeps working meanwhile."
 msgstr ""
 
-#: buddypress-share.php:117
+#: buddypress-share.php:152
 msgid "Update Activity Share for BuddyPress"
 msgstr ""
 
@@ -343,7 +349,7 @@ msgid "Floating button"
 msgstr ""
 
 #: includes/admin/views/tab-content.php:22
-msgid "Add the share menu to single posts, pages, products, courses and other content. You can also place it anywhere with the Share buttons block or the [bpas_share] shortcode."
+msgid "Add the share menu to single posts, pages, products, courses and other content. You can also place it anywhere with the Share buttons block or the [bpas_share] shortcode. A post that has the block or shortcode shows the menu only there, so the placement below is skipped for that post."
 msgstr ""
 
 #. translators: %s: post type name.
@@ -411,7 +417,7 @@ msgstr ""
 
 #. translators: %s: number of shares.
 #: includes/analytics/class-trending.php:84
-#: includes/reshare/class-counts.php:36
+#: includes/reshare/class-counts.php:47
 #, php-format
 msgid "%s share"
 msgid_plural "%s shares"
@@ -419,7 +425,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/api/class-admin-controller.php:88
-#: includes/api/class-rest-controller.php:155
+#: includes/api/class-rest-controller.php:156
 msgid "Authentication required."
 msgstr ""
 
@@ -428,7 +434,7 @@ msgstr ""
 msgid "You are not allowed to do this."
 msgstr ""
 
-#: includes/api/class-rest-controller.php:341
+#: includes/api/class-rest-controller.php:353
 #: includes/reshare/class-reshare-service.php:249
 #: includes/reshare/class-reshare-service.php:261
 #: includes/reshare/class-reshare-service.php:282
@@ -633,12 +639,12 @@ msgid ""
 "View your update: {{{item.url}}}"
 msgstr ""
 
-#: includes/posts/class-post-share.php:97
+#: includes/posts/class-post-share.php:173
 #: assets/js/bpas-pro-block.js:11
 msgid "Share buttons"
 msgstr ""
 
-#: includes/posts/class-post-share.php:98
+#: includes/posts/class-post-share.php:174
 #: assets/js/bpas-pro-block.js:12
 msgid "The share menu for this page."
 msgstr ""
@@ -724,7 +730,7 @@ msgstr ""
 msgid "%s reposted a post"
 msgstr ""
 
-#: includes/reshare/class-counts.php:56
+#: includes/reshare/class-counts.php:84
 msgid "See who reposted"
 msgstr ""
 
