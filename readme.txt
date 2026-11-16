@@ -31,6 +31,8 @@ Activity Share Pro adds everything that keeps sharing inside your community to t
 
 == Installation ==
 
+Requires BuddyPress 12.0 or higher, or BuddyBoss Platform.
+
 1. Install and activate Activity Share for BuddyPress (free).
 2. Upload and activate Activity Share Pro.
 3. Go to WB Plugins > Activity Share > Features and License.
