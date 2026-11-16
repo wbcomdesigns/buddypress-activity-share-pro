@@ -26,6 +26,7 @@ final class Notifications {
 		add_filter( 'bp_notifications_get_registered_components', array( __CLASS__, 'register_component' ) );
 		add_filter( 'bp_notifications_get_notifications_for_user', array( __CLASS__, 'format' ), 10, 9 );
 		add_action( 'bpas_pro_after_reshare', array( __CLASS__, 'on_repost' ), 10, 4 );
+		add_action( 'bpas_pro_after_undo_reshare', array( __CLASS__, 'on_undo' ), 10, 4 );
 		add_action( 'bp_notification_settings', array( __CLASS__, 'settings_row' ), 20 );
 		add_filter( 'bp_email_get_unsubscribe_type_schema', array( __CLASS__, 'unsubscribe_schema' ) );
 		add_action( 'template_redirect', array( __CLASS__, 'mark_read' ) );
@@ -109,6 +110,39 @@ final class Notifications {
 		}
 
 		self::maybe_email( $author, $user_id, $target, $repost_id );
+	}
+
+	/**
+	 * A repost was undone: take that repost out of the author's grouped notification.
+	 *
+	 * @param int    $repost_id   Deleted repost activity.
+	 * @param int    $user_id     Member who undid it.
+	 * @param string $type        'activity' or 'post'.
+	 * @param int    $original_id Original activity or post ID.
+	 */
+	public static function on_undo( int $repost_id, int $user_id, string $type, int $original_id ): void {
+		if ( ! $original_id || ! bp_is_active( 'notifications' ) ) {
+			return;
+		}
+		$notes = \BP_Notifications_Notification::get(
+			array(
+				'component_name'   => self::COMPONENT,
+				'component_action' => self::ACTION,
+				'item_id'          => $original_id,
+			)
+		);
+		foreach ( $notes as $note ) {
+			$note_type = bp_notifications_get_meta( $note->id, 'bpas_type', true );
+			if ( $note_type && $note_type !== $type ) {
+				continue; // A post and an activity can share a numeric ID.
+			}
+			$count = (int) bp_notifications_get_meta( $note->id, 'bpas_count', true ) - 1;
+			if ( $count > 0 ) {
+				bp_notifications_update_meta( $note->id, 'bpas_count', $count );
+			} else {
+				\BP_Notifications_Notification::delete( array( 'id' => $note->id ) );
+			}
+		}
 	}
 
 	/**
