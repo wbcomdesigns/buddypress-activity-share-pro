@@ -31,6 +31,15 @@ require_once BPAS_PRO_DIR . 'includes/licensing.php';
 
 add_action( 'plugins_loaded', 'bpas_pro_boot', 20 );
 
+// Stop the daily cleanup job. Loaded directly: the autoloader is not there when Free is off.
+register_deactivation_hook(
+	__FILE__,
+	static function (): void {
+		require_once BPAS_PRO_DIR . 'includes/jobs/class-cleanup.php';
+		\BPAS_Pro\Jobs\Cleanup::unschedule();
+	}
+);
+
 /**
  * Boot once Free is known to be present and compatible.
  */
