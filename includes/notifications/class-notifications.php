@@ -91,6 +91,7 @@ final class Notifications {
 				array( 'id' => $note->id )
 			);
 			bp_notifications_update_meta( $note->id, 'bpas_count', $count );
+			bp_notifications_update_meta( $note->id, 'bpas_reposters', array_merge( (array) bp_notifications_get_meta( $note->id, 'bpas_reposters', true ), array( $user_id ) ) );
 		} else {
 			$id = bp_notifications_add_notification(
 				array(
@@ -106,6 +107,7 @@ final class Notifications {
 			if ( $id ) {
 				bp_notifications_update_meta( $id, 'bpas_count', 1 );
 				bp_notifications_update_meta( $id, 'bpas_type', $target['type'] );
+				bp_notifications_update_meta( $id, 'bpas_reposters', array( $user_id ) );
 			}
 		}
 
@@ -124,24 +126,56 @@ final class Notifications {
 		if ( ! $original_id || ! bp_is_active( 'notifications' ) ) {
 			return;
 		}
+		// Read or unread: the author may already have opened the notification.
 		$notes = \BP_Notifications_Notification::get(
 			array(
 				'component_name'   => self::COMPONENT,
 				'component_action' => self::ACTION,
 				'item_id'          => $original_id,
+				'is_new'           => 'both',
+				'order_by'         => 'date_notified',
+				'sort_order'       => 'DESC',
 			)
 		);
+		$fallback = null;
 		foreach ( $notes as $note ) {
 			$note_type = bp_notifications_get_meta( $note->id, 'bpas_type', true );
 			if ( $note_type && $note_type !== $type ) {
 				continue; // A post and an activity can share a numeric ID.
 			}
-			$count = (int) bp_notifications_get_meta( $note->id, 'bpas_count', true ) - 1;
-			if ( $count > 0 ) {
-				bp_notifications_update_meta( $note->id, 'bpas_count', $count );
-			} else {
-				\BP_Notifications_Notification::delete( array( 'id' => $note->id ) );
+			$reposters = bp_notifications_get_meta( $note->id, 'bpas_reposters', true );
+			if ( is_array( $reposters ) && in_array( $user_id, array_map( 'intval', $reposters ), true ) ) {
+				self::remove_reposter( (int) $note->id, $user_id, $reposters );
+				return;
 			}
+			if ( null === $fallback && ! is_array( $reposters ) ) {
+				$fallback = (int) $note->id; // Row from before reposters were recorded: newest one.
+			}
+		}
+		if ( $fallback ) {
+			self::remove_reposter( $fallback, $user_id, array() );
+		}
+	}
+
+	/**
+	 * Take one reposter out of a grouped notification; delete it when nobody is left.
+	 *
+	 * @param int   $note_id   Notification ID.
+	 * @param int   $user_id   Reposter who undid.
+	 * @param array $reposters Members the row counts.
+	 */
+	private static function remove_reposter( int $note_id, int $user_id, array $reposters ): void {
+		$count = (int) bp_notifications_get_meta( $note_id, 'bpas_count', true ) - 1;
+		if ( $count < 1 ) {
+			\BP_Notifications_Notification::delete( array( 'id' => $note_id ) );
+			return;
+		}
+		$reposters = array_values( array_diff( array_map( 'intval', $reposters ), array( $user_id ) ) );
+		bp_notifications_update_meta( $note_id, 'bpas_count', $count );
+		bp_notifications_update_meta( $note_id, 'bpas_reposters', $reposters );
+		if ( $reposters ) {
+			// The row names its latest reposter; keep that a member who still reposted.
+			\BP_Notifications_Notification::update( array( 'secondary_item_id' => (int) end( $reposters ) ), array( 'id' => $note_id ) );
 		}
 	}
 

@@ -66,6 +66,7 @@ Rebuilt as an add-on to the free Activity Share for BuddyPress: faster, safer an
 * Fix      - Pro activates whatever folder the free plugin is installed in, including installs from GitHub or a wbcomdesigns.com zip.
 * Fix      - Pages that show reposts no longer error on BuddyBoss Platform.
 * Fix      - Uninstalling now also removes cached data, the widget settings and the repost email.
+* Fix      - Undoing a repost removes it from the author's notification, even after the author has read it.
 * Fix      - Posts from private and hidden groups can no longer be viewed or reposted by non-members.
 * Fix      - Drafts and private posts can no longer be reposted.
 * Fix      - Share tracking tables are created on update, without reactivating the plugin.
