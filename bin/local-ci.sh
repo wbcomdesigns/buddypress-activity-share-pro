@@ -40,7 +40,8 @@ step "No inline <script>/<style> in PHP"
 grep -rln '<script\|<style' --include='*.php' includes templates && bad "inline script/style"
 
 step "EDD SDK template guard present"
-grep -q "Wbcom guard" libs/edd-sl-sdk/src/Handlers/Handler.php || bad "SDK LFI guard missing"
+grep -q "get_allowed_overlay_templates" libs/edd-sl-sdk/src/Handlers/Handler.php || bad "SDK overlay template allowlist missing"
+grep -q "1_0_4_3" libs/edd-sl-sdk/edd-sl-sdk.php || bad "SDK is not the 1.0.4-wbcom.3 build"
 grep -q "wp_ajax_edd_sdk_get_notice_buddypress-activity-share-pro" includes/licensing.php || bad "plugin-level SDK guard missing"
 
 step "Plan copy in sync with Free"

@@ -4,8 +4,6 @@
  *
  * @var $args array
  */
-
-defined( 'ABSPATH' ) || exit; // Wbcom guard: no direct access to the template.
 $name = $args['name'];
 if ( ! empty( $args['type'] ) && 'theme' === $args['type'] ) {
 	$name = wp_get_theme()->get( 'Name' );

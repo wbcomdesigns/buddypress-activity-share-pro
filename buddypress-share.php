@@ -25,7 +25,9 @@ define( 'BPAS_PRO_FILE', __FILE__ );
 define( 'BPAS_PRO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BPAS_PRO_URL', plugin_dir_url( __FILE__ ) );
 define( 'BPAS_PRO_EDD_ITEM_ID', 1634903 );
+// Licence and update requests go to the updates host; the SDK falls back to the store when it cannot be reached.
 define( 'BPAS_PRO_EDD_STORE_URL', 'https://wbcomdesigns.com/' );
+define( 'BPAS_PRO_LICENCE_HOST', 'https://updates.wbcomdesigns.com' );
 
 require_once BPAS_PRO_DIR . 'includes/licensing.php';
 

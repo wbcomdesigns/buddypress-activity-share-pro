@@ -37,6 +37,10 @@ Requires BuddyPress 12.0 or higher, or BuddyBoss Platform.
 2. Upload and activate Activity Share Pro.
 3. Go to WB Plugins > Activity Share > Features and License.
 
+== External services ==
+
+To check your license and deliver updates, Pro contacts the Wbcom Designs update server (updates.wbcomdesigns.com, or the store at wbcomdesigns.com when that server cannot be reached). It sends your license key, the product id, the plugin version and your site address. It also fetches the signature of each update package from the same hosts. No visitor or member data is sent. See the [privacy policy](https://wbcomdesigns.com/privacy-policy/).
+
 == Changelog ==
 
 = 3.6.0 - November 2026 =
@@ -79,6 +83,7 @@ Rebuilt as an add-on to the free Activity Share for BuddyPress: faster, safer an
 * Fix      - The share count has space between it and the Share label.
 * Fix      - Your own repost in the stream offers Undo repost instead of a Repost that fails.
 * Security - Visitor IP addresses are no longer stored.
+* Security - Each update is checked against its release signature before it installs (logged, never blocking).
 * Dev      - Old settings, counts and share records move to the new format automatically; old entries are removed.
 * Compat   - Requires Activity Share for BuddyPress 3.6.0, WordPress 6.7 and PHP 8.1. Updates now use your Wbcom Designs license.
 

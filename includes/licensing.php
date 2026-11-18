@@ -1,6 +1,9 @@
 <?php
 /**
- * Licensing: EDD Software Licensing SDK (updates only - never gates features).
+ * Licensing: EDD Software Licensing SDK, our 1.0.4-wbcom.3 build (updates only - never gates features).
+ *
+ * Requests go to updates.wbcomdesigns.com with the store as fallback, and package signatures (warn mode)
+ * check each update against its release signature before WordPress installs it.
  *
  * Loaded at file load (not plugins_loaded) because the SDK registers on its own boot.
  *
@@ -14,15 +17,16 @@ defined( 'ABSPATH' ) || exit;
  */
 function bpas_pro_license_args(): array {
 	return array(
-		'id'          => 'buddypress-activity-share-pro',
-		'url'         => BPAS_PRO_EDD_STORE_URL,
-		'item_id'     => BPAS_PRO_EDD_ITEM_ID,
-		'item_name'   => 'BuddyPress Activity Share Pro',
-		'version'     => BPAS_PRO_VERSION,
-		'file'        => BPAS_PRO_FILE,
-		'type'        => 'plugin',
-		'slug'        => 'buddypress-activity-share-pro',
-		'option_name' => 'bpas_pro_license_key',
+		'id'           => 'buddypress-activity-share-pro',
+		'url'          => BPAS_PRO_LICENCE_HOST,
+		'fallback_url' => untrailingslashit( BPAS_PRO_EDD_STORE_URL ),
+		'item_id'      => BPAS_PRO_EDD_ITEM_ID,
+		'item_name'    => 'BuddyPress Activity Share Pro',
+		'version'      => BPAS_PRO_VERSION,
+		'file'         => BPAS_PRO_FILE,
+		'type'         => 'plugin',
+		'slug'         => 'buddypress-activity-share-pro',
+		'option_name'  => 'bpas_pro_license_key',
 	);
 }
 
@@ -68,4 +72,21 @@ add_action(
 // Load the vendored SDK only when complete; a stripped build degrades to "updates off".
 if ( file_exists( BPAS_PRO_DIR . 'libs/edd-sl-sdk/edd-sl-sdk.php' ) && file_exists( BPAS_PRO_DIR . 'libs/edd-sl-sdk/src/Versions.php' ) ) {
 	require_once BPAS_PRO_DIR . 'libs/edd-sl-sdk/edd-sl-sdk.php';
+}
+
+// Package Signatures (libs/package-signatures): each update package must carry its release signature before
+// WordPress installs it. Warn mode: the result is logged (option package_signatures_log) and the update installs
+// either way. The product name is the store slug.
+if ( file_exists( BPAS_PRO_DIR . 'libs/package-signatures/package-signatures.php' ) ) {
+	require_once BPAS_PRO_DIR . 'libs/package-signatures/package-signatures.php';
+	package_signatures_register(
+		array(
+			'product'  => 'buddypress-activity-share-pro',
+			'plugin'   => plugin_basename( BPAS_PRO_FILE ),
+			'hosts'    => array( 'wbcomdesigns.com', 'updates.wbcomdesigns.com' ),
+			'keys'     => array( 'wbcom-2026-1' => 'kr+2P1WqRbENpZw0BXZmwFnA2tMLi6MlHbBa6jB13U4=' ),
+			'mode'     => 'warn',
+			'fallback' => 'https://wbcomdesigns.com/package-signatures/{product}/{version}/',
+		)
+	);
 }
