@@ -137,9 +137,21 @@
 	display: none !important;
 }
 
+/*
+ * Centred by its own rules, not the browser's: some themes reset `dialog { margin: 0 }` or its
+ * inset, which drops a modal dialog into the top-left corner. Same box for the no-showModal fallback.
+ */
 .bpas-pro-dialog {
+	position: fixed !important;
+	inset: 0 !important;
+	z-index: calc(var(--bpas-z) + 20); /* Fallback only: a modal dialog sits in the top layer. */
+	box-sizing: border-box;
 	inline-size: min(520px, calc(100vw - 32px));
+	max-inline-size: calc(100vw - 32px);
+	block-size: fit-content;
 	max-block-size: calc(100vh - 32px);
+	margin: auto !important;
+	overflow: auto;
 	padding: 0;
 	border: 1px solid var(--bpas-border);
 	border-radius: var(--bpas-radius);
@@ -150,6 +162,11 @@
 
 .bpas-pro-dialog::backdrop {
 	background: var(--bpas-backdrop);
+}
+
+/* Browsers without showModal(): no ::backdrop, so the dialog casts one. */
+.bpas-pro-dialog--fallback[open] {
+	box-shadow: 0 0 0 100vmax var(--bpas-backdrop), var(--bpas-shadow);
 }
 
 .bpas-pro-dialog__box {
@@ -633,7 +650,7 @@
 	.bpas-pro-dialog {
 		inline-size: 100vw;
 		max-inline-size: 100vw;
-		margin: auto 0 0;
+		margin: auto 0 0 !important;
 		border-radius: var(--bpas-radius) var(--bpas-radius) 0 0;
 	}
 

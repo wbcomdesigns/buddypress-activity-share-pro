@@ -66,7 +66,7 @@
 	}
 
 	document.addEventListener( 'keydown', function ( event ) {
-		if ( 'Escape' === event.key && toastEl && ! toastEl.hidden && ! ( dialog && dialog.open ) ) {
+		if ( 'Escape' === event.key && toastEl && ! toastEl.hidden && ! dialogOpen() ) {
 			hideToast();
 		}
 	} );
@@ -100,6 +100,46 @@
 		var el = q( '[data-bpas-field="' + field + '"]' );
 		if ( el ) {
 			el.hidden = ! visible;
+		}
+	}
+
+	function dialogOpen() {
+		return !! dialog && dialog.hasAttribute( 'open' );
+	}
+
+	/*
+	 * The no-showModal fallback has no top layer, so keep Tab inside the dialog and let Escape
+	 * close it, as a native modal does.
+	 */
+	function fallbackKeys( event ) {
+		if ( ! dialog.classList.contains( 'bpas-pro-dialog--fallback' ) || ! dialogOpen() ) {
+			return;
+		}
+		if ( 'Escape' === event.key ) {
+			event.preventDefault();
+			closeDialog();
+			return;
+		}
+		if ( 'Tab' !== event.key ) {
+			return;
+		}
+		var items = Array.prototype.filter.call(
+			dialog.querySelectorAll( 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])' ),
+			function ( el ) {
+				return el.offsetParent !== null;
+			}
+		);
+		if ( ! items.length ) {
+			return;
+		}
+		var first = items[ 0 ];
+		var last = items[ items.length - 1 ];
+		if ( event.shiftKey && ( document.activeElement === first || ! dialog.contains( document.activeElement ) ) ) {
+			event.preventDefault();
+			last.focus();
+		} else if ( ! event.shiftKey && document.activeElement === last ) {
+			event.preventDefault();
+			first.focus();
 		}
 	}
 
@@ -158,6 +198,8 @@
 		if ( typeof dialog.showModal === 'function' ) {
 			dialog.showModal();
 		} else {
+			// No native modal: CSS draws the backdrop, the keydown handler traps focus and Escape.
+			dialog.classList.add( 'bpas-pro-dialog--fallback' );
 			dialog.setAttribute( 'open', '' );
 		}
 		mentionLists( dialog );
@@ -181,8 +223,13 @@
 	}
 
 	function closeDialog() {
-		if ( dialog && dialog.open ) {
-			dialog.close();
+		if ( dialogOpen() ) {
+			if ( typeof dialog.close === 'function' ) {
+				dialog.close();
+			} else {
+				dialog.removeAttribute( 'open' );
+				dialog.dispatchEvent( new Event( 'close' ) );
+			}
 		}
 		mentionLists( document.body );
 		var body = q( '[data-bpas-reposters-list]' );
@@ -491,8 +538,8 @@
 			closeDialog();
 		} else if ( ( trigger = el.closest( '[data-friend-id]' ) ) ) {
 			pickFriend( trigger );
-		} else if ( dialog && el === dialog ) {
-			closeDialog(); // Backdrop click.
+		} else if ( dialog && ( el === dialog || ( dialog.classList.contains( 'bpas-pro-dialog--fallback' ) && dialogOpen() && ! dialog.contains( el ) ) ) ) {
+			closeDialog(); // Backdrop click (the fallback's backdrop is a shadow, so: any click outside).
 		}
 	} );
 
@@ -526,6 +573,7 @@
 	} );
 
 	if ( dialog ) {
+		document.addEventListener( 'keydown', fallbackKeys );
 		dialog.addEventListener( 'keydown', function ( event ) {
 			if ( 'Enter' === event.key && event.target.hasAttribute( 'data-bpas-friend-search' ) ) {
 				event.preventDefault();
