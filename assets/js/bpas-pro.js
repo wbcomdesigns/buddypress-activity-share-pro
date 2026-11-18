@@ -345,17 +345,22 @@
 	/* ---------- actions ---------- */
 
 	/* The Repost row flips to "Undo repost" and back, so the menu always tells the truth. */
+	// Flip Repost / Undo repost on every menu for the same original (the post and its repost cards).
 	function setReposted( row, repostId ) {
-		var name = row.querySelector( '.bpas-share__name' );
-		if ( repostId ) {
-			row.removeAttribute( 'data-bpas-repost' );
-			row.setAttribute( 'data-bpas-undo', repostId );
-			name.textContent = t.undoRepost;
-		} else {
-			row.removeAttribute( 'data-bpas-undo' );
-			row.setAttribute( 'data-bpas-repost', '' );
-			name.textContent = t.repost;
-		}
+		var key = row.getAttribute( 'data-bpas-target' );
+		var rows = key ? document.querySelectorAll( '[data-bpas-target="' + key + '"]' ) : [ row ];
+		Array.prototype.forEach.call( rows, function ( el ) {
+			var name = el.querySelector( '.bpas-share__name' );
+			if ( repostId ) {
+				el.removeAttribute( 'data-bpas-repost' );
+				el.setAttribute( 'data-bpas-undo', repostId );
+				name.textContent = t.undoRepost;
+			} else {
+				el.removeAttribute( 'data-bpas-undo' );
+				el.setAttribute( 'data-bpas-repost', '' );
+				name.textContent = t.repost;
+			}
+		} );
 	}
 
 	// Swap the count badge in every Share toggle for the object a repost counted toward.
@@ -377,6 +382,11 @@
 	function undoRepost( row, repostId ) {
 		api( '/reshare/' + repostId, { method: 'DELETE' } ).then( function ( res ) {
 			setReposted( row, 0 );
+			// The repost is gone: take its card out of the stream instead of leaving a dead item.
+			var card = document.getElementById( 'activity-' + repostId );
+			if ( card ) {
+				card.remove();
+			}
 			updateCount( res && res.shares );
 			toast( t.undone );
 		}, function ( error ) {

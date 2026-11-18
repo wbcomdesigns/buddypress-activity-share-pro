@@ -77,10 +77,12 @@ final class Menu_Item {
 					// Plain repost -> Undo; quote (-1) -> no quick row, the quote is managed from the post itself.
 					// Ask about the resolved original: on a repost card the menu acts on what was reposted.
 					$mine = Reshare_Service::my_repost( $user_id, $target['type'], (int) $target['id'] );
+					// Every menu for the same original (the post and its repost cards) flips together in JS.
+					$tdata = sprintf( ' data-bpas-target="%s:%d"', esc_attr( $target['type'] ), (int) $target['id'] );
 					if ( $mine > 0 ) {
-						$rows[] = self::row( 'repeat', __( 'Undo repost', 'buddypress-activity-share-pro' ), sprintf( 'data-bpas-undo="%d" ', $mine ) . $data );
+						$rows[] = self::row( 'repeat', __( 'Undo repost', 'buddypress-activity-share-pro' ), sprintf( 'data-bpas-undo="%d" ', $mine ) . $data . $tdata );
 					} elseif ( 0 === $mine ) {
-						$rows[] = self::row( 'repeat', _x( 'Repost', 'verb', 'buddypress-activity-share-pro' ), 'data-bpas-repost ' . $data );
+						$rows[] = self::row( 'repeat', _x( 'Repost', 'verb', 'buddypress-activity-share-pro' ), 'data-bpas-repost ' . $data . $tdata );
 					}
 					$rows[] = self::row( 'message-square-quote', __( 'Repost with comment', 'buddypress-activity-share-pro' ), 'data-bpas-compose ' . $data );
 				}

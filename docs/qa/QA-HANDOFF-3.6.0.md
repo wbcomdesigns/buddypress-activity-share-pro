@@ -67,3 +67,10 @@ Test on the `3.6.0` branches at or after Free `a4e9b31` (master merge) and Pro c
 | Free merged master | Nothing to click. | `docs/website` is the November docs set (no `getting-started/introduction.md`); CI workflow file present. |
 
 Free alone (Pro deactivated): Share menu, phone bottom sheet and "Link copied" behave as before; no toast exists in Free.
+
+### QA round 1 fixes (18 Nov)
+
+| Finding | Retest | Pass when |
+|---|---|---|
+| R3 stale menu after Undo | Repost an update, reload, open Share on your repost card, Undo. | The repost card leaves the stream; the original post menu reads "Repost" and its count drops, without a reload. |
+| R4 count in place | Repost, then Undo, from the original post. | The count beside Share goes 0 -> 1 -> 0 without a reload. |
