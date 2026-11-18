@@ -3,7 +3,7 @@
  * Plugin Name:       Activity Share Pro
  * Plugin URI:        https://wbcomdesigns.com/downloads/buddypress-activity-share-pro/
  * Description:       Reposting inside your BuddyPress community, sending posts to friends, share buttons on any content, share counts, trending posts, rewards and share analytics. Extends Activity Share for BuddyPress.
- * Version:           3.6.0
+ * Version:           3.6.1
  * Requires at least: 6.7
  * Requires PHP:      8.1
  * Author:            Wbcom Designs
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BPAS_PRO_VERSION', '3.6.0' );
+define( 'BPAS_PRO_VERSION', '3.6.1' );
 define( 'BPAS_PRO_REQUIRES_API', '3.6' ); // Free public API version this build is written against.
 define( 'BPAS_PRO_DB_VERSION', '3.6.0' );
 define( 'BPAS_PRO_FILE', __FILE__ );
