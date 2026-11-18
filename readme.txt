@@ -4,7 +4,7 @@ Tags: buddypress, share, repost, social share, analytics
 Requires at least: 6.7
 Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 3.6.0
+Stable tag: 3.6.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,19 @@ Requires BuddyPress 12.0 or higher, or BuddyBoss Platform.
 To check your license and deliver updates, Pro contacts the Wbcom Designs update server (updates.wbcomdesigns.com, or the store at wbcomdesigns.com when that server cannot be reached). It sends your license key, the product id, the plugin version and your site address. It also fetches the signature of each update package from the same hosts. No visitor or member data is sent. See the [privacy policy](https://wbcomdesigns.com/privacy-policy/).
 
 == Changelog ==
+
+= 3.6.1 - November 2026 =
+
+Fixes from release review for the repost dialog and repost wording.
+
+* Fix      - Closing the repost dialog with Escape returns keyboard focus to the Share button.
+* Fix      - Send to a friend no longer shows on a repost whose original cannot be shared.
+* Fix      - The repost and send dialog stays centred on screen with BuddyBoss and with themes that reset dialog styles.
+* Fix      - A reposted page now reads "reposted a page", and other content types name the item and its type, for example "Blue Hoodie (Product)".
+* Fix      - Without native dialog support, the repost dialog still dims the page, keeps keyboard focus inside and closes with Escape.
+* Fix      - Send to a friend appears only when the BuddyPress Friend Connections and Private Messaging components are both active, and sends only to friends.
+* Dev      - Repost, send and group features register only while the BuddyPress component they need is switched on.
+* Compat   - Requires Activity Share for BuddyPress 3.6.0 or later; install Activity Share for BuddyPress 3.6.1 alongside.
 
 = 3.6.0 - November 2026 =
 

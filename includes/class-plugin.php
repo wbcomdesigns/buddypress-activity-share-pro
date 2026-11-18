@@ -53,7 +53,7 @@ final class Plugin {
 		Posts\Post_Share::init();
 
 		if ( bp_is_active( 'activity' ) ) {
-			if ( Settings::feature( 'repost' ) || Settings::feature( 'send_friend' ) ) {
+			if ( Settings::feature( 'repost' ) || Settings::send_friend_on() ) {
 				Reshare\Menu_Item::init();
 				Reshare\Composer::init();
 			}
@@ -67,7 +67,9 @@ final class Plugin {
 			if ( Settings::feature( 'counts' ) ) {
 				Reshare\Counts::init();
 			}
-			Notifications\Notifications::init();
+			if ( bp_is_active( 'notifications' ) ) {
+				Notifications\Notifications::init();
+			}
 		}
 		if ( bp_is_active( 'groups' ) ) {
 			Groups\Group_Controls::init();

@@ -9,6 +9,7 @@ namespace BPAS_Pro\Api;
 
 use BPAS_Pro\Reshare\Counts;
 use BPAS_Pro\Reshare\Reshare_Service;
+use BPAS_Pro\Settings;
 use WP_Error;
 use WP_REST_Request;
 
@@ -54,97 +55,105 @@ final class Rest_Controller {
 			),
 		);
 
-		register_rest_route(
-			$ns,
-			'/reshare',
-			array(
-				'methods'             => 'POST',
-				'callback'            => array( __CLASS__, 'repost' ),
-				'permission_callback' => array( __CLASS__, 'logged_in' ),
-				'args'                => $object + array(
-					'destination' => array(
-						'type'    => 'string',
-						'enum'    => array( 'profile', 'group' ),
-						'default' => 'profile',
+		// Each route exists only while the BuddyPress component it needs is switched on.
+		if ( bp_is_active( 'activity' ) ) {
+			register_rest_route(
+				$ns,
+				'/reshare',
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( __CLASS__, 'repost' ),
+					'permission_callback' => array( __CLASS__, 'logged_in' ),
+					'args'                => $object + array(
+						'destination' => array(
+							'type'    => 'string',
+							'enum'    => array( 'profile', 'group' ),
+							'default' => 'profile',
+						),
+						'group_id'    => array(
+							'type'    => 'integer',
+							'default' => 0,
+						),
+						'comment'     => array(
+							'type'    => 'string',
+							'default' => '',
+						),
 					),
-					'group_id'    => array(
-						'type'    => 'integer',
-						'default' => 0,
+				)
+			);
+			register_rest_route(
+				$ns,
+				'/reshare/(?P<id>\d+)',
+				array(
+					'methods'             => 'DELETE',
+					'callback'            => array( __CLASS__, 'undo' ),
+					'permission_callback' => array( __CLASS__, 'logged_in' ),
+				)
+			);
+			register_rest_route(
+				$ns,
+				'/activity/(?P<id>\d+)/shares',
+				array(
+					'methods'             => 'GET',
+					'callback'            => array( __CLASS__, 'shares' ),
+					'permission_callback' => '__return_true',
+				)
+			);
+			register_rest_route(
+				$ns,
+				'/activity/(?P<id>\d+)/reposters',
+				array(
+					'methods'             => 'GET',
+					'callback'            => array( __CLASS__, 'reposters' ),
+					'permission_callback' => '__return_true',
+					'args'                => $paging,
+				)
+			);
+		}
+		// Send to a friend needs Messages and Friends; without both the routes do not exist.
+		if ( Settings::send_friend_supported() ) {
+			register_rest_route(
+				$ns,
+				'/send',
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( __CLASS__, 'send' ),
+					'permission_callback' => array( __CLASS__, 'logged_in' ),
+					'args'                => $object + array(
+						'friend_id' => array(
+							'type'     => 'integer',
+							'required' => true,
+						),
+						'note'      => array(
+							'type'    => 'string',
+							'default' => '',
+						),
 					),
-					'comment'     => array(
-						'type'    => 'string',
-						'default' => '',
-					),
-				),
-			)
-		);
-		register_rest_route(
-			$ns,
-			'/reshare/(?P<id>\d+)',
-			array(
-				'methods'             => 'DELETE',
-				'callback'            => array( __CLASS__, 'undo' ),
-				'permission_callback' => array( __CLASS__, 'logged_in' ),
-			)
-		);
-		register_rest_route(
-			$ns,
-			'/send',
-			array(
-				'methods'             => 'POST',
-				'callback'            => array( __CLASS__, 'send' ),
-				'permission_callback' => array( __CLASS__, 'logged_in' ),
-				'args'                => $object + array(
-					'friend_id' => array(
-						'type'     => 'integer',
-						'required' => true,
-					),
-					'note'      => array(
-						'type'    => 'string',
-						'default' => '',
-					),
-				),
-			)
-		);
-		register_rest_route(
-			$ns,
-			'/me/groups',
-			array(
-				'methods'             => 'GET',
-				'callback'            => array( __CLASS__, 'my_groups' ),
-				'permission_callback' => array( __CLASS__, 'logged_in' ),
-				'args'                => $paging,
-			)
-		);
-		register_rest_route(
-			$ns,
-			'/me/friends',
-			array(
-				'methods'             => 'GET',
-				'callback'            => array( __CLASS__, 'my_friends' ),
-				'permission_callback' => array( __CLASS__, 'logged_in' ),
-				'args'                => $paging,
-			)
-		);
-		register_rest_route(
-			$ns,
-			'/activity/(?P<id>\d+)/shares',
-			array(
-				'methods'             => 'GET',
-				'callback'            => array( __CLASS__, 'shares' ),
-				'permission_callback' => '__return_true',
-			)
-		);
-		register_rest_route(
-			$ns,
-			'/activity/(?P<id>\d+)/reposters',
-			array(
-				'methods'             => 'GET',
-				'callback'            => array( __CLASS__, 'reposters' ),
-				'permission_callback' => '__return_true',
-				'args'                => $paging,
-			)
-		);
+				)
+			);
+			register_rest_route(
+				$ns,
+				'/me/friends',
+				array(
+					'methods'             => 'GET',
+					'callback'            => array( __CLASS__, 'my_friends' ),
+					'permission_callback' => array( __CLASS__, 'logged_in' ),
+					'args'                => $paging,
+				)
+			);
+		}
+		if ( bp_is_active( 'groups' ) ) {
+			register_rest_route(
+				$ns,
+				'/me/groups',
+				array(
+					'methods'             => 'GET',
+					'callback'            => array( __CLASS__, 'my_groups' ),
+					'permission_callback' => array( __CLASS__, 'logged_in' ),
+					'args'                => $paging,
+				)
+			);
+		}
 	}
 
 	/**
@@ -230,9 +239,6 @@ final class Rest_Controller {
 	 * @param WP_REST_Request $request Request.
 	 */
 	public static function my_groups( WP_REST_Request $request ) {
-		if ( ! bp_is_active( 'groups' ) ) {
-			return self::envelope( 'groups', array(), 0, $request );
-		}
 		$result = groups_get_groups(
 			array(
 				'user_id'      => get_current_user_id(),
@@ -260,9 +266,6 @@ final class Rest_Controller {
 	 * @param WP_REST_Request $request Request.
 	 */
 	public static function my_friends( WP_REST_Request $request ) {
-		if ( ! bp_is_active( 'friends' ) ) {
-			return self::envelope( 'friends', array(), 0, $request );
-		}
 		$ids = friends_get_friend_user_ids( get_current_user_id() );
 		if ( empty( $ids ) ) {
 			return self::envelope( 'friends', array(), 0, $request );

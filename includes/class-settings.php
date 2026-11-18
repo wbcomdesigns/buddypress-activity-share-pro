@@ -68,6 +68,21 @@ final class Settings {
 	}
 
 	/**
+	 * Send to a friend exists only when BuddyPress Messages and Friends are both active.
+	 * Its menu row, REST routes and setting register only when this is true.
+	 */
+	public static function send_friend_supported(): bool {
+		return function_exists( 'bp_is_active' ) && bp_is_active( 'messages' ) && bp_is_active( 'friends' );
+	}
+
+	/**
+	 * Is Send to a friend on: supported by the active components and switched on.
+	 */
+	public static function send_friend_on(): bool {
+		return self::send_friend_supported() && self::feature( 'send_friend' );
+	}
+
+	/**
 	 * Post type => placement ('above' | 'below' | 'floating').
 	 */
 	public static function content_types(): array {

@@ -73,6 +73,13 @@ final class Admin {
 			'short_links' => array( __( 'Short share links', 'buddypress-activity-share-pro' ), __( 'Shared links look like yoursite.com/s/abc123 and credit the member who shared.', 'buddypress-activity-share-pro' ) ),
 			'analytics'   => array( __( 'Share analytics', 'buddypress-activity-share-pro' ), __( 'Count clicks on share buttons and visits from shared links. Visitors are counted without storing IP addresses.', 'buddypress-activity-share-pro' ) ),
 		);
+		// Without Messages and Friends the feature does not exist: no switch, one line saying why.
+		// The saved value is kept, so it comes back as it was when both are active again.
+		$send_note = '';
+		if ( ! Settings::send_friend_supported() ) {
+			unset( $rows['send_friend'] );
+			$send_note = __( 'Send to a friend appears here when the BuddyPress Friend Connections and Private Messaging components are both active.', 'buddypress-activity-share-pro' );
+		}
 		include BPAS_PRO_DIR . 'includes/admin/views/tab-features.php';
 	}
 

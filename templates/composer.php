@@ -48,12 +48,14 @@ defined( 'ABSPATH' ) || exit;
 					<p class="bpas-pro-field__empty" data-bpas-group-empty hidden><?php esc_html_e( 'You have not joined any groups yet.', 'buddypress-activity-share-pro' ); ?></p>
 				</div>
 
+				<?php if ( $view['send_on'] ) : ?>
 				<div class="bpas-pro-field" data-bpas-field="friend" hidden>
 					<label for="bpas-pro-friend"><?php esc_html_e( 'Friend', 'buddypress-activity-share-pro' ); ?></label>
 					<input type="search" id="bpas-pro-friend" class="bpas-pro-input" data-bpas-friend-search autocomplete="off" placeholder="<?php esc_attr_e( 'Type a name', 'buddypress-activity-share-pro' ); ?>" aria-describedby="bpas-pro-friend-hint" />
 					<p id="bpas-pro-friend-hint" class="bpas-pro-field__hint"><?php esc_html_e( 'Only your friends are shown.', 'buddypress-activity-share-pro' ); ?></p>
 					<ul class="bpas-pro-options" role="listbox" data-bpas-friend-list aria-label="<?php esc_attr_e( 'Friends', 'buddypress-activity-share-pro' ); ?>"></ul>
 				</div>
+				<?php endif; ?>
 
 				<div class="bpas-pro-field" data-bpas-field="comment">
 					<label for="bpas-pro-comment" data-bpas-comment-label><?php esc_html_e( 'Add a comment (optional)', 'buddypress-activity-share-pro' ); ?></label>

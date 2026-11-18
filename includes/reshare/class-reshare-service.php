@@ -142,7 +142,7 @@ final class Reshare_Service {
 	 * @return int|WP_Error Message thread ID.
 	 */
 	public static function send( int $user_id, string $object_type, int $object_id, int $friend_id, string $note = '' ) {
-		if ( ! Settings::feature( 'send_friend' ) || ! bp_is_active( 'messages' ) ) {
+		if ( ! Settings::send_friend_on() ) {
 			return self::error( 'bpas_send_off', __( 'Sending to friends is turned off.', 'buddypress-activity-share-pro' ), 403 );
 		}
 		if ( $user_id <= 0 ) {
@@ -151,7 +151,8 @@ final class Reshare_Service {
 		if ( $friend_id <= 0 || $friend_id === $user_id || ! get_userdata( $friend_id ) ) {
 			return self::error( 'bpas_friend', __( 'Choose a friend to send this to.', 'buddypress-activity-share-pro' ), 400 );
 		}
-		if ( bp_is_active( 'friends' ) && ! friends_check_friendship( $user_id, $friend_id ) ) {
+		// Defence in depth: without a friendship check, refuse rather than send to anyone.
+		if ( ! function_exists( 'friends_check_friendship' ) || ! friends_check_friendship( $user_id, $friend_id ) ) {
 			return self::error( 'bpas_not_friend', __( 'You can only send posts to your friends.', 'buddypress-activity-share-pro' ), 403 );
 		}
 
@@ -256,7 +257,8 @@ final class Reshare_Service {
 				'author_id' => (int) $post->post_author,
 			);
 		} else {
-			$activity = self::original_activity( $object_id );
+			// Activity switched off: its classes are not loaded, so there is nothing to resolve.
+			$activity = bp_is_active( 'activity' ) ? self::original_activity( $object_id ) : null;
 			if ( ! $activity ) {
 				return self::error( 'bpas_not_found', __( 'This post is not available.', 'buddypress-activity-share-pro' ), 404 );
 			}
@@ -382,7 +384,8 @@ final class Reshare_Service {
 			$root = self::original_activity( (int) $activity->item_id );
 			return $root ? self::group_of( $root ) : 0;
 		}
-		return 'groups' === $activity->component ? (int) $activity->item_id : 0;
+		// With Groups switched off, old group posts behave like any other post (no group rules to apply).
+		return 'groups' === $activity->component && bp_is_active( 'groups' ) ? (int) $activity->item_id : 0;
 	}
 
 	/**

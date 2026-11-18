@@ -94,7 +94,7 @@ final class Analytics {
 			_prime_post_caches( $post_ids, false, false );
 		}
 		$activities = array();
-		if ( $activity_ids && class_exists( '\BP_Activity_Activity' ) ) {
+		if ( $activity_ids && bp_is_active( 'activity' ) ) {
 			$found = \BP_Activity_Activity::get(
 				array(
 					'in'               => $activity_ids,
