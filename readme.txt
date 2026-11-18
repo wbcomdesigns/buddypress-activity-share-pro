@@ -47,6 +47,7 @@ To check your license and deliver updates, Pro contacts the Wbcom Designs update
 
 Fixes from release review for the repost dialog and repost wording.
 
+* Fix      - Closing the repost dialog with Escape returns keyboard focus to the Share button.
 * Fix      - Send to a friend no longer shows on a repost whose original cannot be shared.
 * Fix      - The repost and send dialog stays centred on screen with BuddyBoss and with themes that reset dialog styles.
 * Fix      - A reposted page now reads "reposted a page", and other content types name the item and its type, for example "Blue Hoodie (Product)".

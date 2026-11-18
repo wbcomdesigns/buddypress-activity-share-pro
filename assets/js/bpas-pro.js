@@ -223,14 +223,20 @@
 	}
 
 	function closeDialog() {
-		if ( dialogOpen() ) {
-			if ( typeof dialog.close === 'function' ) {
-				dialog.close();
-			} else {
-				dialog.removeAttribute( 'open' );
-				dialog.dispatchEvent( new Event( 'close' ) );
-			}
+		if ( ! dialogOpen() ) {
+			afterClose();
+			return;
 		}
+		// The 'close' listener runs afterClose(), so Escape, Cancel and X all restore focus the same way.
+		if ( typeof dialog.close === 'function' ) {
+			dialog.close();
+		} else {
+			dialog.removeAttribute( 'open' );
+			dialog.dispatchEvent( new Event( 'close' ) );
+		}
+	}
+
+	function afterClose() {
 		mentionLists( document.body );
 		var body = q( '[data-bpas-reposters-list]' );
 		if ( body ) {
@@ -595,6 +601,7 @@
 			if ( body ) {
 				body.hidden = false;
 			}
+			afterClose();
 		} );
 	}
 
