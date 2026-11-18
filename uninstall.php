@@ -27,12 +27,12 @@ $bpas_pro_cleanup = static function (): void {
 		'bp_groups_groupmeta' => array( 'bpas_allow_external', 'bpas_allow_repost_out' ),
 	) as $bpas_pro_table => $bpas_pro_keys ) {
 		foreach ( (array) $bpas_pro_keys as $bpas_pro_meta ) {
-			$wpdb->query( $wpdb->prepare( "DELETE FROM {$bp_prefix}{$bpas_pro_table} WHERE meta_key = %s", $bpas_pro_meta ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- BuddyPress tables.
+			$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE meta_key = %s', $bp_prefix . $bpas_pro_table, $bpas_pro_meta ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- BuddyPress tables.
 		}
 	}
 	// Notification meta first (it is keyed by notification id), then the notifications.
-	$wpdb->query( $wpdb->prepare( "DELETE m FROM {$bp_prefix}bp_notifications_meta m INNER JOIN {$bp_prefix}bp_notifications n ON n.id = m.notification_id WHERE n.component_name = %s", 'bpas' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- BuddyPress table.
-	$wpdb->query( $wpdb->prepare( "DELETE FROM {$bp_prefix}bp_notifications WHERE component_name = %s", 'bpas' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- BuddyPress table.
+	$wpdb->query( $wpdb->prepare( 'DELETE m FROM %i m INNER JOIN %i n ON n.id = m.notification_id WHERE n.component_name = %s', $bp_prefix . 'bp_notifications_meta', $bp_prefix . 'bp_notifications', 'bpas' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- BuddyPress table.
+	$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE component_name = %s', $bp_prefix . 'bp_notifications', 'bpas' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- BuddyPress table.
 
 	// The "repost" email: its template posts, then the email-type term (works whether or not BuddyPress is active).
 	$bpas_pro_term = $wpdb->get_row( $wpdb->prepare( "SELECT t.term_id, tt.term_taxonomy_id FROM {$wpdb->terms} t INNER JOIN {$wpdb->term_taxonomy} tt ON tt.term_id = t.term_id WHERE tt.taxonomy = %s AND t.slug = %s", 'bp-email-type', 'bpas-repost' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- uninstall.

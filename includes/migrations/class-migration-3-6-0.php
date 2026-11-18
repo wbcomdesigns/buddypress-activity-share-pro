@@ -57,18 +57,18 @@ final class Migration_3_6_0 {
 		if ( Events::exists( $legacy_tracking ) ) {
 			$events = Events::table();
 			// Visitor IPs are not carried over.
-			$wpdb->query( "INSERT INTO {$events} (event, object_type, object_id, service, user_id, created_at) SELECT 'share', 'post', post_id, LEFT(service, 30), user_id, shared_at FROM {$legacy_tracking}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- fixed table names.
+			$wpdb->query( $wpdb->prepare( "INSERT INTO %i (event, object_type, object_id, service, user_id, created_at) SELECT 'share', 'post', post_id, LEFT(service, 30), user_id, shared_at FROM %i", $events, $legacy_tracking ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- fixed table names.
 			// Post share counts are ours only for posts in the legacy tracking table.
-			$wpdb->query( "UPDATE {$wpdb->postmeta} SET meta_key = '_bpas_share_count' WHERE meta_key = 'share_count' AND post_id IN ( SELECT DISTINCT post_id FROM {$legacy_tracking} )" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- fixed table names.
-			$wpdb->query( "DROP TABLE IF EXISTS {$legacy_tracking}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.SchemaChange -- legacy table.
+			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->postmeta} SET meta_key = '_bpas_share_count' WHERE meta_key = 'share_count' AND post_id IN ( SELECT DISTINCT post_id FROM %i )", $legacy_tracking ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- fixed table names.
+			$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $legacy_tracking ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.SchemaChange -- legacy table.
 		}
 		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}bp_share_post_type_settings" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.SchemaChange -- legacy table.
 
 		if ( function_exists( 'buddypress' ) && ! empty( buddypress()->activity->table_name_meta ) ) {
 			$activity_meta = buddypress()->activity->table_name_meta;
-			$wpdb->query( "UPDATE {$activity_meta} SET meta_key = '_bpas_share_count' WHERE meta_key = 'share_count'" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- BP table.
+			$wpdb->query( $wpdb->prepare( "UPDATE %i SET meta_key = '_bpas_share_count' WHERE meta_key = 'share_count'", $activity_meta ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- BP table.
 			// Original ID already lives in secondary_item_id; stats aggregates were never populated.
-			$wpdb->query( "DELETE FROM {$activity_meta} WHERE meta_key IN ( 'shared_activity_id', 'bp_share_activity_stats', 'bp_share_visit_stats' )" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- BP table.
+			$wpdb->query( $wpdb->prepare( "DELETE FROM %i WHERE meta_key IN ( 'shared_activity_id', 'bp_share_activity_stats', 'bp_share_visit_stats' )", $activity_meta ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- BP table.
 			self::drop_index( $activity_meta, 'idx_bp_share_count' );
 		}
 		self::drop_index( $wpdb->postmeta, 'idx_bp_post_share_count' );
@@ -126,9 +126,9 @@ final class Migration_3_6_0 {
 	 */
 	private static function drop_index( string $table, string $index ): void {
 		global $wpdb;
-		$exists = $wpdb->get_var( $wpdb->prepare( "SHOW INDEX FROM {$table} WHERE Key_name = %s", $index ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table from core globals.
+		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW INDEX FROM %i WHERE Key_name = %s', $table, $index ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table from core globals.
 		if ( $exists ) {
-			$wpdb->query( "ALTER TABLE {$table} DROP INDEX {$index}" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.SchemaChange -- removing our own legacy index.
+			$wpdb->query( $wpdb->prepare( 'ALTER TABLE %i DROP INDEX %i', $table, $index ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.SchemaChange -- removing our own legacy index.
 		}
 	}
 }

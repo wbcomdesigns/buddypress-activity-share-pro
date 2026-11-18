@@ -108,7 +108,7 @@ final class Events {
 	public static function delete_last( string $event, string $object_type, int $object_id, int $user_id ): void {
 		global $wpdb;
 		$table = self::table();
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$table} WHERE event = %s AND object_type = %s AND object_id = %d AND user_id = %d ORDER BY id DESC LIMIT 1", $event, $object_type, $object_id, $user_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- custom table name.
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE event = %s AND object_type = %s AND object_id = %d AND user_id = %d ORDER BY id DESC LIMIT 1', $table, $event, $object_type, $object_id, $user_id ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- custom table.
 		wp_cache_set_last_changed( 'bpas_pro_events' );
 	}
 
@@ -122,7 +122,7 @@ final class Events {
 	public static function delete_before( string $before, int $limit = 1000 ): int {
 		global $wpdb;
 		$table = self::table();
-		$rows  = (int) $wpdb->query( $wpdb->prepare( "DELETE FROM {$table} WHERE created_at < %s LIMIT %d", $before, $limit ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- custom table name.
+		$rows  = (int) $wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE created_at < %s LIMIT %d', $table, $before, $limit ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- custom table.
 		if ( $rows ) {
 			wp_cache_set_last_changed( 'bpas_pro_events' );
 		}
@@ -139,7 +139,7 @@ final class Events {
 	public static function for_user( int $user_id, int $page = 1, int $per = 500 ): array {
 		global $wpdb;
 		$table = self::table();
-		return (array) $wpdb->get_results( $wpdb->prepare( "SELECT id, event, object_type, object_id, service, created_at FROM {$table} WHERE user_id = %d ORDER BY id LIMIT %d OFFSET %d", $user_id, $per, ( $page - 1 ) * $per ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery,WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- custom table name.
+		return (array) $wpdb->get_results( $wpdb->prepare( 'SELECT id, event, object_type, object_id, service, created_at FROM %i WHERE user_id = %d ORDER BY id LIMIT %d OFFSET %d', $table, $user_id, $per, ( $page - 1 ) * $per ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery -- custom table.
 	}
 
 	/**

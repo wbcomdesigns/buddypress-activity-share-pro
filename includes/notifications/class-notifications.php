@@ -300,7 +300,7 @@ final class Notifications {
 		$schema[ self::SITUATION ] = array(
 			'description' => __( 'A member reposts one of your updates.', 'buddypress-activity-share-pro' ),
 			'unsubscribe' => array(
-				'meta_key' => self::PREF_META, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_query_meta_key -- BuddyPress schema key.
+				'meta_key' => self::PREF_META, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- BuddyPress schema key, not a query.
 				'message'  => __( 'You will no longer receive emails when someone reposts your updates.', 'buddypress-activity-share-pro' ),
 			),
 		);
