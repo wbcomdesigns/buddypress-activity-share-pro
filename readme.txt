@@ -39,7 +39,7 @@ Requires BuddyPress 12.0 or higher, or BuddyBoss Platform.
 
 == Changelog ==
 
-= 3.6.0 - September 2026 =
+= 3.6.0 - November 2026 =
 
 Rebuilt as an add-on to the free Activity Share for BuddyPress: faster, safer and with many new ways to share.
 

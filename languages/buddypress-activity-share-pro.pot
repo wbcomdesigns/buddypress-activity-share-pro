@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-14T13:11:15+00:00\n"
+"POT-Creation-Date: 2026-11-18T07:25:08+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-activity-share-pro\n"
@@ -40,39 +40,39 @@ msgstr ""
 msgid "https://wbcomdesigns.com/"
 msgstr ""
 
-#: buddypress-share.php:39
+#: buddypress-share.php:48
 msgid "Activity Share Pro does not support Youzify and is inactive while Youzify is active."
 msgstr ""
 
 #. translators: %s: Activity Share for BuddyPress version.
-#: buddypress-share.php:61
+#: buddypress-share.php:70
 #, php-format
 msgid "Please update Activity Share Pro to version %s to match Activity Share for BuddyPress."
 msgstr ""
 
 #. translators: %s: Activity Share Pro version.
-#: buddypress-share.php:66
+#: buddypress-share.php:75
 #, php-format
 msgid "Please update Activity Share for BuddyPress to version %s to match Activity Share Pro."
 msgstr ""
 
-#: buddypress-share.php:135
+#: buddypress-share.php:144
 msgid "Activity Share Pro needs the free Activity Share for BuddyPress plugin. Your Pro settings are safe and sharing resumes as soon as it is active."
 msgstr ""
 
-#: buddypress-share.php:137
+#: buddypress-share.php:146
 msgid "Activate Activity Share for BuddyPress"
 msgstr ""
 
-#: buddypress-share.php:137
+#: buddypress-share.php:146
 msgid "Install and activate Activity Share for BuddyPress"
 msgstr ""
 
-#: buddypress-share.php:150
+#: buddypress-share.php:159
 msgid "Activity Share Pro is paused until Activity Share for BuddyPress is updated. Sharing keeps working meanwhile."
 msgstr ""
 
-#: buddypress-share.php:152
+#: buddypress-share.php:161
 msgid "Update Activity Share for BuddyPress"
 msgstr ""
 
@@ -116,9 +116,9 @@ msgid "Members repost other members' updates to their profile or a group, and th
 msgstr ""
 
 #: includes/admin/class-admin.php:69
-#: includes/class-assets.php:57
+#: includes/class-assets.php:58
 #: includes/reshare/class-menu-item.php:50
-#: includes/reshare/class-menu-item.php:88
+#: includes/reshare/class-menu-item.php:89
 msgid "Send to a friend"
 msgstr ""
 
@@ -176,7 +176,7 @@ msgid "Settings could not be saved. Please try again."
 msgstr ""
 
 #: includes/admin/class-admin.php:129
-#: includes/class-assets.php:77
+#: includes/class-assets.php:79
 msgid "Loading..."
 msgstr ""
 
@@ -251,7 +251,7 @@ msgid "Deactivating"
 msgstr ""
 
 #: includes/admin/class-admin.php:164
-#: includes/class-assets.php:73
+#: includes/class-assets.php:75
 msgid "Something went wrong. Please try again."
 msgstr ""
 
@@ -306,7 +306,7 @@ msgid "Shares to other sites"
 msgstr ""
 
 #: includes/admin/views/tab-analytics.php:40
-#: includes/notifications/class-notifications.php:208
+#: includes/notifications/class-notifications.php:276
 #: includes/reshare/class-activity-types.php:27
 #: includes/reshare/class-activity-types.php:28
 msgid "Reposts"
@@ -441,108 +441,112 @@ msgstr ""
 msgid "This post is not available."
 msgstr ""
 
-#: includes/class-assets.php:53
+#: includes/class-assets.php:54
 #: includes/reshare/class-menu-item.php:47
-#: includes/reshare/class-menu-item.php:82
+#: includes/reshare/class-menu-item.php:83
 #: templates/composer.php:17
 #: templates/composer.php:67
 msgctxt "verb"
 msgid "Repost"
 msgstr ""
 
-#: includes/class-assets.php:54
-#: includes/reshare/class-menu-item.php:84
+#: includes/class-assets.php:55
+#: includes/reshare/class-menu-item.php:85
 msgid "Repost with comment"
 msgstr ""
 
-#: includes/class-assets.php:55
+#: includes/class-assets.php:56
 #: includes/reshare/class-menu-item.php:74
 msgid "Repost to a group"
 msgstr ""
 
-#: includes/class-assets.php:56
+#: includes/class-assets.php:57
 #: includes/reshare/class-menu-item.php:70
 msgid "Repost in this group"
 msgstr ""
 
-#: includes/class-assets.php:58
+#: includes/class-assets.php:59
 msgid "Send"
 msgstr ""
 
-#: includes/class-assets.php:59
+#: includes/class-assets.php:60
 msgid "Add a note (optional)"
 msgstr ""
 
-#: includes/class-assets.php:60
+#: includes/class-assets.php:61
 #: templates/composer.php:59
 msgid "Add a comment (optional)"
 msgstr ""
 
-#: includes/class-assets.php:61
+#: includes/class-assets.php:62
 msgid "Reposted."
 msgstr ""
 
-#: includes/class-assets.php:62
+#: includes/class-assets.php:63
 msgid "Undo"
 msgstr ""
 
-#: includes/class-assets.php:63
-#: includes/reshare/class-menu-item.php:80
+#: includes/class-assets.php:64
+msgid "Dismiss"
+msgstr ""
+
+#: includes/class-assets.php:65
+#: includes/reshare/class-menu-item.php:81
 msgid "Undo repost"
 msgstr ""
 
-#: includes/class-assets.php:64
+#: includes/class-assets.php:66
 msgctxt "open the new post or conversation"
 msgid "View"
 msgstr ""
 
-#: includes/class-assets.php:65
+#: includes/class-assets.php:67
 msgid "Repost removed."
 msgstr ""
 
-#: includes/class-assets.php:66
+#: includes/class-assets.php:68
 msgid "Sending..."
 msgstr ""
 
-#: includes/class-assets.php:67
+#: includes/class-assets.php:69
 msgid "Reposting..."
 msgstr ""
 
 #. translators: %s: friend's name.
-#: includes/class-assets.php:69
+#: includes/class-assets.php:71
 #, php-format
 msgid "Sent to %s."
 msgstr ""
 
-#: includes/class-assets.php:70
+#: includes/class-assets.php:72
 msgid "Choose a group"
 msgstr ""
 
-#: includes/class-assets.php:71
+#: includes/class-assets.php:73
 msgid "You have no friends yet. Add friends to send them posts."
 msgstr ""
 
-#: includes/class-assets.php:72
+#: includes/class-assets.php:74
 msgid "No reposts yet."
 msgstr ""
 
-#: includes/class-assets.php:74
+#: includes/class-assets.php:76
 msgid "Choose a friend first."
 msgstr ""
 
-#: includes/class-assets.php:75
+#: includes/class-assets.php:77
 msgid "Choose a group first."
 msgstr ""
 
-#: includes/class-assets.php:76
+#: includes/class-assets.php:78
 msgid "No friends match that name."
 msgstr ""
 
-#: includes/class-assets.php:78
+#: includes/class-assets.php:80
 msgid "Reposted by"
 msgstr ""
 
-#: includes/class-assets.php:79
+#: includes/class-assets.php:81
 msgid "Join the conversation"
 msgstr ""
 
@@ -563,7 +567,7 @@ msgid "Invalid template."
 msgstr ""
 
 #. translators: 1: member name, 2: number of other members.
-#: includes/notifications/class-notifications.php:141
+#: includes/notifications/class-notifications.php:209
 #, php-format
 msgid "%1$s and %2$s other reposted your post"
 msgid_plural "%1$s and %2$s others reposted your post"
@@ -571,13 +575,13 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: member name.
-#: includes/notifications/class-notifications.php:143
+#: includes/notifications/class-notifications.php:211
 #, php-format
 msgid "%s reposted your post"
 msgstr ""
 
 #. translators: 1: member name, 2: number of other members.
-#: includes/notifications/class-notifications.php:147
+#: includes/notifications/class-notifications.php:215
 #, php-format
 msgid "%1$s and %2$s other reposted your update"
 msgid_plural "%1$s and %2$s others reposted your update"
@@ -585,52 +589,52 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: member name.
-#: includes/notifications/class-notifications.php:149
+#: includes/notifications/class-notifications.php:217
 #, php-format
 msgid "%s reposted your update"
 msgstr ""
 
-#: includes/notifications/class-notifications.php:209
+#: includes/notifications/class-notifications.php:277
 msgid "Yes"
 msgstr ""
 
-#: includes/notifications/class-notifications.php:210
+#: includes/notifications/class-notifications.php:278
 msgid "No"
 msgstr ""
 
-#: includes/notifications/class-notifications.php:216
+#: includes/notifications/class-notifications.php:284
 msgid "A member reposts one of your updates"
 msgstr ""
 
-#: includes/notifications/class-notifications.php:217
+#: includes/notifications/class-notifications.php:285
 msgid "Yes, email me about reposts"
 msgstr ""
 
-#: includes/notifications/class-notifications.php:218
+#: includes/notifications/class-notifications.php:286
 msgid "No, do not email me about reposts"
 msgstr ""
 
-#: includes/notifications/class-notifications.php:233
-#: includes/notifications/class-notifications.php:262
+#: includes/notifications/class-notifications.php:301
+#: includes/notifications/class-notifications.php:330
 msgid "A member reposts one of your updates."
 msgstr ""
 
-#: includes/notifications/class-notifications.php:236
+#: includes/notifications/class-notifications.php:304
 msgid "You will no longer receive emails when someone reposts your updates."
 msgstr ""
 
 #. translators: do not translate the {{tokens}}.
-#: includes/notifications/class-notifications.php:254
+#: includes/notifications/class-notifications.php:322
 msgid "[{{{site.name}}}] {{reposter.name}} reposted your update"
 msgstr ""
 
 #. translators: do not translate the {{tokens}}.
-#: includes/notifications/class-notifications.php:256
+#: includes/notifications/class-notifications.php:324
 msgid "<a href=\"{{{reposter.url}}}\">{{reposter.name}}</a> reposted your update.<br /><br /><a href=\"{{{repost.url}}}\">See the repost</a> or <a href=\"{{{item.url}}}\">view your update</a>."
 msgstr ""
 
 #. translators: do not translate the {{tokens}}.
-#: includes/notifications/class-notifications.php:258
+#: includes/notifications/class-notifications.php:326
 msgid ""
 "{{reposter.name}} reposted your update.\n"
 "\n"
@@ -738,20 +742,20 @@ msgstr ""
 msgid "Allow other members to repost my posts"
 msgstr ""
 
-#: includes/reshare/class-reposted-card.php:103
-#: includes/reshare/class-reposted-card.php:131
+#: includes/reshare/class-reposted-card.php:108
+#: includes/reshare/class-reposted-card.php:136
 msgid "This post is no longer available."
 msgstr ""
 
-#: includes/reshare/class-reposted-card.php:131
+#: includes/reshare/class-reposted-card.php:136
 msgid "This reply is no longer available."
 msgstr ""
 
-#: includes/reshare/class-reposted-card.php:156
+#: includes/reshare/class-reposted-card.php:161
 msgid "View reply"
 msgstr ""
 
-#: includes/reshare/class-reposted-card.php:156
+#: includes/reshare/class-reposted-card.php:161
 msgid "View post"
 msgstr ""
 
