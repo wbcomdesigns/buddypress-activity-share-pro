@@ -41,14 +41,13 @@ final class Analytics {
 		$from  = gmdate( 'Y-m-d H:i:s', time() - $days * DAY_IN_SECONDS );
 		$type  = in_array( $object_type, array( 'activity', 'post' ), true ) ? $object_type : '';
 		// An empty type matches every object type; the SQL stays one static string.
-		$scope = array( $table, $from, $type, $type );
 
 		// phpcs:disable WordPress.DB.DirectDatabaseQuery -- custom table.
-		$totals   = $wpdb->get_results( $wpdb->prepare( "SELECT event, COUNT(*) AS n FROM %i WHERE created_at >= %s AND ( %s = '' OR object_type = %s ) GROUP BY event", ...$scope ), OBJECT_K );
-		$networks = $wpdb->get_results( $wpdb->prepare( "SELECT service, COUNT(*) AS n FROM %i WHERE created_at >= %s AND ( %s = '' OR object_type = %s ) AND event = 'share' GROUP BY service ORDER BY n DESC LIMIT 20", ...$scope ) );
+		$totals   = $wpdb->get_results( $wpdb->prepare( "SELECT event, COUNT(*) AS n FROM %i WHERE created_at >= %s AND ( %s = '' OR object_type = %s ) GROUP BY event", $table, $from, $type, $type ), OBJECT_K );
+		$networks = $wpdb->get_results( $wpdb->prepare( "SELECT service, COUNT(*) AS n FROM %i WHERE created_at >= %s AND ( %s = '' OR object_type = %s ) AND event = 'share' GROUP BY service ORDER BY n DESC LIMIT 20", $table, $from, $type, $type ) );
 		// "Most shared" counts shares, reposts and sends - visits are not shares.
-		$total = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM ( SELECT 1 FROM %i WHERE created_at >= %s AND ( %s = '' OR object_type = %s ) AND event <> 'visit' GROUP BY object_type, object_id ) t", ...$scope ) );
-		$rows  = $wpdb->get_results( $wpdb->prepare( "SELECT object_type, object_id, COUNT(*) AS n FROM %i WHERE created_at >= %s AND ( %s = '' OR object_type = %s ) AND event <> 'visit' GROUP BY object_type, object_id ORDER BY n DESC, object_id DESC LIMIT %d OFFSET %d", ...array_merge( $scope, array( $per_page, ( $page - 1 ) * $per_page ) ) ) );
+		$total = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM ( SELECT 1 FROM %i WHERE created_at >= %s AND ( %s = '' OR object_type = %s ) AND event <> 'visit' GROUP BY object_type, object_id ) t", $table, $from, $type, $type ) );
+		$rows  = $wpdb->get_results( $wpdb->prepare( "SELECT object_type, object_id, COUNT(*) AS n FROM %i WHERE created_at >= %s AND ( %s = '' OR object_type = %s ) AND event <> 'visit' GROUP BY object_type, object_id ORDER BY n DESC, object_id DESC LIMIT %d OFFSET %d", $table, $from, $type, $type, $per_page, ( $page - 1 ) * $per_page ) );
 		// phpcs:enable
 
 		$report = array(
