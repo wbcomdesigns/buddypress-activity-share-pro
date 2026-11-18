@@ -67,7 +67,9 @@ final class Plugin {
 			if ( Settings::feature( 'counts' ) ) {
 				Reshare\Counts::init();
 			}
-			Notifications\Notifications::init();
+			if ( bp_is_active( 'notifications' ) ) {
+				Notifications\Notifications::init();
+			}
 		}
 		if ( bp_is_active( 'groups' ) ) {
 			Groups\Group_Controls::init();

@@ -66,7 +66,7 @@ final class Notifications {
 	 */
 	public static function on_repost( int $repost_id, int $user_id, array $target ): void {
 		$author = (int) $target['author_id'];
-		if ( ! $author || $author === $user_id || ! bp_is_active( 'notifications' ) ) {
+		if ( ! $author || $author === $user_id ) {
 			return;
 		}
 
@@ -123,7 +123,7 @@ final class Notifications {
 	 * @param int    $original_id Original activity or post ID.
 	 */
 	public static function on_undo( int $repost_id, int $user_id, string $type, int $original_id ): void {
-		if ( ! $original_id || ! bp_is_active( 'notifications' ) ) {
+		if ( ! $original_id ) {
 			return;
 		}
 		// Read or unread: the author may already have opened the notification.

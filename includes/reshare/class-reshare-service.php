@@ -256,7 +256,8 @@ final class Reshare_Service {
 				'author_id' => (int) $post->post_author,
 			);
 		} else {
-			$activity = self::original_activity( $object_id );
+			// Activity switched off: its classes are not loaded, so there is nothing to resolve.
+			$activity = bp_is_active( 'activity' ) ? self::original_activity( $object_id ) : null;
 			if ( ! $activity ) {
 				return self::error( 'bpas_not_found', __( 'This post is not available.', 'buddypress-activity-share-pro' ), 404 );
 			}
@@ -382,7 +383,8 @@ final class Reshare_Service {
 			$root = self::original_activity( (int) $activity->item_id );
 			return $root ? self::group_of( $root ) : 0;
 		}
-		return 'groups' === $activity->component ? (int) $activity->item_id : 0;
+		// With Groups switched off, old group posts behave like any other post (no group rules to apply).
+		return 'groups' === $activity->component && bp_is_active( 'groups' ) ? (int) $activity->item_id : 0;
 	}
 
 	/**
