@@ -19,6 +19,9 @@ final class Activity_Types {
 	 * Register action strings for both components.
 	 */
 	public static function register(): void {
+		if ( ! bp_is_active( 'activity' ) ) {
+			return;
+		}
 		foreach ( array( 'activity', 'groups' ) as $component ) {
 			if ( ! bp_is_active( $component ) ) {
 				continue;
@@ -30,7 +33,8 @@ final class Activity_Types {
 	}
 
 	/**
-	 * "Anna reposted an update" / "... a post" / "... a reply" [in the group G].
+	 * "Anna reposted an update" / "... a reply" / "... a post" / "... a page" [in the group G].
+	 * Any other content type names itself: "Anna reposted Blue Hoodie (Product)".
 	 *
 	 * @param string $action   Default action.
 	 * @param object $activity Activity.
@@ -38,9 +42,23 @@ final class Activity_Types {
 	public static function format_action( $action, $activity ): string {
 		$user = bp_core_get_userlink( (int) $activity->user_id );
 		$kind = 'post';
+		$item = '';
+		$type = '';
 		if ( 'activity_share' === $activity->type ) {
 			$original = Reshare_Service::original_activity( (int) $activity->secondary_item_id );
 			$kind     = $original && 'activity_comment' === $original->type ? 'reply' : 'update';
+		} else {
+			$post      = get_post( (int) $activity->secondary_item_id );
+			$type_info = $post ? get_post_type_object( $post->post_type ) : null;
+			if ( $post && 'page' === $post->post_type ) {
+				$kind = 'page';
+			} elseif ( $post && $type_info && 'post' !== $post->post_type ) {
+				// A label in the middle of a sentence breaks grammar in many languages ("a"/"an",
+				// gender, case), so other types read as "<title> (<type>)" instead.
+				$kind = 'item';
+				$item = '<a href="' . esc_url( (string) get_permalink( $post ) ) . '">' . esc_html( get_the_title( $post ) ) . '</a>';
+				$type = esc_html( $type_info->labels->singular_name );
+			}
 		}
 
 		$group = null;
@@ -59,8 +77,12 @@ final class Activity_Types {
 				'reply'  => __( '%1$s reposted a reply in the group %2$s', 'buddypress-activity-share-pro' ),
 				/* translators: 1: member link, 2: group link. */
 				'post'   => __( '%1$s reposted a post in the group %2$s', 'buddypress-activity-share-pro' ),
+				/* translators: 1: member link, 2: group link. */
+				'page'   => __( '%1$s reposted a page in the group %2$s', 'buddypress-activity-share-pro' ),
+				/* translators: 1: member link, 2: group link, 3: linked title of the shared item, 4: its content type, e.g. Product. */
+				'item'   => __( '%1$s reposted %3$s (%4$s) in the group %2$s', 'buddypress-activity-share-pro' ),
 			);
-			$text  = sprintf( $texts[ $kind ], $user, $link );
+			$text  = sprintf( $texts[ $kind ], $user, $link, $item, $type );
 		} else {
 			$texts = array(
 				/* translators: %s: member link. */
@@ -69,8 +91,12 @@ final class Activity_Types {
 				'reply'  => __( '%s reposted a reply', 'buddypress-activity-share-pro' ),
 				/* translators: %s: member link. */
 				'post'   => __( '%s reposted a post', 'buddypress-activity-share-pro' ),
+				/* translators: %s: member link. */
+				'page'   => __( '%s reposted a page', 'buddypress-activity-share-pro' ),
+				/* translators: 1: member link, 2: linked title of the shared item, 3: its content type, e.g. Product. */
+				'item'   => __( '%1$s reposted %2$s (%3$s)', 'buddypress-activity-share-pro' ),
 			);
-			$text  = sprintf( $texts[ $kind ], $user );
+			$text  = sprintf( $texts[ $kind ], $user, $item, $type );
 		}
 
 		return (string) apply_filters( 'bpas_pro_repost_action', $text, $activity );
