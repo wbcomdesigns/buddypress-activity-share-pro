@@ -3,8 +3,9 @@
  * Features tab: one toggle per Pro feature.
  *
  * @package BPAS_Pro
- * @var array $features Current feature flags.
- * @var array $rows     key => [label, description].
+ * @var array  $features  Current feature flags.
+ * @var array  $rows      key => [label, description].
+ * @var string $send_note Shown when Send to a friend is unavailable.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -26,6 +27,9 @@ defined( 'ABSPATH' ) || exit;
 				</label>
 			<?php endforeach; ?>
 		</div>
+		<?php if ( $send_note ) : ?>
+			<p class="bpas-card__note"><?php echo esc_html( $send_note ); ?></p>
+		<?php endif; ?>
 		<p class="bpas-card__note"><?php esc_html_e( 'Share rewards turn on by themselves when WB Gamification, GamiPress or myCRED is active; set the points in that plugin.', 'buddypress-activity-share-pro' ); ?></p>
 	</section>
 	<p class="bpas-admin__actions"><button type="submit" class="button button-primary"><?php esc_html_e( 'Save changes', 'buddypress-activity-share-pro' ); ?></button></p>

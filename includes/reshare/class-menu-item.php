@@ -38,7 +38,7 @@ final class Menu_Item {
 		}
 
 		$repost = Settings::feature( 'repost' );
-		$send   = Settings::feature( 'send_friend' ) && bp_is_active( 'messages' ) && $external;
+		$send   = Settings::send_friend_on() && $external;
 		$rows   = array();
 		$data   = sprintf( 'data-bpas-object="%s" data-bpas-object-id="%d"', esc_attr( $ctx->type ), (int) $ctx->id );
 
@@ -52,7 +52,7 @@ final class Menu_Item {
 		} else {
 			$user_id = get_current_user_id();
 			// Like "Repost to a group" for members in no group: nobody to send to, no row (cached count, no query).
-			$send = $send && ( ! bp_is_active( 'friends' ) || friends_get_total_friend_count( $user_id ) > 0 );
+			$send = $send && friends_get_total_friend_count( $user_id ) > 0;
 			if ( 'activity' === $ctx->type ) {
 				Reshare_Service::remember( $ctx->object );
 			}

@@ -9,6 +9,7 @@ namespace BPAS_Pro\Api;
 
 use BPAS_Pro\Reshare\Counts;
 use BPAS_Pro\Reshare\Reshare_Service;
+use BPAS_Pro\Settings;
 use WP_Error;
 use WP_REST_Request;
 
@@ -109,7 +110,8 @@ final class Rest_Controller {
 				)
 			);
 		}
-		if ( bp_is_active( 'messages' ) ) {
+		// Send to a friend needs Messages and Friends; without both the routes do not exist.
+		if ( Settings::send_friend_supported() ) {
 			register_rest_route(
 				$ns,
 				'/send',
@@ -264,9 +266,6 @@ final class Rest_Controller {
 	 * @param WP_REST_Request $request Request.
 	 */
 	public static function my_friends( WP_REST_Request $request ) {
-		if ( ! bp_is_active( 'friends' ) ) {
-			return self::envelope( 'friends', array(), 0, $request );
-		}
 		$ids = friends_get_friend_user_ids( get_current_user_id() );
 		if ( empty( $ids ) ) {
 			return self::envelope( 'friends', array(), 0, $request );

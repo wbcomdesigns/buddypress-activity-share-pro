@@ -142,7 +142,7 @@ final class Reshare_Service {
 	 * @return int|WP_Error Message thread ID.
 	 */
 	public static function send( int $user_id, string $object_type, int $object_id, int $friend_id, string $note = '' ) {
-		if ( ! Settings::feature( 'send_friend' ) || ! bp_is_active( 'messages' ) ) {
+		if ( ! Settings::send_friend_on() ) {
 			return self::error( 'bpas_send_off', __( 'Sending to friends is turned off.', 'buddypress-activity-share-pro' ), 403 );
 		}
 		if ( $user_id <= 0 ) {
@@ -151,7 +151,8 @@ final class Reshare_Service {
 		if ( $friend_id <= 0 || $friend_id === $user_id || ! get_userdata( $friend_id ) ) {
 			return self::error( 'bpas_friend', __( 'Choose a friend to send this to.', 'buddypress-activity-share-pro' ), 400 );
 		}
-		if ( bp_is_active( 'friends' ) && ! friends_check_friendship( $user_id, $friend_id ) ) {
+		// Defence in depth: without a friendship check, refuse rather than send to anyone.
+		if ( ! function_exists( 'friends_check_friendship' ) || ! friends_check_friendship( $user_id, $friend_id ) ) {
 			return self::error( 'bpas_not_friend', __( 'You can only send posts to your friends.', 'buddypress-activity-share-pro' ), 403 );
 		}
 

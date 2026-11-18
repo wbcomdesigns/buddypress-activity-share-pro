@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-18T13:33:43+00:00\n"
+"POT-Creation-Date: 2026-11-18T14:13:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: buddypress-activity-share-pro\n"
@@ -77,7 +77,7 @@ msgid "Update Activity Share for BuddyPress"
 msgstr ""
 
 #: includes/admin/class-admin.php:36
-#: includes/admin/views/tab-features.php:15
+#: includes/admin/views/tab-features.php:16
 msgid "Features"
 msgstr ""
 
@@ -167,90 +167,94 @@ msgstr ""
 msgid "Count clicks on share buttons and visits from shared links. Visitors are counted without storing IP addresses."
 msgstr ""
 
-#: includes/admin/class-admin.php:127
+#: includes/admin/class-admin.php:81
+msgid "Send to a friend appears here when the BuddyPress Friend Connections and Private Messaging components are both active."
+msgstr ""
+
+#: includes/admin/class-admin.php:134
 msgid "Settings saved."
 msgstr ""
 
-#: includes/admin/class-admin.php:128
+#: includes/admin/class-admin.php:135
 msgid "Settings could not be saved. Please try again."
 msgstr ""
 
-#: includes/admin/class-admin.php:129
+#: includes/admin/class-admin.php:136
 #: includes/class-assets.php:79
 msgid "Loading..."
 msgstr ""
 
-#: includes/admin/class-admin.php:130
+#: includes/admin/class-admin.php:137
 msgid "Nothing shared in this period yet."
 msgstr ""
 
-#: includes/admin/class-admin.php:131
+#: includes/admin/class-admin.php:138
 msgid "No shares to other sites in this period."
 msgstr ""
 
-#: includes/admin/class-admin.php:132
+#: includes/admin/class-admin.php:139
 msgid "The report could not be loaded. Please try again."
 msgstr ""
 
-#: includes/admin/class-admin.php:133
+#: includes/admin/class-admin.php:140
 #: includes/admin/views/tab-analytics.php:53
 #: includes/privacy/class-privacy.php:84
 msgid "Item"
 msgstr ""
 
-#: includes/admin/class-admin.php:134
+#: includes/admin/class-admin.php:141
 #: includes/admin/views/tab-analytics.php:54
 msgid "Type"
 msgstr ""
 
-#: includes/admin/class-admin.php:135
+#: includes/admin/class-admin.php:142
 #: includes/admin/views/tab-analytics.php:55
 msgctxt "number of shares"
 msgid "Shares"
 msgstr ""
 
-#: includes/admin/class-admin.php:136
+#: includes/admin/class-admin.php:143
 msgid "URL"
 msgstr ""
 
-#: includes/admin/class-admin.php:137
+#: includes/admin/class-admin.php:144
 msgid "Preparing the file..."
 msgstr ""
 
-#: includes/admin/class-admin.php:138
+#: includes/admin/class-admin.php:145
 #: includes/admin/views/tab-analytics.php:31
 msgctxt "content type"
 msgid "Activity"
 msgstr ""
 
-#: includes/admin/class-admin.php:139
+#: includes/admin/class-admin.php:146
 msgctxt "content type"
 msgid "Post"
 msgstr ""
 
-#: includes/admin/class-admin.php:140
+#: includes/admin/class-admin.php:147
 msgid "Previous"
 msgstr ""
 
-#: includes/admin/class-admin.php:141
+#: includes/admin/class-admin.php:148
 msgid "Next"
 msgstr ""
 
 #. translators: 1: current page, 2: total pages.
-#: includes/admin/class-admin.php:143
+#: includes/admin/class-admin.php:150
 #, php-format
 msgid "Page %1$s of %2$s"
 msgstr ""
 
-#: includes/admin/class-admin.php:162
+#: includes/admin/class-admin.php:169
 msgid "Activating"
 msgstr ""
 
-#: includes/admin/class-admin.php:163
+#: includes/admin/class-admin.php:170
 msgid "Deactivating"
 msgstr ""
 
-#: includes/admin/class-admin.php:164
+#: includes/admin/class-admin.php:171
 #: includes/class-assets.php:75
 msgid "Something went wrong. Please try again."
 msgstr ""
@@ -359,15 +363,15 @@ msgid "Placement for %s"
 msgstr ""
 
 #: includes/admin/views/tab-content.php:47
-#: includes/admin/views/tab-features.php:31
+#: includes/admin/views/tab-features.php:35
 msgid "Save changes"
 msgstr ""
 
-#: includes/admin/views/tab-features.php:16
+#: includes/admin/views/tab-features.php:17
 msgid "Turn Activity Share Pro features on or off."
 msgstr ""
 
-#: includes/admin/views/tab-features.php:29
+#: includes/admin/views/tab-features.php:33
 msgid "Share rewards turn on by themselves when WB Gamification, GamiPress or myCRED is active; set the points in that plugin."
 msgstr ""
 
@@ -425,7 +429,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/api/class-admin-controller.php:88
-#: includes/api/class-rest-controller.php:163
+#: includes/api/class-rest-controller.php:165
 msgid "Authentication required."
 msgstr ""
 
@@ -434,10 +438,10 @@ msgstr ""
 msgid "You are not allowed to do this."
 msgstr ""
 
-#: includes/api/class-rest-controller.php:357
-#: includes/reshare/class-reshare-service.php:249
-#: includes/reshare/class-reshare-service.php:262
-#: includes/reshare/class-reshare-service.php:283
+#: includes/api/class-rest-controller.php:356
+#: includes/reshare/class-reshare-service.php:250
+#: includes/reshare/class-reshare-service.php:263
+#: includes/reshare/class-reshare-service.php:284
 msgid "This post is not available."
 msgstr ""
 
@@ -445,7 +449,7 @@ msgstr ""
 #: includes/reshare/class-menu-item.php:47
 #: includes/reshare/class-menu-item.php:85
 #: templates/composer.php:17
-#: templates/composer.php:67
+#: templates/composer.php:69
 msgctxt "verb"
 msgid "Repost"
 msgstr ""
@@ -474,7 +478,7 @@ msgid "Add a note (optional)"
 msgstr ""
 
 #: includes/class-assets.php:61
-#: templates/composer.php:59
+#: templates/composer.php:61
 msgid "Add a comment (optional)"
 msgstr ""
 
@@ -819,51 +823,51 @@ msgstr ""
 msgid "Choose a friend to send this to."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:155
+#: includes/reshare/class-reshare-service.php:156
 msgid "You can only send posts to your friends."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:163
+#: includes/reshare/class-reshare-service.php:164
 msgid "Your friend cannot see this post, so it cannot be sent to them."
 msgstr ""
 
 #. translators: %s: address of the shared post.
-#: includes/reshare/class-reshare-service.php:174
+#: includes/reshare/class-reshare-service.php:175
 #, php-format
 msgid "View it here: %s"
 msgstr ""
 
 #. translators: %s: title of the shared item.
-#: includes/reshare/class-reshare-service.php:184
+#: includes/reshare/class-reshare-service.php:185
 #, php-format
 msgid "Shared with you: %s"
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:191
+#: includes/reshare/class-reshare-service.php:192
 msgid "The message could not be sent. Please try again."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:270
+#: includes/reshare/class-reshare-service.php:271
 msgid "Sharing replies is turned off."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:287
+#: includes/reshare/class-reshare-service.php:288
 msgid "The author does not allow reposts of their posts."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:291
+#: includes/reshare/class-reshare-service.php:292
 msgid "You cannot repost this."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:312
+#: includes/reshare/class-reshare-service.php:313
 msgid "Posts from this group can only be reposted inside the group."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:317
+#: includes/reshare/class-reshare-service.php:318
 msgid "You can repost your own posts into a group."
 msgstr ""
 
-#: includes/reshare/class-reshare-service.php:322
+#: includes/reshare/class-reshare-service.php:323
 msgid "You can only repost into groups you belong to."
 msgstr ""
 
@@ -938,23 +942,23 @@ msgstr ""
 msgid "You have not joined any groups yet."
 msgstr ""
 
-#: templates/composer.php:52
+#: templates/composer.php:53
 msgid "Friend"
 msgstr ""
 
-#: templates/composer.php:53
+#: templates/composer.php:54
 msgid "Type a name"
 msgstr ""
 
-#: templates/composer.php:54
+#: templates/composer.php:55
 msgid "Only your friends are shown."
 msgstr ""
 
-#: templates/composer.php:55
+#: templates/composer.php:56
 msgid "Friends"
 msgstr ""
 
-#: templates/composer.php:66
+#: templates/composer.php:68
 msgid "Cancel"
 msgstr ""
 

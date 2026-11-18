@@ -8,6 +8,7 @@
 namespace BPAS_Pro\Reshare;
 
 use BPAS_Pro\Assets;
+use BPAS_Pro\Settings;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -75,6 +76,7 @@ final class Composer {
 			'register_url' => function_exists( 'bp_get_signup_page' ) && bp_get_signup_allowed() ? bp_get_signup_page() : '',
 			// Only offer "A group" to members who belong to one (count is cached per user by BuddyPress).
 			'groups_on'    => bp_is_active( 'groups' ) && bp_get_total_group_count_for_user( get_current_user_id() ) > 0,
+			'send_on'      => Settings::send_friend_on(),
 		);
 		include BPAS_PRO_DIR . 'templates/composer.php';
 	}
