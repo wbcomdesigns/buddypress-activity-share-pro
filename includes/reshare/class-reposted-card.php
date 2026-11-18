@@ -36,8 +36,6 @@ final class Reposted_Card {
 		$activity_ids = array();
 		$post_ids     = array();
 		$group_ids    = array();
-		// Every item on the page, replies included, so each menu knows "already reposted" for free.
-		Reshare_Service::prefetch_mine( get_current_user_id(), 'activity', self::ids_with_replies( $template->activities ) );
 		foreach ( $template->activities as $activity ) {
 			Reshare_Service::remember( $activity );
 			if ( 'groups' === $activity->component ) {
@@ -50,6 +48,13 @@ final class Reposted_Card {
 			}
 		}
 		Reshare_Service::prefetch( $activity_ids );
+		// Every item on the page, replies included, plus the originals behind repost cards (their menu acts
+		// on the original), so each menu knows "already reposted" without a query per row.
+		$user_id = get_current_user_id();
+		Reshare_Service::prefetch_mine( $user_id, 'activity', array_merge( self::ids_with_replies( $template->activities ), $activity_ids ) );
+		if ( $post_ids ) {
+			Reshare_Service::prefetch_mine( $user_id, 'post', $post_ids );
+		}
 		if ( $post_ids ) {
 			_prime_post_caches( array_unique( $post_ids ), false, true );
 		}

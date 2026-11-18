@@ -11,35 +11,65 @@
 	var dialog = document.querySelector( '[data-bpas-dialog]' );
 	var toastEl = document.querySelector( '[data-bpas-toast]' );
 	var state = {};
-	var toastTimer;
 
 	function api( path, options ) {
 		return window.wp.apiFetch( Object.assign( { path: ns + path }, options || {} ) );
 	}
 
-	function toast( message, action ) {
+	function hideToast() {
+		if ( toastEl ) {
+			toastEl.hidden = true;
+			toastEl.textContent = '';
+		}
+	}
+
+	/*
+	 * BP family toast (same look as every Wbcom BuddyPress add-on): BuddyPress's own .bp-feedback
+	 * notice, inside .buddypress-wrap so the theme paints it, bottom centre, one at a time.
+	 * No auto-dismiss, so the Undo / View action stays reachable (WCAG 2.2.1).
+	 */
+	function toast( text, action, isError ) {
 		if ( ! toastEl ) {
 			return;
 		}
-		toastEl.textContent = message;
+		var host = document.querySelector( '.buddypress-wrap' );
+		if ( host && toastEl.parentNode !== host ) {
+			host.appendChild( toastEl );
+		}
+		var box = document.createElement( 'div' );
+		box.className = 'bp-feedback bp-messages ' + ( isError ? 'error' : 'success' );
+		box.innerHTML = '<span class="bp-icon" aria-hidden="true"></span>';
+		var p = document.createElement( 'p' );
+		p.textContent = text;
+		box.appendChild( p );
 		if ( action ) {
 			var btn = document.createElement( 'button' );
 			btn.type = 'button';
 			btn.className = 'bpas-pro-toast__action';
 			btn.textContent = action.label;
 			btn.addEventListener( 'click', function () {
-				toastEl.hidden = true;
+				hideToast();
 				action.run();
 			} );
-			toastEl.appendChild( document.createTextNode( ' ' ) );
-			toastEl.appendChild( btn );
+			box.appendChild( btn );
 		}
+		var close = document.createElement( 'button' );
+		close.type = 'button';
+		close.className = 'bpas-pro-toast__close';
+		close.setAttribute( 'aria-label', t.dismiss || 'Dismiss' );
+		close.innerHTML = cfg.xIcon || '&times;';
+		close.addEventListener( 'click', hideToast );
+		box.appendChild( close );
+		toastEl.textContent = '';
+		toastEl.appendChild( box );
 		toastEl.hidden = false;
-		window.clearTimeout( toastTimer );
-		toastTimer = window.setTimeout( function () {
-			toastEl.hidden = true;
-		}, action ? 8000 : 5000 );
 	}
+
+	document.addEventListener( 'keydown', function ( event ) {
+		if ( 'Escape' === event.key && toastEl && ! toastEl.hidden && ! ( dialog && dialog.open ) ) {
+			hideToast();
+		}
+	} );
 
 	function closeMenu( el ) {
 		var menu = el.closest( 'details.bpas-share' );
@@ -350,7 +380,7 @@
 			updateCount( res && res.shares );
 			toast( t.undone );
 		}, function ( error ) {
-			toast( message( error ) );
+			toast( message( error ), null, true );
 		} );
 	}
 
@@ -373,7 +403,7 @@
 				}
 			} );
 		}, function ( error ) {
-			toast( message( error ) );
+			toast( message( error ), null, true );
 		} );
 	}
 

@@ -434,36 +434,101 @@
 	cursor: default;
 }
 
-/* Toast. */
+/* Toast: the BP family action toast (BuddyPress .bp-feedback inside .buddypress-wrap, bottom centre).
+   The theme paints .bp-feedback; the :where() rules are the fallback where it does not (posts, CPTs). */
 .bpas-pro-toast {
 	position: fixed;
-	inset-block-end: var(--bpas-space-4);
-	inset-inline-start: 50%;
+	inset-inline: var(--bpas-space-4);
+	inset-block-end: 24px;
 	z-index: calc(var(--bpas-z) + 10);
-	display: flex;
-	align-items: center;
-	gap: var(--bpas-space-3);
-	padding: var(--bpas-space-3) var(--bpas-space-4);
+	max-width: 480px;
+	margin-inline: auto;
 	border-radius: var(--bpas-radius);
-	background: var(--bpas-text);
-	color: var(--bpas-surface);
 	box-shadow: var(--bpas-shadow);
-	transform: translateX(50%);
+	animation: bpas-pro-toast-in 0.2s ease-out;
 }
 
 .bpas-pro-toast[hidden] {
 	display: none;
 }
 
-.bpas-pro-toast__action {
-	padding: 0;
+:where(.bpas-pro-toast) .bp-feedback {
+	display: flex;
+	align-items: center;
+	gap: var(--bpas-space-3);
+	margin: 0;
+	padding: 10px 15px;
+	background: var(--bpas-surface);
+	color: var(--bpas-text);
+	border: 1px solid var(--bpas-border);
+	border-radius: var(--bpas-radius);
+}
+
+.bpas-pro-toast .bp-feedback {
+	align-items: center;
+	gap: var(--bpas-space-3);
+	margin: 0;
+}
+
+.bpas-pro-toast .bp-feedback p {
+	flex: 1;
+	min-width: 0;
+	margin: 0;
+}
+
+/* Beats the theme's `.buddypress .buddypress-wrap button` (0,2,1) so neither renders as a filled slab. */
+.bpas-pro-toast .bp-feedback button.bpas-pro-toast__action {
+	flex: 0 0 auto;
+	min-height: 32px;
+	padding: 0 var(--bpas-space-2);
 	border: 0;
-	background: none;
+	border-radius: var(--bpas-radius-button);
+	background: transparent;
+	box-shadow: none;
 	color: inherit;
 	font: inherit;
-	font-weight: 700;
+	font-weight: 600;
 	text-decoration: underline;
 	cursor: pointer;
+}
+
+.bpas-pro-toast .bp-feedback button.bpas-pro-toast__close {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: transparent;
+	box-shadow: none;
+	color: inherit;
+	cursor: pointer;
+}
+
+.bpas-pro-toast .bp-feedback button.bpas-pro-toast__close svg {
+	width: 18px;
+	height: 18px;
+}
+
+.bpas-pro-toast .bp-feedback button:hover,
+.bpas-pro-toast .bp-feedback button:focus-visible {
+	color: inherit;
+	background: color-mix(in srgb, currentColor 10%, transparent);
+}
+
+@keyframes bpas-pro-toast-in {
+	from { opacity: 0; transform: translateY(8px); }
+	to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.bpas-pro-toast {
+		animation: none;
+	}
 }
 
 /* Share buttons on posts and content types. Own layer so a theme banner pulled up with a

@@ -49,6 +49,7 @@ final class Assets {
 					'root'     => esc_url_raw( rest_url() ),
 					'loggedIn' => is_user_logged_in(),
 					'track'    => Settings::feature( 'analytics' ),
+					'xIcon'    => \BPAS\Icons::get( 'x' ),
 					'i18n'     => array(
 						'repost'        => _x( 'Repost', 'verb', 'buddypress-activity-share-pro' ),
 						'repostComment' => __( 'Repost with comment', 'buddypress-activity-share-pro' ),
@@ -60,6 +61,7 @@ final class Assets {
 						'comment'       => __( 'Add a comment (optional)', 'buddypress-activity-share-pro' ),
 						'reposted'      => __( 'Reposted.', 'buddypress-activity-share-pro' ),
 						'undo'          => __( 'Undo', 'buddypress-activity-share-pro' ),
+						'dismiss'       => __( 'Dismiss', 'buddypress-activity-share-pro' ),
 						'undoRepost'    => __( 'Undo repost', 'buddypress-activity-share-pro' ),
 						'view'          => _x( 'View', 'open the new post or conversation', 'buddypress-activity-share-pro' ),
 						'undone'        => __( 'Repost removed.', 'buddypress-activity-share-pro' ),

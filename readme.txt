@@ -64,6 +64,7 @@ Rebuilt as an add-on to the free Activity Share for BuddyPress: faster, safer an
 * Improve  - After reposting or sending, a View link takes you straight to the post or the conversation.
 * Improve  - Dialogs, quoted posts and share buttons look the same on any theme, in light and dark mode.
 * Improve  - Bootstrap, Select2 and Font Awesome are no longer loaded.
+* Improve  - Repost, send and undo messages use BuddyPress's own notice style at the bottom of the screen and stay until dismissed, matching the other BuddyPress add-ons.
 * Fix      - Activating Pro while the free plugin is active no longer causes an error.
 * Fix      - Pro activates whatever folder the free plugin is installed in, including installs from GitHub or a wbcomdesigns.com zip.
 * Fix      - Pages that show reposts no longer error on BuddyBoss Platform.
@@ -76,6 +77,7 @@ Rebuilt as an add-on to the free Activity Share for BuddyPress: faster, safer an
 * Fix      - Uninstall now removes all plugin data.
 * Fix      - The share count on the Share button updates right away after a repost or undo.
 * Fix      - The share count has space between it and the Share label.
+* Fix      - Your own repost in the stream offers Undo repost instead of a Repost that fails.
 * Security - Visitor IP addresses are no longer stored.
 * Dev      - Old settings, counts and share records move to the new format automatically; old entries are removed.
 * Compat   - Requires Activity Share for BuddyPress 3.6.0, WordPress 6.7 and PHP 8.1. Updates now use your Wbcom Designs license.

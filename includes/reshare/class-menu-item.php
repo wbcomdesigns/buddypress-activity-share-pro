@@ -75,7 +75,8 @@ final class Menu_Item {
 					}
 				} else {
 					// Plain repost -> Undo; quote (-1) -> no quick row, the quote is managed from the post itself.
-					$mine = Reshare_Service::my_repost( $user_id, $ctx->type, (int) $ctx->id );
+					// Ask about the resolved original: on a repost card the menu acts on what was reposted.
+					$mine = Reshare_Service::my_repost( $user_id, $target['type'], (int) $target['id'] );
 					if ( $mine > 0 ) {
 						$rows[] = self::row( 'repeat', __( 'Undo repost', 'buddypress-activity-share-pro' ), sprintf( 'data-bpas-undo="%d" ', $mine ) . $data );
 					} elseif ( 0 === $mine ) {
