@@ -57,8 +57,11 @@ final class Menu_Item {
 				Reshare_Service::remember( $ctx->object );
 			}
 			$target = Reshare_Service::resolve_target( $user_id, $ctx->type, (int) $ctx->id );
+			// An original that cannot be shared (deleted, private, or a content type that is switched off) gets
+			// neither row: sending resolves the same target and would only fail with "not available".
 			if ( is_wp_error( $target ) ) {
 				$repost = false;
+				$send   = false;
 			}
 
 			if ( $repost ) {
