@@ -55,3 +55,15 @@ BuddyBoss note for the test site: BuddyBoss Platform does not load while bbPress
 - Content types: post, page, product, any public type; block and `[bpas_share]` shortcode stand down the automatic menu.
 - Settings: Networks, Display, Content Types, Features; save and reload.
 - `bin/local-ci.sh` passes in both repos.
+
+## Release-candidate additions (18 Nov 2026)
+
+Test on the `3.6.0` branches at or after Free `a4e9b31` (master merge) and Pro commit "Improve - Repost and send messages use the BP family toast". Lane: http://localhost:8900 (BuddyPress, Reign) and http://localhost:8901 (BuddyBoss), log in with `?autologin=<user>`; test as a Subscriber member first (e.g. `marco`), admin last.
+
+| Change | What to test | Pass when |
+|---|---|---|
+| Pro: repost / send / undo message is the BP family toast | Share > Repost on any member's update; then Undo in the message. Share > Send to a friend, send. Repost something twice to force an error. | Message sits bottom centre, max 480px wide, on the theme's notice surface with BuddyPress's round icon (green check for success, red for the error). Undo / View and an X (Dismiss) sit inside it. It stays until Undo, X or Escape; only one shows at a time. Looks the same as Private Community Pro's "not allowed" toast. Light + dark, 1440 + 390. On a blog post with Pro share buttons (no BuddyPress page) it still renders as a bordered card. |
+| Pro: own repost card | Repost an update, reload the stream. Open Share on **your repost card** at the top. | The row reads "Undo repost" (not "Repost"), and Undo removes the repost. The original post's menu also reads "Undo repost". |
+| Free merged master | Nothing to click. | `docs/website` is the November docs set (no `getting-started/introduction.md`); CI workflow file present. |
+
+Free alone (Pro deactivated): Share menu, phone bottom sheet and "Link copied" behave as before; no toast exists in Free.
