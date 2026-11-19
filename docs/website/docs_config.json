@@ -1,0 +1,77 @@
+{
+  "product": "Activity Share Pro",
+  "productType": "plugin",
+  "shortId": "bpaspro",
+  "sections": [
+    {
+      "name": "Getting Started",
+      "folder": "getting-started",
+      "description": "Check the requirements, install Pro, activate your license and upgrade from 2.x.",
+      "pages": [
+        {
+          "slug": "01-requirements",
+          "title": "Requirements",
+          "file": "getting-started/01-requirements.md"
+        },
+        {
+          "slug": "02-install-and-license",
+          "title": "Install, License and Updates",
+          "file": "getting-started/02-install-and-license.md"
+        }
+      ]
+    },
+    {
+      "name": "FAQ",
+      "folder": "faq",
+      "description": "Short answers about the license, reposting, counts and rewards.",
+      "pages": [
+        {
+          "slug": "faq",
+          "title": "Frequently Asked Questions",
+          "file": "faq/faq.md"
+        }
+      ]
+    },
+    {
+      "name": "Troubleshooting",
+      "folder": "troubleshooting",
+      "description": "Fixes for activation notices, missing menu rows, short links and updates.",
+      "pages": [
+        {
+          "slug": "troubleshooting",
+          "title": "Troubleshooting",
+          "file": "troubleshooting/troubleshooting.md"
+        }
+      ]
+    },
+    {
+      "name": "Maintain",
+      "folder": "maintain",
+      "description": "Where Pro keeps its data and what uninstall removes.",
+      "pages": [
+        {
+          "slug": "01-data-and-uninstall",
+          "title": "Where Pro Keeps Its Data and What Uninstall Removes",
+          "file": "maintain/01-data-and-uninstall.md"
+        }
+      ]
+    },
+    {
+      "name": "What's New",
+      "folder": "whats-new",
+      "description": "Update notes and a retest checklist for each release.",
+      "pages": [
+        {
+          "slug": "whats-new-in-3-6-1",
+          "title": "What's New in 3.6.1",
+          "file": "whats-new/whats-new-in-3-6-1.md"
+        },
+        {
+          "slug": "whats-new-in-3-6-0",
+          "title": "What's New in 3.6.0",
+          "file": "whats-new/whats-new-in-3-6-0.md"
+        }
+      ]
+    }
+  ]
+}
