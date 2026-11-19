@@ -47,12 +47,15 @@ To check your license and deliver updates, Pro contacts the Wbcom Designs update
 
 Fixes from release review for the repost dialog and repost wording.
 
+* Improve  - Features shows a read-only Share rewards status naming the active points plugin (WB Gamification, GamiPress or myCRED), or how to turn it on.
+* Fix      - Activating Pro without Activity Share for BuddyPress active is refused with a clear message; deactivating Free later leaves Pro paused with one notice.
 * Fix      - Closing the repost dialog with Escape returns keyboard focus to the Share button.
 * Fix      - Send to a friend no longer shows on a repost whose original cannot be shared.
 * Fix      - The repost and send dialog stays centred on screen with BuddyBoss and with themes that reset dialog styles.
 * Fix      - A reposted page now reads "reposted a page", and other content types name the item and its type, for example "Blue Hoodie (Product)".
 * Fix      - Without native dialog support, the repost dialog still dims the page, keeps keyboard focus inside and closes with Escape.
 * Fix      - Send to a friend appears only when the BuddyPress Friend Connections and Private Messaging components are both active, and sends only to friends.
+* Fix      - The share and repost menu above or below posts no longer appears as stray text in embeds, RSS feeds or REST API content.
 * Dev      - Repost, send and group features register only while the BuddyPress component they need is switched on.
 * Compat   - Requires Activity Share for BuddyPress 3.6.0 or later; install Activity Share for BuddyPress 3.6.1 alongside.
 

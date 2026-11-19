@@ -46,6 +46,25 @@ final class Rewards {
 	}
 
 	/**
+	 * Names of the points plugins whose adapter is loaded, for the Features tab. Same checks as init().
+	 *
+	 * @return string[]
+	 */
+	public static function provider_names(): array {
+		$names = array();
+		if ( function_exists( 'wb_gam_register_action' ) ) {
+			$names[] = 'WB Gamification';
+		}
+		if ( function_exists( 'gamipress_trigger_event' ) ) {
+			$names[] = 'GamiPress';
+		}
+		if ( class_exists( 'myCRED_Hook' ) ) {
+			$names[] = 'myCRED';
+		}
+		return $names;
+	}
+
+	/**
 	 * WB Gamification actions.
 	 */
 	public static function register_wb_gamification(): void {

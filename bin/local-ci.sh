@@ -54,5 +54,9 @@ echo "$out" | grep -qi warning && { echo "$out"; bad "make-pot warnings"; }
 step "Assets built"
 for f in assets/css/bpas-pro.min.css assets/css/bpas-pro-rtl.min.css assets/js/bpas-pro.min.js assets/js/bpas-pro-admin.min.js; do [ -f "$f" ] || bad "missing $f (npm run build)"; done
 
+step "TL - table lock"
+TL="$HOME/.claude/skills/wp-plugin-development/scripts/table-lock-check.php"
+if [ -f "$TL" ]; then php "$TL" . || bad "table lock"; else echo "skip: table-lock-check.php not installed"; fi
+
 [ $fail -eq 0 ] && echo -e "\nALL CHECKS PASSED" || echo -e "\nCHECKS FAILED"
 exit $fail

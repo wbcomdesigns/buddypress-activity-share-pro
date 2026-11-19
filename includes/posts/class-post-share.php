@@ -85,6 +85,10 @@ final class Post_Share {
 	 */
 	public static function filter_content( $content ): string {
 		$placement = self::placement();
+		// Never print the menu into embeds, feeds or REST content: the markup reads as stray text there.
+		if ( is_embed() || is_feed() || wp_is_serving_rest_request() ) {
+			return (string) $content;
+		}
 		if ( ! in_array( $placement, array( 'above', 'below' ), true ) || ! in_the_loop() || ! is_main_query() || get_the_ID() !== get_queried_object_id() ) {
 			return (string) $content;
 		}

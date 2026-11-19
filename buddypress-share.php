@@ -42,6 +42,37 @@ register_deactivation_hook(
 	}
 );
 
+// Refuse to activate while Free is missing or off. Deactivating Free later leaves Pro inert with a notice (bpas_pro_boot).
+register_activation_hook( __FILE__, 'bpas_pro_require_free_on_activation' );
+
+/**
+ * Activation guard. WordPress's `Requires Plugins` header cannot do this job: it matches Free by
+ * folder, and Free's folder differs per source (see bpas_pro_free_file()). Settings are not touched.
+ *
+ * @param bool $network_wide Whether this is a network activation.
+ */
+function bpas_pro_require_free_on_activation( $network_wide = false ): void {
+	$free = bpas_pro_free_file();
+	if ( function_exists( 'bpas_api_version' ) || ( '' !== $free && is_plugin_active( $free ) ) ) {
+		return;
+	}
+	// WordPress records the plugin as active before this hook runs, so switch it off again.
+	deactivate_plugins( plugin_basename( __FILE__ ), true, (bool) $network_wide );
+	wp_die(
+		esc_html(
+			'' !== $free
+				? __( 'Activity Share Pro was not activated. It needs the free Activity Share for BuddyPress plugin: activate that plugin first, then activate Activity Share Pro. Your Pro settings are untouched.', 'buddypress-activity-share-pro' )
+				: __( 'Activity Share Pro was not activated. It needs the free Activity Share for BuddyPress plugin: install and activate that plugin first, then activate Activity Share Pro. Your Pro settings are untouched.', 'buddypress-activity-share-pro' )
+		),
+		esc_html__( 'Activity Share for BuddyPress is required', 'buddypress-activity-share-pro' ),
+		array(
+			'response'  => 200,
+			'link_url'  => esc_url( self_admin_url( 'plugins.php' ) ),
+			'link_text' => esc_html__( 'Back to Plugins', 'buddypress-activity-share-pro' ),
+		)
+	);
+}
+
 /**
  * Boot once Free is known to be present and compatible.
  */
