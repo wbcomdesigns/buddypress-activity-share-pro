@@ -6,6 +6,7 @@
  * @var array  $features  Current feature flags.
  * @var array  $rows      key => [label, description].
  * @var string $send_note Shown when Send to a friend is unavailable.
+ * @var array  $rewards_by Names of the active points plugins (WB Gamification, GamiPress, myCRED).
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -26,6 +27,22 @@ defined( 'ABSPATH' ) || exit;
 					</span>
 				</label>
 			<?php endforeach; ?>
+			<div class="bpas-switch bpas-switch--status">
+				<span class="dashicons <?php echo $rewards_by ? 'dashicons-yes-alt bpas-switch__state--on' : 'dashicons-minus'; ?>" aria-hidden="true"></span>
+				<span class="bpas-switch__text">
+					<strong><?php esc_html_e( 'Share rewards', 'buddypress-activity-share-pro' ); ?></strong>
+					<span>
+						<?php
+						echo esc_html(
+							$rewards_by
+								/* translators: %s: points plugin names, for example "WB Gamification" or "GamiPress, myCRED". */
+								? sprintf( __( 'On - points set in %s', 'buddypress-activity-share-pro' ), implode( ', ', $rewards_by ) )
+								: __( 'Off - activate a points plugin (WB Gamification, GamiPress or myCRED).', 'buddypress-activity-share-pro' )
+						);
+						?>
+					</span>
+				</span>
+			</div>
 		</div>
 		<?php if ( $send_note ) : ?>
 			<p class="bpas-card__note"><?php echo esc_html( $send_note ); ?></p>

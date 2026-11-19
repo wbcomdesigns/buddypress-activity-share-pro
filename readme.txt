@@ -47,6 +47,8 @@ To check your license and deliver updates, Pro contacts the Wbcom Designs update
 
 Fixes from release review for the repost dialog and repost wording.
 
+* Improve  - Features shows a read-only Share rewards status naming the active points plugin (WB Gamification, GamiPress or myCRED), or how to turn it on.
+* Fix      - Activating Pro without Activity Share for BuddyPress active is refused with a clear message; deactivating Free later leaves Pro paused with one notice.
 * Fix      - Closing the repost dialog with Escape returns keyboard focus to the Share button.
 * Fix      - Send to a friend no longer shows on a repost whose original cannot be shared.
 * Fix      - The repost and send dialog stays centred on screen with BuddyBoss and with themes that reset dialog styles.

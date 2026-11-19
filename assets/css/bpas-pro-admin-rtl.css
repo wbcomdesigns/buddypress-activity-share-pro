@@ -145,6 +145,21 @@
 	margin-block: 8px;
 }
 
+/* Read-only status row (Share rewards): same rhythm as a switch row, an icon instead of the checkbox. */
+.bpas-switch--status {
+	cursor: default;
+}
+
+.bpas-switch--status .dashicons {
+	flex: none;
+	margin-block-start: 1px;
+	color: var(--bpas-a-faint);
+}
+
+.bpas-switch--status .bpas-switch__state--on {
+	color: var(--bpas-a-success);
+}
+
 @media (max-width: 1024px) {
 
 	.bpas-pro-stats {

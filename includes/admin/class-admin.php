@@ -80,6 +80,7 @@ final class Admin {
 			unset( $rows['send_friend'] );
 			$send_note = __( 'Send to a friend appears here when the BuddyPress Friend Connections and Private Messaging components are both active.', 'buddypress-activity-share-pro' );
 		}
+		$rewards_by = \BPAS_Pro\Rewards\Rewards::provider_names(); // Read-only status: no setting, nothing saved.
 		include BPAS_PRO_DIR . 'includes/admin/views/tab-features.php';
 	}
 
